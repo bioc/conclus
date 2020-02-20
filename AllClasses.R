@@ -1,5 +1,3 @@
-setwd("/g/lancrin/People/Ilyess/conclus_S4/R")
-
 scRNAseq <- setClass(
     # Set the name for the class
     "scRNAseq",
@@ -39,4 +37,5 @@ scRNAseq <- setClass(
         return(TRUE)
     }
 )
+
     
