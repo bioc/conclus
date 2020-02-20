@@ -1,3 +1,5 @@
+library(SingleCellExperiment)
+
 scRNAseq <- setClass(
     # Set the name for the class
     "scRNAseq",
@@ -6,10 +8,10 @@ scRNAseq <- setClass(
     slots = c(
         experimentName = "character",
         countMatrix = "data.frame", # matrix
-        # normalizedCountMatrix = "SingleCellExperiment",
+        normalizedCountMatrix = "SingleCellExperiment",
         colData = "data.frame",
         species = "character",
-        # sceObject = "SingleCellExperiment",
+        sceObject = "SingleCellExperiment",
         outputDirectory = "character",
         PCs = "numeric",
         perplexities = "numeric",
