@@ -1,8 +1,8 @@
-source("AllClasses.R")
-source("AllGenerics.R")
-source("methods-accessor-scRNAseq.R")
-source("methods-replace-scRNAseq.R")
-source("methods-class-scRNAseq.R")
+source("R/AllClasses.R")
+source("R/AllGenerics.R")
+source("R/methods-accessor-scRNAseq.R")
+source("R/methods-replace-scRNAseq.R")
+source("R/methods-class-scRNAseq.R")
 
 ## Data
 outputDirectory <- "./YourOutputDirectory"
