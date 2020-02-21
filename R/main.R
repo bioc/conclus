@@ -9,10 +9,13 @@ source("R/methods-class-scRNAseq.R")
 outputDirectory <- "./YourOutputDirectory"
 experimentName <- "Bergiers"
 
-countMatrix <- read.delim(file.path("inst/extdata/Bergiers_counts_matrix_filtered.tsv"), 
+countMatrix <- read.delim(file.path(system.file("extdata", package="conclus"),		
+                                    "Bergiers_counts_matrix_filtered.tsv"), 
                           stringsAsFactors = FALSE)
 
-columnsMetaData <- read.delim(file.path("inst/extdata/Bergiers_colData_filtered.tsv"))
+columnsMetaData <- read.delim(file.path(system.file("extdata",
+                                                    package="conclus"), 
+                                        "Bergiers_colData_filtered.tsv"))
 
 ## Construction
 scr <- scRNAseq(experimentName  = experimentName, 
@@ -23,6 +26,6 @@ scr <- scRNAseq(experimentName  = experimentName,
 )
 
 ## Normalization with S4 method
-scrS4 <- normaliseCountMatrix(scr, colData = columnsMetaData) # return NCM
+scrS4 <- normaliseCountMatrix(src, colData = columnsMetaData) # return NCM
 getNormalizedCountMatrix(scr)    # Slot normalizedCountMatrix empty
 getNormalizedCountMatrix(scrS4)  # Slot normalizedCountMatrix full

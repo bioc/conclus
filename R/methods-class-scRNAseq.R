@@ -111,12 +111,14 @@
         rm(tmp, ensembl, res, rowdata_GO)
     } else {
         # only for mouse
-        databaseDir=system.file("extdata", package="conclus")
+        # databaseDir=system.file("extdata", package="conclus")
         ensemblPattern <- "ENSMUSG"
-        database <- read.delim(file.path(databaseDir,
-                                         "Mmus_gene_database_secretedMol.tsv"),
+        # database <- read.delim(file.path(databaseDir,
+        #                                  "Mmus_gene_database_secretedMol.tsv"),
+        #                        stringsAsFactors=FALSE)
+        database <- read.delim(file.path("inst/extdata/Mmus_gene_database_secretedMol.tsv"),
                                stringsAsFactors=FALSE)
-        database <- database[!duplicated(database$Symbol),]
+        database <- database[!duplicated(database$Symbol), ]
         
         ensemblGenes <- rownames(countMatrix)[grep(ensemblPattern,
                                                    rownames(countMatrix))]
