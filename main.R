@@ -11,10 +11,9 @@ library(BiocManager)
 
 source("R/AllClasses.R")
 source("R/AllGenerics.R")
-source("R/methods-accessor-scRNAseq.R")
-source("R/methods-replace-scRNAseq.R")
-source("R/methods-class-scRNAseq.R")
-
+source("R/methods-scRNAseq-getters.R")
+source("R/methods-scRNAseq-setters.R")
+source("R/methods-scRNAseq-normalization.R")
 
 
 ## Data
@@ -35,5 +34,6 @@ scr <- scRNAseq(experimentName  = experimentName,
 
 ## Normalization with S4 method
 scrS4 <- normaliseCountMatrix(scr, colData = columnsMetaData) # return NCM
-getNormalizedCountMatrix(scr)    # Slot normalizedCountMatrix empty
 getNormalizedCountMatrix(scrS4)  # Slot normalizedCountMatrix full
+getNormalizedCountMatrix(scr)    # Slot normalizedCountMatrix empty
+
