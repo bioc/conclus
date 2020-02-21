@@ -104,17 +104,6 @@ setReplaceMethod(
 
 
 setReplaceMethod(
-    f = "setRandomSeed",
-    signature = "scRNAseq",
-    definition = function(theObject, value){
-        if (!is.double(value)) stop("Random Seed should be double")
-        validObject(theObject)
-        theObject@randomSeed <- value
-        return(theObject)
-    })
-
-
-setReplaceMethod(
     f = "setTSNEResults",
     signature = "scRNAseq",
     definition = function(theObject, value){
@@ -124,16 +113,6 @@ setReplaceMethod(
         return(theObject)
     })
 
-
-setReplaceMethod(
-    f = "setCores",
-    signature = "scRNAseq",
-    definition = function(theObject, value){
-        if (!is.integer(value)) stop("Cores should be integer")
-        validObject(theObject)
-        theObject@cores <- value
-        return(theObject)
-    })
 
 
 setReplaceMethod(

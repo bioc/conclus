@@ -88,8 +88,6 @@ setMethod(
     })
 
 
-
-
 setMethod(
     f = "getClusteringResults",
     signature = "scRNAseq",
