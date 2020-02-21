@@ -1,7 +1,7 @@
 Conclus with S4 class
 ----------------------
-All classes and methods are in R repository 
-The data are in inst/extdata
+All classes and methods are in R repository. 
+The data are in inst/extdata.
 
 * 21/02/2020
 
