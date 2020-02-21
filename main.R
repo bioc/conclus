@@ -1,13 +1,11 @@
 if (!require("pacman")) install.packages("pacman")
 
-pacman::p_load(devtools,BiocManager, ggplot2, pheatmap, zoo, dynamicTreeCut, factoextra, 
+pacman::p_load(ggplot2, pheatmap, zoo, dynamicTreeCut, factoextra, 
                digest, RColorBrewer, doParallel, BiocParallel, scran, 
                monocle, KEGGREST, AnnotationDbi, SingleCellExperiment, Cairo, rvest, curl, 
                scater, Matrix, dbscan, fpc, matrixStats, dplyr, biomaRt, org.Mm.eg.db,
-               grDevices, S4Vectors, Biobase, DataCombine, zoo, rvest)
+               grDevices, S4Vectors, Biobase, DataCombine, zoo, rvest, devtools, BiocManager)
 
-library(devtools)
-library(BiocManager)
 
 source("R/AllClasses.R")
 source("R/AllGenerics.R")
