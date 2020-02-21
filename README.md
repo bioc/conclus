@@ -1,9 +1,10 @@
 # Conclus with S4 class
 
 All classes and methods are in R repository. 
+
 The data are in inst/extdata.
 
-## 21/02/2020
+### 21/02/2020
 
 - Write getters & setters methods
 - Write scRNAseq class
