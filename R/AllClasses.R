@@ -11,7 +11,7 @@ scRNAseq <- setClass(
         normalizedCountMatrix = "SingleCellExperiment",
         colData = "data.frame",
         species = "character",
-        sceObject = "SingleCellExperiment",
+        # sceObject = "SingleCellExperiment",
         outputDirectory = "character",
         PCs = "numeric",
         perplexities = "numeric",

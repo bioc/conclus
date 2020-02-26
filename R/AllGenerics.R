@@ -18,6 +18,21 @@ setGeneric(
     signature="theObject")
 
 
+setGeneric(
+    name="generateTSNECoordinates",
+    def=function(theObject,
+                 sceObject=getNormalizedCountMatrix(theObject),
+                 dataDirectory=getOutputDirectory(theObject),
+                 experimentName=getExperimentName(theObject),
+                 randomSeed=42,
+                 cores=1,
+                 PCs=c(4, 6, 8, 10, 20, 40, 50),
+                 perplexities=c(30,40)){
+        standardGeneric("generateTSNECoordinates")    
+    },
+    signature="theObject")
+
+
 ################################################################################
 ############################### Getter methods #################################
 ################################################################################
@@ -63,14 +78,6 @@ setGeneric(
 
 
 setGeneric(
-    name="getSceObject",
-    def=function(theObject){
-        standardGeneric("getSceObject")    
-    },
-    signature = "theObject")
-
-
-setGeneric(
     name="getOutputDirectory",
     def=function(theObject){
         standardGeneric("getOutputDirectory")    
@@ -95,25 +102,9 @@ setGeneric(
 
 
 setGeneric(
-    name="getRandomSeed",
-    def=function(theObject){
-        standardGeneric("getRandomSeed")    
-    },
-    signature = "theObject")
-
-
-setGeneric(
     name="getTSNEResults",
     def=function(theObject){
         standardGeneric("getTSNEResults")    
-    },
-    signature = "theObject")
-
-
-setGeneric(
-    name="getCores",
-    def=function(theObject){
-        standardGeneric("getCores")    
     },
     signature = "theObject")
 
@@ -171,14 +162,6 @@ setGeneric(
 
 
 setGeneric(
-    name="setSceObject<-",
-    def=function(theObject, value){
-        standardGeneric("setSceObject<-")    
-    },
-    signature = "theObject")
-
-
-setGeneric(
     name="setOutputDirectory<-",
     def=function(theObject, value){
         standardGeneric("setOutputDirectory<-")    
@@ -203,25 +186,9 @@ setGeneric(
 
 
 setGeneric(
-    name="setRandomSeed<-",
-    def=function(theObject, value){
-        standardGeneric("setRandomSeed<-")    
-    },
-    signature = "theObject")
-
-
-setGeneric(
     name="setTSNEResults<-",
     def=function(theObject, value){
         standardGeneric("setTSNEResults<-")    
-    },
-    signature = "theObject")
-
-
-setGeneric(
-    name="setCores<-",
-    def=function(theObject, value){
-        standardGeneric("setCores<-")    
     },
     signature = "theObject")
 

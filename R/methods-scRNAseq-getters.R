@@ -41,14 +41,6 @@ setMethod(
 
 
 setMethod(
-    f = "getSceObject",
-    signature = "scRNAseq",
-    definition = function(theObject){
-        return(theObject@sceObject)
-    })
-
-
-setMethod(
     f = "getOutputDirectory",
     signature = "scRNAseq",
     definition = function(theObject){

@@ -58,18 +58,6 @@ setReplaceMethod(
 
 
 setReplaceMethod(
-    f = "setSceObject",
-    signature = "scRNAseq",
-    definition = function(theObject, value){
-        if (!class(value) == "SingleCellExperiment") 
-            stop("sceObject should be SingleCellExperiment")
-        validObject(theObject)
-        theObject@sceObject <- value
-        return(theObject)
-    })
-
-
-setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
     definition = function(theObject, value){
