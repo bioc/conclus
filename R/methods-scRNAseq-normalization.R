@@ -355,7 +355,7 @@ setMethod(
                           alreadyCellFiltered=FALSE, 
                           runQuickCluster=TRUE,
                           databaseDir=TRUE){
-        
+
         rowData <- .annotateGenes(countMatrix, 
                                   species=species,
                                   rowData=rowData, 
@@ -413,5 +413,9 @@ setMethod(
         setNormalizedCountMatrix(theObject) <- sceNorm
         return(theObject)	
     })
+
+
+
+
 
 

@@ -65,14 +65,6 @@ setMethod(
 
 
 setMethod(
-    f = "getRandomSeed",
-    signature = "scRNAseq",
-    definition = function(theObject){
-        return(theObject@randomSeed)
-    })
-
-
-setMethod(
     f = "getTSNEResults",
     signature = "scRNAseq",
     definition = function(theObject){
