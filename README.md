@@ -19,7 +19,7 @@ methods-scRNAseq-normalization.R :
 - Write tsne methods for scRNAseq class with methods:
     * getTSNEresults
     * generateTSNECoordinates
-- Write accessorts for Tsne class.
+- Write accessors for Tsne class.
 
 ### 04/03/2020
 
