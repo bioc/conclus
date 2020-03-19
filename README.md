@@ -14,5 +14,8 @@ methods-scRNAseq-normalization.R :
 - Write main.R for testing
     * Load all libraires to compensate the missing of NAMESPACE FILE
 
+### 27/02/2020
 
+- Rewrite conclus::generateTSNECoordinates to generateTSNECoordinates method of
+ scRNAseq class
 
