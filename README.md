@@ -3,6 +3,8 @@
 All classes and methods are in R repository. <br>
 The data are in inst/extdata.
 
+To run the code, run main.R
+
 ### 21/02/2020
 
 - Write scRNAseq class
