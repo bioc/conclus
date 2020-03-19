@@ -35,13 +35,14 @@
 }
 
 
-
-runDBSCAN <- function(theObject,
-                      dataDirectory=getOutputDirectory(theObject),
-                      cores=1,
-                      epsilon=c(1.3, 1.4, 1.5),
-                      minPoints=c(3, 4)){
-    
+setMethod(
+  f="runDBSCAN",
+  signature="scRNAseq",
+  definition=function(theObject,
+                        dataDirectory=getOutputDirectory(theObject),
+                        cores=1,
+                        epsilon=c(1.3, 1.4, 1.5),
+                        minPoints=c(3, 4)){
     outputDataDirectory <- "output_tables"
     normalizedMatrix <- getNormalizedCountMatrix(theObject)
     tSNEList <- getTSNEList(theObject)
@@ -94,4 +95,4 @@ runDBSCAN <- function(theObject,
     setDbscanList(theObject) <- dbscanList
     rm(tmp)
     return(theObject)
-}
+})
