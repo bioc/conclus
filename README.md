@@ -16,6 +16,17 @@ methods-scRNAseq-normalization.R :
 
 ### 27/02/2020
 
-- Rewrite conclus::generateTSNECoordinates to generateTSNECoordinates method of
- scRNAseq class
+- Write tsne methods for scRNAseq class with methods:
+    * getTSNEresults
+    * generateTSNECoordinates
+- Write accessorts for Tsne class.
 
+### 04/03/2020
+
+- Write dbscan methods for scRNAseq class with :
+    * runDBSCAN
+
+### 18/02/2020
+
+- Finish to write dbscan methods for scRNAseq class
+- Begin to write similarity method of scRNAseq class
