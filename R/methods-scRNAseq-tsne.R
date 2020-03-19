@@ -1,8 +1,5 @@
 .initialisePath <- function(dataDirectory){
-    # creates directories for further writing of results.
-    # names of directories are hardcoded.
-    # no idea if it is good or bad.
-    
+
     graphsDirectory <- "pictures"
     markerGenesDirectory <- "marker_genes"
     tSNEDirectory <- "tsnes"
@@ -21,38 +18,38 @@
 }
 
 
-.getTSNEresults <- function(expressionMatrix = getNormalizedCountMatrix(theObject),
-                            cores=1,
-                            PCs=c(4, 6, 8, 10, 20, 40, 50),
-                            perplexities=c(30, 40),
-                            randomSeed=42){
+setMethod(
+    f="getTSNEresults",
+    signature="scRNAseq",
+    definition=function(theObject,
+                           expressionMatrix = getNormalizedCountMatrix(theObject),
+                           cores=1,
+                           PCs=c(4, 6, 8, 10, 20, 40, 50),
+                           perplexities=c(30, 40),
+                           randomSeed=42){
     PCAData <- prcomp(t(expressionMatrix))$x
     myCluster <- parallel::makeCluster(cores, # number of cores to use
                                        type = "PSOCK") # type of cluster
     doParallel::registerDoParallel(myCluster)
-    tSNECoordinates <- foreach::foreach(PCA=rep(PCs, length(perplexities)),
-                                        perp=rep(perplexities,
-                                                 each=length(PCs)),
-                                        .combine='cbind') %dopar% {
-                                            library(SingleCellExperiment)
-                                            tmp <- scater::runTSNE(
-                                                SingleCellExperiment(
-                                                    assays=list(
+    tSNECoordinates <- foreach::foreach(
+        PCA=rep(PCs, length(perplexities)),
+        perp=rep(perplexities, each=length(PCs)), .combine='cbind') %dopar% {
+            library(SingleCellExperiment)
+            tsneCoord <- scater::runTSNE(SingleCellExperiment(assays=list(
                                                     logcounts=t(
                                                         PCAData[, 1:PCA]))),
-                                                scale_features=FALSE,
-                                                perplexity=perp,
-                                                rand_seed=randomSeed,
-                                                theme_size=13, 
-                                                return_SCESet=FALSE)
-                                            
-                                            scater::plotTSNE(tmp)
-                                        }
+                                   scale_features=FALSE,
+                                   perplexity=perp,
+                                   rand_seed=randomSeed,
+                                   theme_size=13, 
+                                   return_SCESet=FALSE)
+            scater::plotTSNE(tsneCoord)
+            }
     parallel::stopCluster(myCluster)
     message(paste("Calculated", length(PCs)*length(perplexities),
                   "2D-tSNE plots."))
     return(tSNECoordinates)
-}
+})
 
 
 setMethod(
@@ -70,7 +67,8 @@ setMethod(
         .initialisePath(dataDirectory)
         tSNEDirectory <- "tsnes"
         message(paste0("Running TSNEs using ", cores, " cores."))
-        TSNEres <- .getTSNEresults(Biobase::exprs(sceObject),
+        TSNEres <- getTSNEresults(theObject,
+                                   Biobase::exprs(sceObject),
                                    cores=cores,
                                    PCs=PCs,
                                    perplexities=perplexities,
@@ -78,6 +76,7 @@ setMethod(
         
         PCA <- rep(PCs, length(perplexities))
         perp <- rep(perplexities, each=length(PCs))
+        listTSNE <- list()
         
         outputDir <- file.path(dataDirectory, tSNEDirectory)
         filesList <- list.files(outputDir, pattern="_tsne_coordinates_")
@@ -85,23 +84,28 @@ setMethod(
             file.remove(file.path(outputDir, fileName)))
         
         for (i in 1:(length(PCs)*length(perplexities))){
+            name = paste0(experimentName,
+                   '_tsne_coordinates_', i, "_" ,
+                   PCA[i], "PCs_",
+                   perp[i], "perp")
             write.table(TSNEres[1, i][[1]],
-                        file=file.path(dataDirectory, tSNEDirectory,
-                                       paste0(experimentName,
-                                              '_tsne_coordinates_',
-                                              i,
-                                              "_" ,
-                                              PCA[i],
-                                              "PCs_",
-                                              perp[i],
-                                              "perp.tsv")),
+                        file=file.path(dataDirectory,
+                                       tSNEDirectory,
+                                       paste0(name, ".tsv")),
                         quote=FALSE, sep='\t')
+            
+            tSNEObj <- Tsne(name = name, 
+                            coordinates = TSNEres[1, i], 
+                            perplexity = PCA[i],  
+                            pc  = perp[i])
+            
+            listTSNE <- list.append(listTSNE, tSNEObj)
         }
+        setTSNEList(theObject) <- listTSNE
         saveRDS(TSNEres, file=file.path(dataDirectory,
                                           "output_tables",
                                           paste0(experimentName,
                                                  "_tSNEResults.rds")))
         rm(tSNEDirectory, PCA, perp)
-        setTSNEResults(theObject) <- TSNEres
         return(theObject)
     })

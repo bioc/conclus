@@ -49,26 +49,18 @@ setMethod(
 
 
 setMethod(
-    f = "getPCs",
+    f = "getTSNEList",
     signature = "scRNAseq",
     definition = function(theObject){
-        return(theObject@PCs)
+        return(theObject@tSNEList)
     })
 
 
 setMethod(
-    f = "getPerplexities",
+    f = "getDbscanList",
     signature = "scRNAseq",
     definition = function(theObject){
-        return(theObject@perplexities)
-    })
-
-
-setMethod(
-    f = "getTSNEResults",
-    signature = "scRNAseq",
-    definition = function(theObject){
-        return(theObject@tSNEResults)
+        return(theObject@dbscanList)
     })
 
 

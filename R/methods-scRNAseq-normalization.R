@@ -1,4 +1,4 @@
-.annotateGenes <- function(countMatrix, species="mmu",
+ .annotateGenes <- function(countMatrix, species="mmu",
                            genomeAnnot, ensemblPattern, rowData=NULL,
                            databaseDir=TRUE){
     

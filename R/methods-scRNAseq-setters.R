@@ -70,37 +70,25 @@ setReplaceMethod(
 
 
 setReplaceMethod(
-    f = "setPCs",
+    f = "setTSNEList",
     signature = "scRNAseq",
     definition = function(theObject, value){
-        if (!is.double(value)) stop("PCs should be double")
+        if (!is.list(value)) stop("tSNEList should be list")
         validObject(theObject)
-        theObject@PCs <- value
+        theObject@tSNEList <- value
         return(theObject)
     })
 
 
 setReplaceMethod(
-    f = "setPerplexities",
+    f = "setDbscanList",
     signature = "scRNAseq",
     definition = function(theObject, value){
-        if (!is.double(value)) stop("Perplexities should be double")
-            validObject(theObject)
-            theObject@perplexities <- value
-            return(theObject)
-    })
-
-
-setReplaceMethod(
-    f = "setTSNEResults",
-    signature = "scRNAseq",
-    definition = function(theObject, value){
-        if (!is.matrix(value)) stop("tSNEResults should be matrix")
+        if (!is.list(value)) stop("dbscanList should be list")
         validObject(theObject)
-        theObject@tSNEResults <- value
+        theObject@dbscanList <- value
         return(theObject)
     })
-
 
 
 setReplaceMethod(
@@ -112,15 +100,4 @@ setReplaceMethod(
         theObject@clusteringResults <- value
         return(theObject)
     })
-
-
-        
-
-        
-        
-        
-
-
-
-
 

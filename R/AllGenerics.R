@@ -19,6 +19,38 @@ setGeneric(
 
 
 setGeneric(
+    name="getTSNEresults",
+    def= function(theObject,
+                  expressionMatrix = getNormalizedCountMatrix(theObject),
+                  cores=1,
+                  PCs=c(4, 6, 8, 10, 20, 40, 50),
+                  perplexities=c(30, 40),
+                  randomSeed=42){
+        standardGeneric("getTSNEresults")    
+    },
+    signature="theObject")
+
+
+setGeneric(
+    name="testClustering",
+    def=function(theObject,
+                sceObject      = getNormalizedCountMatrix(theObject),
+                dataDirectory  = getOutputDirectory(theObject),
+                experimentName = getExperimentName(theObject),
+                dbscanEpsilon=1.4,
+                minPts=5,
+                perplexities = c(30),
+                PCs = c(4),
+                randomSeed = 42,
+                width=7,
+                height=7, 
+                onefile=FALSE, ...){
+        standardGeneric("testClustering")    
+    },
+    signature="theObject")
+
+
+setGeneric(
     name="generateTSNECoordinates",
     def=function(theObject,
                  sceObject=getNormalizedCountMatrix(theObject),
@@ -32,6 +64,59 @@ setGeneric(
     },
     signature="theObject")
 
+
+setGeneric(
+    name="normaliseCountMatrix",
+    def=function(theObject,
+                 countMatrix=getCountMatrix(theObject),
+                 species=getSpecies(theObject),
+                 sizes=c(20,40,60,80,100),
+                 rowData=NULL,
+                 colData=NULL,
+                 alreadyCellFiltered=FALSE, 
+                 runQuickCluster=TRUE,
+                 databaseDir=TRUE){
+        standardGeneric("normaliseCountMatrix")    
+    },
+    signature="theObject")
+
+
+setGeneric(
+    name="runDBSCAN",
+    def=function(theObject,
+                 dataDirectory=getOutputDirectory(theObject),
+                 cores=1,
+                 epsilon=c(1.3, 1.4, 1.5),
+                 minPoints=c(3, 4)){
+        standardGeneric("runDBSCAN")    
+    },
+    signature="theObject")
+
+
+setGeneric(
+    name="clusterCellsInternal",
+    def=function(theObject,
+                 dbscanMatrix,
+                 sceObject,
+                 clusterNumber=0,
+                 deepSplit = 4,
+                 cores=1,
+                 clusteringMethod = "ward.D2"){
+        standardGeneric("clusterCellsInternal")    
+    },
+    signature="theObject")
+
+
+
+setGeneric(
+    name="calculateClustersSimilarity",
+    def=function(theObject,
+                 cellsSimilarityMatrix,
+                 sceObject,
+                 clusteringMethod = "ward.D2"){
+        standardGeneric("calculateClustersSimilarity")    
+    },
+    signature="theObject")
 
 ################################################################################
 ############################### Getter methods #################################
@@ -102,9 +187,17 @@ setGeneric(
 
 
 setGeneric(
-    name="getTSNEResults",
+    name="getTSNEList",
     def=function(theObject){
-        standardGeneric("getTSNEResults")    
+        standardGeneric("getTSNEList")    
+    },
+    signature = "theObject")
+
+
+setGeneric(
+    name="getDbscanList",
+    def=function(theObject){
+        standardGeneric("getDbscanList")    
     },
     signature = "theObject")
 
@@ -116,6 +209,13 @@ setGeneric(
     },
     signature = "theObject")
 
+
+setGeneric(
+    name="getCoordinates",
+    def=function(theObject){
+        standardGeneric("getCoordinates")    
+    },
+    signature="theObject")
 
 ################################################################################
 ############################### Setter methods #################################
@@ -186,9 +286,17 @@ setGeneric(
 
 
 setGeneric(
-    name="setTSNEResults<-",
+    name="setTSNEList<-",
     def=function(theObject, value){
-        standardGeneric("setTSNEResults<-")    
+        standardGeneric("setTSNEList<-")    
+    },
+    signature = "theObject")
+
+
+setGeneric(
+    name="setDbscanList<-",
+    def=function(theObject, value){
+        standardGeneric("setDbscanList<-")    
     },
     signature = "theObject")
 
@@ -201,3 +309,9 @@ setGeneric(
     signature = "theObject")
 
 
+setGeneric(
+    name="setCoordinates<-",
+    def=function(theObject, value){
+        standardGeneric("setCoordinates<-")    
+    },
+    signature = "theObject")
