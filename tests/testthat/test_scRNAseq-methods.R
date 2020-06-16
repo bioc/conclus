@@ -1,0 +1,562 @@
+### Test the methods of scRNAseq class.
+
+
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "devel")
+BiocManager::valid()  
+BiocManager::install("biomaRt")
+# BiocManager::install("grimbough/biomaRt")
+
+if (!require("pacman")) {
+    install.packages("pacman",  repos = "https://cran.biotools.fr/")
+}
+
+pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
+               dynamicTreeCut, factoextra,
+               digest, RColorBrewer,devtools, BiocParallel, scran, scater,
+               monocle, SingleCellExperiment , KEGGREST, AnnotationDbi,
+               Cairo, rvest, curl,  Matrix, dbscan, fpc, matrixStats,
+               dplyr, org.Mm.eg.db, grDevices, S4Vectors, Biobase,
+               DataCombine, zoo, rvest, DataCombine, doParallel,
+               testthat, tidyr, biomaRt)
+
+source("R/AllGenerics.R")
+source("R/AllClasses.R")
+source("R/sharedInternals.R")
+source("R/checkFunctions.R")
+source("R/getters.R")
+source("R/setters.R")
+source("R/methods-normalization.R")
+source("R/methods-tsne.R")
+source("R/methods-dbscan.R")
+source("R/methods-clustering.R")
+source("R/methods-plot.R")
+source("R/methods-export.R")
+source("R/methods-markers.R")
+
+## Data
+
+outputDirectory <- "YourOutputDirectory"
+experimentName <- "Bergiers"
+columnsMetaData <- read.delim(
+    file.path("inst/extdata/Bergiers_colData_filtered.tsv"))
+
+## Creation of the count Matrix
+
+countMatrix <- as.matrix(read.delim(
+    file.path("tests/testthat/test_data/test_countMatrix.tsv")))
+
+smallMatrix <- countMatrix[,1:50]
+
+## Load expected results
+
+load(file = "tests/testthat/test_data/scrLight.Rdat")
+load(file = "tests/testthat/test_data/expected_normalizedMatrix.Rdat")
+
+
+## Construction of the object
+
+scr <- scRNAseq(experimentName = experimentName, 
+                  countMatrix     = countMatrix, 
+                  species         = "mouse",
+                  outputDirectory = outputDirectory)
+
+## Performing the normalization
+
+scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+sceNorm <- getSceNorm(scrNorm)
+
+## Performing tSNE
+
+scrTsne <- generateTSNECoordinates(scrNorm, cores = 5)
+tsneList <- getTSNEList(scrTsne)
+tsneListWrong <- tsneList
+setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
+
+## Running DbScan
+
+scrDbscan <- runDBSCAN(scrTsne, cores = 5)
+dbscanList <- getDbscanList(scrDbscan)
+clusteringList <- lapply(dbscanList, getClustering)
+dbscanListWrong <- dbscanList
+setClustering(dbscanListWrong[[1]]) <- 
+		as.matrix(getClustering(dbscanList[[1]])[,1:10])
+
+## Running cluster cells internal 
+
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber = 10,
+		deepSplit = 4, cores = 4, clusteringMethod = "ward.D2")
+cci <- getCellsSimilarityMatrix(scrCCI)
+scrCCiwrong <- scrCCI
+setCellsSimilarityMatrix(scrCCiwrong) <-  matrix(nrow=0,ncol=0)
+
+## Calculate clusters similarity
+
+scrCSM <- calculateClustersSimilarity(scrCCI)
+csm <- getClustersSimilarityMatrix(scrCSM)
+orderedCLusters <- getClustersSimiliratyOrdered(scrCSM)
+
+## Ranking genes
+
+scrS4MG <- rankGenes(scrCSM)
+markers <- getMarkerGenesList(scrS4MG)
+
+!!!!!!!!!!!!!!
+theObject=scrCSM
+column="clusters"
+writeMarkerGenes=FALSE
+!!!!!!!!!!!!!
+
+## Getting marker genes
+
+scrFinal <- bestClustersMarkers(scrS4MG)
+scrFinalWrong <- scrFinal
+setTSNEList(scrFinalWrong) <- list(new("Tsne"))
+
+## Getting genes info
+
+infos <- getGenesInfo(scrFinal, species = "mouse", cores = 5)
+
+
+####################  Construction of the object  ####################
+		  
+test_that("scr is created properly", {
+			 
+			 expect_identical(getExperimentName(scrLight), 
+					 getExperimentName(scr))
+			 
+			 expect_identical(getCountMatrix(scrLight), getCountMatrix(scr))
+			 
+			 expect_identical(getSpecies(scrLight), getSpecies(scr))
+			 
+			 expect_identical(getOutputDirectory(scrLight), 
+					 getOutputDirectory(scr))
+		 })
+		  
+		  
+test_that("Errors are thrown when creating scr", {
+			
+			expM <- "'experimentName' slot is empty. Please fill it."
+			expect_error(scRNAseq(experimentName = "", 
+                  countMatrix     = countMatrix, 
+                  species         = "mouse",
+                  outputDirectory = outputDirectory), regexp = expM)
+			
+			expM <- paste0("Experiment name should contain a single string ",
+					"describing the experiment, 'My experiment' is not ",
+					"correct.")
+			expect_error(scRNAseq(experimentName  = "My experiment", 
+							countMatrix     = countMatrix, 
+							species         = "mouse",
+							outputDirectory = outputDirectory), regexp = expM)
+			
+			expM <- paste0("'countMatrix' slot is empty. It should be a matrix",
+					" containing at leat 100 cells.")
+			expect_error(scRNAseq(experimentName  = experimentName, 
+							countMatrix     = matrix(), 
+							species         = "mouse",
+							outputDirectory = outputDirectory), regexp = expM)
+			
+			expM <- paste0("Not enough cells in the count matrix. There Should",
+					" be at leat 100 cells. The current count matrix contains",
+					" 50 cells.")
+			expect_error(scRNAseq(experimentName  = experimentName, 
+							countMatrix     = smallMatrix, 
+							species         = "mouse",
+							outputDirectory = outputDirectory), regexp = expM)
+						
+			expM <- paste0("species should be 'mouse' or 'human'. '' is ",
+					"currently not supported.")
+			expect_error(scRNAseq(experimentName  = experimentName, 
+							countMatrix     = countMatrix, 
+							species         = "",
+							outputDirectory = outputDirectory), regexp = expM)
+			
+			expM <- "'outputDirectory' slot is empty. Please fill it."
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = ""), regexp = expM)
+			
+			expM <- paste0("'outputDirectory' should be a conform folder path:",
+					"'toto tata' is not.")
+			expect_error(scRNAseq(experimentName  = experimentName, 
+							countMatrix     = countMatrix, 
+							species         = "human",
+							outputDirectory = "toto tata"), regexp = expM)
+			
+			expM <- "tSNEList is empty. This should be a list of tSNE objects."
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = outputDirectory,
+					tSNEList = list()), regexp = expM)
+			
+			expM <- paste0("The elements in TsneList slot don't have the same ",
+					"number of cells or the same class")
+			expect_error(scRNAseq(experimentName = experimentName,
+							countMatrix     = countMatrix,
+							species         = "mouse",
+							outputDirectory = outputDirectory,
+							tSNEList = tsneListWrong), regexp = expM)
+			
+			expM <- "Coordinates should be a matrix with two columns X and Y."
+			expect_error(scRNAseq(experimentName = experimentName,
+							countMatrix     = countMatrix,
+							species         = "mouse",
+							outputDirectory = outputDirectory,
+							tSNEList = list(Tsne(name = "test", pc = 30,
+											perplexity = 4,
+											coordinates = matrix(seq_len(9), 
+													ncol=3)))), regexp = expM)
+			
+			expM <- paste0("dbscanList is empty. This should be a list of ",
+					"dbScan objects.")
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = outputDirectory,
+					dbscanList = list()), regexp = expM)
+			
+			expM <- paste0("The elements in DbscanList slot don't have the ",
+					"same number of cells or the same class")
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = outputDirectory,
+					dbscanList = dbscanListWrong), regexp = expM)
+	
+			expM <- paste0("'cellsSimilarityMatrix' slot should contain a ",
+					"square matrix.")
+			expect_error(scRNAseq(experimentName = experimentName, 
+			countMatrix     = countMatrix, 
+			species         = "mouse",
+			outputDirectory = outputDirectory,
+			cellsSimilarityMatrix = csm[1:2,]), regexp = expM)
+
+			expM <- paste0("'clustersSimilarityMatrix' slot should contain a ",
+					"square matrix.")
+			expect_error(scRNAseq(experimentName = experimentName, 
+				countMatrix     = countMatrix, 
+				species         = "mouse",
+				outputDirectory = outputDirectory,
+				clustersSimilarityMatrix = csm[1:2,]), regexp = expM)
+
+			expM <- paste0("'clustersSimiliratyOrdered' slot should contain ",
+					"the same clusters as 'clustersSimilarityMatrix'.")
+			expect_error(scRNAseq(experimentName = experimentName,
+							countMatrix     = countMatrix,
+							species         = "mouse",
+							outputDirectory = outputDirectory,
+							clustersSimilarityMatrix = csm,
+							clustersSimiliratyOrdered = factor(c(15,16,17))), 
+					regexp = expM)
+			
+			expM <- paste0("markerGenesList is empty. This should be a list ",
+					"of dataframe")
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = outputDirectory,
+					markerGenesList = list()), regexp = expM)
+			
+			expM <- paste0("'markerGenesList' should contain as many ",
+					"dataframes as clusters found. Number of dataframes :9 ",
+					"and the number of cluters found is :10.") 
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = outputDirectory,
+					clustersSimiliratyOrdered = orderedCLusters,
+					markerGenesList = markers[-1]), regexp = expM)
+	
+			expM <- paste0("clusterMarkers should have the same number of ",
+					"clusters than the number of clusters found. Nb clusters ",
+					"for markers: 2. Nb of clusters: 10")
+			expect_error(setClustersMarkers(scrFinal) <- data.frame(
+							geneName= c("gene1", "gene2"), clusters=c(1,2)), 
+					expM)
+			
+			expM <- paste0("The clusterMarkers data frame should have the ",
+					"columns 'geneName' and 'clusters'")
+			expect_error(setClustersMarkers(scrFinal) <- 
+							data.frame(geneNam= rep("gene1", 10), 
+									clust=seq_len(10)), expM)
+			
+			expM <- "clusterMarkers is empty. This should be a dataframe"
+			expect_error(scRNAseq(experimentName = experimentName, 
+					countMatrix     = countMatrix, 
+					species         = "mouse",
+					outputDirectory = outputDirectory,
+					clustersMarkers = data.frame()), expM)
+		})
+		  
+		  
+		  
+
+###########################  Normalization  ###################################
+
+test_that("Normalization works properly", {
+    
+			expect_match(class(sceNorm),
+					class(expectedNormalizedMatrix))
+			
+			expect_equal(Biobase::exprs(sceNorm),
+					Biobase::exprs(expectedNormalizedMatrix))
+			
+			expM <- "'sizes' parameter should be a vector of numeric values."
+			expect_error(normaliseCountMatrix(scr, sizes="test"), regexp=expM)
+			
+			expM <- "'rowdata' parameter should be a data frame or be NULL."
+			expect_error(normaliseCountMatrix(scr, rowdata="test"), regexp=expM)
+			
+			expM <- "'coldata' parameter should be a data frame or be NULL."
+			expect_error(normaliseCountMatrix(scr, coldata="test"), regexp=expM)
+			
+			expM <- "'alreadyCellFiltered' parameter should be a boolean."
+			expect_error(normaliseCountMatrix(scr, alreadyCellFiltered="test"), 
+					regexp=expM)
+			
+			expM <- "'runQuickCluster' parameter should be a boolean."
+			expect_error(normaliseCountMatrix(scr, runQuickCluster="test"), 
+					regexp=expM)
+			
+			expM <- paste0("species should be 'mouse' or 'human'. ",
+					"'melanogaster' is currently not supported.")
+			expect_error(normaliseCountMatrix(scRNAseq(
+									experimentName = experimentName, 
+									countMatrix     = countMatrix, 
+									species         = "melanogaster")), 
+					regexp=expM)
+})
+
+
+################################  TSNE  #######################################
+
+
+test_that("Tsne works properly", {
+   
+			expect_match(class(tsneList), "list")
+			expect_match(unique(sapply(tsneList, class)), "Tsne")
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'generateTSNECoordinates' function doesn't have its ",
+					"'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
+					" on the object before.") 
+			expect_error(generateTSNECoordinates(scr), regexp=expM)
+			
+			expM <- "'randomSeed' parameter should be an integer."
+			expect_error(generateTSNECoordinates(scrNorm, randomSeed="string"),
+					regexp=expM)
+			
+			expM <- "'cores' parameter should be an integer"	 
+			expect_error(generateTSNECoordinates(scrNorm, cores="string"),
+					regexp=expM)	 
+			
+			expM <- "'PCs' parameter should be a vector of numeric." 
+			expect_error(generateTSNECoordinates(scrNorm, PCs=c("str1", "str2"),
+							regexp=expM))
+			
+			expM <- "'perplexities' parameter should be a vector of numeric."
+			expect_error(generateTSNECoordinates(scrNorm,
+							perplexities=c("str1", "str2")),
+					regexp=expM)
+			
+			expM <- "'writeOutput' parameter should be a boolean."
+			expect_error(generateTSNECoordinates(scrNorm, writeOutput="str"),
+					regexp=expM)
+})
+
+
+
+#################################  Dbscan  #####################################
+
+test_that("Dbscan works properly", {
+			
+			# Test class of the output
+			expect_match(class(dbscanList), "list")
+			
+			# Test the class of the first element
+			expect_match(class(dbscanList[[1]]), "Dbscan")
+			
+			# Test the class of the last element
+			expect_match(class(dbscanList[[length(dbscanList)]]), "Dbscan")
+			
+			# Test with a empty class scRNAseq
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'runDBSCAN' function doesn't have its 'sceNorm' slot ",
+					"updated. Please use 'normaliseCountMatrix' on the object ",
+					"before.")
+			expect_error(runDBSCAN(scr), regexp=expM)
+			
+			## Test with incorrect cores
+			expM <- "'cores' parameter should be an integer"
+			expect_error(runDBSCAN(scrTsne, cores="1"), regexp=expM)
+			
+			## Test with incorrect epsilon
+			expM <- "'epsilon' parameter should be a vector of numeric"
+			epsVec <- c("str1", "str2")
+			expect_error(runDBSCAN(scrTsne, epsilon=epsVec, regexp=expM))
+			
+			## Test with incorrect minPoints
+			expM <- "'minPoints' parameter should be a vector of numeric"
+			minPvec <- c("str1", "str2")
+			expect_error(runDBSCAN(scrTsne,minPoints=minPvec), regexp=expM)
+			
+			## Test with incorrect writeOutput
+			expM <- "'writeOutput' parameter should be a boolean"
+			expect_error(runDBSCAN(scrTsne, writeOutput="str"), regexp=expM)
+})
+
+
+
+#########################  clusterCellsInternal  ###############################
+
+test_that("clusterCellsInternal works properly", {
+			
+			## Test class of the output
+			expect_equal(class(cci), c("matrix", "array"))
+
+			## Test with a empty sceNorm slot
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'clusterCellsInternal' function doesn't have its ",
+					"'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
+					" on the object before.")
+			expect_error(clusterCellsInternal(scr), regexp=expM)
+    
+			## Test with a empty dbscan slot
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'clusterCellsInternal' function doesn't have its ",
+					"'dbscanList' slot updated. Please use 'runDBSCAN' on the ",
+					"object before.")
+			expect_error(clusterCellsInternal(scrNorm), regexp=expM)
+   		
+			## Test with incorrect clusterNumber
+			expM <- "'clusterNumber' parameter should be a numeric."
+			expect_error(clusterCellsInternal(scrDbscan, clusterNumber="str1"),
+					regexp=expM)
+					
+			## Test with incorrect deepSplit
+			expM <- "'deepSplit' parameter should be a numeric."
+			expect_error(clusterCellsInternal(scrDbscan, deepSplit="str1"),
+					regexp=expM)
+			
+			## Test with incorrect cores
+			expM <- "'cores' parameter should be a numeric."
+			expect_error(clusterCellsInternal(scrDbscan, cores="str1"),
+					regexp=expM)
+			
+			## Test with incorrect clusteringMethod
+			expM <- paste0("'clusteringMethod' should be one of: ward.D; ",
+					"ward.D2; single; complete; average; mcquitty; median; ",
+					"centroid")
+			expect_error(clusterCellsInternal(scrDbscan, 
+							clusteringMethod="str1"), regexp=expM)
+})
+
+
+
+#########################  calculateClustersSimilarity  ########################
+
+test_that("calculateClustersSimilarity works properly", {
+		
+	## Test with incorrect clusteringMethod
+	expM <- paste0("'clusteringMethod' should be one of: ward.D; ",
+			"ward.D2; single; complete; average; mcquitty; median; ",
+			"centroid")
+    expect_error(calculateClustersSimilarity(scrDbscan, 
+					clusteringMethod="str1"), regexp=expM)
+    
+	## Test with unnormalized object 
+	expM <- paste0("The 'scRNAseq' object that you're using with ",
+			"'calculateClustersSimilarity' function doesn't have its ",
+			"'sceNorm' slot updated. Please use 'normaliseCountMatrix' on",
+			" the object before.")
+	expect_error(calculateClustersSimilarity(scr), regexp=expM)
+	
+    ## Test with default normalizeCountMatrix 
+    expM <- paste0("The 'scRNAseq' object that you're using with ",
+			"'calculateClustersSimilarity' function doesn't have a correct ",
+			"'sceNorm' slot. This slot should be a 'SingleCellExperiment' ",
+			"object containing 'clusters' column in its colData. Please check ",
+			"if you correctly used 'clusterCellsInternal' on the object.")
+    expect_error(calculateClustersSimilarity(scrDbscan), regexp=expM)
+    
+	## Test with  
+	expM <- paste0("The 'scRNAseq' object that you're using with ",
+			"'calculateClustersSimilarity' function doesn't have its ",
+			"'cellsSimilarityMatrix' slot updated by clusterCellsInternal. ",
+			"Please use 'clusterCellsInternal' on the object before.")
+	expect_error(calculateClustersSimilarity(scrCCiwrong), regexp=expM)
+	
+})
+
+
+
+############################## plotting #######################################
+
+test_that("plotting methods work properly", {
+			
+			expM <- "columnName should be: clusters, noColor, or state."
+			expect_error(plotClusteredTSNE(scrFinal, columnName="toto"), expM)
+			
+			expM <- paste0("The number of elements of TSNEList is not equal ",
+					"to PCs\\*perplexities. Contact the developper.")
+			expect_error(plotClusteredTSNE(scrFinalWrong), expM)
+
+		})
+
+
+
+################################  rankGenes  ###################################
+
+#test_that("rankGenes works properly", {
+#    
+#    ## Test class of the output
+#    expect_match(class(markers), "list")
+#    
+#    ## Test if the output is equal to the classic conclus package
+#    expect_equivalent(markers, expectedMarkerGenesList)
+#
+#})
+
+
+##############################  getMarkerGenes  ################################
+
+test_that("getMarkerGenes works properly", {
+    
+    ## Test class of the output
+    expect_match(class(markerGenes), class(expectedMarkersClusters))
+    
+    ## Test if the output is equal to the classic conclus package
+    expect_equal(markerGenes, expectedMarkersClusters)
+
+    
+})
+
+
+###############################  getGenesInfo  #################################
+
+#test_that("getGenesInfo works properly", {
+#    
+#    ## Test class of the output
+#    expect_match(class(infos), class(expectedInfos))
+#    
+#})
+
+
+
+###############################  saveGenesInfo  ################################
+
+#!! Generate error message
+#
+#saveGenesInfo("mouse", outputDirectory, dataDirectory=outputDirectory
+#              , cores = 15, startFromCluster = 1)
+
+
+
+
+
+
+
