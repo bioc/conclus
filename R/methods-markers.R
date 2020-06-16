@@ -44,7 +44,7 @@
 
 
 .buildMarkerGenesList <- function(groups, simMedRowList, exprM, column, 
-		colNamesVec){
+		colNamesVec, colDF){
 	
 	result <- mapply(function(currentGroup, currentSimMed, mat, 
 					allGroups, colLabel, simMedNames){
@@ -136,7 +136,7 @@ setMethod(
 		colNamesVec <- as.numeric(colnames(simMed))
         		
 		markerGenesList <- .buildMarkerGenesList(groups, simMedRowList, exprM,
-				column, colNamesVec) 		
+				column, colNamesVec, colDF) 		
 		
         setMarkerGenesList(theObject) <- markerGenesList
         rm(markerGenesList, simMed, groups)
