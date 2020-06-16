@@ -102,12 +102,6 @@ orderedCLusters <- getClustersSimiliratyOrdered(scrCSM)
 scrS4MG <- rankGenes(scrCSM)
 markers <- getMarkerGenesList(scrS4MG)
 
-!!!!!!!!!!!!!!
-theObject=scrCSM
-column="clusters"
-writeMarkerGenes=FALSE
-!!!!!!!!!!!!!
-
 ## Getting marker genes
 
 scrFinal <- bestClustersMarkers(scrS4MG)
@@ -117,6 +111,9 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 ## Getting genes info
 
 infos <- getGenesInfo(scrFinal, species = "mouse", cores = 5)
+
+
+
 
 
 ####################  Construction of the object  ####################

@@ -1,3 +1,7 @@
+#################
+## rankGenes
+#################
+
 .checkParamsRankGenes <- function(sceObject){
 	
 	## Check if the normalized matrix is correct
@@ -22,7 +26,6 @@
 				" before.")
 }
 
-
 .buildTTestPval <- function(otherGroups, tTestPval, colDF, mat, colLabel, 
 		currentGroup){
 	
@@ -41,7 +44,6 @@
 	
 	return(tTestPval)
 }
-
 
 .buildMarkerGenesList <- function(groups, simMedRowList, exprM, column, 
 		colNamesVec, colDF, writeMarkerGenes){
@@ -111,8 +113,6 @@
 	return(result)
 }
 
-
-
 setMethod(
 		
     f = "rankGenes",
@@ -145,34 +145,73 @@ setMethod(
     })
 
 
+###################
+## getGenesInfo
+###################
 
-getGenesInfo <- function(theObject, species, groupBy="clusters", 
+
+.checkParamsGetGenesInfo <- function(orderGenes, genes, species, databaseDict){
+	
+	if(!isTRUE(all.equal(orderGenes,"initial")) && 
+			!isTRUE(all.equal(orderGenes,"alphabetical")))
+		stop("orderGenes should be 'initial' or 'alphabetical'.")
+	
+	if(!("geneName" %in% colnames(genes)))
+		stop("genes should be a dataframe containing at least geneName column.")
+	
+	if (!(species %in% names(databaseDict)))
+		stop("species should be: ", paste(names(databaseDict), 
+						collapse = " or "))
+}
+
+
+.returnDB1 <- function(genes, ensembl){
+	
+	db1 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
+					"external_gene_name", # Complete name,
+					"description",        # Description
+					"entrezgene_description",
+					"gene_biotype",        # Feature.Type
+					"go_id" ),             # Gene Ontology
+			values=genes$geneName,
+			filters = "uniprot_gn_symbol", mart=ensembl)
+	
+	return(db1)
+}
+
+.returnDB2 <- function(genes, ensembl){
+	
+	db2 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
+					"external_gene_name", # Complete name,   
+					"chromosome_name",    # Chromosome name
+					"ensembl_gene_id",    # Ensembl
+					"entrezgene_id", #Entrez.Gene.ID
+					"uniprot_gn_id"),     # Uniprot.ID
+			values=genes$geneName,
+			filters = "uniprot_gn_symbol", mart=ensembl)
+	
+	return(db2)
+}
+
+setMethod(
+		
+		f = "getGenesInfo",
+		
+		signature = "scRNAseq",
+		
+		definition = function(theObject, species, groupBy="clusters", 
 		orderGenes="initial", getUniprot=TRUE, silent=FALSE, cores=1){
-    
+	
 	genes <- getClustersMarkers(theObject)
-			
-    if (orderGenes != "initial" && orderGenes != "alphabetical")
-        stop("orderGenes should be 'initial' or 'alphabetical'.")
-    
-    if (!("geneName" %in% colnames(genes))){
-        stop("genes should be a dataframe containing at least geneName column.")
-    }
-    
-    ## Dictionnary to access to the dataset according the species
-    databaseDict     <- c(mouse = "mmusculus_gene_ensembl",
-                          human = "hsapiens_gene_ensembl")
-    
-    if (!(species %in% names(databaseDict))){
-        msg <- paste(names(databaseDict), collapse = " or ")
-        stop("species should be: ", msg)
-    }
-    
+	databaseDict <- c(mouse = "mmusculus_gene_ensembl",
+			human = "hsapiens_gene_ensembl")
+	.checkParamsGetGenesInfo(orderGenes, genes, species, databaseDict)
+	
     ## Additional Special database and columns according to species
-    if (species == "mouse"){
+	if(isTRUE(all.equal(species, "mouse"))){
         speDbID <- "mgi_id"
         speDBdescription <- "mgi_description"
-        
-    } else {
+    }else{
         speDbID <- NULL
         speDBdescription <- NULL
         spDB <- NULL
@@ -184,139 +223,87 @@ getGenesInfo <- function(theObject, species, groupBy="clusters",
 	ensembl <- useEnsembl(biomart="genes", dataset=dataset)
 	
     ## Query biomart
-    db1 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
-                              "external_gene_name", # Complete name,
-                              "description",        # Description
-                              "entrezgene_description",
-                              "gene_biotype",        # Feature.Type
-                              "go_id" ),             # Gene Ontology
-                 values=genes$geneName,
-                 filters = "uniprot_gn_symbol",
-                 mart=ensembl)
-    db2 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
-                              "external_gene_name", # Complete name,   
-                              "chromosome_name",    # Chromosome name
-                              "ensembl_gene_id",    # Ensembl
-                              "entrezgene_id", #Entrez.Gene.ID
-                              "uniprot_gn_id"),     # Uniprot.ID
-                 values=genes$geneName,
-                 filters = "uniprot_gn_symbol",
-                 mart=ensembl)
-    
-    
-    database <- merge(x = db1,
-                      y = db2, 
-                      by = c("uniprot_gn_symbol", "external_gene_name") ,
-                      all.x = TRUE)
+	database <- merge(x = .returnDB1(genes, ensembl), 
+			y = .returnDB2(genes, ensembl),  
+			by = c("uniprot_gn_symbol", "external_gene_name"), all.x = TRUE)
     
     
     ## Group the GO id and the uniprot Id
-    database <- database %>%
-        group_by(
-            uniprot_gn_symbol,
-            chromosome_name,
-            entrezgene_description
-        ) %>%
-        summarise(
-            go_id = paste(unique(go_id),
-                          collapse = ', '),
-            uniprot_gn_id = paste(unique(uniprot_gn_id),
-                                  collapse = ', '),
-            description = paste(unique(description),
-                                collapse = ', '),
-            external_gene_name = paste(unique(external_gene_name),
-                                       collapse = ', '),
-            gene_biotype = paste(unique(gene_biotype),
-                                 collapse = ', '),
-            ensembl_gene_id = paste(unique(ensembl_gene_id),
-                                    collapse = ', '),
-            entrezgene_id = paste(unique(entrezgene_id),
-                                  collapse = ', '),
+    database <- database %>% group_by(uniprot_gn_symbol, chromosome_name,
+					entrezgene_description) %>% summarise(
+					go_id = paste(unique(go_id), collapse=', '),
+					uniprot_gn_id = paste(unique(uniprot_gn_id), collapse=', '),
+					description = paste(unique(description), collapse=', '),
+					external_gene_name = paste(unique(external_gene_name),
+                                       collapse=', '),
+					gene_biotype = paste(unique(gene_biotype), collapse=', '),
+					ensembl_gene_id = paste(unique(ensembl_gene_id), 
+							collapse=', '),
+					entrezgene_id = paste(unique(entrezgene_id), collapse=', '),
         )
     
     
     ## Group the GO id and the uniprot Id
-    if (!(is.null(speDbID) & is.null(speDBdescription))){
+    if(!(is.null(speDbID) & is.null(speDBdescription)))
         ## Query biomart for specific db according to species
         ## external_gene_name is also searched because one gene can have
         ## several external_gene_name and so several speDbID and 
         ## speDBdescription
         spDB <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
-                                   "external_gene_name",
-                                   speDbID,
-                                   speDBdescription),  
+                                   "external_gene_name", speDbID, 
+								   speDBdescription),  
                       values=genes$geneName,
                       filters = "uniprot_gn_symbol",
                       mart=ensembl)
         
-    }
+    
     
     ## Merge the second column, the first already existing in the first table
-    if (!is.null(spDB)){
-        database <- merge(x = database,
-                          y = spDB, 
-                          by = c("uniprot_gn_symbol", "external_gene_name") ,
-                          all.x = TRUE)
-    }
+    if(!is.null(spDB))
+        database <- merge(x = database, y = spDB, by = c("uniprot_gn_symbol", 
+						"external_gene_name"), all.x = TRUE)
     
-    ## Add cluster column
-    database <- merge(x = database,
-                      y = genes, 
-                      by.x = "uniprot_gn_symbol", by.y = "geneName",
-                      all.x = TRUE)
+	## Add cluster column
+    database <- merge(x = database, y = genes, by.x = "uniprot_gn_symbol", 
+			by.y = "geneName", all.x = TRUE)
     
     ## Add Symbol column
     database <- cbind(database, Symbol = database$uniprot_gn_symbol)
     
     
     ## Order the data frames colums to be abe to bind them
-    colnamesOrder = c("uniprot_gn_symbol",
-                      "clusters", 
-                      "external_gene_name",
-                      "go_id",
-                      speDBdescription,
-                      "entrezgene_description",
-                      "gene_biotype", 
-                      "chromosome_name",
-                      "Symbol",
-                      "ensembl_gene_id",
-                      speDbID,
-                      "entrezgene_id",
-                      "uniprot_gn_id")
+    colnamesOrder = c("uniprot_gn_symbol", "clusters", "external_gene_name",
+                      "go_id", speDBdescription, "entrezgene_description",
+                      "gene_biotype", "chromosome_name", "Symbol", 
+					  "ensembl_gene_id", speDbID, "entrezgene_id", 
+					  "uniprot_gn_id")
     
     result  <- database[, colnamesOrder]
     
-    if (orderGenes == "initial"){
-        desiredOrder <- genes$geneName
-        result <-
-            merge(list(uniprot_gn_symbol = unique(desiredOrder)),
-                  result,
-                  sort = FALSE)
-        rownames(result) <- seq_len(nrow(result)) 
-    }
-    
+	if(isTRUE(all.equal(orderGenes, "initial"))){
+		desiredOrder <- genes$geneName
+		result <- merge(list(uniprot_gn_symbol = unique(desiredOrder)),
+				result, sort = FALSE)
+		rownames(result) <- seq_len(nrow(result))
+	}
+		 
     # inserting space for comments
-    if (any(colnames(result) %in% groupBy) &
-        (orderGenes == "initial") &
-        (length(unique(result$clusters)) > 1)){
+    if (any(colnames(result) %in% groupBy) & 
+        orderGenes == "initial" & length(unique(result$clusters)) > 1){
+	
         resultFinal <- result
-        groupingTable <- table(resultFinal[, groupBy])
-        
+        groupingTable <- table(resultFinal[, groupBy])    
         groupingTable <- groupingTable[unique(resultFinal$clusters)]
-        resultFinal <- InsertRow(resultFinal, c("For notes:",
-                                                rep("", (ncol(result)) - 1)),
-                                 RowNum=1)
-        
+        resultFinal <- InsertRow(resultFinal, 
+				c("For notes:", rep("", (ncol(result)) - 1)), RowNum=1)
         RowNum <- groupingTable[1] + 1
         
         for(i in 1:(length(groupingTable)-1)){
             resultFinal <- InsertRow(resultFinal, rep("", ncol(result)),
                                      RowNum=(RowNum + 1))
-            resultFinal <- InsertRow(resultFinal, c("For notes:",
-                                                    rep("",
-                                                        (ncol(result)) - 1)
-            ),
-            RowNum=(RowNum + 2))
+            resultFinal <- InsertRow(resultFinal, 
+					c("For notes:", rep("", (ncol(result)) - 1)), 
+					RowNum=(RowNum + 2))
             RowNum <- RowNum + 2 + groupingTable[i +1]
         }
         result <- resultFinal
@@ -325,7 +312,7 @@ getGenesInfo <- function(theObject, species, groupBy="clusters",
     rm(database, colnamesOrder)
     biomartCacheClear()
     return(result)
-}
+})
 
 
 
