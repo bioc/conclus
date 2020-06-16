@@ -43,7 +43,7 @@
 }
 
 
-.buildMarkerGenesList <- function(groups, simMedRowList, exprM, groups, column,
+.buildMarkerGenesList <- function(groups, simMedRowList, exprM, column, 
 		colNamesVec){
 	
 	result <- mapply(function(currentGroup, currentSimMed, mat, 
