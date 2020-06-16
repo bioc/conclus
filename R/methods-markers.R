@@ -23,6 +23,96 @@
 }
 
 
+.buildTTestPval <- function(otherGroups, tTestPval, colDF, mat, colLabel, 
+		currentGroup){
+	
+	tTestPval <- lapply(otherGroups, function(currentOther){
+				
+				tTestPval[, paste0("vs_", currentOther)] <- NA
+				x <- mat[, colDF[, c(colLabel)] == currentGroup]
+				y <- mat[, colDF[, c(colLabel)] == currentOther]
+				t <- (rowMeans(x)-rowMeans(y))/sqrt(apply(mat, 1, 
+								var)*(1 / ncol(x) + 1 / ncol(y)))
+				df <- ncol(x)+ncol(y)-2
+				tTestPval[, paste0("vs_", currentOther)] <- pt(t, 
+						df, lower.tail=FALSE)
+				return(tTestPval)
+			})
+	
+	return(tTestPval)
+}
+
+
+.buildMarkerGenesList <- function(groups, simMedRowList, exprM, groups, column,
+		colNamesVec){
+	
+	result <- mapply(function(currentGroup, currentSimMed, mat, 
+					allGroups, colLabel, simMedNames){
+				
+				message(paste("Working on cluster", currentGroup))
+				tTestPval <- data.frame(row.names=rownames(mat))
+				tTestFDR <- data.frame(row.names=rownames(mat))
+				otherGroups <- allGroups[allGroups!=currentGroup]
+				
+				## Create a dataframe clustering vs clustering
+				tTestPval <- .buildTTestPval(otherGroups, tTestPval, colDF, mat,
+						colLabel, currentGroup) 
+				tTestPval <- bind_cols(tTestPval)
+				tTestPval <- cbind(Gene=rownames(mat), tTestPval)
+				
+				## Apply the FDR
+				tTestFDR <- lapply(otherGroups, function(currentOther){
+							
+							tTestFDR[, paste0("vs_", currentOther)] <- 
+									p.adjust(tTestPval[, paste0("vs_", 
+															currentOther)], 
+											method="fdr")
+							return(tTestFDR)
+						})
+				tTestFDR <- bind_cols(tTestFDR)
+				tTestFDR <- cbind(Gene=as.factor(rownames(mat)), tTestFDR)
+				
+				submat <- as.matrix(tTestFDR[, 2:(length(otherGroups) + 1 )])
+				
+				## Add column mean_log10_fdr 
+				tTestFDR$mean_log10_fdr <- rowMeans(log10(submat + 1e-300))
+				
+				## Add column n_05
+				tTestFDR$n_05 <- apply(submat, 1, function(x) 
+							length(x[!is.na(x) & x < 0.05]))
+				
+				##Add column score 
+				weights <- currentSimMed[match(otherGroups, simMedNames)]
+				tTestFDR$score <- apply(submat, 1, function(x) 
+							sum(-log10(x+1e-300) * weights) / ncol(submat))
+				
+				tTestFDR <- tTestFDR[order(tTestFDR$score, decreasing=TRUE), ]
+				row.names(tTestFDR) <- NULL
+				
+				## Write list if option = TRUE
+				if(writeMarkerGenes){
+					
+					outputDir <- file.path(getOutputDirectory(theObject), 
+							"marker_genes")
+					outputFile <- paste0(getExperimentName(theObject),
+							"_cluster_", allGroups[i], "_genes.tsv")
+					
+					write.table(tTestFDR, file.path(outputDir, outputFile),
+							col.names=TRUE, row.names=FALSE, quote=FALSE,
+							sep="\t")
+				}
+				
+				return(tTestFDR)
+				
+			}, groups, simMedRowList, 
+			MoreArgs = list(exprM, groups, column, colNamesVec), 
+			SIMPLIFY = FALSE)
+	
+	return(result)
+}
+
+
+
 setMethod(
 		
     f = "rankGenes",
@@ -44,72 +134,9 @@ setMethod(
         simMed <- simMed + 0.05
 		simMedRowList <- split(simMed, seq_len(nrow(simMed)))
 		colNamesVec <- as.numeric(colnames(simMed))
-        
-		markerGenesList <- mapply(function(currentGroup, currentSimMed, mat, 
-						allGroups, colLabel, simMedNames){
-					
-					message(paste("Working on cluster", currentGroup))
-					tTestPval <- data.frame(row.names=rownames(mat))
-					tTestFDR <- data.frame(row.names=rownames(mat))
-					otherGroups <- allGroups[allGroups!=currentGroup]
-					
-					## Create a dataframe clustering vs clustering
-					tTestPval <- lapply(otherGroups, function(currentOther){
-								
-								tTestPval[, paste0("vs_", currentOther)] <- NA
-								x <- mat[, colDF[, c(colLabel)] == currentGroup]
-								y <- mat[, colDF[, c(colLabel)] == currentOther]
-								t <- (rowMeans(x)-rowMeans(y))/sqrt(apply(mat, 1, var)*(1 / ncol(x) + 1 / ncol(y)))
-								df <- ncol(x)+ncol(y)-2
-								tTestPval[, paste0("vs_", currentOther)] <- pt(t, df, lower.tail=FALSE)
-								return(tTestPval)
-							})
-					
-					tTestPval <- bind_cols(tTestPval)
-					tTestPval <- cbind(Gene=rownames(mat), tTestPval)
-					
-					## Apply the FDR
-					tTestFDR <- lapply(otherGroups, function(currentOther){
-								
-								tTestFDR[, paste0("vs_", currentOther)] <- p.adjust(tTestPval[, paste0("vs_", currentOther)], method="fdr")
-								return(tTestFDR)
-							})
-					tTestFDR <- bind_cols(tTestFDR)
-					tTestFDR <- cbind(Gene=as.factor(rownames(mat)), tTestFDR)
-					
-					submat <- as.matrix(tTestFDR[, 2:(length(otherGroups) + 1 )])
-					
-					## Add column mean_log10_fdr 
-					tTestFDR$mean_log10_fdr <- rowMeans(log10(submat + 1e-300))
-					
-					## Add column n_05
-					tTestFDR$n_05 <- apply(submat, 1, function(x) length(x[!is.na(x) & x < 0.05]))
-					
-					##Add column score 
-					weights <- currentSimMed[match(otherGroups, simMedNames)]
-					tTestFDR$score <- apply(submat, 1, function(x) sum(-log10(x+1e-300) * weights) / ncol(submat))
-					
-					tTestFDR <- tTestFDR[order(tTestFDR$score, decreasing=TRUE), ]
-					row.names(tTestFDR) <- NULL
-					
-					## Write list if option = TRUE
-					if(writeMarkerGenes){
-						
-						outputDir <- file.path(getOutputDirectory(theObject), 
-								"marker_genes")
-						outputFile <- paste0(getExperimentName(theObject),
-								"_cluster_", allGroups[i], "_genes.tsv")
-						
-						write.table(tTestFDR, file.path(outputDir, outputFile),
-								col.names=TRUE, row.names=FALSE, quote=FALSE,
-								sep="\t")
-					}
-					
-					return(tTestFDR)
-					
-				}, groups, simMedRowList, 
-				MoreArgs = list(exprM, groups, column, colNamesVec), SIMPLIFY = FALSE)
-		
+        		
+		markerGenesList <- .buildMarkerGenesList(groups, simMedRowList, exprM,
+				groups, column, colNamesVec) 		
 		
         setMarkerGenesList(theObject) <- markerGenesList
         rm(markerGenesList, simMed, groups)
