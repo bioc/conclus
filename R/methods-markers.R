@@ -136,7 +136,7 @@ setMethod(
 		colNamesVec <- as.numeric(colnames(simMed))
         		
 		markerGenesList <- .buildMarkerGenesList(groups, simMedRowList, exprM,
-				groups, column, colNamesVec) 		
+				column, colNamesVec) 		
 		
         setMarkerGenesList(theObject) <- markerGenesList
         rm(markerGenesList, simMed, groups)
