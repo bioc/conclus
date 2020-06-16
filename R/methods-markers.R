@@ -42,6 +42,7 @@ setMethod(
         stopifnot(all(colnames(exprM) == rownames(colDF)))
         groups <- unique(colDF[, column])
         simMed <- simMed + 0.05
+		simMedRowList <- split(simMed, seq_len(nrow(simMed)))
         
 		markerGenesList <- lapply(groups, function(currentGroup, mat, 
 						allGroups, colLabel){
@@ -124,14 +125,14 @@ setMethod(
 							
 									
 							message(paste("Working on cluster", i))
-							tTestPval <- data.frame(row.names=rownames(exprM))
-							otherGroups <- groups[groups!=groups[i]]
+							tTestPval2 <- data.frame(row.names=rownames(exprM))
+							otherGroups2 <- groups[groups!=groups[i]]
 							
 							## Create a dataframe clustering vs clustering
 							tTestPval <- lapply(seq_len(length(otherGroups)),
 									function(k){
 										
-												tTestPval[, paste0("vs_", otherGroups[k])] <- NA
+										tTestPval[, paste0("vs_", otherGroups[k])] <- NA
 										x <- exprM[, colDF[, c(column)] == groups[i]]
 										y <- exprM[, colDF[, c(column)] == otherGroups[k]]
 										t <- (rowMeans(x) - rowMeans(y)) /
