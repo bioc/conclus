@@ -14,7 +14,7 @@
 	if(!("clusters" %in% names(colData(sceObject))))
 		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
 				"function doesn't have a correct 'SceNorm' slot. This slot",
-				"should be a 'SingleCellExperiment' object containing ",
+				" should be a 'SingleCellExperiment' object containing ",
 				"'clusters' column in its colData. Please check if you ",
 				"correctly used 'clusterCellsInternal' on the object.")
 	
