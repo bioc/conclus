@@ -110,7 +110,7 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-infos <- retrieveGenesInfo(scrFinal, species = "mouse", cores = 5)
+scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores = 5)
 
 
 
