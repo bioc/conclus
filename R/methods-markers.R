@@ -356,36 +356,24 @@ setMethod(
 		
 		definition = function(theObject, outputDir=NA){
 			
-			
-			
-#			!!!!!!!!!!!!!
-#			
-#			theObject=scrFinal
-#			outputDir=NA
-#			sep=";"
-#			header=TRUE 
-#			startFromCluster=1
-#			groupBy="clusters"
-#			orderGenes="initial" 
-#			getUniprot=TRUE
-#			silent=FALSE
-#			cores=1
-#					
-#			!!!!!!!!!!!!!!
-			
-			
 			if(is.na(outputDir))
-				outputDir <- "/marker_genes/saveGenesInfo"
+				outputDir <- file.path(getOutputDirectory(theObject),
+						"marker_genes/saveGenesInfo")
 			
 			if(!file.exists(outputDir))
-					dir.create(outputDir, showWarnings=F)
+					dir.create(outputDir, recursive=TRUE)
 			
 			species <- getSpecies(theObject)	
 			infos <- getGenesInfos(theObject)
 			infosList <- split(infos, infos$clusters)
-			nbClusterVec <- length(unique(infos$clusters))
 			
-			invisible(mapply(function(clusterDF, clustNB){
+			invisible(lapply(infosList, function(clusterDF){
+								
+								clustNB <- unique(clusterDF$clusters)
+								
+								if(!isTRUE(all.equal(length(clustNB), 1)))
+									stop("Error in saveGenesInfo. Contact the",
+											" developper.")
 								
 								outputFile <- file.path(outputDir, 
 										paste0("genes_info_clust", clustNB, 
@@ -393,8 +381,15 @@ setMethod(
 								write.csv(clusterDF, file=outputFile, 
 										row.names=FALSE)
 								
-							}, infosList, seq_len(nbClusterVec)))
+							}))
 	})
+
+
+
+
+###################
+## bestClustersMarkers
+###################
 
 
 
