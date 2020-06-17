@@ -110,7 +110,7 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-infos <- getGenesInfo(scrFinal, species = "mouse", cores = 5)
+infos <- retrieveGenesInfo(scrFinal, species = "mouse", cores = 5)
 
 
 
@@ -533,9 +533,9 @@ test_that("getMarkerGenes works properly", {
 })
 
 
-###############################  getGenesInfo  #################################
+###############################  retrieveGenesInfo  #################################
 
-#test_that("getGenesInfo works properly", {
+#test_that("retrieveGenesInfo works properly", {
 #    
 #    ## Test class of the output
 #    expect_match(class(infos), class(expectedInfos))
