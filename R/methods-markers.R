@@ -295,16 +295,11 @@ setMethod(
         resultFinal <- result
         groupingTable <- table(resultFinal[, groupBy])    
         groupingTable <- groupingTable[unique(resultFinal$clusters)]
-        resultFinal <- InsertRow(resultFinal, 
-				c("For notes:", rep("", (ncol(result)) - 1)), RowNum=1)
         RowNum <- groupingTable[1] + 1
         
         for(i in 1:(length(groupingTable)-1)){
             resultFinal <- InsertRow(resultFinal, rep("", ncol(result)),
                                      RowNum=(RowNum + 1))
-            resultFinal <- InsertRow(resultFinal, 
-					c("For notes:", rep("", (ncol(result)) - 1)), 
-					RowNum=(RowNum + 2))
             RowNum <- RowNum + 2 + groupingTable[i +1]
         }
         result <- resultFinal
@@ -312,7 +307,9 @@ setMethod(
     }
     rm(database, colnamesOrder)
     biomartCacheClear()
-    return(result)
+	
+	setGenesInfos(theObject) <- result
+    return(theObject)
 })
 
 
