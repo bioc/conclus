@@ -111,9 +111,15 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 ## Getting genes info
 
 scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores = 5)
-
-
-
+wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"), 
+		clusters=c("1", "3"), external_gene_name=c("gene1", "gene2"), 
+		go_id=c("GO1,GO2", "GO1,GO3"), 
+		mgi_description=c("description1", "description2"), 
+		entrezgene_description=c("description1", "description2"),
+		gene_biotype=c("coding", "coding"), chromosome_name=c("1", "2"), 
+		Symbol=c("symbol1", "symbol2"), ensembl_gene_id=c("ENS1","ENS2"), 
+		mgi_id=c("MGI1", "MGI2"), entrezgene_id=c("1", "2"),
+		uniprot_gn_id=c("ID1", "ID2"))
 
 
 ####################  Construction of the object  ####################
@@ -287,6 +293,30 @@ test_that("Errors are thrown when creating scr", {
 					species         = "mouse",
 					outputDirectory = outputDirectory,
 					clustersMarkers = data.frame()), expM)
+	
+			expM <- "genesInfos is empty. This should be a dataframe"
+			expect_error(scRNAseq(experimentName = experimentName,
+							countMatrix     = countMatrix,
+							species         = "mouse",
+							outputDirectory = outputDirectory,
+							genesInfos=data.frame()), expM)
+			
+			expM <- paste0("The genesInfos data frame should have the columns:", 
+					" uniprot_gn_symbol;clusters;external_gene_name;go_id;",
+					"entrezgene_description;gene_biotype;chromosome_name;",
+					"Symbol;ensembl_gene_id;entrezgene_id;uniprot_gn_id;",
+					"mgi_description;mgi_id")
+			expect_error(scRNAseq(experimentName = experimentName,
+							countMatrix     = countMatrix,
+							species         = "mouse",
+							outputDirectory = outputDirectory,
+							genesInfos=data.frame(test="test")), expM)
+			
+			expM <- paste0("genesInfos should have the same number of clusters",
+					" than the number of clusters found. Nb clusters for ",
+					"genesInfos: 2. Nb of clusters: 10")
+			expect_error(setGenesInfos(scrInfos) <- wrongInfo, expM)
+	
 		})
 		  
 		  
