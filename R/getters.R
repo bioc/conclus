@@ -98,6 +98,14 @@ setMethod(
 		})
 
 
+setMethod(
+		f="getGenesInfos",
+		signature="scRNAseq",
+		definition = function(theObject){
+			return(theObject@genesInfos)
+		})
+
+
 ################################################################################
 ############################  Getter of Tsne Class  ############################
 ################################################################################
