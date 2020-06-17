@@ -402,7 +402,7 @@ setMethod(
 		stop("The 'scRNAseq' object that you're using with 'rankGenes'",
 				"function doesn't have a correct 'sceNorm' slot. This slot ",
 				"should be a 'SingleCellExperiment' object containing ",
-				"'clusters' column in its colData.\n Please check if you ",
+				"'clusters' column in its colData. Please check if you ",
 				"correctly used 'clusterCellsInternal' on the object.")
 	
 	## Check if the markerGenesList is correct
