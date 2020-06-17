@@ -641,3 +641,11 @@ setGeneric(
     signature = "theObject")
 
 
+setGeneric(
+		
+		name = "setGenesInfos<-",
+		
+		def = function(theObject, value){
+			standardGeneric("setGenesInfos<-")    
+		},
+		signature = "theObject")
