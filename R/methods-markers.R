@@ -288,23 +288,6 @@ setMethod(
 		rownames(result) <- seq_len(nrow(result))
 	}
 		 
-    # inserting space for comments
-    if (any(colnames(result) %in% groupBy) & 
-        orderGenes == "initial" & length(unique(result$clusters)) > 1){
-	
-        resultFinal <- result
-        groupingTable <- table(resultFinal[, groupBy])    
-        groupingTable <- groupingTable[unique(resultFinal$clusters)]
-        RowNum <- groupingTable[1] + 1
-        
-        for(i in 1:(length(groupingTable)-1)){
-            resultFinal <- InsertRow(resultFinal, rep("", ncol(result)),
-                                     RowNum=(RowNum + 1))
-            RowNum <- RowNum + 2 + groupingTable[i +1]
-        }
-        result <- resultFinal
-        rm(resultFinal)
-    }
     rm(database, colnamesOrder)
     biomartCacheClear()
 	
@@ -371,9 +354,7 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, outputDir=NA, sep=";", header=TRUE, 
-				startFromCluster=1, groupBy="clusters", orderGenes="initial", 
-				getUniprot=TRUE, silent=FALSE, cores=1){
+		definition = function(theObject, outputDir=NA){
 			
 			
 			
@@ -400,37 +381,20 @@ setMethod(
 					dir.create(outputDir, showWarnings=F)
 			
 			species <- getSpecies(theObject)	
-			infos <- retrieveGenesInfo(theObject, species, groupBy, orderGenes, 
-					getUniprot, silent, cores)
+			infos <- getGenesInfos(theObject)
+			infosList <- split(infos, infos$clusters)
+			nbClusterVec <- length(unique(infos$clusters))
 			
-			
-			infos <- sapply(seq(startFromCluster, length(filesList)), 
-					function(i){
-						genes <- read.delim(file.path(inputDir, filesList[i]),
-								sep = sep, header = header,
-								stringsAsFactors = FALSE)
-						
-						result <- retrieveGenesInfo(genes, 
-								species, 
-								groupBy=groupBy,
-								orderGenes=orderGenes,
-								getUniprot=getUniprot,
-								silent=silent, cores=cores)
-						message("Writing the output file number ", i, "\n")
-						
-						
-						write.table(
-								result,
-								file = file.path(outputDir,
-										paste0(filePrefix[i],
-												"_genesInfo.csv")),
-								quote = FALSE,
-								sep = ";",
-								row.names = FALSE
-						)
-					}
-			)
-		})
+			invisible(mapply(function(clusterDF, clustNB){
+								
+								outputFile <- file.path(outputDir, 
+										paste0("genes_info_clust", clustNB, 
+												".csv"))
+								write.csv(clusterDF, file=outputFile, 
+										row.names=FALSE)
+								
+							}, infosList, seq_len(nbClusterVec)))
+	})
 
 
 
