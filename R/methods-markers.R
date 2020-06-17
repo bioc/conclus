@@ -19,7 +19,7 @@
 				"correctly used 'clusterCellsInternal' on the object.")
 	
 	## Check the cluster similarity matrix
-	if(all(dim(simMed) == c(0,0)))
+	if(all(dim(simMed) == c(0,0)) || all(dim(simMed) == c(1,1)))
 		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
 				"function doesn't have its 'clustersSimilarityMatrix' slot",
 				" updated. Please use 'clusterCellsInternal' on the object",
