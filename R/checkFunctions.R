@@ -87,3 +87,29 @@ checkClusterMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
 				" number of clusters found. Nb clusters for markers: ", 
 				nbClustMark, ". Nb of clusters: ", nbClust)
 }
+
+
+checkGenesInfos <- function(genesInfos, species, clustersSimiliratyOrdered){
+	
+	expectedColumn <- c("uniprot_gn_symbol", "clusters", "external_gene_name",
+			"go_id", "entrezgene_description", "gene_biotype", 
+			"chromosome_name", "Symbol", "ensembl_gene_id", "entrezgene_id",
+			"uniprot_gn_id")
+	
+	if(isTRUE(all.equal(species, "mouse")))
+		expectedColumn <- c(expectedColumn, "mgi_description", "mgi_id")
+	
+	if(!all(expectedColumn %in% colnames(genesInfos)))
+		stop("The genesInfos data frame should have the columns: ", 
+				paste(expectedColumn, collapse=";"))
+	
+	clustersVec <- unique(genesInfos$clusters)
+	clustersVec <- clustersVec[clustersVec != ""]
+	nbClustInfo <- length(clustersVec)
+	nbClust <- length(clustersSimiliratyOrdered)
+	
+	if(nrow(genesInfos) > 1 && !isTRUE(all.equal(nbClust, nbClustInfo)))
+		stop("genesInfos should have the same number of clusters than the",
+				" number of clusters found. Nb clusters for genesInfos: ", 
+				nbClustInfo, ". Nb of clusters: ", nbClust)
+}
