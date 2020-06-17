@@ -178,6 +178,16 @@ setGeneric(
 		signature = "theObject")
 
 
+setGeneric(
+		
+		name = "getGenesInfo",
+		
+		def = function(theObject, species, groupBy="clusters", 
+				orderGenes="initial", getUniprot=TRUE, silent=FALSE, cores=1){    
+		},
+		signature = "theObject")
+
+
 ################################################################################
 ############################### Getter methods #################################
 ################################################################################
