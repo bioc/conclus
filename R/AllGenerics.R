@@ -180,7 +180,7 @@ setGeneric(
 
 setGeneric(
 		
-		name = "getGenesInfo",
+		name = "retrieveGenesInfo",
 		
 		def = function(theObject, species, groupBy="clusters", 
 				orderGenes="initial", getUniprot=TRUE, silent=FALSE, cores=1){    
