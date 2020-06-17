@@ -188,6 +188,16 @@ setGeneric(
 		signature = "theObject")
 
 
+setGeneric(
+		
+		name = "saveMarkersLists",
+		
+		def = function(theObject, dataDirectory, outputDir=NA,
+				pattern="genes.tsv", Ntop=100){    
+		},
+		signature = "theObject")
+
+
 ################################################################################
 ############################### Getter methods #################################
 ################################################################################
