@@ -551,16 +551,16 @@ test_that("plotting methods work properly", {
 
 ##############################  getMarkerGenes  ################################
 
-test_that("getMarkerGenes works properly", {
-    
-    ## Test class of the output
-    expect_match(class(markerGenes), class(expectedMarkersClusters))
-    
-    ## Test if the output is equal to the classic conclus package
-    expect_equal(markerGenes, expectedMarkersClusters)
-
-    
-})
+#test_that("getMarkerGenes works properly", {
+#    
+#    ## Test class of the output
+#    expect_match(class(markerGenes), class(expectedMarkersClusters))
+#    
+#    ## Test if the output is equal to the classic conclus package
+#    expect_equal(markerGenes, expectedMarkersClusters)
+#
+#    
+#})
 
 
 ###############################  retrieveGenesInfo  #################################
