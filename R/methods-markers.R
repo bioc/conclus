@@ -315,14 +315,25 @@ setMethod(
 })
 
 
+###################
+## saveMarkersLists
+###################
 
-saveMarkersLists <- function(theObject,
-                             dataDirectory,
-                             outputDir=file.path(
-                                 dataDirectory,
-                                 paste0("marker_genes/markers_lists")),
+
+setMethod(
+		
+		f = "saveMarkersLists",
+		
+		signature = "scRNAseq",
+		
+		definition = function(theObject, dataDirectory, outputDir=NA,
                              pattern="genes.tsv", Ntop=100){
-    
+						 
+						 
+	if(is.na(outputDir))
+		outputDir <- file.path(dataDirectory, 
+				paste0("marker_genes/markers_lists"))
+    					 
     if(!file.exists(outputDir))
         dir.create(outputDir, showWarnings=F)
     
@@ -330,20 +341,24 @@ saveMarkersLists <- function(theObject,
     clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(theObject)
     checkMarkerGenesList(markerGenesList, clustersSimiliratyOrdered)
     experimentName <- getExperimentName(theObject)
-    
-    tmp <- sapply(seq_len(length(markerGenesList)), function(i){
-        markerGenes <- markerGenesList[[i]][1:Ntop, ]
-        markerGenes <- as.data.frame(markerGenes$Gene)
-        outputName  <- paste0(experimentName,"_cluster_", i)
-        colnames(markerGenes) <- "geneName"
-        markerGenes$clusters <- paste0("cluster_", i)
-        write.table(markerGenes, file.path(outputDir,
-                                           paste0(outputName, "_markers.csv")),
-                    row.names=FALSE, quote=FALSE, sep=";")
-        
-    })
-    message(paste("You could find all marker genes in :", outputDir, "."))
-}
+    clusterIndexes <- seq_len(length(markerGenesList))
+	
+	invisible(mapply(function(currentMarkerGenes, clustIdx, threshold, expN){
+						
+						markerGenes <- currentMarkerGenes[seq_len(threshold), ]
+						markerGenes <- as.data.frame(markerGenes$Gene)
+						outputName  <- paste0(expN,"_cluster_", clustIdx)
+						colnames(markerGenes) <- "geneName"
+						markerGenes$clusters <- paste0("cluster_", clustIdx)
+						fileName <- paste0(outputName, "_markers.csv")
+						outputFile <- file.path(outputDir, fileName)
+						write.table(markerGenes, outputFile, row.names=FALSE, 
+								quote=FALSE, sep=";")
+						}, markerGenesList, clusterIndexes, MoreArgs=list(Ntop, 
+							experimentName)))
+	
+    message(paste("You can find all marker genes in :", outputDir, "."))
+})
 
 
 
@@ -401,6 +416,7 @@ saveGenesInfo <- function(species,
                     }
     )
 }
+
 
 
 setMethod(
