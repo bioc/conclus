@@ -205,6 +205,14 @@ scRNAseq <- setClass(
 		
 		invisible(checkClusterMarkers(clusterMarkers, 
 						clustersSimiliratyOrdered))
+		
+		## Test genesInfos slot
+		genesInfos <- getGenesInfos(object)
+		
+		if(isTRUE(all.equal(length(genesInfos), 0)))
+			stop("genesInfos is empty. This should be a dataframe")
+		
+		invisible(checkGenesInfos(genesInfos, species))
     }
 )
 
