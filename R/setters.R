@@ -122,6 +122,17 @@ setReplaceMethod(
 		})
 
 
+setReplaceMethod(
+		f="setGenesInfos",
+		signature="scRNAseq",
+		definition = function(theObject, value){
+			theObject@genesInfos<- value
+			validObject(theObject)
+			return(theObject)
+		})
+
+
+
 ################################################################################
 ############################  Setters for Tsne class  ##########################
 ################################################################################
