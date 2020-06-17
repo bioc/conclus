@@ -146,11 +146,12 @@ setMethod(
 
 
 ###################
-## getGenesInfo
+## retrieveGenesInfo
 ###################
 
 
-.checkParamsGetGenesInfo <- function(orderGenes, genes, species, databaseDict){
+.checkParamsretrieveGenesInfo <- function(orderGenes, genes, species,
+		databaseDict){
 	
 	if(!isTRUE(all.equal(orderGenes,"initial")) && 
 			!isTRUE(all.equal(orderGenes,"alphabetical")))
@@ -195,7 +196,7 @@ setMethod(
 
 setMethod(
 		
-		f = "getGenesInfo",
+		f = "retrieveGenesInfo",
 		
 		signature = "scRNAseq",
 		
@@ -205,7 +206,7 @@ setMethod(
 	genes <- getClustersMarkers(theObject)
 	databaseDict <- c(mouse = "mmusculus_gene_ensembl",
 			human = "hsapiens_gene_ensembl")
-	.checkParamsGetGenesInfo(orderGenes, genes, species, databaseDict)
+	.checkParamsretrieveGenesInfo(orderGenes, genes, species, databaseDict)
 	
     ## Additional Special database and columns according to species
 	if(isTRUE(all.equal(species, "mouse"))){
@@ -402,7 +403,7 @@ setMethod(
 					dir.create(outputDir, showWarnings=F)
 			
 			species <- getSpecies(theObject)	
-			infos <- getGenesInfo(theObject, species, groupBy, orderGenes, 
+			infos <- retrieveGenesInfo(theObject, species, groupBy, orderGenes, 
 					getUniprot, silent, cores)
 			
 			
@@ -412,7 +413,7 @@ setMethod(
 								sep = sep, header = header,
 								stringsAsFactors = FALSE)
 						
-						result <- getGenesInfo(genes, 
+						result <- retrieveGenesInfo(genes, 
 								species, 
 								groupBy=groupBy,
 								orderGenes=orderGenes,
