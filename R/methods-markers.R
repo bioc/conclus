@@ -2,7 +2,7 @@
 ## rankGenes
 #################
 
-.checkParamsRankGenes <- function(sceObject){
+.checkParamsRankGenes <- function(sceObject, simMed){
 	
 	## Check if the normalized matrix is correct
 	if(all(dim(sceObject) == c(0,0)))
@@ -19,7 +19,7 @@
 				"correctly used 'clusterCellsInternal' on the object.")
 	
 	## Check the cluster similarity matrix
-	if(all(dim(sceObject) == c(0,0)))
+	if(all(dim(simMed) == c(0,0)))
 		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
 				"function doesn't have its 'clustersSimilarityMatrix' slot",
 				" updated. Please use 'clusterCellsInternal' on the object",
@@ -122,8 +122,8 @@ setMethod(
     definition = function(theObject, column="clusters", writeMarkerGenes=FALSE){
         
         sceObject  <- getSceNorm(theObject)
-		.checkParamsRankGenes(sceObject)
 		simMed <- getClustersSimilarityMatrix(theObject)
+		.checkParamsRankGenes(sceObject, simMed)
         exprM <- Biobase::exprs(sceObject)
         colDF <- SummarizedExperiment::colData(sceObject)
          
