@@ -157,9 +157,6 @@ setMethod(
 			!isTRUE(all.equal(orderGenes,"alphabetical")))
 		stop("orderGenes should be 'initial' or 'alphabetical'.")
 	
-	if(!("geneName" %in% colnames(genes)))
-		stop("genes should be a dataframe containing at least geneName column.")
-	
 	if (!(species %in% names(databaseDict)))
 		stop("species should be: ", paste(names(databaseDict), 
 						collapse = " or "))
