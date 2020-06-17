@@ -102,6 +102,7 @@ orderedCLusters <- getClustersSimiliratyOrdered(scrCSM)
 scrS4MG <- rankGenes(scrCSM)
 markers <- getMarkerGenesList(scrS4MG)
 
+
 ## Getting marker genes
 
 scrFinal <- bestClustersMarkers(scrS4MG)
@@ -536,53 +537,51 @@ test_that("plotting methods work properly", {
 
 
 
-################################  rankGenes  ###################################
+################################  markers  ###################################
 
-#test_that("rankGenes works properly", {
-#    
-#    ## Test class of the output
-#    expect_match(class(markers), "list")
-#    
-#    ## Test if the output is equal to the classic conclus package
-#    expect_equivalent(markers, expectedMarkerGenesList)
-#
-#})
-
-
-##############################  getMarkerGenes  ################################
-
-#test_that("getMarkerGenes works properly", {
-#    
-#    ## Test class of the output
-#    expect_match(class(markerGenes), class(expectedMarkersClusters))
-#    
-#    ## Test if the output is equal to the classic conclus package
-#    expect_equal(markerGenes, expectedMarkersClusters)
-#
-#    
-#})
-
-
-###############################  retrieveGenesInfo  #################################
-
-#test_that("retrieveGenesInfo works properly", {
-#    
-#    ## Test class of the output
-#    expect_match(class(infos), class(expectedInfos))
-#    
-#})
-
-
-
-###############################  saveGenesInfo  ################################
-
-#!! Generate error message
-#
-#saveGenesInfo("mouse", outputDirectory, dataDirectory=outputDirectory
-#              , cores = 15, startFromCluster = 1)
-
-
-
+test_that("markers methods work properly", {
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'rankGenes' function doesn't have its 'SceNorm' slot ",
+					"updated. Please use 'normaliseCountMatrix' on the object",
+					" before.")
+			expect_error(rankGenes(scr), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'rankGenes' function doesn't have a correct 'SceNorm' ",
+					"slot. This slot should be a 'SingleCellExperiment' object",
+					" containing 'clusters' column in its colData. Please ",
+					"check if you correctly used 'clusterCellsInternal' on the",
+					" object.")
+			expect_error(rankGenes(scrDbscan), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'rankGenes' function doesn't have its ",
+					"'clustersSimilarityMatrix' slot updated. Please use ",
+					"'clusterCellsInternal' on the object before.")
+			expect_error(rankGenes(scrCCiwrong), expM)
+			
+			expM <- "orderGenes should be 'initial' or 'alphabetical'."
+			expect_error(retrieveGenesInfo(scr, species="mouse", 
+							orderGenes="test"), expM)
+			
+			expM <- "species should be: mouse or human"
+			expect_error(retrieveGenesInfo(scrFinal,  species = "droso"), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'rankGenes' function doesn't have its 'sceNorm' slot ",
+					"updated. Please use 'normaliseCountMatrix' on the object ",
+					"before.")
+			expect_error(bestClustersMarkers(scr), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'rankGenes'function doesn't have a correct 'sceNorm' ",
+					"slot. This slot should be a 'SingleCellExperiment' object",
+					" containing 'clusters' column in its colData. Please ",
+					"check if you correctly used 'clusterCellsInternal' on ",
+					"the object.") 
+			expect_error(bestClustersMarkers(scrDbscan),expM)
+		})
 
 
 
