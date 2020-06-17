@@ -391,68 +391,55 @@ setMethod(
 ## bestClustersMarkers
 ###################
 
+.checkParamsBestClust <- function(sceObject, markerGenesList, 
+		numberOfClusters){
+	
+	## Check if the normalized matrix is correct
+	if(all(dim(sceObject) == c(0,0)))
+		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
+				"function doesn't have its 'sceNorm' slot updated. Please use",
+				" 'normaliseCountMatrix' on the object before.")
+	
+	## Check if the SCE object contain cluster colums in its colDF
+	if(!("clusters" %in% names(colData(sceObject))))
+		stop("The 'scRNAseq' object that you're using with 'rankGenes'",
+				"function doesn't have a correct 'sceNorm' slot. This slot ",
+				"should be a 'SingleCellExperiment' object containing ",
+				"'clusters' column in its colData.\n Please check if you ",
+				"correctly used 'clusterCellsInternal' on the object.")
+	
+	## Check if the markerGenesList is correct
+	if(!isTRUE(all.equal(length(markerGenesList),numberOfClusters)))
+		stop("Something wrong with number of clusters. It is supposed",
+				"to be equal to : ", numberOfClusters, ". Current ",
+				"number: ", length(markerGenesList))
+	
+}
 
 
 setMethod(
-		f="bestClustersMarkers",
-		signature="scRNAseq",
-		definition=function(theObject, genesNumber=10, removeDuplicates = TRUE){
+		
+		f = "bestClustersMarkers",
+		
+		signature = "scRNAseq",
+		
+		definition = function(theObject, nTop=10, removeDuplicates = TRUE){
 			
-			sceObject       <- getSceNorm(theObject)
-			dataDirectory   <- getOutputDirectory(theObject)
-			experimentName  <- getExperimentName(theObject)
+			sceObject <- getSceNorm(theObject)
 			markerGenesList <-  getMarkerGenesList(theObject)
+			clustVec <- SummarizedExperiment::colData(sceObject)$clusters
+			clustersVec <- unique(clustVec)
+			numberOfClusters <- length(clustersVec)
 			
-			## Check if the normalized matrix is correct
-			if(all(dim(sceObject) == c(0,0)))
-				stop("The 'scRNAseq' object that you're using with 'rankGenes'",
-						"function doesn't have its 'sceNorm' slot updated.",
-						"Please use 'normaliseCountMatrix' on the object ",
-						"before.")
+			.checkParamsBestClust(sceObject, markerGenesList, numberOfClusters)
+			
+			##Retrieve the nTop genes in each element of markerGenesList
+			geneName <- unlist(lapply(markerGenesList, 
+					function(currentMarkers) 
+						currentMarkers$Gene[seq_len(nTop)]))
+			clusters <- rep(clustersVec, each=nTop)
+			markersClusters <- data.frame(geneName, clusters)
 				
-				
-			## Check if the SCE object contain cluster colums in its colDF
-			if(!("clusters" %in% names(colData(sceObject))))
-				stop("The 'scRNAseq' object that you're using with 'rankGenes'",
-						"function doesn't have a correct 'sceNorm' slot. This",
-						"slot should be a 'SingleCellExperiment' object",
-						"containing 'clusters' column in its colData.\n",
-						"Please check if you correctly used ",
-						"'clusterCellsInternal' on the object.")
-			
-			## Check if the markerGenesList is correct
-			numberOfClusters <- length(unique(
-							SummarizedExperiment::colData(sceObject)$clusters))
-			
-			if(!isTRUE(all.equal(length(markerGenesList),numberOfClusters)))
-				stop("Something wrong with number of clusters. It is supposed",
-						"to be equal to : ", numberOfClusters, ". Current ",
-						"number: ", length(markerGenesList))
-				
-			numberOfClusters <- length(unique(
-							SummarizedExperiment::colData(sceObject)$clusters))
-			
-			dir <- file.path(dataDirectory, "marker_genes")
-			nTop <- genesNumber
-			clusters <- unique(
-					SummarizedExperiment::colData(sceObject)$clusters)
-			
-			markersClusters <- as.data.frame(matrix(ncol = 2,
-							nrow = nTop*numberOfClusters))
-			
-			colnames(markersClusters) = c("geneName", "clusters")
-			runUntil = length(markerGenesList)
-			
-			for(i in seq_len(runUntil)){
-				tmpAll <- markerGenesList[[i]]
-				
-				markersClusters$clusters[(nTop*(i-1)+1):(nTop*i)] <- 
-						as.character(clusters[i])
-				
-				markersClusters$geneName[(nTop*(i-1)+1):(nTop*i)] <- 
-						as.character(tmpAll$Gene[1:nTop])
-			}
-			
 			if(removeDuplicates)
 				markersClusters <- 
 						markersClusters[!duplicated(markersClusters$geneName), ] 
