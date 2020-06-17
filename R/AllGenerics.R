@@ -415,6 +415,15 @@ setGeneric(
     signature = "theObject")
 
 
+setGeneric(
+		
+		name = "getGenesInfos",
+		
+		def = function(theObject){
+			standardGeneric("getGenesInfos")    
+		},
+		signature = "theObject")
+
 ################################################################################
 ############################### Setter methods #################################
 ################################################################################
