@@ -362,60 +362,77 @@ setMethod(
 
 
 
-saveGenesInfo <- function(species,
-                          dataDirectory="",
-                          outputDir="",
-                          sep=";", header=TRUE,
-                          startFromCluster=1, #outputFormat=c("csv", "xlsx"),
-                          groupBy="clusters", # getGenesInfo params
-                          orderGenes="initial",
-                          getUniprot=TRUE,
-                          silent=FALSE, cores=1){
-    
-    if(dataDirectory != ""){
-        inputDir = file.path(dataDirectory, "/marker_genes/markers_lists")
-        outputDir = file.path(dataDirectory, "/marker_genes/saveGenesInfo")
-        pattern = "markers.csv"
-        if(!file.exists(outputDir))
-            dir.create(outputDir, showWarnings=F)
-    }
-    
-    filesList <- list.files(inputDir, pattern = pattern)
-    
-    if (is.null(filesList)){
-        stop("There is no file finishing by ", pattern)
-    }
-    
-    filePrefix <- do.call(rbind, strsplit(filesList, "[.]"))[, 1]
-    
-    
-    infos <- sapply(seq(startFromCluster, length(filesList)), 
-                    function(i){
-                        genes <- read.delim(file.path(inputDir, filesList[i]),
-                                            sep = sep, header = header,
-                                            stringsAsFactors = FALSE)
-                        
-                        result <- getGenesInfo(genes, 
-                                               species, 
-                                               groupBy=groupBy,
-                                               orderGenes=orderGenes,
-                                               getUniprot=getUniprot,
-                                               silent=silent, cores=cores)
-                        message("Writing the output file number ", i, "\n")
-                        
-                        
-                        write.table(
-                            result,
-                            file = file.path(outputDir,
-                                             paste0(filePrefix[i],
-                                                    "_genesInfo.csv")),
-                            quote = FALSE,
-                            sep = ";",
-                            row.names = FALSE
-                        )
-                    }
-    )
-}
+###################
+## saveGenesInfo
+###################
+
+
+setMethod(
+		
+		f = "saveGenesInfo",
+		
+		signature = "scRNAseq",
+		
+		definition = function(theObject, outputDir=NA, sep=";", header=TRUE, 
+				startFromCluster=1, groupBy="clusters", orderGenes="initial", 
+				getUniprot=TRUE, silent=FALSE, cores=1){
+			
+			
+			
+#			!!!!!!!!!!!!!
+#			
+#			theObject=scrFinal
+#			outputDir=NA
+#			sep=";"
+#			header=TRUE 
+#			startFromCluster=1
+#			groupBy="clusters"
+#			orderGenes="initial" 
+#			getUniprot=TRUE
+#			silent=FALSE
+#			cores=1
+#					
+#			!!!!!!!!!!!!!!
+			
+			
+			if(is.na(outputDir))
+				outputDir <- "/marker_genes/saveGenesInfo"
+			
+			if(!file.exists(outputDir))
+					dir.create(outputDir, showWarnings=F)
+			
+			species <- getSpecies(theObject)	
+			infos <- getGenesInfo(theObject, species, groupBy, orderGenes, 
+					getUniprot, silent, cores)
+			
+			
+			infos <- sapply(seq(startFromCluster, length(filesList)), 
+					function(i){
+						genes <- read.delim(file.path(inputDir, filesList[i]),
+								sep = sep, header = header,
+								stringsAsFactors = FALSE)
+						
+						result <- getGenesInfo(genes, 
+								species, 
+								groupBy=groupBy,
+								orderGenes=orderGenes,
+								getUniprot=getUniprot,
+								silent=silent, cores=cores)
+						message("Writing the output file number ", i, "\n")
+						
+						
+						write.table(
+								result,
+								file = file.path(outputDir,
+										paste0(filePrefix[i],
+												"_genesInfo.csv")),
+								quote = FALSE,
+								sep = ";",
+								row.names = FALSE
+						)
+					}
+			)
+		})
 
 
 
