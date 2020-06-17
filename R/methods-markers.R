@@ -217,7 +217,6 @@ setMethod(
         spDB <- NULL
     }
     
-    
     ## Selecting the BioMart database to use
     dataset <- databaseDict[species]
 	ensembl <- useEnsembl(biomart="genes", dataset=dataset)
@@ -229,7 +228,8 @@ setMethod(
     
     
     ## Group the GO id and the uniprot Id
-    database <- database %>% group_by(uniprot_gn_symbol, chromosome_name,
+	options(dplyr.summarise.inform = FALSE)
+	database <- database %>% group_by(uniprot_gn_symbol, chromosome_name,
 					entrezgene_description) %>% summarise(
 					go_id = paste(unique(go_id), collapse=', '),
 					uniprot_gn_id = paste(unique(uniprot_gn_id), collapse=', '),
@@ -272,7 +272,7 @@ setMethod(
     
     
     ## Order the data frames colums to be abe to bind them
-    colnamesOrder = c("uniprot_gn_symbol", "clusters", "external_gene_name",
+    colnamesOrder <- c("uniprot_gn_symbol", "clusters", "external_gene_name",
                       "go_id", speDBdescription, "entrezgene_description",
                       "gene_biotype", "chromosome_name", "Symbol", 
 					  "ensembl_gene_id", speDbID, "entrezgene_id", 
