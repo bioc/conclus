@@ -85,7 +85,9 @@ checkClusterMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
 	if(nrow(clusterMarkers) > 1 && !isTRUE(all.equal(nbClust, nbClustMark)))
 		stop("clusterMarkers should have the same number of clusters than the",
 				" number of clusters found. Nb clusters for markers: ", 
-				nbClustMark, ". Nb of clusters: ", nbClust)
+				nbClustMark, ". Nb of clusters: ", nbClust, ".\n",
+				"If you use 'bestClustersMarker', try setting ",
+				"removeDuplicates = FALSE")
 }
 
 
