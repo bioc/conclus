@@ -172,8 +172,39 @@ setGeneric(
 		
 		name = "bestClustersMarkers",
 		
-		def = function(theObject, genesNumber=10, removeDuplicates=TRUE){
+		def = function(theObject, nTop=10, removeDuplicates=TRUE){
 			standardGeneric("bestClustersMarkers")    
+		},
+		signature = "theObject")
+
+
+setGeneric(
+		
+		name = "retrieveGenesInfo",
+		
+		def = function(theObject, species, groupBy="clusters", 
+				orderGenes="initial", getUniprot=TRUE, silent=FALSE, cores=1){    
+		},
+		signature = "theObject")
+
+
+setGeneric(
+		
+		name = "saveMarkersLists",
+		
+		def = function(theObject, dataDirectory, outputDir=NA,
+				pattern="genes.tsv", Ntop=100){    
+		},
+		signature = "theObject")
+
+
+setGeneric(
+		
+		name = "saveGenesInfo",
+		
+		def = function(theObject, outputDir=NA, sep=";", header=TRUE, 
+				startFromCluster=1, groupBy="clusters", orderGenes="initial", 
+				getUniprot=TRUE, silent=FALSE, cores=1){    
 		},
 		signature = "theObject")
 
@@ -395,6 +426,15 @@ setGeneric(
     signature = "theObject")
 
 
+setGeneric(
+		
+		name = "getGenesInfos",
+		
+		def = function(theObject){
+			standardGeneric("getGenesInfos")    
+		},
+		signature = "theObject")
+
 ################################################################################
 ############################### Setter methods #################################
 ################################################################################
@@ -612,3 +652,11 @@ setGeneric(
     signature = "theObject")
 
 
+setGeneric(
+		
+		name = "setGenesInfos<-",
+		
+		def = function(theObject, value){
+			standardGeneric("setGenesInfos<-")    
+		},
+		signature = "theObject")

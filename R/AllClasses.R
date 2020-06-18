@@ -58,7 +58,8 @@ scRNAseq <- setClass(
         clustersSimilarityMatrix = "matrix",
         clustersSimiliratyOrdered = "factor",
         markerGenesList = "list",
-		clustersMarkers = "data.frame"
+		clustersMarkers = "data.frame",
+		genesInfos = "data.frame"
     ),
     prototype = list(
         sceNorm = SingleCellExperiment(),
@@ -68,9 +69,15 @@ scRNAseq <- setClass(
         clustersSimiliratyOrdered = factor(1),
         markerGenesList = list(data.frame(Gene = c("gene1"),
                                           mean_log10_fdr = c(NA),
-                                          n_05 = c(NA),
-                                          score = c(NA))),
-	    clustersMarkers = data.frame(geneName="gene1", clusters=NA)
+                                          n_05 = c(NA), score = c(NA))),
+	    clustersMarkers = data.frame(geneName="gene1", clusters=NA),
+		
+		genesInfos = data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
+				external_gene_name="gene", go_id="GO1,GO2", 
+				mgi_description="description", entrezgene_description="descr",
+				gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+				ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+				uniprot_gn_id="ID")
     ),
 	
     validity = function(object) {
@@ -197,6 +204,15 @@ scRNAseq <- setClass(
 			stop("clusterMarkers is empty. This should be a dataframe")
 		
 		invisible(checkClusterMarkers(clusterMarkers, 
+						clustersSimiliratyOrdered))
+		
+		## Test genesInfos slot
+		genesInfos <- getGenesInfos(object)
+		
+		if(isTRUE(all.equal(length(genesInfos), 0)))
+			stop("genesInfos is empty. This should be a dataframe")
+		
+		invisible(checkGenesInfos(genesInfos, species, 
 						clustersSimiliratyOrdered))
     }
 )
