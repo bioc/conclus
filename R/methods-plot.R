@@ -35,6 +35,79 @@
 }
 
 
+.checkParamCellSimilarity <-function(theObject, orderClusters, plotPDF,
+                                     returnPlot, width, height, onefile,
+                                     showRowNames, showColnames, fontsize,
+                                     fontsizeRow, widthPNG, heightPNG){
+    
+    
+    ## Verify the object contains clustersSimilarityMatrix
+    clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+    clusters <- colData(getSceNorm(conclus))$clusters
+    nbrClusters <- length(unique(clusters))
+    
+    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
+        stop("You have to calculate the clusters similarity matrix",
+             "before plotting.")  
+    
+    ## Verify orderClusters
+    if (!is.logical(orderClusters))
+        stop("orderClusters should be a boolean.")
+    
+    ## Verify plotPDF
+    if (!is.logical(plotPDF))
+        stop("plotPDF should be a boolean.")  
+    
+    ## Verify returnPlot
+    if (!is.logical(returnPlot))
+        stop("returnPlot should be a boolean.")  
+    
+    ## Verify columnName
+    if(!isTRUE(all.equal(columnName, "clusters")) && 
+       !isTRUE(all.equal(columnName, "noColor")) &&
+       !isTRUE(all.equal(columnName,"state")))
+        stop("columnName should be: clusters, noColor, or state.")
+    
+    ## Verify width
+    if (!is.numeric(width))
+        stop("width should be a numeric.")
+    
+    ## Verify height
+    if (!is.numeric(height))
+        stop("height should be a numeric.")  
+    
+    ## Verify onefile
+    if (!is.logical(onefile))
+        stop("onefile should be a boolean.")  
+    
+    ## Verify showRowNames
+    if (!is.logical(showRowNames))
+        stop("showRowNames should be a boolean.")  
+    
+    ## Verify showColnames
+    if (!is.logical(showColnames))
+        stop("showColnames should be a boolean.")  
+    
+    ## Verify fontsize
+    if (!is.numeric(fontsize))
+        stop("fontsize should be a numeric.")
+    
+    ## Verify fontsizeRow
+    if (!is.numeric(fontsizeRow))
+        stop("fontsizeRow should be a numeric.")
+    
+    ## Verify widthPNG
+    if (!is.numeric(widthPNG))
+        stop("widthPNG should be a numeric.")
+    
+    ## Verify heightPNG
+    if (!is.numeric(heightPNG))
+        stop("heightPNG should be a numeric.") 
+}
+
+
+
+
 setMethod(
 		
     f = "plotCellSimilarity",
@@ -46,6 +119,11 @@ setMethod(
 			orderClusters=FALSE, plotPDF=TRUE, returnPlot=FALSE, width=7, 
 			height=6, onefile=FALSE, showRowNames=FALSE, showColnames=FALSE,
 			fontsize=7.5, fontsizeRow=0.03, widthPNG=800, heightPNG=750){
+        
+        ## Verify parameters
+        validObject(theObject)
+        .checkParamCellSimilarity(theObject, PCs, perplexities, columnName,
+                            returnPlot, width, height, onefile, ...)
         
         sceObject <- getSceNorm(theObject)
         cellsSimilarityMatrix <- getCellsSimilarityMatrix(theObject)
@@ -118,20 +196,52 @@ setMethod(
 })
 
 
-#################
+########################
 ## plotClusteredTSNE
-#################
+########################
 
 
-.checkParamPlotTSNE <- function(theObject, columnName){
-	
-	## Verify experiment name 
-	experimentName <- getExperimentName(theObject)
-	
+.checkParamPlotTSNE <- function(theObject, PCs, perplexities, columnName,
+                                returnPlot, width, height, onefile, ...){
+    
+    ## Verify the object contains clustersSimilarityMatrix
+    clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+    clusters <- colData(getSceNorm(conclus))$clusters
+    nbrClusters <- length(unique(clusters))
+    
+    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
+        stop("You have to calculate the clusters similarity matrix",
+             "before plotting.")  
+    
+    ## Verify PCs 
+    if(!is.numeric(PCs))
+        stop("'PCs' parameter should be a vector of numeric.")
+    
+    ## Verify perplexities
+    if(!is.numeric(perplexities))
+        stop("'perplexities' parameter should be a vector of numeric.")
+    
+    ## Verify returnPlot
+    if (!is.logical(returnPlot))
+        stop("returnPlot should be a boolean.")  
+    
+	## Verify columnName
 	if(!isTRUE(all.equal(columnName, "clusters")) && 
 			!isTRUE(all.equal(columnName, "noColor")) &&
 			!isTRUE(all.equal(columnName,"state")))
 		stop("columnName should be: clusters, noColor, or state.")
+    
+    ## Verify width
+    if (!is.numeric(width))
+        stop("width should be a numeric.")
+    
+    ## Verify height
+    if (!is.numeric(height))
+        stop("height should be a numeric.")  
+    
+    ## Verify onefile
+    if (!is.logical(onefile))
+        stop("onefile should be a boolean.")  
 }			
 
 .createTSNEDir <- function(theObject, columnName, sceObject, colorPalette){
@@ -174,7 +284,8 @@ setMethod(
 					
 		## Verify parameters
 		validObject(theObject)
-		.checkParamPlotTSNE(theObject, columnName)
+		.checkParamPlotTSNE(theObject, PCs, perplexities, columnName,
+		                    returnPlot, width, height, onefile, ...)
 			
 		## Creating output folder			
 		sceObject <- getSceNorm(theObject)
@@ -389,6 +500,63 @@ setMethod(
 
 
 
+.checkParamCellHeatmap <- function(theObject, fileName, columnName,
+                                   meanCentered, orderClusters, similarity,
+                                   orderGenes, returnPlot, saveHeatmapTable,
+                                   width, height){
+    
+    ## Verify the object 
+    markersClusters <- getClustersMarkers(theObject)
+    
+    if (!isTRUE((nrow(markersClusters) > 1)))
+        stop("You have to calculate the clusters markers before plotting.",
+             "Please see bestClustersMarkers() method.")  
+    
+    ## Verify fileName
+    if(!is.character(fileName))
+        stop("fileName should be a string.")
+    
+    ## Verify columnName
+    if(!isTRUE(all.equal(columnName, "clusters")) && 
+       !isTRUE(all.equal(columnName, "noColor")) &&
+       !isTRUE(all.equal(columnName,"state")))
+        stop("columnName should be: clusters, noColor, or state.")
+    
+    ## Verify meanCentered
+    if (!is.logical(meanCentered))
+        stop("meanCentered should be a boolean.")
+        
+    ## Verify orderClusters
+    if (!is.logical(orderClusters))
+        stop("orderClusters should be a boolean.")
+    
+    ## Verify similarity
+    if (!is.logical(similarity))
+        stop("similarity should be a boolean.")
+    
+    ## Verify orderGenes
+    if (!is.logical(orderGenes))
+        stop("orderGenes should be a boolean.")
+    
+    ## Verify returnPlot
+    if (!is.logical(returnPlot))
+        stop("returnPlot should be a boolean.")
+    
+    ## Verify saveHeatmapTable
+    if (!is.logical(saveHeatmapTable))
+        stop("saveHeatmapTable should be a boolean.")
+    
+    ## Verify width
+    if (!is.numeric(width))
+        stop("width should be a numeric.")
+    
+    ## Verify height
+    if (!is.numeric(height))
+        stop("height should be a numeric.")  
+    
+}			
+
+
 setMethod(
 		
     f = "plotCellHeatmap",
@@ -400,6 +568,13 @@ setMethod(
 			clusteringMethod="ward.D2", orderClusters=FALSE, similarity=FALSE,
 			orderGenes=FALSE, returnPlot=FALSE, saveHeatmapTable=FALSE, 
 			width=10, height=8.5){
+        
+        ## Verify parameters
+        validObject(theObject)
+        .checkParamCellHeatmap(theObject, fileName, columnName,
+                               meanCentered, orderClusters, similarity,
+                               orderGenes, returnPlot, saveHeatmapTable,
+                               width, height)
         
         markersClusters <- getClustersMarkers(theObject)
         sceObject       <- getSceNorm(theObject)
@@ -419,6 +594,53 @@ setMethod(
 ## plotGeneExpression
 #################
 
+.checkParamPlotGeneExpression <- function(theObject, geneName, graphsDirectory,
+                                          returnPlot, tSNEpicture, commentName,
+                                          savePlot, width, height, ...){
+    
+    ## Verify the object 
+    clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+    clusters <- colData(getSceNorm(conclus))$clusters
+    nbrClusters <- length(unique(clusters))
+    
+    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
+        stop("You have to calculate the clusters similarity matrix",
+             "before plotting.")  
+    
+    
+    ## Verify the geneName
+    if(!is.character(geneName))
+        stop("geneName should be a string.")
+    
+    ## Verify the graphsDirectory
+    if(!is.character(graphsDirectory))
+        stop("graphsDirectory should be a string.")
+    
+    ## Verify tSNEpicture
+    if (!is.numeric(tSNEpicture))
+        stop("width should be a integer")
+    
+    ## Verify returnPlot
+    if (!is.logical(returnPlot))
+        stop("returnPlot should be a boolean.")
+    
+    ## Verify commentName
+    if(!is.character(commentName))
+        stop("commentName should be a string.")
+    
+    ## Verify savePlot
+    if (!is.logical(savePlot))
+        stop("savePlot should be a boolean.")  
+    
+    ## Verify width
+    if (!is.numeric(width))
+        stop("width should be a numeric.")
+    
+    ## Verify height
+    if (!is.numeric(height))
+        stop("height should be a numeric.")  
+}			
+
 
 setMethod(
 		
@@ -430,6 +652,12 @@ setMethod(
 			palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE,
 			tSNEpicture=1, commentName="", savePlot=TRUE, alpha=1, limits=NA,
 			pointSize=1, width=6, height=5, ...){
+        
+        ## Verify parameters
+        validObject(theObject)
+        .checkParamPlotGeneExpression(theObject, geneName, graphsDirectory,
+                                      returnPlot, tSNEpicture, commentName,
+                                      savePlot, width, height, ...)
         
         sceObject       <- getSceNorm(theObject)
         dataDirectory   <- getOutputDirectory(theObject)
@@ -486,6 +714,41 @@ setMethod(
 ## plotClustersSimilarity
 #################
 
+.checkParamClustersSimilarity <- function(theObject, returnPlot, width, height,
+                                          onefile, fontsize, ...){
+    
+    
+    ## Verify the object 
+    clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+    clusters <- colData(getSceNorm(conclus))$clusters
+    nbrClusters <- length(unique(clusters))
+    
+    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
+        stop("You have to calculate the clusters similarity matrix",
+             "before plotting.")  
+        
+    ## Verify returnPlot
+    if (!is.logical(returnPlot))
+        stop("returnPlot should be a boolean.")  
+    
+    ## Verify width
+    if (!is.numeric(width))
+        stop("width should be a numeric.")
+    
+    ## Verify height
+    if (!is.numeric(height))
+        stop("height should be a numeric.")
+    
+    ## Verify onefile
+    if (!is.logical(onefile))
+        stop("onefile should be a boolean.")  
+    
+    ## Verify fontsize
+    if (!is.numeric(fontsize))
+        stop("fontsize should be a numeric.")
+}
+
+
 setMethod(
 		
     f = "plotClustersSimilarity",
@@ -496,6 +759,12 @@ setMethod(
 			statePalette="default", clusteringMethod="ward.D2", 
 			returnPlot=FALSE, width=7, height=5.5, onefile=FALSE, fontsize=7.5,
 			...){
+        
+        ## Verify parameters
+        validObject(theObject)
+        .checkParamClustersSimilarity(theObject, geneName, graphsDirectory,
+                                      returnPlot, tSNEpicture, commentName,
+                                      savePlot, width, height, ...)
         
         clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
         sceObject       <- getSceNorm(theObject)
