@@ -27,6 +27,17 @@ initialisePath <- function(dataDirectory){
         dir.create(outputDataDirectory, showWarnings=F)
 }
 
+createDirectory <- function(dataDirectory, directory){
+    
+    newDir <- file.path(dataDirectory, directory)
+    
+    if(!file.exists(dataDirectory))
+        dir.create(dataDirectory, showWarnings=F)
+    
+    if(!file.exists(newDir))
+        dir.create(newDir, showWarnings=F)
+}
+
 
 .getTSNEresults <- function(theObject, expressionMatrix, cores, PCs, 
 		perplexities, randomSeed){
