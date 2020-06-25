@@ -1,3 +1,40 @@
+.checkParamsExport <- function(theObject, saveCellsSimilarityMatrix,
+                               saveClustersSimilarityMatrix, 
+                               saveNormalizedMatrix, saveColData,saveRowData,
+                               saveWorkspace, saveClusteringResults){
+  
+  ## Verify the object 
+  clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+  clusters <- colData(getSceNorm(theObject))$clusters
+  nbrClusters <- length(unique(clusters))
+  
+  if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
+    stop("You have to follow all the steps until to have the clusters",
+         " similarity matrix to use the exportResults function.")
+  
+  if (!is.logical(saveCellsSimilarityMatrix))
+    stop("saveCellsSimilarityMatrix should be a boolean.")
+  
+  if (!is.logical(saveClustersSimilarityMatrix))
+    stop("saveClustersSimilarityMatrix should be a boolean.")  
+  
+  if (!is.logical(saveNormalizedMatrix))
+    stop("saveNormalizedMatrix should be a boolean.")  
+  
+  if (!is.logical(saveColData))
+    stop("saveColData should be a boolean.")  
+  
+  if (!is.logical(saveRowData))
+    stop("saveRowData should be a boolean.")  
+  
+  if (!is.logical(saveWorkspace))
+    stop("saveWorkspace should be a boolean.")  
+  
+  if (!is.logical(saveClusteringResults))
+    stop("saveClusteringResults should be a boolean.")  
+}
+
+ 
 setMethod(
     f="exportResults",
     signature="scRNAseq",
@@ -10,10 +47,17 @@ setMethod(
                         saveWorkspace=TRUE,
                         saveClusteringResults=TRUE
                         ){
-  
-        dataDirectory  <- getOutputDirectory(theObject)
-        experimentName <- getExperimentName(theObject)
-        outputDataDirectory <- "output_tables"
+      
+      ## Verify parameters
+      validObject(theObject)
+      .checkParamsExport(theObject, saveCellsSimilarityMatrix,
+                         saveClustersSimilarityMatrix, 
+                         saveNormalizedMatrix, saveColData,saveRowData,
+                         saveWorkspace, saveClusteringResults)
+      
+      dataDirectory  <- getOutputDirectory(theObject)
+      experimentName <- getExperimentName(theObject)
+      outputDataDirectory <- "output_tables"
 
         ## Export CellsSimilarityMatrix
         if (saveCellsSimilarityMatrix){
