@@ -69,14 +69,14 @@ sceNorm <- getSceNorm(scrNorm)
 
 ## Performing tSNE
 
-scrTsne <- generateTSNECoordinates(scrNorm, cores = 5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
 tsneList <- getTSNEList(scrTsne)
 tsneListWrong <- tsneList
 setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
 
 ## Running DbScan
 
-scrDbscan <- runDBSCAN(scrTsne, cores = 5)
+scrDbscan <- runDBSCAN(scrTsne, cores=5)
 dbscanList <- getDbscanList(scrDbscan)
 clusteringList <- lapply(dbscanList, getClustering)
 dbscanListWrong <- dbscanList
@@ -111,7 +111,7 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores = 5)
+scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
 wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"), 
 		clusters=c("1", "3"), external_gene_name=c("gene1", "gene2"), 
 		go_id=c("GO1,GO2", "GO1,GO3"), 
@@ -357,6 +357,26 @@ test_that("Normalization works properly", {
 									countMatrix     = countMatrix, 
 									species         = "melanogaster")), 
 					regexp=expM)
+			
+			
+			expect_error(normaliseCountMatrix(scr, coldata=columnsMetaData),
+			               regexp=NA)
+			expect_error(normaliseCountMatrix(scrNorm, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrTsne, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrDbscan, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrCCI, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrCSM, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrS4MG, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrFinal, coldata=columnsMetaData),
+			             regexp=NA)
+			expect_error(normaliseCountMatrix(scrInfos, coldata=columnsMetaData),
+			             regexp=NA)
 })
 
 
@@ -394,6 +414,29 @@ test_that("Tsne works properly", {
 			expM <- "'writeOutput' parameter should be a boolean."
 			expect_error(generateTSNECoordinates(scrNorm, writeOutput="str"),
 					regexp=expM)
+			
+			expM <- paste("The 'scRNAseq' object that you're using with",
+			              "'generateTSNECoordinates' function doesn't have its 'sceNorm'",
+			              "slot updated. Please use 'normaliseCountMatrix'",
+			              "on the object before.")
+			expect_error(generateTSNECoordinates(scr, cores=5),
+			             regexp=expM)
+			expect_error(generateTSNECoordinates(scrNorm, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrTsne, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrDbscan, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrCCI, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrCSM, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrS4MG, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrFinal, cores=5),
+			             regexp=NA)
+			expect_error(generateTSNECoordinates(scrInfos, cores=5),
+			             regexp=NA)
 })
 
 
@@ -435,6 +478,41 @@ test_that("Dbscan works properly", {
 			## Test with incorrect writeOutput
 			expM <- "'writeOutput' parameter should be a boolean"
 			expect_error(runDBSCAN(scrTsne, writeOutput="str"), regexp=expM)
+			
+			expM <- paste("The 'scRNAseq' object that you're using with",
+			"'runDBSCAN' function doesn't have its 'sceNorm'",
+			"slot updated. Please use 'normaliseCountMatrix'",
+			"on the object before.")
+			expect_error(runDBSCAN(scr, cores=5),
+			             regexp=expM)
+			
+			expM <- paste("The 'scRNAseq' object that you're using with",
+			              "'runDBSCAN' function doesn't have its 'tSNEList'",
+			              "slot updated. Please use 'generateTSNECoordinates'",
+			              "on the object before.")
+			expect_error(runDBSCAN(scrNorm, cores=5),
+			             regexp=expM)
+			
+			expect_error(runDBSCAN(scrTsne, cores=5),
+			             regexp=NA)
+			
+			expect_error(runDBSCAN(scrDbscan, cores=5),
+			             regexp=NA)
+			
+			expect_error(runDBSCAN(scrCCI, cores=5),
+			             regexp=NA)
+			
+			expect_error(runDBSCAN(scrCSM, cores=5),
+			             regexp=NA)
+			
+			expect_error(runDBSCAN(scrS4MG, cores=5),
+			             regexp=NA)
+			
+			expect_error(runDBSCAN(scrFinal, cores=5),
+			             regexp=NA)
+			
+			expect_error(runDBSCAN(scrInfos, cores=5),
+			             regexp=NA)
 })
 
 
@@ -876,4 +954,3 @@ test_that("exportResults works properly", {
     expect_error(exportResults(scrFinal, saveClusteringResults="str1" ), expM)
 
 })
-
