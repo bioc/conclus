@@ -2,6 +2,8 @@
 ########################### scRNAseq class methods #############################
 ################################################################################
 
+#' @rdname normaliseCountMatrix-scRNAseq
+#' @aliases normaliseCountMatrix,normaliseCountMatrix-method
 setGeneric(
 		
 	name = "normaliseCountMatrix",
@@ -11,6 +13,7 @@ setGeneric(
 			standardGeneric("normaliseCountMatrix")    
     },
     signature="theObject") 
+
 
 
 setGeneric(
@@ -25,6 +28,7 @@ setGeneric(
     signature="theObject")
 
 
+
 setGeneric(
 		
 	name = "generateTSNECoordinates",
@@ -35,6 +39,7 @@ setGeneric(
 		standardGeneric("generateTSNECoordinates")    
     },
     signature="theObject")
+
 
 
 setGeneric(
@@ -48,6 +53,7 @@ setGeneric(
     signature="theObject")
 
 
+
 setGeneric(
     
 	name = "clusterCellsInternal",
@@ -57,6 +63,7 @@ setGeneric(
 		standardGeneric("clusterCellsInternal")    
     },
     signature="theObject")
+
 
 
 setGeneric(
@@ -69,6 +76,7 @@ setGeneric(
     signature="theObject")
 
 
+
 setGeneric(
 		
 	name = "addClusteringManually",
@@ -77,6 +85,7 @@ setGeneric(
 		standardGeneric("addClusteringManually")    
     },
     signature="theObject")
+
 
 
 setGeneric(
@@ -90,6 +99,7 @@ setGeneric(
 		standardGeneric("plotCellSimilarity")    
     },
     signature="theObject")
+
 
 
 setGeneric(
@@ -106,6 +116,7 @@ setGeneric(
     signature="theObject")
 
 
+
 setGeneric(
 		
 	name = "plotCellHeatmap",
@@ -118,6 +129,7 @@ setGeneric(
 		standardGeneric("plotCellHeatmap")    
     },
     signature="theObject")
+
 
 
 setGeneric(
@@ -133,6 +145,7 @@ setGeneric(
     signature="theObject")
 
 
+
 setGeneric(
 		
 	name = "plotClustersSimilarity",
@@ -143,6 +156,7 @@ setGeneric(
 		standardGeneric("plotClustersSimilarity")    
     },
     signature="theObject")
+
 
 
 setGeneric(
@@ -158,6 +172,7 @@ setGeneric(
     signature="theObject")
 
 
+
 setGeneric(
 		
 	name = "rankGenes",
@@ -168,51 +183,81 @@ setGeneric(
     signature="theObject")
 
 
-setGeneric(
-		
-		name = "bestClustersMarkers",
-		
-		def = function(theObject, nTop=10, removeDuplicates=TRUE){
-			standardGeneric("bestClustersMarkers")    
-		},
-		signature = "theObject")
-
 
 setGeneric(
-		
-		name = "retrieveGenesInfo",
-		
-		def = function(theObject, species, groupBy="clusters", 
-				orderGenes="initial", getUniprot=TRUE, silent=FALSE, cores=1){    
-		},
-		signature = "theObject")
+    name="bestClustersMarkers",
+    def=function(theObject,
+                 genesNumber=10,
+                 removeDuplicates = TRUE){
+        standardGeneric("bestClustersMarkers")
+    },
+    signature="theObject")
+
 
 
 setGeneric(
-		
-		name = "saveMarkersLists",
-		
-		def = function(theObject, dataDirectory, outputDir=NA,
-				pattern="genes.tsv", Ntop=100){    
-		},
-		signature = "theObject")
+    name="getGenesInfos",
+    def=function(theObject,
+                 groupBy="clusters",
+                 orderGenes="initial",
+                 getUniprot=TRUE,
+                 silent=FALSE,
+                 cores=1){
+        standardGeneric("getGenesInfos")
+    },
+    signature="theObject")
+
 
 
 setGeneric(
-		
-		name = "saveGenesInfo",
-		
-		def = function(theObject, outputDir=NA, sep=";", header=TRUE, 
-				startFromCluster=1, groupBy="clusters", orderGenes="initial", 
-				getUniprot=TRUE, silent=FALSE, cores=1){    
-		},
-		signature = "theObject")
+    name = "saveMarkersLists",
+    def = function(theObject,
+                   pattern = "genes.tsv",
+                   Ntop = 100) {
+        standardGeneric("saveMarkersLists")
+    },
+    signature = "theObject"
+)
+
+
+
+setGeneric(
+    name = "saveGenesInfos",
+    def = function(theObject,
+                   sep = ";",
+                   header = TRUE,
+                   startFromCluster = 1,
+                   groupBy = "clusters",
+                   # getGenesInfos params
+                   orderGenes = "initial",
+                   getUniprot = TRUE,
+                   silent = FALSE,
+                   cores = 1) {
+        standardGeneric("saveGenesInfos")
+    },
+    signature = "theObject"
+)
 
 
 ################################################################################
 ############################### Getter methods #################################
 ################################################################################
 
+#' Getter of experimentName slot of scRNAseq class
+#'
+#' Get the experiment name assigned to the experimentName slot. Experiment name
+#' describes the name of th experiment of the Conclus analysis.
+#' 
+#' @name getExperimentName
+#' @rdname getExperimentName-scRNAseq
+#' @importFrom methods setMethod
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return a string corresponding to the experiment name
+#' @export
 setGeneric(
 		
 	name = "getExperimentName",
@@ -223,6 +268,20 @@ setGeneric(
     signature="theObject")
 
 
+
+#' Getter of countMatrix slot of scRNAseq class
+#'
+#' Get the the count matrix assigned to the countMatrix slot.
+#' 
+#' @name getCountMatrix
+#' @rdname getCountMatrix-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#'
+#' @return The matrix assigned to the countMatrix slot.
+#' @export
 setGeneric(
 		
     name = "getCountMatrix",
@@ -233,6 +292,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Getter of sceNorm slot of scRNAseq class
+#'
+#' Get the SCE object assigned to the sceNorm slot. This contains the colData,
+#' the rowData, and the normalized count matrix.
+#'
+#' @name getSceNorm
+#' @rdname getSceNorm-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#' @param theObject scRNAseq object
+#'
+#' @return The SCE object assigned to the sceNorm slot.
+#' @export
 setGeneric(
 		
     name = "getSceNorm",
@@ -243,6 +316,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Getter of getSpecies slot of scRNAseq class
+#'
+#' Get the species assigne to the slot. This is the studied species.
+#'
+#' @name getSpecies
+#' @rdname getSpecies-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#' 
+#' @param theObject scRNAseq object
+#'
+#' @return The species assigned to the slot.
+#' @export
 setGeneric(
 		
     name = "getSpecies",
@@ -253,6 +340,22 @@ setGeneric(
     signature = "theObject")
 
 
+
+
+#' Getter of the outputDirectory slot of scRNAseq class
+#'
+#' Get the path of the output directory. This is the folder where all the 
+#' outputs are.
+#'
+#' @name getOutputDirectory
+#' @rdname getOutputDirectory-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return The path of the output directory
+#' @export
 setGeneric(
 		
     name = "getOutputDirectory",
@@ -263,6 +366,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the PCs slot of scRNAseq class
+#'
+#' Get the vector of PCs. 
+#'
+#' @name getPCs
+#' @rdname getPCs-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return PCs
+#' @export
 setGeneric(
 		
     name = "getPCs",
@@ -273,6 +389,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the perplexities slot of scRNAseq class
+#'
+#' Get the vector of perplexities 
+#'
+#' @name getPerplexities
+#' @rdname getPerplexities-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return Vector of perplexities
+#' @export
 setGeneric(
 		
     name = "getPerplexities",
@@ -283,6 +412,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the tSNEList slot of scRNAseq class
+#'
+#' Get a list of tSNE results 
+#'
+#' @name getTSNEList
+#' @rdname getTSNEList-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return List of tSNE results 
+#' @export
 setGeneric(
 		
     name = "getTSNEList",
@@ -293,6 +435,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the dbscanList slot of scRNAseq class
+#'
+#' Get a list of DBSCAN results 
+#'
+#' @name getDbscanList
+#' @rdname getDbscanList-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return List of DBSCAN results 
+#' @export
 setGeneric(
 		
     name = "getDbscanList",
@@ -303,6 +458,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the cellsSimilarityMatrix slot of scRNAseq class
+#'
+#' Get a Cells Similarity Matrix
+#'
+#' @name getCellsSimilarityMatrix
+#' @rdname getCellsSimilarityMatrix-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return Cells Similarity Matrix
+#' @export
 setGeneric(
 		
     name = "getCellsSimilarityMatrix",
@@ -313,6 +481,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the clusters similarity matrix slot of scRNAseq class
+#'
+#' Get clusters similarity matrix
+#'
+#' @name getClustersSimilarityMatrix
+#' @rdname getClustersSimilarityMatrix-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return clusters similarity matrix
+#' @export
 setGeneric(
 		
     name = "getClustersSimilarityMatrix",
@@ -323,6 +504,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the clustersSimiliratyOrdered slot of scRNAseq class
+#'
+#' Get the order of the consensus clusters
+#'
+#' @name getClustersSimiliratyOrdered
+#' @rdname getClustersSimiliratyOrdered-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return Factor. Order of the consensus clusters.
+#' @export
 setGeneric(
 		
     name = "getClustersSimiliratyOrdered",
@@ -333,6 +527,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Getter of the markerGenesList slot of scRNAseq class
+#'
+#' Get the order of the consensus clusters
+#'
+#' @name getMarkerGenesList
+#' @rdname getMarkerGenesList-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return markerGenesList
+#' @export
 setGeneric(
 		
     name = "getMarkerGenesList",
@@ -342,6 +550,21 @@ setGeneric(
     },
     signature = "theObject")
 
+
+
+#' Getter of the clustersMarkers slot of scRNAseq class
+#'
+#' Get the clusters markers
+#'
+#' @name getClustersMarkers
+#' @rdname getClustersMarkers-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return Clusters markers
+#' @export
 setGeneric(
 		
 		name = "getClustersMarkers",
@@ -351,18 +574,67 @@ setGeneric(
 		},
 		signature = "theObject")
 
-## Tsne Class
 
+#' Getter of the getGenesInfos slot of scRNAseq class
+#'
+#' Get the clusters markers from the object
+#'
+#' @name getGenesInfos
+#' @rdname getGenesInfos-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' 
+#' @return Data.frame containing informations about markers genes.
+#' @export
 setGeneric(
-		
-    name = "getName",
-	
-    def = function(theObject){
-        standardGeneric("getName")    
+    name="getGenesInfos",
+    def=function(theObject){
+        standardGeneric("getGenesInfos")
     },
     signature = "theObject")
 
 
+
+## Tsne Class
+
+#' Getter of the name slot of Tsne class
+#'
+#' Get the name from the Tsne object
+#'
+#' @name getTsneName
+#' @rdname getTsneName-Tsne
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' 
+#' @return Name of the Tsne object
+#' @export
+setGeneric(
+		
+    name = "getTsneName",
+	
+    def = function(theObject){
+        standardGeneric("getTsneName")    
+    },
+    signature = "theObject")
+
+
+#' Getter of the PC slot of Tsne class
+#'
+#' Get the PC from the Tsne object
+#'
+#' @name getPC
+#' @rdname getPC-Tsne
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' 
+#' @return PC of the Tsne object
+#' @export
 setGeneric(
 		
     name = "getPC",
@@ -373,6 +645,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the perplexity slot of Tsne class
+#'
+#' Get the perplexity from the Tsne object
+#'
+#' @name getPerplexity
+#' @rdname getPerplexity-Tsne
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' 
+#' @return perplexity of the Tsne object
+#' @export
 setGeneric(
 		
     name = "getPerplexity",
@@ -383,6 +668,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the coordinates slot of Tsne class
+#'
+#' Get the coordinates from the Tsne object
+#'
+#' @name getCoordinates
+#' @rdname getCoordinates-Tsne
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' 
+#' @return coordinates of the Tsne object
+#' @export
 setGeneric(
 		
     name = "getCoordinates",
@@ -396,6 +694,42 @@ setGeneric(
 
 ## Dbscan getters
 
+#' Getter of the name slot of Dbscan class
+#'
+#' Get the name from the Dbscan object
+#'
+#' @name getDbscanName
+#' @rdname getDbscanName-Dbscan
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' 
+#' @return Name of the Dbscan object
+#' @export
+setGeneric(
+    
+    name = "getDbscanName",
+    
+    def = function(theObject){
+        standardGeneric("getDbscanName")    
+    },
+    signature = "theObject")
+
+
+#' Getter of the epsilon slot of Dbscan class
+#'
+#' Get the name from the Dbscan object
+#'
+#' @name getEpsilon
+#' @rdname getEpsilon-Dbscan
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' 
+#' @return Name of the Dbscan object
+#' @export
 setGeneric(
 		
     name = "getEpsilon",
@@ -406,6 +740,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the minPoints slot of Dbscan class
+#'
+#' Get the minPoints from the Dbscan object
+#'
+#' @name getMinPoints
+#' @rdname getMinPoints-Dbscan
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' 
+#' @return minPoints of the Dbscan object
+#' @export
 setGeneric(
 		
     name = "getMinPoints",
@@ -416,6 +763,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Getter of the clustering slot of Dbscan class
+#'
+#' Get the clustering from the Dbscan object
+#'
+#' @name getClustering
+#' @rdname getClustering-Dbscan
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' 
+#' @return clustering result of the Dbscan object
+#' @export
 setGeneric(
 		
     name = "getClustering",
@@ -426,20 +786,25 @@ setGeneric(
     signature = "theObject")
 
 
-setGeneric(
-		
-		name = "getGenesInfos",
-		
-		def = function(theObject){
-			standardGeneric("getGenesInfos")    
-		},
-		signature = "theObject")
 
 ################################################################################
 ############################### Setter methods #################################
 ################################################################################
 
-
+#' Setter of experimentName slot of scRNAseq class
+#'
+#' Set the experiment name to the experimentName slot. Experiment name
+#' describes the name of th experiment of the Conclus analysis.
+#' 
+#' @name setExperimentName<-
+#' @rdname setExperimentName-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Name of the experiment
+#' @export
 setGeneric(
 		
     name = "setExperimentName<-",
@@ -450,6 +815,19 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of countMatrix slot of scRNAseq class
+#'
+#' Set the the count matrix to the countMatrix slot.
+#' 
+#' @name setCountMatrix<-
+#' @rdname setCountMatrix-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value COunt matrix
+#' @export
 setGeneric(
 		
     name = "setCountMatrix<-",
@@ -460,6 +838,19 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of sceNorm slot of scRNAseq class
+#'
+#' Set the SCE object  to the sceNorm slot. This contains the colData,
+#' the rowData, and the normalized count matrix.
+#'
+#' @name setSceNorm<-
+#' @rdname setSceNorm-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#' @param theObject scRNAseq object
+#' @param value SingleCellExperiment object with normalized count matrix
+#' @export
 setGeneric(
 		
     name = "setSceNorm<-",
@@ -470,6 +861,19 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of setSpecies slot of scRNAseq class
+#'
+#' Set the species  to the slot. This is the studied species.
+#'
+#' @name setSpecies<-
+#' @rdname setSpecies-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#' 
+#' @param theObject scRNAseq object
+#' @param value Species
+#' @export
 setGeneric(
 		
     name = "setSpecies<-",
@@ -480,6 +884,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of the outputDirectory slot of scRNAseq class
+#'
+#' Set the path of the output directory. This is the folder where all the 
+#' outputs are.
+#'
+#' @name setOutputDirectory<-
+#' @rdname setOutputDirectory-scRNAseq
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Path of the output folder.
+#' @export
 setGeneric(
 		
     name = "setOutputDirectory<-",
@@ -490,6 +908,22 @@ setGeneric(
     signature = "theObject")
 
 
+#' Setter of PCs slot of scRNAseq class
+#'
+#' Set the PCs to the PCs slot. a PC is the number of principal components
+#' used by CONCLUS to perfom a PCA before to perform the tSNE and create the
+#' object. By default, CONCLUS use a range of
+#' PCs=c(8, 10, 20, 40, 50, 80, 100).
+#' 
+#' @name setPCs<-
+#' @rdname setPCs-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Vector of PCs
+#' @export
 setGeneric(
 		
     name = "setPCs<-",
@@ -500,6 +934,21 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of perplexities slot of scRNAseq class
+#'
+#' Set the perplexities to the perplexities slot.
+#' The perplexity is a value used by tSNE algorithm.
+#' 
+#' @name setPerplexities<-
+#' @rdname setPerplexities-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Vector of perplexities
+#' @export
 setGeneric(
 		
     name = "setPerplexities<-",
@@ -510,6 +959,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of setTSNEList slot of scRNAseq class
+#'
+#' Set a list of tSNE solutions to the TSNEList slot.
+#' 
+#' @name setTSNEList<-
+#' @rdname setTSNEList-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value List of tSNE results
+#' @export
 setGeneric(
 		
     name = "setTSNEList<-",
@@ -520,6 +983,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of dbscanList slot of scRNAseq class
+#'
+#' Set a list of DBSCAN solutions to the dbscanList slot.
+#' 
+#' @name setDbscanList<-
+#' @rdname setDbscanList-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value List of DBSCAN results
+#' @export
 setGeneric(
 		
     name = "setDbscanList<-",
@@ -530,6 +1007,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of cellsSimilarityMatrix slot of scRNAseq class
+#'
+#' Set a value to the cellsSimilarityMatrix slot.
+#' 
+#' @name setCellsSimilarityMatrix<-
+#' @rdname setCellsSimilarityMatrix-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value cells Similarity Matrix
+#' @export
 setGeneric(
 		
     name = "setCellsSimilarityMatrix<-",
@@ -540,6 +1031,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of clustersSimilarityMatrix slot of scRNAseq class
+#'
+#' Set a value to the clustersSimilarityMatrix slot.
+#' 
+#' @name setClustersSimilarityMatrix<-
+#' @rdname setClustersSimilarityMatrix-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value clusters Similarity Matrix
+#' @export
 setGeneric(
 		
     name = "setClustersSimilarityMatrix<-",
@@ -550,6 +1055,19 @@ setGeneric(
     signature = "theObject")
 
 
+#' Setter of clustersSimiliratyOrdered slot of scRNAseq class
+#'
+#' Set a value to the clustersSimiliratyOrdered slot.
+#' 
+#' @name setClustersSimiliratyOrdered<-
+#' @rdname setClustersSimiliratyOrdered-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Factor. Label of clusters similiraty ordered.
+#' @export
 setGeneric(
 
     name = "setClustersSimiliratyOrdered<-",
@@ -560,6 +1078,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of markerGenesList slot of scRNAseq class
+#'
+#' Set a value to the markerGenesList slot.
+#' 
+#' @name setMarkerGenesList<-
+#' @rdname setMarkerGenesList-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value List of markers genes (data.frames) for each cluster.
+#' @export
 setGeneric(
 
     name = "setMarkerGenesList<-",
@@ -570,27 +1102,93 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of clustersMarkers slot of scRNAseq class
+#'
+#' Set a value to the clustersMarkers slot.
+#' 
+#' @name setClustersMarkers<-
+#' @rdname setClustersMarkers-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Data.frame of best markers genes among all clusters.
+#' @export
 setGeneric(
-		
-		name="setClustersMarkers<-",
-		
-		def = function(theObject, value){
-			standardGeneric("setClustersMarkers<-")
-		},
-		signature = "theObject")
-
-## Tsne Class
-
-setGeneric(
-
-    name = "setName<-",
-
-    def = function(theObject, value){
-        standardGeneric("setName<-")    
+    name="setClustersMarkers<-",
+    def=function(theObject, value){
+        standardGeneric("setClustersMarkers<-")
     },
     signature = "theObject")
 
 
+
+#' Setter of genesInfos slot of scRNAseq class
+#'
+#' Set a value to the genesInfos slot.
+#' 
+#' @name setGenesInfos<-
+#' @rdname setGenesInfos-scRNAseq
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject scRNAseq object
+#' @param value Data.frame containing some informations about markers genes.
+#' @export
+setGeneric(
+    name="setGenesInfos<-",
+    def=function(theObject, value){
+        standardGeneric("setGenesInfos<-")
+    },
+    signature = "theObject")
+
+
+
+
+
+##############################  Tsne class setters #############################
+
+
+#' Setter of name slot of Tsne class
+#'
+#' Set a name to the name slot.
+#' 
+#' @name setTsneName<-
+#' @rdname setTsneName-Tsne
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' @param value Name
+#' @export
+setGeneric(
+
+    name = "setTsneName<-",
+
+    def = function(theObject, value){
+        standardGeneric("setTsneName<-")    
+    },
+    signature = "theObject")
+
+
+
+#' Setter of PC slot of Tsne class
+#'
+#' Set a PC to the PC slot.
+#' 
+#' @name setPC<-
+#' @rdname setPC-Tsne
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' @param value PC
+#' @export
 setGeneric(
 
     name = "setPC<-",
@@ -601,6 +1199,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of perplexity slot of Tsne class
+#'
+#' Set a perplexity to the perplexity slot.
+#' 
+#' @name setPerplexity<-
+#' @rdname setPerplexity-Tsne
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' @param value perplexity
+#' @export
 setGeneric(
 
     name = "setPerplexity<-",
@@ -611,6 +1223,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of perplexity slot of Tsne class
+#'
+#' Set a perplexity to the perplexity slot.
+#' 
+#' @name setCoordinates<-
+#' @rdname setCoordinates-Tsne
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Tsne object
+#' @param value Coordinates (data.frame)
+#' @export
 setGeneric(
 
     name = "setCoordinates<-",
@@ -621,17 +1247,47 @@ setGeneric(
     signature = "theObject")
 
 
-## Dbscan class
+
+
+#############################  Dbscan class setters ############################
+
+#' Setter of name slot of Dbscan class
+#'
+#' Set a name to the name slot.
+#' 
+#' @name setDbscanName<-
+#' @rdname setDbscanName-Dbscan
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' @param value Name
+#' @export
 setGeneric(
 
-    name = "setClustering<-",
+    name = "setDbscanName<-",
 
     def = function(theObject, value){
-        standardGeneric("setClustering<-")    
+        standardGeneric("setDbscanName<-")    
     },
     signature = "theObject")
 
 
+
+#' Setter of epsilon slot of Dbscan class
+#'
+#' Set a epsilon to the epsilon slot.
+#' 
+#' @name setEpsilon<-
+#' @rdname setEpsilon-Dbscan
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' @param value epsilon
+#' @export
 setGeneric(
 
     name = "setEpsilon<-",
@@ -642,6 +1298,20 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of minPoints slot of Dbscan class
+#'
+#' Set a minPoints to the Dbscan slot.
+#' 
+#' @name setMinPoints<-
+#' @rdname setMinPoints-Dbscan
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' @param value epsilon
+#' @export
 setGeneric(
 
     name = "setMinPoints<-",
@@ -652,11 +1322,25 @@ setGeneric(
     signature = "theObject")
 
 
+
+#' Setter of clustering slot of Dbscan class
+#'
+#' Set a clustering to the clustering slot.
+#' 
+#' @name setClustering<-
+#' @rdname setClustering-Dbscan
+#' @importFrom methods setReplaceMethod validObject
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES, based on code by Polina
+#' PAVLOVICH and Artem ADAMOV.
+#'  
+#' @param theObject Dbscan object
+#' @param value clustering
+#' @export
 setGeneric(
-		
-		name = "setGenesInfos<-",
-		
-		def = function(theObject, value){
-			standardGeneric("setGenesInfos<-")    
-		},
-		signature = "theObject")
+    
+    name = "setClustering<-",
+    
+    def = function(theObject, value){
+        standardGeneric("setClustering<-")    
+    },
+    signature = "theObject")

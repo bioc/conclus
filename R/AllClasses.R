@@ -1,8 +1,34 @@
+## All classes defined for the scRNAseq package
+
+
 ################################################################################
 ############################### Tsne class  ####################################
 ################################################################################
 
-
+#' The Tsne class
+#'
+#' S4 class. It represents the features of tSNE, like the name,
+#' the number of PC and the perplexity used, the coordinates.
+#'
+#' @name Tsne-class
+#' @rdname Tsne-class
+#' @exportClass Tsne
+#' 
+#' @section Slots:
+#'  \describe{
+#'    \item{\code{name}:}{Variable of class \code{"character"},
+#'    It's the name of the tSNE coordinates.}
+#'    \item{\code{pc}:}{Vector of class \code{"numeric"}. The PC is the number
+#'    of principal components used by CONCLUS to perfom a PCA before to perform
+#'    the tSNE and create the object. By default, CONCLUS use a range of
+#'    PCs=c(8, 10, 20, 40, 50, 80, 100). So the PC for a Tsne object is one of
+#'    these values.}
+#'    \item{\code{perplexity}:}{Vector of class \code{"numeric"}. The value is
+#'    the perplexity used by CONCLUS to perform the tSNE. By default, CONCLUS
+#'    use a range of perplexities=c(30, 40) }
+#'    \item{\code{coordinates}:}{Variable of class \code{"matrix"}, it contains
+#'    the coordinates of one tSNE solution.}
+#'    }
 Tsne <- setClass(
     "Tsne",
     slots = c(
@@ -27,7 +53,31 @@ Tsne <- setClass(
 ############################### Dbscan class ###################################
 ################################################################################
 
-
+#' The Dbscan class
+#'
+#' S4 class. This class represents the features of a DBSCAN
+#' clustering, like the minPoints and the espilon values used to make the
+#' clusters, and the results of the clustering.
+#'
+#' @name Dbscan-class
+#' @rdname Dbscan-class
+#' @exportClass Dbscan
+#' 
+#' @section Slots:
+#'  \describe{
+#'    \item{\code{name}:}{Variable of class \code{"character"},
+#'    It's the name of the DBSCAN clustering.}
+#'    \item{\code{epsilon}:}{Vector of class \code{"numeric"}. The espsilon is
+#'    the distance to consider two points belonging to the same cluster.
+#'    By default, CONCLUS use a range of epsilon= c(1.3, 1.4, 1.5), so the value
+#'    is one of them.}
+#'    \item{\code{minPoints}:}{Vector of class \code{"numeric"}. The minPoints
+#'    is the minimum number of points to construct a cluster. By default,
+#'    CONCLUS use a range of minPoints= c(3, 4), so the value
+#'    is one of them.}
+#'    \item{\code{clustering}:}{Variable of class \code{"matrix"}, it contains
+#'    the result of one DBSCAN clustering solution.}
+#'    }
 Dbscan <- setClass(
     "Dbscan",
     slots = c(
@@ -43,7 +93,54 @@ Dbscan <- setClass(
 ############################## scRNAseq class ##################################
 ################################################################################
 
-
+#' The scRNAseq class
+#'
+#' S4 class and the main class used by CONCLUS containing the different steps
+#' to analyse rare cell populations.
+#'
+#' @name scRNAseq-class
+#' @rdname scRNAseq-class
+#' @exportClass scRNAseq
+#' @import SingleCellExperiment
+#' @importFrom methods new
+#'
+#' @section Slots:
+#' \describe{
+#'    \item{\code{experimentName}:}{Class \code{"character"},
+#'    It's the name of the experiment. Many output of scRNAseq will use
+#'    this name.}
+#'    \item{\code{countMatrix}:}{Integer of class \code{"matrix"},
+#'    it's the raw matrix with reads or unique molecular identifiers (UMIs).}
+#'    \item{\code{sceNorm}:}{Object of class SingleCellExperiment.
+#'    Slot empty by default. Contain the colData giving informations about
+#'    cell; the rowData giving informations about genes and the normalized
+#'    count matrix. Fill it with normaliseCountMatrix method.}
+#'    \item{\code{species}:}{ Class \code{"character"},
+#'    it's the species of interest. Actually it's limited to "mouse" or
+#'    "human".}
+#'    \item{\code{outputDirectory}:}{Character of class \code{"character"},
+#'    it's the path where the outputs have to go.}
+#'    \item{\code{tSNEList}:}{List of objects of class \code{"Tsne"},
+#'    It's the name of the experiment. Many output of scRNAseq will use
+#'    this name.}
+#'    \item{\code{dbscanList}:}{List of bjects of class \code{"Dbscan"}}
+#'    \item{\code{cellsSimilarityMatrix}:}{ Similarity  cells * cells. Define
+#'    how many times twos cell have been seen together across the 84 solutions
+#'    of clustering }
+#'    \item{\code{clustersSimilarityMatrix}:}{Character of class \code{"character"},
+#'    it's the path where the outputs have to go.}
+#'    \item{\code{clustersSimiliratyOrdered}:}{Object of class SingleCellExperiment.
+#'    Slot empty by default. Contain the colData giving informations about
+#'    cell; the rowData giving informations about genes and the normalized
+#'    count matrix. Fill it with normaliseCountMatrix method.}
+#'    \item{\code{markerGenesList}:}{List of data frames. Each data frame contains
+#'    the ranked genes of one cluster.}
+#'    \item{\code{clustersMarkers}:}{Data.frame. Contain top 10 marker genes of
+#'    each clusters.}
+#'    \item{\code{genesInfos}:}{Data.frame. Contain informations of the markers
+#'     genes each clusters.}
+#'
+#'    }
 scRNAseq <- setClass(
     "scRNAseq",
     slots = c(

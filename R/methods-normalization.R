@@ -1,3 +1,25 @@
+# .annotateGenes
+#' Filling the rowData
+#'
+#' This function returns a rowData with the same rownames as in countMatrix
+#' with annotations. Only genes with named with their ENSEMBL IDs or SYMBOL OD
+#' will receive the annotation. This function use \code{\link{bioMart}} and
+#' \code{\link{AnnotationDbi}} to retrieve annotations.
+#'
+#' @param countMatrix The raw count matrix
+#' @param species The studied species
+#' @param rowdataDF rowData of class data.frame, it contains gene names of the
+#' count matrix.
+#'
+#' @keywords internal
+#'
+#' @import BiocManager
+#' @importFrom biomaRt useMart getBM
+#' @importFrom AnnotationDbi keys select
+#' @import org.Hs.eg.db
+#' @import org.Mm.eg.db
+#' @return Returns the rowData filled with annotations
+#' @noRd
  .annotateGenes <- function(countMatrix, species, rowdataDF){
 	 
 	
@@ -137,8 +159,24 @@
 
 
 
-
-## This function create the report table by binarizing the data of colData
+ # .createReportTable
+ #' This function create a binary vector using to create the report table
+ #' that will usefull to filer the cells
+ #'
+ #' According the columnName is a positive feature  or a negative feature,
+ #' the function applies a different threshold on the data.
+ #' This threshold is used to create a binary vector that will be used to filter
+ #' the cells. This function is used by .filterCells to create the report table.
+ #'
+ #' @param columnName Name of the column to calculate quantiles
+ #' @param colData Data frame containing informations about cells
+ #' @param mb Vector of positive features reflecting the quality of cells
+ #' @param mw Vector of negative features reflecting the lack of quality of cell
+ #'
+ #' @keywords internal
+ #'
+ #' @return Returns a binary vector  corresponding
+ #' @noRd
 .createReportTable <- function(columnName, colData, mb, mw){
     quan <- quantile(colData[, colnames(colData) == columnName])
     if (columnName %in% mb) {
@@ -158,6 +196,26 @@
 }
 
 
+
+# .filterCells
+#' This function removed insignificant cells for the analysis.
+#'
+#' This function filters the cells by creating a report table then
+#' then use this table which cell is not informative for the analysis.
+#'
+#' @param countMatrix Class matrix. It's the count matrix.
+#' @param genesSumThr Numeric representig a threshold ???????????????????????????????????
+#' @param MoreBetter Vector with the name of positive features in the colData
+#' reflecting the quality of cells. By default
+#' MoreBetter=c("genesNum", "sumCodPer", "genesSum")
+#' @param MoreWorse Vector with the name of negative features in the colData
+#' reflecting the quality of cells. By defaults,  MoreWorse=c("sumMtPer")
+#' @param colData Data frame containing information about cells
+#' @importFrom dplyr mutate
+#' @keywords internal
+#'
+#' @return Returns a rlist containing the count matrix and the colData filtered
+#' @noRd
 .filterCells <- function(countMatrix, colData, genesSumThr=100,
                          MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                          MoreWorse=c("sumMtPer")){
@@ -206,7 +264,14 @@
 }
 
 
-## This function counts the number of genes having read counts > 1 in a cell
+# .fillGenesNumColumn
+#' This function counts the number of genes having read counts > 1 in a cell
+#'
+#' @param cell Line number of the cell that the genes have to be counted.
+#' @param coldata Data frame containing some informations about cells.
+#'
+#' @keywords internal
+#' @noRd
 .fillGenesNumColumn <- function(cell, coldata){
 	
     readsCell <- countMatrix[, cell]
@@ -214,7 +279,16 @@
 			readsCell[readsCell > 0])
 }
 
-##  This function counts the number of genes having exactly one read in a cell
+
+
+# .fillOneUmmiColumn
+# This function fills the OneUMiColumn of the report table for one cell.
+#'
+#' @param cell Cell to tou count
+#' @param coldata  Data frame containing informations about cells
+#'
+#' @keywords internal
+#' @noRd
 .fillOneUmmiColumn <- function(cell, coldata){
 	
     readsCell <- countMatrix[, cell]
@@ -223,10 +297,19 @@
 }
 
 
-# This function creates colData or add columns mtGenes, genesNum,
-# codGenes, genesSum, codSum, mtPer, codPer, sumMtPer, sumCodPer to the
-# existing colData.
-
+# .addCellsInfo
+#' This function creates colData or add columns mtGenes, genesNum, codGenes,
+#' genesSum, codSum, mtPer, codPer, sumMtPer, sumCodPer to the existing colData.
+#'
+#'
+#' @param countMatrix The count matrix.
+#' @param rowdataDF  Optionnal. Data frame containing informations about genes.
+#' @param coldataDF  Optionnal. Data frame containing information about cells.
+#' @importFrom  dplyr mutate
+#' @keywords internal
+#'
+#' @return Returns the colData
+#' @noRd
 .addCellsInfo <- function(countMatrix, rowdataDF, coldataDF = NULL){
     
     message("Adding cell info for cells filtering.")
@@ -284,6 +367,19 @@
     return(coldata)
 }
 
+
+
+# .filterGenes
+#' This function filters the genes of the rowData and the count matrix.
+#' If a gene has less than ten counts among all cells, it is removed.
+#'
+#' @param rowData Data frame containing informations about genes.
+#' @param countMatrix Class matrix. It's the count matrix.
+#'
+#' @keywords internal
+#'
+#' @return Returns a rlist containing the count matrix and the colData
+#' @noRd
 .filterGenes <- function(countMatrix, rowData){
     
     ## internal function, filters genes which are more than 
@@ -316,7 +412,34 @@
 }
 
 
-
+#' normaliseCountMatrix() (Conclus class)
+#'
+#' This function uses coldata (cells informations)
+#' and rowdata (genes informations) to filters the count matrix. Then normalizes
+#' it by using deconvolution with size factors method.
+#'
+#' @param theObject Object of class Conclus
+#' @param sizes  Vector of size factors from scran::computeSumFactors() function.
+#' @param coldata Optionnal. Data frame containing cells informations. Will be
+#' create if it not provides by the user.
+#' @param rowdata Optionnal. Data frame containing genes informations. Will be
+#' create if it not provides by the user.
+#' @param alreadyCellFiltered Logical. If TRUE, quality check and
+#' filtering will not be applied.
+#' @param runQuickCluster Logical. If TRUE scran::quickCluster() function will
+#'  be applied. It usually improves the normalization for medium-size count
+#'  matrices. However, it is not recommended for datasets with less than 200
+#'  cells and may take too long for datasets with more than 10000 cells.
+#' @aliases normaliseCountMatrix normalizeCountMatrix
+#' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH
+#'         and Nicolas DESCOSTES.
+#' @rdname normaliseCountMatrix-scRNAseq
+#' @importFrom scran quickCluster computeSumFactors
+#' @importFrom scater logNormCounts
+#' @return Returns the Conclus object with the SCEnorm slot filled. It's an
+#' SingleCellExperiment object containin the count matrix normalized, and also
+#' the colData (table with cells informations) and the rowData (table with the
+#' genes informations).
 setMethod(
 		
     f = "normaliseCountMatrix",

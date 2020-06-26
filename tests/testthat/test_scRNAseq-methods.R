@@ -952,5 +952,10 @@ test_that("exportResults works properly", {
     ## Test with incorrect saveClusteringResults
     expM <- paste0("saveClusteringResults should be a boolean.")
     expect_error(exportResults(scrFinal, saveClusteringResults="str1" ), expM)
+<<<<<<< HEAD
+=======
+
+})
+>>>>>>> 9fe790e51028f2dcb3cd05599c60ab155cb78cbc
 
 })

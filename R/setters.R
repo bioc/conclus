@@ -2,7 +2,8 @@
 ########################  Setters for scRNAseq class  ##########################
 ################################################################################
 
-
+#' @rdname setExperimentName-scRNAseq
+#' @aliases setExperimentName<-,setExperimentName-method
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -13,6 +14,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setCountMatrix-scRNAseq
+#' @aliases setCountMatrix<-,setCountMatrix-method
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -23,6 +26,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setSceNorm-scRNAseq
+#' @aliases setSceNorm<-,setSceNorm-method
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -33,6 +38,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setSpecies-scRNAseq
+#' @aliases setSpecies<-,setSpecies-method
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -43,6 +50,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setOutputDirectory-scRNAseq
+#' @aliases setOutputDirectory<-,setOutputDirectory-method
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -53,6 +62,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setTSNEList-scRNAseq
+#' @aliases setTSNEList<-,setTSNEList-method
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -63,6 +74,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setDbscanList-scRNAseq
+#' @aliases setDbscanList<-,setDbscanList-method
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -73,6 +86,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setCellsSimilarityMatrix-scRNAseq
+#' @aliases setCellsSimilarityMatrix<-,setCellsSimilarityMatrix-method
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -83,6 +98,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setClustersSimilarityMatrix-scRNAseq
+#' @aliases setClustersSimilarityMatrix<-,setClustersSimilarityMatrix-method
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -93,6 +110,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setCountMatrix-scRNAseq
+#' @aliases setClustersSimiliratyOrdered<-,setClustersSimiliratyOrdered-method
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -102,6 +121,9 @@ setReplaceMethod(
         return(theObject)
     })
 
+
+#' @rdname setMarkerGenesList-scRNAseq
+#' @aliases setMarkerGenesList<-,setMarkerGenesList-method
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -112,6 +134,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setClustersMarkers-scRNAseq
+#' @aliases setClustersMarkers<-,setClustersMarkers-method
 setReplaceMethod(
 		f="setClustersMarkers",
 		signature="scRNAseq",
@@ -122,6 +146,8 @@ setReplaceMethod(
 		})
 
 
+#' @rdname setGenesInfos-scRNAseq
+#' @aliases setGenesInfos<-,setGenesInfos-method
 setReplaceMethod(
 		f="setGenesInfos",
 		signature="scRNAseq",
@@ -138,8 +164,10 @@ setReplaceMethod(
 ################################################################################
 
 
+#' @rdname setTsneName-Tsne
+#' @aliases setTsneName-method,setName-method
 setReplaceMethod(
-    f = "setName",
+    f = "setTsneName",
     signature = "Tsne",
     definition = function(theObject, value){
         theObject@name <- value
@@ -148,6 +176,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setPC-Tsne
+#' @aliases setPC<-,setPC-method
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -158,6 +188,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setPerplexity-Tsne
+#' @aliases setPerplexity<-,setPerplexity-method
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -168,6 +200,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setCoordinates-Tsne
+#' @aliases setCoordinates<-,setCoordinates-method
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -183,8 +217,10 @@ setReplaceMethod(
 ################################################################################
 
 
+#' @rdname setDbscanName-Dbscan
+#' @aliases setDbscanName-method,setName-method
 setReplaceMethod(
-    f = "setName",
+    f = "setDbscanName",
     signature = "Dbscan",
     definition = function(theObject, value){
         theObject@name <- value
@@ -193,6 +229,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setEpsilon-Dbscan
+#' @aliases setEpsilon<-,setEpsilon-method
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -203,6 +241,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setMinPoints-Dbscan
+#' @aliases setMinPoints<-,setMinPoints-method
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -213,6 +253,8 @@ setReplaceMethod(
     })
 
 
+#' @rdname setClustering-Dbscan
+#' @aliases setClustering<-,setClustering-method
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
