@@ -7,28 +7,76 @@
 
 #' The Tsne class
 #'
-#' S4 class. It represents the features of tSNE, like the name,
-#' the number of PC and the perplexity used, the coordinates.
+#' S4 class containing the features to plot tSNEs. This constructor is internal
+#' and is used by the method generateTSNECoordinates.
 #'
 #' @name Tsne-class
 #' @rdname Tsne-class
+#' @aliases getTsneName getPC getPerplexity getCoordinates
+#' @aliases setTsneName setPC setPerplexity setCoordinates
 #' @exportClass Tsne
 #' 
-#' @section Slots:
+#' @section Details:
 #'  \describe{
-#'    \item{\code{name}:}{Variable of class \code{"character"},
-#'    It's the name of the tSNE coordinates.}
-#'    \item{\code{pc}:}{Vector of class \code{"numeric"}. The PC is the number
-#'    of principal components used by CONCLUS to perfom a PCA before to perform
-#'    the tSNE and create the object. By default, CONCLUS use a range of
-#'    PCs=c(8, 10, 20, 40, 50, 80, 100). So the PC for a Tsne object is one of
-#'    these values.}
-#'    \item{\code{perplexity}:}{Vector of class \code{"numeric"}. The value is
-#'    the perplexity used by CONCLUS to perform the tSNE. By default, CONCLUS
-#'    use a range of perplexities=c(30, 40) }
-#'    \item{\code{coordinates}:}{Variable of class \code{"matrix"}, it contains
-#'    the coordinates of one tSNE solution.}
+#'	  Tsne is a vector of principal commponents (PC) and perplexity that are
+#'    the parameters necessary to reduce the dimensionality of the data in the
+#'   the form of a t-distributed stochastic neighbor embedding (t-SNE). For 
+#'   details about perplexities parameter see ‘?Rtsne’. This information is 
+#'   stored in three components:
+#'
+#'    \item{\code{name}:}{A \code{"character"} string representing the name of 
+#'    the tSNE coordinates.}
+#'    \item{\code{pc}:}{A \code{"numeric"} vector representing the number
+#'    of principal components used by CONCLUS to perfom a PCA before performing
+#'    a tSNE. Default: c(8, 10, 20, 40, 50, 80, 100).}
+#'    \item{\code{perplexity}:}{A \code{"numeric"} vector. Default: c(30, 40) }
+#'    \item{\code{coordinates}:}{A \code{"numeric"} \code{"matrix"} that 
+#'    contains the coordinates of one tSNE solution.}
 #'    }
+#'
+#'
+#' @section Constructor:
+#' \describe{
+#'    Tsne(name = "character", pc = "numeric", perplexity = "numeric", 
+#'         coordinates = "matrix")
+#' 
+#'    \item{\code{name}:}{Empty character string or the name of the tSNE.}
+#'    \item{\code{pc}:}{Empty \code{"numeric"} or vector of the number
+#'    of PCs.}
+#'    \item{\code{perplexity}:}{Empty \code{"numeric"} or vector of perplexity 
+#'     values.}
+#'    \item{\code{coordinates}:}{Empty \code{"numeric"} \code{"matrix"} or 
+#'    matrix of coordinates.}}
+#'
+#'  
+#' @section Accessors:
+#'   \describe{
+#'     In the following snippets, x is a Tsne object.
+#' 
+#'     \item{\code{getTsneName(x)}: Get the name of the tSNE.}
+#'     \item{\code{getPC(x)}: Get all PC parameters.} 
+#'     \item{\code{getPerplexity(x)}: Get all perplexity parameters.}
+#'     \item{\code{getCoordinates(x)}: Get the matrix of tSNE coordinates.}}
+#' 
+#' 
+#' @section Subsetting:
+#'   \describe{
+#'     In the following snippets, x is a Tsne object.
+#' 
+#'     \item{\code{setTsneName(x) <- value}: Set the name of the tSNE.}
+#'     \item{\code{setPC(x) <- value}: Set all PC parameters.} 
+#'     \item{\code{setPerplexity(x) <- value}: Set all perplexity parameters.}
+#'     \item{\code{setCoordinates(x) <- value}: Set the matrix of tSNE coordinates.}}
+#' 
+#' @section Authors:
+#' \describe{Ilyess Rachedi}
+#' 
+#' #' @section See also:
+#' \describe{
+#'   \code{\link{generateTSNECoordinates}}
+#' }  
+#' }
+
 Tsne <- setClass(
     "Tsne",
     slots = c(
