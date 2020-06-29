@@ -1,7 +1,6 @@
 #' initialisePath
 #'
 #' Create the output directory
-#' \code{\link{AnnotationDbi}} to retrieve annotations.
 #'
 #' @param dataDirectory Directory path
 #'
@@ -42,7 +41,7 @@ initialisePath <- function(dataDirectory){
 #' Create output directory and one sub output directory inside.
 #'
 #' @param dataDirectory Path of the output directory
-#' @param directory Name of the output directory inside dataDirectory
+#' @param directory Name of the output sub-directory
 #'
 #' @keywords internal
 #' @noRd
@@ -62,12 +61,12 @@ createDirectory <- function(dataDirectory, directory){
 #' Use doParallel to calculate several combinaison of Tsne
 #'
 #' @param theObject The raw count matrix
-#' @param expressionMatrix The studied species
-#' @param cores rowData of class data.frame, it contains gene names of the
-#' @param PCs rowData of class data.frame, it contains gene names of the
-#' @param perplexities The studied species
-#' @param randomSeed rowData of class data.frame, it contains gene names of the
-
+#' @param expressionMatrix The normalized count matrix
+#' @param cores The number of cores to use for parallelisation
+#' @param PCs Vector of principal components to create combinations of tSNE
+#' @param perplexities Vector of perplexities to create combinations of tSNE
+#' @param randomSeed Seeds used to create the tSNE
+#' 
 #' @keywords internal
 #' 
 #' @importFrom stats prcomp
@@ -102,6 +101,18 @@ createDirectory <- function(dataDirectory, directory){
 }
 
 
+#' .pickDefaultPalette
+#'
+#' Create a default color palette. Used in .choosePalette
+#'
+#' @param clustersNumber The number of clusters
+#' @param colorPalette26 A palette of 26 colors
+#' 
+#' @keywords internal
+#' 
+#' @return Returns a palette with a number of colors corresponding to the 
+#' number of clusters
+#' @noRd
 .pickDefaultPalette <- function(clustersNumber, colorPalette26){
 	
 	if(clustersNumber < 13)
@@ -113,6 +124,19 @@ createDirectory <- function(dataDirectory, directory){
 }
 
 
+#' .choosePalette
+#'
+#' Create a default color palette. Used in .choosePalette
+#'
+#' @param clustersNumber The number of clusters
+#' @param colorPalette Either a palette of colors or the "default" value
+#' 
+#' @keywords internal
+#' 
+#' @return If colorPalette is not equal to 'default', returns the exact same 
+#' colorPalette, otherwise returns a default color palette with a number of 
+#' colors equal to the number of clusters.
+#' @noRd
 .choosePalette <- function(colorPalette, clustersNumber){
     
     colorPalette26 <- c("yellow", "darkgoldenrod1", "coral1", "deeppink",
