@@ -72,6 +72,7 @@ createDirectory <- function(dataDirectory, directory){
 #' 
 #' @importFrom stats prcomp
 #' @importFrom parallel makeCluster stopCluster
+#' @importFrom foreach foreach
 #' @import doParallel
 #' @return Returns the combinations of tSNES
 #' @noRd
