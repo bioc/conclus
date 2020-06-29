@@ -422,10 +422,8 @@
 #'
 #' @param theObject A scRNAseq object
 #' @param sizes  Vector of size factors from scran::computeSumFactors() function.
-#' @param coldata Optionnal. Data frame containing cells informations. Will be
-#' create if it not provides by the user.
-#' @param rowdata Optionnal. Data frame containing genes informations. Will be
-#' create if it not provides by the user.
+#' @param coldata Data frame containing cells informations. Default is NULL.
+#' @param rowdata Data frame containing genes informations. Default is NULL.
 #' @param alreadyCellFiltered Logical. If TRUE, quality check and
 #' filtering will not be applied.
 #' @param runQuickCluster Logical. If TRUE scran::quickCluster() function will
