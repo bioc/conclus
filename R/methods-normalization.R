@@ -25,14 +25,14 @@
 	
 	 if(isTRUE(all.equal(species, "human"))){
 		 
-		 suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
+		 # suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
 		 genomeAnnot <- org.Hs.eg.db
 		 ensemblPattern <- "ENSG"
 		 ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
 		 
 	 }else if(isTRUE(all.equal(species, "mouse"))){
 		 
-		 suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
+		 # suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
 		 genomeAnnot <- org.Mm.eg.db
 		 ensemblPattern <- "ENSMUSG"
 		 ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
@@ -172,7 +172,8 @@
  #' @param colData Data frame containing informations about cells
  #' @param mb Vector of positive features reflecting the quality of cells
  #' @param mw Vector of negative features reflecting the lack of quality of cell
- #'
+ #' @importFrom methods is 
+ #' @import doParallel
  #' @keywords internal
  #'
  #' @return Returns a binary vector  corresponding

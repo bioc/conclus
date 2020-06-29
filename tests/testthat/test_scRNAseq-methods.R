@@ -21,20 +21,22 @@ pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
                DataCombine, zoo, rvest, DataCombine, doParallel,
                testthat, tidyr, biomaRt)
 
-source("R/AllGenerics.R")
-source("R/AllClasses.R")
-source("R/sharedInternals.R")
-source("R/checkFunctions.R")
-source("R/getters.R")
-source("R/setters.R")
-source("R/methods-normalization.R")
-source("R/methods-tsne.R")
-source("R/methods-dbscan.R")
-source("R/methods-clustering.R")
-source("R/methods-plot.R")
-source("R/methods-export.R")
-source("R/methods-markers.R")
+# source("R/AllGenerics.R")
+# source("R/AllClasses.R")
+# source("R/sharedInternals.R")
+# source("R/checkFunctions.R")
+# source("R/getters.R")
+# source("R/setters.R")
+# source("R/methods-normalization.R")
+# source("R/methods-tsne.R")
+# source("R/methods-dbscan.R")
+# source("R/methods-clustering.R")
+# source("R/methods-plot.R")
+# source("R/methods-export.R")
+# source("R/methods-markers.R")
 
+
+library(conclus)
 ## Data
 
 outputDirectory <- "YourOutputDirectory"

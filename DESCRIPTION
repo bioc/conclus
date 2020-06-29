@@ -26,4 +26,8 @@ Imports:
     org.Mm.eg.db,
     scater,
     scran,
-    BiocManager
+    BiocManager,
+    S4Vectors,
+    doParallel,
+    parallel,
+    stats
