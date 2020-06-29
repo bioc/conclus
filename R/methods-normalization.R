@@ -159,11 +159,13 @@
 
 
 
- # .createReportTable
+ #' .createReportTable
+ #' 
+ #' @description 
  #' This function creates a boolean vector that is used to filer the cells
  #' (see .filterCells below).
  #' 
- #' @section Details:
+ #' @details
  #' Rather 'columnName' is a positive or a negative feature,
  #' the function applies a different threshold on the data.
  #' This threshold is used to create a boolean vector that will be used to filter
@@ -199,11 +201,12 @@
 
 
 
-# .filterCells
-#' This function removes not significant cells from the analysis.
-#'
-#' This function filters the cells by creating a report table that is
-#' used to define which cell is informative or not.
+#' .filterCells
+#' 
+#' @description 
+#' This function removes not significant cells from the analysis. It filters 
+#' the cells by creating a report table that is used to define which cell is 
+#' informative or not.
 #'
 #' @param countMatrix Matrix containing the transcripts counts.
 #' @param colData Data frame containing information about cells
@@ -267,7 +270,9 @@
 }
 
 
-# .fillGenesNumColumn
+#' .fillGenesNumColumn
+#' 
+#' @description 
 #' This function counts the number of genes having read counts > 1 in a cell
 #'
 #' @param cell Name of the cell considered in the sapply (see.
@@ -284,7 +289,9 @@
 
 
 
-# .fillOneUmmiColumn
+#' .fillOneUmmiColumn
+#' 
+#' @description 
 #' This function fills the OneUMiColumn of the report table for one cell.
 #'
 #' @param cell Cell to count
@@ -300,7 +307,9 @@
 }
 
 
-# .addCellsInfo
+#' .addCellsInfo
+#' 
+#' @description 
 #' This function creates colData or add columns mtGenes, genesNum, codGenes,
 #' genesSum, codSum, mtPer, codPer, sumMtPer, sumCodPer to the existing colData.
 #'
@@ -371,7 +380,9 @@
 
 
 
-# .filterGenes
+#' .filterGenes
+#' 
+#' @description 
 #' This function filters the genes of the rowData and the count matrix.
 #' If a gene has less than ten counts among all cells, it is removed.
 #'
@@ -416,6 +427,7 @@
 
 #' normaliseCountMatrix()
 #'
+#' @description
 #' This function uses coldata (cells informations) and rowdata (genes 
 #' informations) to filter the count matrix. It also normalizes by using 
 #' deconvolution with size factors.
