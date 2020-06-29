@@ -34,7 +34,25 @@
 }
 
 
-
+#' .buildingTsneObjects
+#' 
+#' @description 
+#' This internal function builds a list of tSNE object. The function is used in
+#' generateTSNECoordinates to update the tsneList slot of theObject with 
+#' \code{setTSNEList(theObject) <-}.
+#'
+#' @param PCs Vector of first principal components. For example, to take ranges 
+#' 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' @param perplexities A vector of perplexity (t-SNE parameter). 
+#' Default = c(30, 40).
+#' @param experimentName Name of the analysis accessed from a scRNASeq object 
+#' with \code{getExperimentName}.
+#' @param TSNEres Result of the function scater::runTSNE that is called in the
+#' internal function .getTSNEresults.
+#' @keywords internal
+#'
+#' @return Returns a list of Tsne objects.
+#' @noRd
 .buildingTsneObjects <- function(PCs, perplexities, experimentName, TSNEres){
 	
 	return(sapply(seq_len(length(PCs)*length(perplexities)), function(i, PCA, 
@@ -56,7 +74,28 @@
 }
 
 
-
+#' .writeOutputTsne
+#' 
+#' @description 
+#' Export the tSNE coordinates to an output folder if the parameter 
+#' \code{writeOutput} of the method \code{generateTSNECoordinates} is TRUE.
+#'
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized. See ?normaliseCountMatrix.
+#' @param PCs Vector of first principal components. For example, to take ranges 
+#' 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' @param perplexities A vector of perplexity (t-SNE parameter). 
+#' Default = c(30, 40).
+#' @param experimentName Name of the analysis accessed from a scRNASeq object 
+#' with \code{getExperimentName}.
+#' @param TSNEres Result of the function scater::runTSNE that is called in the
+#' internal function .getTSNEresults.
+#' 
+#' @keywords internal
+#'
+#' @return Nothing. Write tSNE coordinates to the output directory in the sub-
+#' directory tsnes.
+#' @noRd
 .writeOutputTsne <- function(theObject, PCs, perplexities, experimentName, 
 		TSNEres){
 	
@@ -102,7 +141,7 @@
 #' 				writeOutput = FALSE)
 #' 
 #' @param theObject An Object of class scRNASeq for which the count matrix was
-#' normalized. See ?normaliseCountMatrix
+#' normalized. See ?normaliseCountMatrix.
 #' @param randomSeed  Default is 42. Seeds used to generate the tSNE.
 #' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
 #' Default is 1.
