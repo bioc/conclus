@@ -420,7 +420,7 @@
 #' informations) to filter the count matrix. It also normalizes by using 
 #' deconvolution with size factors.
 #'
-#' @param theObject Object of class Conclus
+#' @param theObject A scRNAseq object
 #' @param sizes  Vector of size factors from scran::computeSumFactors() function.
 #' @param coldata Optionnal. Data frame containing cells informations. Will be
 #' create if it not provides by the user.
