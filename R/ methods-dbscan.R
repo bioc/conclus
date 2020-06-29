@@ -1,33 +1,40 @@
-## This function calculates dbscan for all t-SNE from tSNEList with all
-## combinations of parameters from epsilon and minPoints.
-## It does not set random seed. It allows to vary this parameter automatically.
-## It returns a matrix where columns are iterations.
-## The number of iterations is equal to 
-## (tSNEList)*length(epsilon)*length(minPoints)
-
-
-.mkDbscan <- function(tSNEList, cores=14, epsilon=c(1.2, 1.5, 1.8), 
-		minPoints=c(15, 20)){
+#' .mkDbscan
+#'
+#' @description 
+#' Use doParallel to calculate clusters with dbScan algorithm.
+#'
+#' @param tSNEList
+#' @param cores The number of cores to use for parallelisation. Default = 1.
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function. 
+#' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
+#' @param minPoints Reachability minimum no. of points parameter of 
+#' fpc::dbscan() function. See Ester et al. (1996) for more details. 
+#' Default = c(3, 4)
+#' 
+#' @details 
+#' This function calculates dbscan for all t-SNE from tSNEList with all 
+#' combinations of parameters from epsilon and minPoints. It does not set 
+#' random seed. It allows to vary this parameter automatically. It returns a 
+#' matrix where columns are iterations. The number of iterations is equal to 
+#' (tSNEList)*length(epsilon)*length(minPoints).
+#'  
+#' @keywords internal
+#' 
+#' @importFrom fpc dbscan
+#' @return Returns a matrix of the combinations of dbscan results
+#' @noRd
+.mkDbscan <- function(tSNEList, cores=1, epsilon=c(1.3, 1.4, 1.5), 
+		minPoints=c(3, 4)){
 	
 	myCluster <- parallel::makeCluster(cores, type="PSOCK")
 	doParallel::registerDoParallel(myCluster)
 	dbscanResults <- foreach::foreach(i=rep(rep(1:length(tSNEList),
-									each=length(minPoints)),
-							length(epsilon)),
-					eps=rep(epsilon,
-							each=length(tSNEList)*
-									length(minPoints)),
-					MinPts=rep(minPoints,
-							length(tSNEList)*
-									length(epsilon)),
-					.combine='cbind',
-					.export = 'getCoordinates'
-			) %dopar% {
-				fpc::dbscan(
-						getCoordinates(tSNEList[[i]]),
-						eps=eps,
-						MinPts=MinPts)$cluster
-			}
+									each=length(minPoints)), length(epsilon)),
+					eps=rep(epsilon, each=length(tSNEList)*length(minPoints)),
+					MinPts=rep(minPoints, length(tSNEList)*length(epsilon)),
+					.combine='cbind', .export = 'getCoordinates') %dopar% {
+				fpc::dbscan(getCoordinates(tSNEList[[i]]), eps=eps, 
+						MinPts=MinPts)$cluster}
 	parallel::stopCluster(myCluster)
 	return(dbscanResults)
 }
@@ -67,7 +74,23 @@
 }
 
 
-
+#' .writeDBScanResults
+#' 
+#' @description 
+#' Export the dbScan clustering results to an output folder if the parameter 
+#' \code{writeOutput} of the method \code{runDBSCAN} is TRUE.
+#'
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized and the tSNE coordinates were calculated. 
+#' See ?normaliseCountMatrix and ?generateTSNECoordinates.
+#' @param dbscanResults Result of the function fpc::dbscan that is called in the
+#' internal function .mkDbscan.
+#' 
+#' @keywords internal
+#'
+#' @return Nothing. Write dbScan clustering results to the output directory in 
+#' the sub-directory output_tables.
+#' @noRd
 .writeDBScanResults <- function(theObject, dbscanResults){
 	
 	## Get the values of slots
