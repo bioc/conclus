@@ -2,67 +2,93 @@
 ## testClustering
 ##################
 
+# similar function as plotDistanceGraph,
+# but with already known epsilon value
 .plotDistanceGraphWithEpsilon <- function(tSNEData, minNeighbours=5,
 		epsilon=1.2){
-	# similar function as plotDistanceGraph,
-	# but with already known epsilon value
-	#
 	
 	dbscan::kNNdistplot(tSNEData, k=minNeighbours)
 	abline(h=epsilon, lty=2)
-	
 }
 
 
-
+# plots test DBSCAN on one of the pictures
+# for being ensured that clustering will
+# probably work successful
 .plotTestClustering <- function(tSNEData, minNeighbours=5,epsilon=1.2){
-	# plots test DBSCAN on one of the pictures
-	# for being ensured that clustering will
-	# probably work successful
 	
 	dbscanList <- fpc::dbscan(tSNEData, eps=epsilon, MinPts=minNeighbours)
-	factoextra::fviz_cluster(dbscanList,
-			tSNEData,
-			ellipse=TRUE,
-			geom="point",
+	factoextra::fviz_cluster(dbscanList, tSNEData, ellipse=TRUE, geom="point",
 			legend="bottom")
 }
 
 
 
+.checkParamsTests <- function(sceObject, dbscanEpsilon, minPts, perplexities, 
+		PCs){
+	
+	
+	if(all(dim(sceObject) == c(0,0)))
+		stop("The 'scRNAseq' object that you're using with ",
+				"'testClustering' method doesn't have its ",
+				"'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
+				" on the object before.")
+	
+	## Check parameters
+	if(!is.numeric(dbscanEpsilon))
+		stop("'dbscanEpsilon' parameter should be an integer.")
+	
+	## Check minPts argument
+	if(!is.numeric(minPts))
+		stop("'minPts' parameter should be an integer")
+	
+	## Check perplexities argument
+	if(!is.numeric(perplexities))
+		stop("'perplexities' parameter should be a vector of numeric.")
+	
+	## Check PCs argument
+	if(!is.numeric(PCs))
+		stop("'PCs' parameter should be a vector of numeric.")
+	
+	## Check randomSeed argument
+	if(!is.numeric(randomSeed))
+		stop("'randomSeed' parameter should be an integer.")
+}
+
+
+
 setMethod(
+		
 		f="testClustering",
+		
 		signature="scRNAseq",
-		definition=function(theObject,
-				dbscanEpsilon=1.4,
-				minPts=5,
-				perplexities=c(30),
-				PCs=c(4),
-				randomSeed=42,
-				width=7,
-				height=7,
-				onefile=FALSE,
-				...){
+		
+		definition=function(theObject, dbscanEpsilon=1.4, minPts=5, 
+				perplexities=c(30), PCs=c(4), randomSeed=42, width=7, height=7,
+				onefile=FALSE, cores=1, ...){
 			
 			validObject(theObject)
+			
 			## Get the values from slots
-			sceObject      <- getSceNorm(theObject)
-			dataDirectory  <- getOutputDirectory(theObject)
+			sceObject <- getSceNorm(theObject)
+			dataDirectory <- getOutputDirectory(theObject)
 			experimentName <- getExperimentName(theObject)
 			
 			initialisePath(dataDirectory)
-			dir.create(file.path(dataDirectory, "test_clustering"), showWarnings=F)
+			dir.create(file.path(dataDirectory, "test_clustering"), 
+					showWarnings=FALSE)
+			
+			## Checking parameters
+			.checkParamsTests(sceObject, dbscanEpsilon, minPts, perplexities, 
+					PCs)
 			
 			message("Generating TSNE.")
-			#1. Generating 2D tSNE plots
-			tSNE <- gettSNEList(expr=Biobase::exprs(sceObject),
-					cores=1,
-					perplexities=perplexities,
-					PCs=PCs,
-					randomSeed=randomSeed)
+			
+			## 1. Generating 2D tSNE plots
+			tSNE <- gettSNEList(expr=Biobase::exprs(sceObject), cores=cores,
+					perplexities=perplexities, PCs=PCs, randomSeed=randomSeed)
 			
 			message("Saving results.")
-			#picture checker
 			pdf(file.path(dataDirectory, "test_clustering", "test_tSNE.pdf"),
 					width=width, height=height, onefile=onefile, ...)
 			print(tSNE)
@@ -70,26 +96,23 @@ setMethod(
 			
 			
 			#2. Clustering with dbscan
-			# choosing for the best epsilon
-			pdf(file.path(dataDirectory, "test_clustering", "distance_graph.pdf"),
+			fileGraph <- "distance_graph.pdf"
+			pdf(file.path(dataDirectory, "test_clustering", fileGraph), 
 					width=width, height=height, onefile=onefile, ...)
-			.plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
+			p1 <- .plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
 					minNeighbours=minPts)
 			dev.off()
 			
-			pdf(file.path(dataDirectory, "test_clustering", "test_clustering.pdf"),
+			fileClust <- "test_clustering.pdf"
+			pdf(file.path(dataDirectory, "test_clustering", fileClust),
 					width=width, height=height, onefile=onefile, ...)
-			print(.plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
-							minNeighbours=minPts))
+			p2 <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
+							minNeighbours=minPts)
+			print(p2)
 			dev.off()
 			
 			message("Pictures of test clustering were exported.")
-			return(list(tSNE,
-							.plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
-									minNeighbours=minPts),
-							.plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
-									minNeighbours=minPts)))
-			
+			return(list(tSNE, p1, p2))
 		})
 
 
@@ -365,56 +388,49 @@ setMethod(
 ##################
 
 setMethod(
-		f="addClusteringManually",
-		signature="scRNAseq",
-		definition=function(theObject,
-				fileName,
-				columnName = "clusters"){
-			
-			errors <- character()
+		
+		f = "addClusteringManually",
+		
+		signature = "scRNAseq",
+		
+		definition = function(theObject, fileName, columnName = "clusters"){
 			
 			## Check if the Object is valid
 			validObject(theObject)
 			
 			## Check if the normalized matrix is correct
 			sceObject  <- getSceNorm(theObject)
-			if (all(dim(sceObject) == c(0,0))){
-				msg <- paste("The 'scRNAseq' object that you're using with ",
-						"'clusterCellsInternal' function doesn't have ",
-						"its 'sceNorm' slot updated.\n",
-						"Please use 'normaliseCountMatrix' on the object ",
-						"before.\n",
-						sep="")
-				errors <- c(errors, msg)
-			}
 			
-			## Return the errors if they exist
-			if (length(errors) > 0) return(stop(errors))
+			if (all(dim(sceObject) == c(0,0)))
+				stop("The 'scRNAseq' object that you're using with ",
+						"'addClusteringManually' function doesn't have its ",
+						"'sceNorm' slot updated. Please use ",
+						"'normaliseCountMatrix' on the object before.")
 			
-			tableData <- read.table(file.path(dataDirectory,
-							"output_tables",
-							paste0(experimentName,
-									"_", fileName)), 
-					sep="\t")
+			!! not good use the slot !!
+			tableData <- read.table(file.path(dataDirectory, "output_tables",
+							paste0(experimentName, "_", fileName)), sep="\t")
 			
 			## Already check in validObject
 			dataDirectory  <- getOutputDirectory(theObject)
 			experimentName <- getExperimentName(theObject)
 			
-			colData <- SummarizedExperiment::colData(sceObject)
+			colDf <- SummarizedExperiment::colData(sceObject)
 			
-			if(all(rownames() %in% rownames(tableData))){
-				if(ncol(tableData) == 1){
-					colData$clusters <- factor(tableData[rownames(colData), ])
-				} else {
-					colData$clusters <-
-							factor(tableData[rownames(colData), ][ columnName])
-				}
+			if(all(rownames(colDf) %in% rownames(tableData))){
+				
+				if(isTRUE(all.equal(ncol(tableData), 1)))
+					colDf$clusters <- factor(tableData[rownames(colDf), ])
+				else
+					colDf$clusters <- factor(
+							tableData[rownames(colDf), ][ columnName])
+				
 				setSceNorm(theObject) <- sceObject
 				return(theObject)
 				
-			} else {
-				msg <- paste("Rownames in colData are not equal to rownames in",
+			}else{
+				
+				msg <- paste("Rownames in colDf are not equal to rownames in",
 						"table. Returning SCE object with cells intersecting ",
 						"with clusters_table.\n",
 						sep="")
@@ -426,8 +442,8 @@ setMethod(
 				tableData <- tableData[rownames(tableData) %in%
 								intersect(colnames(sceObject),
 										rownames(tableData)), ]
-				colData$clusters <- factor(
-						tableData[rownames(colData),][,columnName])
+				colDf$clusters <- factor(
+						tableData[rownames(colDf),][,columnName])
 				setSceNorm(theObject) <- sceObject
 				
 				return(theObject)
