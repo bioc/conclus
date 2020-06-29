@@ -326,7 +326,7 @@ scRNAseq <- setClass(
 		if(isTRUE(all.equal(nrow(clustersSimiliratyOrdered), 0)) &&
 				isTRUE(all.equal(ncol(clustersSimiliratyOrdered), 0)))
 			stop("'clustersSimiliratyOrdered' is empty. It should be a matrix.")
-		browser()
+		
         if (all(!clustersSimiliratyOrdered %in% 
 						rownames(clustersSimilarityMatrix)))
 			stop("'clustersSimiliratyOrdered' slot should contain the same ",
