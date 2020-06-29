@@ -78,14 +78,6 @@ setMethod(
 
 
 setMethod(
-    f = "getClustersSimilarityMatrix",
-    signature = "scRNAseq",
-    definition = function(theObject){
-        return(theObject@clustersSimiliratyOrdered)
-    })
-
-
-setMethod(
 		f = "getClustersSimiliratyOrdered",
 		signature = "scRNAseq",
 		definition = function(theObject){
