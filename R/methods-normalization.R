@@ -2,7 +2,7 @@
 #' Filling the rowData
 #'
 #' This function returns a rowData with the same rownames as in countMatrix
-#' with annotations. Only genes with named with their ENSEMBL IDs or SYMBOL OD
+#' with annotations. Only genes having an ENSEMBL IDs or SYMBOL ID
 #' will receive the annotation. This function use \code{\link{bioMart}} and
 #' \code{\link{AnnotationDbi}} to retrieve annotations.
 #'
@@ -160,12 +160,13 @@
 
 
  # .createReportTable
- #' This function create a binary vector using to create the report table
- #' that will usefull to filer the cells
- #'
- #' According the columnName is a positive feature  or a negative feature,
+ #' This function creates a boolean vector that is used to filer the cells
+ #' (see .filterCells below).
+ #' 
+ #' @section Details:
+ #' Rather 'columnName' is a positive or a negative feature,
  #' the function applies a different threshold on the data.
- #' This threshold is used to create a binary vector that will be used to filter
+ #' This threshold is used to create a boolean vector that will be used to filter
  #' the cells. This function is used by .filterCells to create the report table.
  #'
  #' @param columnName Name of the column to calculate quantiles
@@ -176,7 +177,7 @@
  #' @import doParallel
  #' @keywords internal
  #'
- #' @return Returns a binary vector  corresponding
+ #' @return A boolean vector
  #' @noRd
 .createReportTable <- function(columnName, colData, mb, mw){
     quan <- quantile(colData[, colnames(colData) == columnName])
@@ -199,19 +200,20 @@
 
 
 # .filterCells
-#' This function removed insignificant cells for the analysis.
+#' This function removes not significant cells from the analysis.
 #'
-#' This function filters the cells by creating a report table then
-#' then use this table which cell is not informative for the analysis.
+#' This function filters the cells by creating a report table that is
+#' used to define which cell is informative or not.
 #'
-#' @param countMatrix Class matrix. It's the count matrix.
-#' @param genesSumThr Numeric representig a threshold ???????????????????????????????????
-#' @param MoreBetter Vector with the name of positive features in the colData
-#' reflecting the quality of cells. By default
-#' MoreBetter=c("genesNum", "sumCodPer", "genesSum")
-#' @param MoreWorse Vector with the name of negative features in the colData
-#' reflecting the quality of cells. By defaults,  MoreWorse=c("sumMtPer")
+#' @param countMatrix Matrix containing the transcripts counts.
 #' @param colData Data frame containing information about cells
+#' @param genesSumThr Threshold of the minimum nb of s that should be 
+#' significant
+#' @param MoreBetter Vector with the name of positive features in the colData
+#' reflecting the quality of cells. Default: c("genesNum", "sumCodPer", 
+#' "genesSum")
+#' @param MoreWorse Vector with the name of negative features in the colData
+#' reflecting the quality of cells. Default: "sumMtPer"
 #' @importFrom dplyr mutate
 #' @keywords internal
 #'
@@ -268,7 +270,7 @@
 # .fillGenesNumColumn
 #' This function counts the number of genes having read counts > 1 in a cell
 #'
-#' @param cell Line number of the cell that the genes have to be counted.
+#' @param cell Name of the cell considered in the sapply (see.
 #' @param coldata Data frame containing some informations about cells.
 #'
 #' @keywords internal
@@ -283,9 +285,9 @@
 
 
 # .fillOneUmmiColumn
-# This function fills the OneUMiColumn of the report table for one cell.
+#' This function fills the OneUMiColumn of the report table for one cell.
 #'
-#' @param cell Cell to tou count
+#' @param cell Cell to count
 #' @param coldata  Data frame containing informations about cells
 #'
 #' @keywords internal
@@ -302,9 +304,8 @@
 #' This function creates colData or add columns mtGenes, genesNum, codGenes,
 #' genesSum, codSum, mtPer, codPer, sumMtPer, sumCodPer to the existing colData.
 #'
-#'
 #' @param countMatrix The count matrix.
-#' @param rowdataDF  Optionnal. Data frame containing informations about genes.
+#' @param rowdataDF  Data frame containing informations about genes.
 #' @param coldataDF  Optionnal. Data frame containing information about cells.
 #' @importFrom  dplyr mutate
 #' @keywords internal
@@ -413,11 +414,11 @@
 }
 
 
-#' normaliseCountMatrix() (Conclus class)
+#' normaliseCountMatrix()
 #'
-#' This function uses coldata (cells informations)
-#' and rowdata (genes informations) to filters the count matrix. Then normalizes
-#' it by using deconvolution with size factors method.
+#' This function uses coldata (cells informations) and rowdata (genes 
+#' informations) to filter the count matrix. It also normalizes by using 
+#' deconvolution with size factors.
 #'
 #' @param theObject Object of class Conclus
 #' @param sizes  Vector of size factors from scran::computeSumFactors() function.
@@ -431,16 +432,37 @@
 #'  be applied. It usually improves the normalization for medium-size count
 #'  matrices. However, it is not recommended for datasets with less than 200
 #'  cells and may take too long for datasets with more than 10000 cells.
-#' @aliases normaliseCountMatrix normalizeCountMatrix
-#' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH
-#'         and Nicolas DESCOSTES.
+#' @aliases normaliseCountMatrix
+#' @details
+#' This function uses the normalization method of the scater package. For more
+#' details about the normalization used see ?scater::normalize. The size factors
+#'  used in the normalization are calculated with scran::computeSumFactors.
+#' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
+#' DESCOSTES.
 #' @rdname normaliseCountMatrix-scRNAseq
 #' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scater logNormCounts
-#' @return Returns the Conclus object with the SCEnorm slot filled. It's an
-#' SingleCellExperiment object containin the count matrix normalized, and also
-#' the colData (table with cells informations) and the rowData (table with the
-#' genes informations).
+#' @return Returns a scRNASeq object with its SCEnorm slot updated. This slot
+#' contains a SingleCellExperiment object having the normalized count matrix,
+#' the colData (table with cells informations), and the rowData (table with the
+#' genes informations). See ?SingleCellExperiment for more details.
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- matrix(sample(seq_len(40), size=4000, replace = TRUE), 
+#' nrow=20, ncol=200)
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' @exportMethod 
+ 
 setMethod(
 		
     f = "normaliseCountMatrix",
