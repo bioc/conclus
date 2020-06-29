@@ -86,6 +86,14 @@ setMethod(
 
 
 setMethod(
+		f = "getClustersSimiliratyOrdered",
+		signature = "scRNAseq",
+		definition = function(theObject){
+			return(theObject@clustersSimiliratyOrdered)
+		})
+
+
+setMethod(
     f = "getMarkerGenesList",
     signature = "scRNAseq",
     definition = function(theObject){
