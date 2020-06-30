@@ -54,6 +54,15 @@
 	## Check randomSeed argument
 	if(!is.numeric(randomSeed))
 		stop("'randomSeed' parameter should be an integer.")
+	
+	## Check number of elements
+	if(!isTRUE(all.equal(length(dbscanEpsilon),1)) || 
+			!isTRUE(all.equal(length(minPts),1)) ||
+			!isTRUE(all.equal(length(perplexities), 1)) ||
+			!isTRUE(all.equal(length(PCs), 1)) ||
+			!isTRUE(all.equal(length(randomSeed), 1)))
+		stop("dbscanEpsilon, minPts, perplexities, PCs, and randomSeed ",
+				"should be a single value.")
 }
 
 
@@ -121,22 +130,29 @@
 #' whether the chosen parameters of tSNE and dbscan are suitable for your data.
 #'
 #' @usage 
-#' testClustering(theObject, dbscanEpsilon=1.4, minPts=5, perplexities=c(30), 
-#' PCs=c(4), randomSeed=42, width=7, height=7, cores=1, writeOutput=FALSE, ...)
+#' testClustering(theObject, dbscanEpsilon=1.4, minPts=5, perplexities=30, 
+#' PCs=4, randomSeed=42, width=7, height=7, cores=1, writeOutput=FALSE, ...)
 #' 
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
-#' @param randomSeed  Default is 42. Seeds used to generate the tSNE.
-#' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
-#' Default is 1.
+#' @param dbscanEpsilon Reachability distance parameter of fpc::dbscan() function. 
+#' Default = 1.4. See ?runDBSCAN for more details.
+#' @param minPoints Reachability minimum no. of points parameter of 
+#' fpc::dbscan() function. Default = 5. See ?runDBSCAN for more details. 
+#' @param perplexities A single value or vector of perplexity (t-SNE parameter). 
+#' Default = 30. See ?generateTSNECoordinates for details.
 #' @param PCs Vector of first principal components. For example, to take ranges 
 #' 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
-#' @param perplexities A vector of perplexity (t-SNE parameter). See details. 
-#' Default = c(30, 40)
-#' @param writeOutput If TRUE, write the tsne parameters to the output directory
-#'  defined in theObject. Default = FALSE.
+#' @param randomSeed  Default is 42. Seeds used to generate the tSNE.
+#' @param width
+#' @param height
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
+#' Default is 1.
+#' @param writeOutput If TRUE, write the results of the test to the output 
+#' directory defined in theObject in the sub-directory 'test_clustering'. 
+#' Default = FALSE.
 #' 
-#' @aliases generateTSNECoordinates
+#' @aliases testClustering
 #' 
 #' @details
 #' Generates an object of fourteen (by default) tables with tSNE coordinates. 
@@ -192,7 +208,7 @@ setMethod(
 		signature="scRNAseq",
 		
 		definition=function(theObject, dbscanEpsilon=1.4, minPts=5, 
-				perplexities=c(30), PCs=c(4), randomSeed=42, width=7, height=7,
+				perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
 				cores=1, writeOutput=FALSE, ...){
 			
 			validObject(theObject)
