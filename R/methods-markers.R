@@ -387,7 +387,8 @@ setMethod(
 #'  - go_id: Gene Ontology (GO) identification number.
 #'  - mgi_description: If the species is mouse, description of the gene on MGI.
 #'  - entrezgene_description: Description of the gene by Entrez database.
-#'  - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified non-coding RNA gene, or pseudogene.
+#'  - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified 
+#' non-coding RNA gene, or pseudogene.
 #'  - chromosome_name: The chromosome on which the gene is located.
 #'  - Symbol: Official gene symbol.
 #'  - ensembl_gene_id: ID of the gene on the ensembl database.
@@ -463,7 +464,8 @@ setMethod(
 			genes <- getClustersMarkers(theObject)
 			databaseDict <- c(mouse = "mmusculus_gene_ensembl",
 					human = "hsapiens_gene_ensembl")
-			.checkParamsretrieveGenesInfo(orderGenes, genes, species, databaseDict)
+			.checkParamsretrieveGenesInfo(orderGenes, genes, species, 
+					databaseDict)
 			
 			## Additional Special database and columns according to species
 			if(isTRUE(all.equal(species, "mouse"))){
@@ -482,22 +484,27 @@ setMethod(
 			## Query biomart
 			database <- merge(x = .returnDB1(genes, ensembl), 
 					y = .returnDB2(genes, ensembl),  
-					by = c("uniprot_gn_symbol", "external_gene_name"), all.x = TRUE)
+					by = c("uniprot_gn_symbol", "external_gene_name"), 
+					all.x = TRUE)
 			
 			
 			## Group the GO id and the uniprot Id
 			options(dplyr.summarise.inform = FALSE)
-			database <- database %>% group_by(uniprot_gn_symbol, chromosome_name,
-							entrezgene_description) %>% summarise(
-							go_id = paste(unique(go_id), collapse=', '),
-							uniprot_gn_id = paste(unique(uniprot_gn_id), collapse=', '),
-							description = paste(unique(description), collapse=', '),
-							external_gene_name = paste(unique(external_gene_name),
+			database <- database %>% group_by(uniprot_gn_symbol, 
+							chromosome_name, entrezgene_description) %>% 
+					summarise(go_id = paste(unique(go_id), collapse=', '),
+							uniprot_gn_id = paste(unique(uniprot_gn_id), 
 									collapse=', '),
-							gene_biotype = paste(unique(gene_biotype), collapse=', '),
+							description = paste(unique(description), 
+									collapse=', '),
+							external_gene_name = paste(
+									unique(external_gene_name), collapse=', '),
+							gene_biotype = paste(unique(gene_biotype), 
+									collapse=', '),
 							ensembl_gene_id = paste(unique(ensembl_gene_id), 
 									collapse=', '),
-							entrezgene_id = paste(unique(entrezgene_id), collapse=', '),
+							entrezgene_id = paste(unique(entrezgene_id), 
+									collapse=', '),
 					)
 			
 			
@@ -516,24 +523,27 @@ setMethod(
 			
 			
 			
-			## Merge the second column, the first already existing in the first table
+			## Merge the second column, the first already existing in the first 
+			## table
 			if(!is.null(spDB))
-				database <- merge(x = database, y = spDB, by = c("uniprot_gn_symbol", 
-								"external_gene_name"), all.x = TRUE)
+				database <- merge(x = database, y = spDB, by = 
+								c("uniprot_gn_symbol", "external_gene_name"), 
+						all.x = TRUE)
 			
 			## Add cluster column
-			database <- merge(x = database, y = genes, by.x = "uniprot_gn_symbol", 
-					by.y = "geneName", all.x = TRUE)
+			database <- merge(x = database, y = genes, 
+					by.x = "uniprot_gn_symbol",  by.y = "geneName", 
+					all.x = TRUE)
 			
 			## Add Symbol column
 			database <- cbind(database, Symbol = database$uniprot_gn_symbol)
 			
 			
 			## Order the data frames colums to be abe to bind them
-			colnamesOrder <- c("uniprot_gn_symbol", "clusters", "external_gene_name",
-					"go_id", speDBdescription, "entrezgene_description",
-					"gene_biotype", "chromosome_name", "Symbol", 
-					"ensembl_gene_id", speDbID, "entrezgene_id", 
+			colnamesOrder <- c("uniprot_gn_symbol", "clusters", 
+					"external_gene_name", "go_id", speDBdescription, 
+					"entrezgene_description", "gene_biotype", "chromosome_name",
+					"Symbol", "ensembl_gene_id", speDbID, "entrezgene_id", 
 					"uniprot_gn_id")
 			
 			result  <- database[, colnamesOrder]
