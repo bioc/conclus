@@ -18,9 +18,8 @@ setGeneric(
 		
 	name = "testClustering",
 		
-	def = function(theObject, dbscanEpsilon=1.4, minPts=5, 
-				perplexities=c(30), PCs=c(4), randomSeed=42, width=7, height=7,
-				onefile=FALSE, ...){
+	def = function(theObject, dbscanEpsilon=1.4, minPts=5, perplexities=c(30), 
+			PCs=c(4), randomSeed=42, width=7, height=7, onefile=FALSE, ...){
 			standardGenericic("testClustering")    
     },
     signature="theObject")
@@ -90,10 +89,9 @@ setGeneric(
 		
 	name = "plotCellSimilarity",
 		
-	def = function(theObject, colorPalette="default", 
-				statePalette="default", clusteringMethod="ward.D2",
-				orderClusters=FALSE, plotPDF=TRUE, returnPlot=FALSE, width=7, 
-				height=6, ...){
+	def = function(theObject, colorPalette="default", statePalette="default", 
+			clusteringMethod="ward.D2", orderClusters=FALSE, plotPDF=TRUE, 
+			returnPlot=FALSE, width=7, height=6, ...){
 		standardGeneric("plotCellSimilarity")    
     },
     signature="theObject")
@@ -119,7 +117,7 @@ setGeneric(
 		
 	name = "plotCellHeatmap",
 		
-	def = function(theObject, fileName, meanCentered=TRUE, 
+	def = function(theObject, fileName, meanCentered=TRUE,  
 				colorPalette="default", statePalette="default", 
 				clusteringMethod="ward.D2", orderClusters=FALSE, 
 				similarity=FALSE, orderGenes=FALSE, returnPlot=FALSE,
@@ -148,9 +146,9 @@ setGeneric(
 		
 	name = "plotClustersSimilarity",
 		
-	def = function(theObject, colorPalette="default", 
-				statePalette="default", clusteringMethod="ward.D2", 
-				returnPlot=FALSE, width=7, height=5.5, ...){
+	def = function(theObject, colorPalette="default", statePalette="default", 
+			clusteringMethod="ward.D2", returnPlot=FALSE, width=7, height=5.5, 
+			...){
 		standardGeneric("plotClustersSimilarity")    
     },
     signature="theObject")
@@ -183,10 +181,10 @@ setGeneric(
 
 
 setGeneric(
-    name="bestClustersMarkers",
-    def=function(theObject,
-                 genesNumber=10,
-                 removeDuplicates = TRUE){
+		
+    name =  "bestClustersMarkers",
+	
+    def = function(theObject, genesNumber=10, removeDuplicates = TRUE){
         standardGeneric("bestClustersMarkers")
     },
     signature="theObject")
@@ -194,12 +192,11 @@ setGeneric(
 
 
 setGeneric(
-    name="retrieveGenesInfos",
-    def=function(theObject,
-                 groupBy="clusters",
-                 orderGenes="initial",
-                 getUniprot=TRUE,
-                 cores=1){
+		
+    name = "retrieveGenesInfos",
+	
+    def = function(theObject, groupBy="clusters", orderGenes="initial", 
+			getUniprot=TRUE, cores=1){
         standardGeneric("getGenesInfos")
     },
     signature="theObject")
@@ -207,10 +204,10 @@ setGeneric(
 
 
 setGeneric(
+		
     name = "saveMarkersLists",
-    def = function(theObject,
-                   pattern = "genes.tsv",
-                   Ntop = 100) {
+	
+    def = function(theObject, pattern="genes.tsv", Ntop=100) {
         standardGeneric("saveMarkersLists")
     },
     signature = "theObject"
@@ -219,17 +216,12 @@ setGeneric(
 
 
 setGeneric(
+		
     name = "saveGenesInfos",
-    def = function(theObject,
-                   sep = ";",
-                   header = TRUE,
-                   startFromCluster = 1,
-                   groupBy = "clusters",
-                   # getGenesInfos params
-                   orderGenes = "initial",
-                   getUniprot = TRUE,
-                   silent = FALSE,
-                   cores = 1) {
+	
+    def = function(theObject, sep=";", header=TRUE, startFromCluster=1,
+			groupBy="clusters", orderGenes="initial", getUniprot=TRUE,
+			silent=FALSE, cores=1) {
         standardGeneric("saveGenesInfos")
     },
     signature = "theObject"
