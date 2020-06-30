@@ -66,11 +66,12 @@
 }
 
 
-.printTSNE <- function(writeOutput, dataDirectory, width, height, tSNE, ...){
+.printTSNE <- function(writeOutput, dataDirectory, width, height, tSNE, 
+		fileTSNE, ...){
 	
 	if(writeOutput){
 		message("Saving results tSNE.")
-		pdf(file.path(dataDirectory, "test_clustering", "test_tSNE.pdf"),
+		pdf(file.path(dataDirectory, "test_clustering", fileTSNE),
 				width=width, height=height, ...)
 		print(tSNE)
 		dev.off()
@@ -81,12 +82,11 @@
 
 
 .printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
-		dbscanEpsilon, minPts, ...){
+		dbscanEpsilon, minPts, fileDist, ...){
 	
 	if(writeOutput){
 		
 		message("Saving results distance graph.")
-		fileDist <- "distance_graph.pdf"
 		pdf(file.path(dataDirectory, "test_clustering", fileDist), 
 				width=width, height=height, ...)
 		.plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
@@ -103,7 +103,7 @@
 
 
 .printDBScan <- function(writeOutput, dataDirectory, width, height, tSNE, 
-		epsilon, minPts, ...){
+		epsilon, minPts, fileClust, ...){
 	
 	p <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
 			minNeighbours=minPts)
@@ -111,7 +111,6 @@
 	if(writeOutput){
 		
 		message("Saving dbscan results.")
-		fileClust <- "test_clustering.pdf"
 		pdf(file.path(dataDirectory, "test_clustering", fileClust),
 				width=width, height=height, ...)
 		print(p)
@@ -151,6 +150,11 @@
 #' @param writeOutput If TRUE, write the results of the test to the output 
 #' directory defined in theObject in the sub-directory 'test_clustering'. 
 #' Default = FALSE.
+#' @param fileTSNE Name of the pdf file for tSNE. Default="test_tSNE.pdf".
+#' @param fileDist Name of the pdf file for NN distance. 
+#' Default="distance_graph.pdf"
+#' @param fileClust Name of the pdf file for dbscan. 
+#' Default="test_clustering.pdf"
 #' 
 #' @aliases testClustering
 #' 
@@ -209,7 +213,9 @@ setMethod(
 		
 		definition=function(theObject, dbscanEpsilon=1.4, minPts=5, 
 				perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
-				cores=1, writeOutput=FALSE, ...){
+				cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf", 
+				fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
+				...){
 			
 			validObject(theObject)
 			
@@ -232,13 +238,14 @@ setMethod(
 			tSNE <- .getTSNEresults(theObject, Biobase::exprs(sceObject),
 					cores=cores, PCs=PCs, perplexities=perplexities, 
 					randomSeed=randomSeed)
-			.printTSNE(writeOutput, dataDirectory, width, height, tSNE, ...)
+			.printTSNE(writeOutput, dataDirectory, width, height, tSNE, 
+					fileTSNE, ...)
 			
 			## 2. Clustering with dbscan
 			.printDist(writeOutput, dataDirectory, width, height, tSNE,
-					dbscanEpsilon, minPts, ...)
+					dbscanEpsilon, minPts, fileDist, ...)
 			.printDBScan(writeOutput, dataDirectory, width, height, tSNE, 
-					epsilon, minPts, ...)
+					epsilon, minPts, fileClust, ...)
 		})
 
 
