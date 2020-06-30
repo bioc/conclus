@@ -591,9 +591,22 @@ setMethod(
 ##################
 
 
-### This function returns a matrix with "protocells" representing clusters.
-### Values show how much two "protocells" are similar.
-### 1 if clusters are perfectly similar, 0 if totally different.
+#' .computeClusMat
+#'
+#' @description 
+#' This function returns a matrix with "protocells" representing clusters.
+#' Values show how much two "protocells" are similar. 1 if clusters are 
+#' perfectly similar, 0 if totally different. It is based on the median.
+#'
+#' @param clustersNames Names of the different clusters typically of the form 
+#' clusterX with X being the cluster number.
+#' @param mat Matrix containing the cells similarity or the clusters median.
+#' @param clusters The different clusters for each cell given by 
+#' SummarizedExperiment::colData(sceObject)$clusters
+#' 
+#' @keywords internal
+#' @return A median matrix.
+#' @noRd
 
 .computeClusMat <- function(clustersNames, mat, clusters){
 	
@@ -607,6 +620,20 @@ setMethod(
 	return(medMat)
 }
 
+#' .mkSimMed
+#'
+#' @description 
+#' Generate the clusters similarity matrix.
+#'
+#' @param simMat The cellsSimilarityMatrix.
+#' @param clusters The different clusters for each cell given by 
+#' SummarizedExperiment::colData(sceObject)$clusters
+#' @param clustersNames Names of the different clusters typically of the form 
+#' clusterX with X being the cluster number. 
+#' 
+#' @keywords internal
+#' @return A similarity matrix
+#' @noRd
 
 .mkSimMed <- function(simMat, clusters, clustersNames){
 	
@@ -654,6 +681,68 @@ setMethod(
 }
 
 
+#' calculateClustersSimilarity
+#'
+#' @description 
+#' Having computed cells similarity, pools information into clusters.
+#'
+#' @usage 
+#' calculateClustersSimilarity(theObject, clusteringMethod = "ward.D2")
+#' 
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), and cells were
+#' clustered (see ?clusterCellsInternal).
+#' @param clusteringMethod Clustering method passed to hclust() function. See 
+#' ?hclust for a list of method. Default = "ward.D2".
+#' 
+#' @aliases calculateClustersSimilarity
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' calculateClustersSimilarity-scRNAseq
+#' 
+#' @return 
+#' An object of class scRNASeq with its clustersSimilarityMatrix and
+#' clustersSimiliratyOrdered slots updated. 
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' @seealso
+#' plotClustersSimilarity 
+#' 
+#' @exportMethod
+#' @importFrom SummarizedExperiment colData
+
 setMethod(
 		
 		f = "calculateClustersSimilarity",
@@ -676,8 +765,8 @@ setMethod(
 			clustersNames <- levels(clusters)
 			
 			## Calculating cluster similarity.
-			clustersSimilarityMatrix <- .mkSimMed(as.matrix(cellsSimilarityMatrix), 
-					clusters, clustersNames)
+			clustersSimilarityMatrix <- .mkSimMed(
+					as.matrix(cellsSimilarityMatrix), clusters, clustersNames)
 			
 			## Plotting matrix
 			distanceMatrix <- as.dist(sqrt((1 - clustersSimilarityMatrix)/2))
@@ -699,6 +788,8 @@ setMethod(
 ## addClusteringManually
 ##################
 
+## !!!!!!!!!!!!! NOT DONE
+
 setMethod(
 		
 		f = "addClusteringManually",
@@ -719,7 +810,7 @@ setMethod(
 						"'sceNorm' slot updated. Please use ",
 						"'normaliseCountMatrix' on the object before.")
 			
-			!! not good use the slot !!
+			#!! not good use the slot !!
 			tableData <- read.table(file.path(dataDirectory, "output_tables",
 							paste0(experimentName, "_", fileName)), sep="\t")
 			
