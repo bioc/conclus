@@ -69,6 +69,7 @@ scr <- scRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 sceNorm <- getSceNorm(scrNorm)
 
+
 ## Performing tSNE
 
 scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
@@ -954,10 +955,46 @@ test_that("exportResults works properly", {
     ## Test with incorrect saveClusteringResults
     expM <- paste0("saveClusteringResults should be a boolean.")
     expect_error(exportResults(scrFinal, saveClusteringResults="str1" ), expM)
-<<<<<<< HEAD
-=======
 
 })
->>>>>>> 9fe790e51028f2dcb3cd05599c60ab155cb78cbc
 
-})
+##################################  testClustering  ###########################
+	
+test_that("testClustering works properly", {
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'testClustering' method doesn't have its 'sceNorm' slot ",
+					"updated. Please use 'normaliseCountMatrix' on the object",
+					" before.")
+			expect_error(testClustering(scr), expM)
+			
+			expM <- "'dbscanEpsilon' parameter should be an integer."
+			expect_error(testClustering(scrNorm, dbscanEpsilon="test"), 
+					expM)
+			
+			expM <- "'minPts' parameter should be an integer"
+			expect_error(testClustering(scrNorm, dbscanEpsilon=1.4, 
+							minPts="test"), expM)
+			
+			expM <- paste0("'perplexities' parameter should be a vector of ",
+					"numeric.")
+			expect_error(testClustering(scrNorm, dbscanEpsilon=1.4, 
+							minPts=5, perplexities="test"), expM)
+			
+			expM <- "'PCs' parameter should be a vector of numeric."
+			expect_error(testClustering(scrNorm, dbscanEpsilon=1.4, 
+							minPts=5, perplexities=30, PCs="test"), expM)
+			
+			expM <- "'randomSeed' parameter should be an integer."
+			expect_error(testClustering(scrNorm, dbscanEpsilon=1.4, 
+							minPts=5, perplexities=30, PCs=4, 
+							randomSeed="test"), expM)
+		})
+				
+	
+	
+	
+	
+	
+	
+	
