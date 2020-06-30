@@ -194,12 +194,11 @@ setGeneric(
 
 
 setGeneric(
-    name="getGenesInfos",
+    name="retrieveGenesInfos",
     def=function(theObject,
                  groupBy="clusters",
                  orderGenes="initial",
                  getUniprot=TRUE,
-                 silent=FALSE,
                  cores=1){
         standardGeneric("getGenesInfos")
     },
