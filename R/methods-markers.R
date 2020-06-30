@@ -350,6 +350,81 @@ setMethod(
 	return(db2)
 }
 
+
+
+#' retrieveGenesInfo
+#'
+#' @description 
+#' This method retrieve information about the marker genes of each cluster 
+#' querying the Ensembl database with biomaRt.
+#'
+#' @usage 
+#' retrieveGenesInfo(theObject, species, groupBy="clusters", 
+#' orderGenes="initial", getUniprot=TRUE, cores=1)
+#' 
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
+#' @param species Allowed values are 'human' and 'mouse'.
+#' @param groupBy A column in the input table used for grouping the genes in 
+#' the output tables. This option is useful if a table contains genes from 
+#' different clusters. Default = "clusters".
+#' @param orderGenes If "initial" then the order of genes will not be changed. 
+#' The other option is "alphabetical". Default = "initial".
+#' @param getUniprot Boolean, whether to get information from UniProt or not. 
+#' Default = TRUE.
+#' @param cores
+#' 
+#' @aliases calculateClustersSimilarity
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' calculateClustersSimilarity-scRNAseq
+#' 
+#' @return 
+#' An object of class scRNASeq with its clustersSimilarityMatrix and
+#' clustersSimiliratyOrdered slots updated. 
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' @seealso
+#' plotClustersSimilarity 
+#' 
+#' @exportMethod
+#' @importFrom SummarizedExperiment colData
+
+
 setMethod(
 		
 		f = "retrieveGenesInfo",
@@ -357,7 +432,7 @@ setMethod(
 		signature = "scRNAseq",
 		
 		definition = function(theObject, species, groupBy="clusters", 
-				orderGenes="initial", getUniprot=TRUE, silent=FALSE, cores=1){
+				orderGenes="initial", getUniprot=TRUE, cores=1){
 			
 			genes <- getClustersMarkers(theObject)
 			databaseDict <- c(mouse = "mmusculus_gene_ensembl",
