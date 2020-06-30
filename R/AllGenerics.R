@@ -184,7 +184,7 @@ setGeneric(
 		
     name =  "bestClustersMarkers",
 	
-    def = function(theObject, genesNumber=10, removeDuplicates = TRUE){
+    def = function(theObject, nTop=10, removeDuplicates = TRUE){
         standardGeneric("bestClustersMarkers")
     },
     signature="theObject")
