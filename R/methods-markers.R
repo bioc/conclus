@@ -379,7 +379,21 @@ setMethod(
 #' Default is 1.
 #' 
 #' @details 
-#' 
+#' The output dataframe is composed of the following columns:
+#'   
+#'  - uniprot_gn_symbol: Uniprot gene symbol.
+#'  - clusters: The cluster to which the gene is associated.
+#'  - external_gene_name: The complete gene name.
+#'  - go_id: Gene Ontology (GO) identification number.
+#'  - mgi_description: If the species is mouse, description of the gene on MGI.
+#'  - entrezgene_description: Description of the gene by Entrez database.
+#'  - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified non-coding RNA gene, or pseudogene.
+#'  - chromosome_name: The chromosome on which the gene is located.
+#'  - Symbol: Official gene symbol.
+#'  - ensembl_gene_id: ID of the gene on the ensembl database.
+#'  - mgi_id: If the species is mouse, ID of the gene on the MGI database.
+#'  - entrezgene_id: ID of the gene on the entrez database.
+#'  - uniprot_gn_id: ID of the gene on the uniprot database.
 #' 
 #' @aliases retrieveGenesInfo
 #'  
