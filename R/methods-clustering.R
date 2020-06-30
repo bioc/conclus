@@ -455,6 +455,74 @@ setMethod(
 }
 
 
+
+#' clusterCellsInternal
+#'
+#' @description 
+#' Returns consensus clusters by using hierarchical clustering on the similarity
+#'  matrix of cells.
+#'
+#' @usage 
+#' clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=1,
+#' 				clusteringMethod="ward.D2")
+#' 
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), and dbScan was run (see ?runDBSCAN), 
+#' @param clusterNumber Exact number of cluster. Default = 0 that will determine
+#' the number of clusters automatically.
+#' @param deepSplit Intuitive level of clustering depth. Options are 1, 2, 3, 4.
+#'  Default = 4
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
+#' Default is 1.
+#' @param clusteringMethod Clustering method passed to hclust() function. See 
+#' ?hclust for a list of method. Default = "ward.D2".
+#' 
+#' @aliases clusterCellsInternal
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' clusterCellsInternal-scRNAseq
+#' 
+#' @return 
+#' An object of class scRNASeq with its cellsSimilarityMatrix and sceNorm slots 
+#' updated. 
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' @seealso
+#' plotCellSimilarity 
+#' 
+#' @exportMethod
+#' @importFrom SummarizedExperiment colData
+
+
 setMethod(
 		
 		f = "clusterCellsInternal",
@@ -470,8 +538,8 @@ setMethod(
 			sceObject  <- getSceNorm(theObject)
 			dbscanList <- getDbscanList(theObject)
 			
-			.checkParamsInternal(sceObject, dbscanList, clusterNumber, deepSplit, 
-					cores, clusteringMethod)
+			.checkParamsInternal(sceObject, dbscanList, clusterNumber, 
+					deepSplit, cores, clusteringMethod)
 			
 			message("Calculating cells similarity matrix.")
 			cellsSimilarityMatrix <- .mkSimMat(dbscanList, cores=cores)
@@ -488,11 +556,13 @@ setMethod(
 								verbose=0,
 								deepSplit=deepSplit))
 			} else {
-				message(paste0("Assigning cells to ", clusterNumber, " clusters."))
+				message(paste0("Assigning cells to ", clusterNumber, 
+								" clusters."))
 				clusters <- cutree(clusteringTree, k=clusterNumber)
 			}
 			
-			SummarizedExperiment::colData(sceObject)$clusters <- factor(clusters)
+			SummarizedExperiment::colData(sceObject)$clusters <- 
+					factor(clusters)
 			
 			setCellsSimilarityMatrix(theObject) <- cellsSimilarityMatrix
 			setSceNorm(theObject) <- sceObject
