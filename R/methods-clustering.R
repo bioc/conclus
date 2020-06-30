@@ -134,17 +134,17 @@
 #' 
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
-#' @param dbscanEpsilon Reachability distance parameter of fpc::dbscan() function. 
+#' @param dbscanEpsilon Single value for the distance parameter of dbscan. 
 #' Default = 1.4. See ?runDBSCAN for more details.
-#' @param minPoints Reachability minimum no. of points parameter of 
-#' fpc::dbscan() function. Default = 5. See ?runDBSCAN for more details. 
-#' @param perplexities A single value or vector of perplexity (t-SNE parameter). 
+#' @param minPoints Single value for the minimum no. of points parameter of 
+#' dbscan. Default = 5. See ?runDBSCAN for more details. 
+#' @param perplexities A single value of perplexity (t-SNE parameter). 
 #' Default = 30. See ?generateTSNECoordinates for details.
-#' @param PCs Vector of first principal components. For example, to take ranges 
-#' 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' @param PCs Single value of first principal components. Default=4. See 
+#' ?generateTSNECoordinates for details.
 #' @param randomSeed  Default is 42. Seeds used to generate the tSNE.
-#' @param width
-#' @param height
+#' @param width Width of the pdf file. Default=7. See ?pdf for details.
+#' @param height Height of the pdf file. Default=7. See ?pdf for details.
 #' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
 #' Default is 1.
 #' @param writeOutput If TRUE, write the results of the test to the output 
@@ -159,32 +159,29 @@
 #' @aliases testClustering
 #' 
 #' @details
-#' Generates an object of fourteen (by default) tables with tSNE coordinates. 
-#' Fourteen because it will vary seven values of principal components 
-#' *PCs=c(4, 6, 8, 10, 20, 40, 50)* and two values of perplexity 
-#' *perplexities=c(30, 40)* in all possible combinations. The chosen values of 
-#' PCs and perplexities can be changed if necessary. We found that this 
-#' combination works well for sc-RNA-seq datasets with 400-2000 cells. If you 
-#' have 4000-9000 cells and expect more than 15 clusters, we recommend to take 
-#' more first PCs and higher perplexity, for example, 
-#' *PCs=c(8, 10, 20, 40, 50, 80, 100)* and *perplexities=c(200, 240)*. For 
-#' details about perplexities parameter see ‘?Rtsne’.
+#' The TestClustering function runs one clustering round out of the 84 (default)
+#'  rounds that CONCLUS normally performs. This step can be useful to determine 
+#' if the default DBSCAN parameters are suitable for your dataset. By default, 
+#' they are dbscanEpsilon = c(1.3, 1.4, 1.5) and minPts = c(3,4). If the dashed 
+#' horizontal line in the k-NN distance plot lays on the “knee” of the curve, 
+#' it means that optimal epsilon is equal to the intersection of the line to the
+#'  y-axis. In our example, optimal epsilon is 1.4 for 5-NN distance where 5 
+#' corresponds to MinPts.
+#' 
+#' In the "test_clustering" folder under outputDirectory, the three plots will 
+#' be saved where one corresponds to the “distance_graph.pdf”, another one to 
+#' “test_tSNE.pdf”, and the last one will be saved as “test_clustering.pdf”.
 #' 
 #' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' Ilyess RACHEDI, based on code by Konstantin CHUKREV and Nicolas DESCOSTES.
 #' 
 #' @rdname 
-#' generateTSNECoordinates-scRNAseq
-#' 
-#' @return 
-#' An object of class scRNASeq with its tSNEList slot updated. Also writes 
-#' coordinates in "dataDirectory/tsnes" subfolder if the parameter writeOutput 
-#' is TRUE.
+#' testClustering-scRNAseq
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
-#' countMatrix <- matrix(sample(seq_len(40), size=4000, replace = TRUE), 
-#' nrow=20, ncol=200)
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
 #' file.path("extdata/Bergiers_colData_filtered.tsv"))
@@ -198,11 +195,14 @@
 #' ## Normalize and filter the raw counts matrix
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #' 
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' ## Test the clustering with default parameters (dbscanEpsilon=1.4, minPts=5)
+#' testClustering(scrNorm)
+#' 
+#' ## Test the clustering writing pdfs to test_clustering folder
+#' testClustering(scrNorm, writeOutput=TRUE)
 #' 
 #' @seealso
-#' normaliseCountMatrix
+#' normaliseCountMatrix runDBSCAN
 #' 
 #' @exportMethod
 setMethod(
