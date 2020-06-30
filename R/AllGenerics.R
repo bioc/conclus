@@ -193,11 +193,11 @@ setGeneric(
 
 setGeneric(
 		
-    name = "retrieveGenesInfos",
+    name = "retrieveGenesInfo",
 	
     def = function(theObject, groupBy="clusters", orderGenes="initial", 
 			getUniprot=TRUE, cores=1){
-        standardGeneric("retrieveGenesInfos")
+        standardGeneric("retrieveGenesInfo")
     },
     signature="theObject")
 
