@@ -349,11 +349,25 @@ setMethod(
 ## clusterCellsInternal
 ##################
 
-
-## This function calculates how many time a pair of cells were assigned to
-## a cluster by dbscan.
-
-.mkSimMat <- function(dbscanList, cores=14){
+#' .mkSimMat
+#'
+#' @description 
+#' This function calculates how many time a pair of cells were assigned to
+#' a cluster by dbscan.
+#'
+#' @param dbscanList List of dbscan results given by ?getDbscanList. 
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
+#' Default is 1.
+#' 
+#' @keywords internal
+#' 
+#' @importFrom parallel makeCluster
+#' @importFrom parallel stopCluster
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach foreach
+#' @return A cell similarity matrix
+#' @noRd
+.mkSimMat <- function(dbscanList, cores){
 	
 	## This foreach gives, for each dbscan result, a matrix containing 1 and
 	## 0. 1 means that a pair of cells was allocated to one cluster, 
