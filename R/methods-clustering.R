@@ -57,13 +57,12 @@
 }
 
 
-.printTSNE <- function(writeOutput, dataDirectory, width, height, onefile, tSNE, 
-		...){
+.printTSNE <- function(writeOutput, dataDirectory, width, height, tSNE, ...){
 	
 	if(writeOutput){
 		message("Saving results tSNE.")
 		pdf(file.path(dataDirectory, "test_clustering", "test_tSNE.pdf"),
-				width=width, height=height, onefile=onefile, ...)
+				width=width, height=height, ...)
 		print(tSNE)
 		dev.off()
 	}else
@@ -72,7 +71,7 @@
 }
 
 
-.printDist <- function(writeOutput, dataDirectory, width, height, onefile, tSNE,
+.printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
 		dbscanEpsilon, minPts, ...){
 	
 	if(writeOutput){
@@ -80,7 +79,7 @@
 		message("Saving results distance graph.")
 		fileDist <- "distance_graph.pdf"
 		pdf(file.path(dataDirectory, "test_clustering", fileDist), 
-				width=width, height=height, onefile=onefile, ...)
+				width=width, height=height, ...)
 		.plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
 				minNeighbours=minPts)
 		dev.off()
@@ -94,8 +93,8 @@
 }
 
 
-.printDBScan <- function(writeOutput, dataDirectory, width, height, onefile, 
-		tSNE, epsilon, minPts, ...){
+.printDBScan <- function(writeOutput, dataDirectory, width, height, tSNE, 
+		epsilon, minPts, ...){
 	
 	p <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
 			minNeighbours=minPts)
@@ -105,7 +104,7 @@
 		message("Saving dbscan results.")
 		fileClust <- "test_clustering.pdf"
 		pdf(file.path(dataDirectory, "test_clustering", fileClust),
-				width=width, height=height, onefile=onefile, ...)
+				width=width, height=height, ...)
 		print(p)
 		dev.off()
 	}else{
@@ -115,7 +114,77 @@
 }	
 
 
-
+#' testClustering
+#'
+#' @description 
+#' This function generates a single clustering iteration of CONCLUS to check 
+#' whether the chosen parameters of tSNE and dbscan are suitable for your data.
+#'
+#' @usage 
+#' testClustering(theObject, dbscanEpsilon=1.4, minPts=5, perplexities=c(30), 
+#' PCs=c(4), randomSeed=42, width=7, height=7, cores=1, writeOutput=FALSE, ...)
+#' 
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized. See ?normaliseCountMatrix.
+#' @param randomSeed  Default is 42. Seeds used to generate the tSNE.
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
+#' Default is 1.
+#' @param PCs Vector of first principal components. For example, to take ranges 
+#' 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' @param perplexities A vector of perplexity (t-SNE parameter). See details. 
+#' Default = c(30, 40)
+#' @param writeOutput If TRUE, write the tsne parameters to the output directory
+#'  defined in theObject. Default = FALSE.
+#' 
+#' @aliases generateTSNECoordinates
+#' 
+#' @details
+#' Generates an object of fourteen (by default) tables with tSNE coordinates. 
+#' Fourteen because it will vary seven values of principal components 
+#' *PCs=c(4, 6, 8, 10, 20, 40, 50)* and two values of perplexity 
+#' *perplexities=c(30, 40)* in all possible combinations. The chosen values of 
+#' PCs and perplexities can be changed if necessary. We found that this 
+#' combination works well for sc-RNA-seq datasets with 400-2000 cells. If you 
+#' have 4000-9000 cells and expect more than 15 clusters, we recommend to take 
+#' more first PCs and higher perplexity, for example, 
+#' *PCs=c(8, 10, 20, 40, 50, 80, 100)* and *perplexities=c(200, 240)*. For 
+#' details about perplexities parameter see ‘?Rtsne’.
+#' 
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' generateTSNECoordinates-scRNAseq
+#' 
+#' @return 
+#' An object of class scRNASeq with its tSNEList slot updated. Also writes 
+#' coordinates in "dataDirectory/tsnes" subfolder if the parameter writeOutput 
+#' is TRUE.
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- matrix(sample(seq_len(40), size=4000, replace = TRUE), 
+#' nrow=20, ncol=200)
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' @seealso
+#' normaliseCountMatrix
+#' 
+#' @exportMethod
 setMethod(
 		
 		f="testClustering",
@@ -124,7 +193,7 @@ setMethod(
 		
 		definition=function(theObject, dbscanEpsilon=1.4, minPts=5, 
 				perplexities=c(30), PCs=c(4), randomSeed=42, width=7, height=7,
-				onefile=FALSE, cores=1, writeOutput=FALSE, ...){
+				cores=1, writeOutput=FALSE, ...){
 			
 			validObject(theObject)
 			
@@ -147,14 +216,13 @@ setMethod(
 			tSNE <- .getTSNEresults(theObject, Biobase::exprs(sceObject),
 					cores=cores, PCs=PCs, perplexities=perplexities, 
 					randomSeed=randomSeed)
-			.printTSNE(writeOutput, dataDirectory, width, height, onefile, tSNE, 
-					...)
+			.printTSNE(writeOutput, dataDirectory, width, height, tSNE, ...)
 			
 			## 2. Clustering with dbscan
-			.printDist(writeOutput, dataDirectory, width, height, onefile, tSNE,
+			.printDist(writeOutput, dataDirectory, width, height, tSNE,
 					dbscanEpsilon, minPts, ...)
-			.printDBScan(writeOutput, dataDirectory, width, height, onefile, 
-					tSNE, epsilon, minPts, ...)
+			.printDBScan(writeOutput, dataDirectory, width, height, tSNE, 
+					epsilon, minPts, ...)
 		})
 
 
