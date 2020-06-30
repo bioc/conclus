@@ -2,8 +2,19 @@
 ## testClustering
 ##################
 
-# similar function as plotDistanceGraph,
-# but with already known epsilon value
+#' .plotDistanceGraphWithEpsilon
+#'
+#' @description 
+#' Generate a diagnostic plot to determine the epsilon of dbscan.
+#'
+#' @param tSNEData Data column of the object tSNE obtained with .getTSNEresults.
+#' @param minNeighbours MinPoints parameter of ?testClustering.
+#' @param epsilon dbscanEpsillon parameter of ?testClustering.
+#' 
+#' @keywords internal
+#' 
+#' @importFrom dbscan kNNdistplot 
+#' @noRd
 .plotDistanceGraphWithEpsilon <- function(tSNEData, minNeighbours=5,
 		epsilon=1.2){
 	
@@ -12,9 +23,21 @@
 }
 
 
-# plots test DBSCAN on one of the pictures
-# for being ensured that clustering will
-# probably work successful
+#' .plotTestClustering
+#'
+#' @description 
+#' Plot the result of the dbscan classification.
+#'
+#' @param tSNEData Data column of the object tSNE obtained with .getTSNEresults.
+#' @param minNeighbours MinPoints parameter of ?testClustering.
+#' @param epsilon dbscanEpsillon parameter of ?testClustering.
+#' 
+#' @keywords internal
+#' 
+#' @importFrom fpc dbscan
+#' @importFrom factoextra fviz_cluster
+#' @return A ggplot object
+#' @noRd
 .plotTestClustering <- function(tSNEData, minNeighbours=5,epsilon=1.2){
 	
 	dbscanList <- fpc::dbscan(tSNEData, eps=epsilon, MinPts=minNeighbours)
@@ -65,6 +88,25 @@
 				"should be a single value.")
 }
 
+#' .printTSNE
+#'
+#' @description 
+#' Generate the tSNE plot.
+#'
+#' @param writeOutput If TRUE, write the results of the test to the output 
+#' directory defined in theObject in the sub-directory 'test_clustering'. 
+#' Default = FALSE.
+#' @param dataDirectory Path to the output folder in which the pdf files will be
+#' written.
+#' @param width Width of the pdf file. Default=7. See ?pdf for details.
+#' @param height Height of the pdf file. Default=7. See ?pdf for details.
+#' @param tSNE Result of the function .getTSNEresults.
+#' @param fileTSNE Name of the pdf file. Default="test_tSNE.pdf"
+#' @param ... Options for generating the pdf files. See ?pdf for a list.
+#' 
+#' @keywords internal
+#' 
+#' @noRd
 
 .printTSNE <- function(writeOutput, dataDirectory, width, height, tSNE, 
 		fileTSNE, ...){
@@ -80,6 +122,33 @@
 	
 }
 
+
+#' .printDist
+#'
+#' @description 
+#' Generate a diagnostic plot to determine the optimal epsilon parameter.
+#'
+#' @param writeOutput If TRUE, write the results of the test to the output 
+#' directory defined in theObject in the sub-directory 'test_clustering'. 
+#' Default = FALSE.
+#' @param dataDirectory Path to the output folder in which the pdf files will be
+#' written.
+#' @param width Width of the pdf file. Default=7. See ?pdf for details.
+#' @param height Height of the pdf file. Default=7. See ?pdf for details.
+#' @param tSNE Result of the function .getTSNEresults.
+#' @param dbscanEpsilon Single value for the distance parameter of dbscan. 
+#' Default = 1.4. See ?runDBSCAN for more details.
+#' @param minPoints Single value for the minimum no. of points parameter of 
+#' dbscan. Default = 5. See ?runDBSCAN for more details. 
+#' @param fileDist Name of the pdf file. Default="distance_graph.pdf"
+#' @param ... Options for generating the pdf files. See ?pdf for a list.
+#' 
+#' @details 
+#' See ?testClustering for more details.
+#' 
+#' @keywords internal
+#' 
+#' @noRd
 
 .printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
 		dbscanEpsilon, minPts, fileDist, ...){
@@ -101,6 +170,29 @@
 	
 }
 
+#' .printDBScan
+#'
+#' @description 
+#' Generate the dbscan clustering on the tSNE plot.
+#'
+#' @param writeOutput If TRUE, write the results of the test to the output 
+#' directory defined in theObject in the sub-directory 'test_clustering'. 
+#' Default = FALSE.
+#' @param dataDirectory Path to the output folder in which the pdf files will be
+#' written.
+#' @param width Width of the pdf file. Default=7. See ?pdf for details.
+#' @param height Height of the pdf file. Default=7. See ?pdf for details.
+#' @param tSNE Result of the function .getTSNEresults.
+#' @param epsilon Single value for the distance parameter of dbscan. 
+#' Default = 1.4. See ?runDBSCAN for more details.
+#' @param minPoints Single value for the minimum no. of points parameter of 
+#' dbscan. Default = 5. See ?runDBSCAN for more details. 
+#' @param fileClust Name of the pdf file. Default="test_clustering.pdf"
+#' @param ... Options for generating the pdf files. See ?pdf for a list.
+#' 
+#' @keywords internal
+#' 
+#' @noRd
 
 .printDBScan <- function(writeOutput, dataDirectory, width, height, tSNE, 
 		epsilon, minPts, fileClust, ...){
@@ -155,6 +247,7 @@
 #' Default="distance_graph.pdf"
 #' @param fileClust Name of the pdf file for dbscan. 
 #' Default="test_clustering.pdf"
+#' @param ... Options for generating the pdf files. See ?pdf for a list.
 #' 
 #' @aliases testClustering
 #' 
@@ -202,9 +295,11 @@
 #' testClustering(scrNorm, writeOutput=TRUE)
 #' 
 #' @seealso
-#' normaliseCountMatrix runDBSCAN
+#' normaliseCountMatrix runDBSCAN pdf
 #' 
 #' @exportMethod
+#' @importFrom Biobase exprs
+
 setMethod(
 		
 		f="testClustering",
