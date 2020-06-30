@@ -989,6 +989,10 @@ test_that("testClustering works properly", {
 			expect_error(testClustering(scrNorm, dbscanEpsilon=1.4, 
 							minPts=5, perplexities=30, PCs=4, 
 							randomSeed="test"), expM)
+			
+			expM <- paste0("dbscanEpsilon, minPts, perplexities, PCs, and ",
+					"randomSeed should be a single value.")
+			expect_error(testClustering(scrNorm, dbscanEpsilon=c(1,21)), expM)
 		})
 				
 	
