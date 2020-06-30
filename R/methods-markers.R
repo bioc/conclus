@@ -375,19 +375,22 @@ setMethod(
 #' The other option is "alphabetical". Default = "initial".
 #' @param getUniprot Boolean, whether to get information from UniProt or not. 
 #' Default = TRUE.
-#' @param cores
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
+#' Default is 1.
 #' 
-#' @aliases calculateClustersSimilarity
+#' @details 
+#' 
+#' 
+#' @aliases retrieveGenesInfo
 #'  
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 #' 
 #' @rdname 
-#' calculateClustersSimilarity-scRNAseq
+#' retrieveGenesInfo-scRNAseq
 #' 
 #' @return 
-#' An object of class scRNASeq with its clustersSimilarityMatrix and
-#' clustersSimiliratyOrdered slots updated. 
+#' An object of class scRNASeq with its genesInfos slot updated. 
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -418,8 +421,17 @@ setMethod(
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
 #' 
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#' ## Getting marker genes
+#' scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
+#' 
+#' ## Getting genes info
+#' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
+#' 
 #' @seealso
-#' plotClustersSimilarity 
+#' rankGenes bestClustersMarkers 
 #' 
 #' @exportMethod
 #' @importFrom SummarizedExperiment colData
