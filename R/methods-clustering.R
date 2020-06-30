@@ -26,7 +26,7 @@
 
 
 .checkParamsTests <- function(sceObject, dbscanEpsilon, minPts, perplexities, 
-		PCs){
+		PCs, randomSeed){
 	
 	
 	if(all(dim(sceObject) == c(0,0)))
@@ -139,7 +139,7 @@ setMethod(
 			
 			## Checking parameters
 			.checkParamsTests(sceObject, dbscanEpsilon, minPts, perplexities, 
-					PCs)
+					PCs, randomSeed)
 			
 			message("Generating TSNE.")
 			
