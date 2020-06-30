@@ -26,6 +26,26 @@
 				" before.")
 }
 
+
+#' .buildTTestPval
+#'
+#' @description 
+#' Generate a list of p-values of a cluster comparing it to all the other 
+#' clusters.
+#'
+#' @param otherGroups List of marker genes for the other groups.
+#'@param tTestPval An empty data frame to retrieve the results.
+#' @param colDF Data frame of Metadata of the scRNA-Seq object.
+#' @param mat Normalized expression matrix.
+#' @param colLabel Name of the column with a clustering result. 
+#' Default="clusters"
+#' @param currentGroup Marker genes for the cluster currently considered in the 
+#' mapply of .buildMarkerGenesList.
+#' 
+#' @keywords internal
+#' @return A list containing for each cluster the p-value of the t-test.
+#' @noRd
+
 .buildTTestPval <- function(otherGroups, tTestPval, colDF, mat, colLabel, 
 		currentGroup){
 	
