@@ -18,8 +18,9 @@
 .plotTestClustering <- function(tSNEData, minNeighbours=5,epsilon=1.2){
 	
 	dbscanList <- fpc::dbscan(tSNEData, eps=epsilon, MinPts=minNeighbours)
-	factoextra::fviz_cluster(dbscanList, tSNEData, ellipse=TRUE, geom="point",
-			legend="bottom")
+	p <- factoextra::fviz_cluster(dbscanList, tSNEData, ellipse=TRUE, 
+			geom="point", legend="bottom")
+	return(p)
 }
 
 
@@ -56,6 +57,64 @@
 }
 
 
+.printTSNE <- function(writeOutput, dataDirectory, width, height, onefile, tSNE, 
+		...){
+	
+	if(writeOutput){
+		message("Saving results tSNE.")
+		pdf(file.path(dataDirectory, "test_clustering", "test_tSNE.pdf"),
+				width=width, height=height, onefile=onefile, ...)
+		print(tSNE)
+		dev.off()
+	}else
+		print(tSNE)
+	
+}
+
+
+.printDist <- function(writeOutput, dataDirectory, width, height, onefile, tSNE,
+		dbscanEpsilon, minPts, ...){
+	
+	if(writeOutput){
+		
+		message("Saving results distance graph.")
+		fileDist <- "distance_graph.pdf"
+		pdf(file.path(dataDirectory, "test_clustering", fileDist), 
+				width=width, height=height, onefile=onefile, ...)
+		.plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
+				minNeighbours=minPts)
+		dev.off()
+	}else{
+		
+		dev.new()
+		.plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
+				minNeighbours=minPts)
+	}
+	
+}
+
+
+.printDBScan <- function(writeOutput, dataDirectory, width, height, onefile, 
+		tSNE, epsilon, minPts, ...){
+	
+	p <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
+			minNeighbours=minPts)
+	
+	if(writeOutput){
+		
+		message("Saving dbscan results.")
+		fileClust <- "test_clustering.pdf"
+		pdf(file.path(dataDirectory, "test_clustering", fileClust),
+				width=width, height=height, onefile=onefile, ...)
+		print(p)
+		dev.off()
+	}else{
+		dev.new()
+		print(p)
+	}
+}	
+
+
 
 setMethod(
 		
@@ -65,7 +124,7 @@ setMethod(
 		
 		definition=function(theObject, dbscanEpsilon=1.4, minPts=5, 
 				perplexities=c(30), PCs=c(4), randomSeed=42, width=7, height=7,
-				onefile=FALSE, cores=1, ...){
+				onefile=FALSE, cores=1, writeOutput=FALSE, ...){
 			
 			validObject(theObject)
 			
@@ -85,34 +144,17 @@ setMethod(
 			message("Generating TSNE.")
 			
 			## 1. Generating 2D tSNE plots
-			tSNE <- gettSNEList(expr=Biobase::exprs(sceObject), cores=cores,
-					perplexities=perplexities, PCs=PCs, randomSeed=randomSeed)
+			tSNE <- .getTSNEresults(theObject, Biobase::exprs(sceObject),
+					cores=cores, PCs=PCs, perplexities=perplexities, 
+					randomSeed=randomSeed)
+			.printTSNE(writeOutput, dataDirectory, width, height, onefile, tSNE, 
+					...)
 			
-			message("Saving results.")
-			pdf(file.path(dataDirectory, "test_clustering", "test_tSNE.pdf"),
-					width=width, height=height, onefile=onefile, ...)
-			print(tSNE)
-			dev.off()
-			
-			
-			#2. Clustering with dbscan
-			fileGraph <- "distance_graph.pdf"
-			pdf(file.path(dataDirectory, "test_clustering", fileGraph), 
-					width=width, height=height, onefile=onefile, ...)
-			p1 <- .plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
-					minNeighbours=minPts)
-			dev.off()
-			
-			fileClust <- "test_clustering.pdf"
-			pdf(file.path(dataDirectory, "test_clustering", fileClust),
-					width=width, height=height, onefile=onefile, ...)
-			p2 <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
-							minNeighbours=minPts)
-			print(p2)
-			dev.off()
-			
-			message("Pictures of test clustering were exported.")
-			return(list(tSNE, p1, p2))
+			## 2. Clustering with dbscan
+			.printDist(writeOutput, dataDirectory, width, height, onefile, tSNE,
+					dbscanEpsilon, minPts, ...)
+			.printDBScan(writeOutput, dataDirectory, width, height, onefile, 
+					tSNE, epsilon, minPts, ...)
 		})
 
 
