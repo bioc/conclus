@@ -45,6 +45,26 @@
 	return(tTestPval)
 }
 
+
+#' .buildMarkerGenesList
+#'
+#' @description 
+#' Generate genes list for each cluster.
+#'
+#' @param groups Character vector of the different clusters names.
+#' @param simMedRowList List of similarity values per cluster.
+#' @param exprM Normalized expression matrix.
+#' @param column Name of the column with a clustering result. Default="clusters"
+#' @param colNamesVec Column names of the cluster similarity matrix.
+#' @param colDF Data frame of Metadata of the scRNA-Seq object. 
+#' @param writeMarkerGenes If TRUE, output one list of marker genes per cluster 
+#' in the output directory defined in theObject and in the sub-directory 
+#' 'marker_genes'. Default=FALSE. 
+#' 
+#' @keywords internal
+#' @return A list containing for each cluster the marker genes.
+#' @noRd
+
 .buildMarkerGenesList <- function(groups, simMedRowList, exprM, column, 
 		colNamesVec, colDF, writeMarkerGenes){
 	
