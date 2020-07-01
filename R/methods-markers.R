@@ -339,9 +339,8 @@ setMethod(
 	simMed <- getClustersSimilarityMatrix(theObject)
 	if(all(dim(simMed) == c(0,0)) || all(dim(simMed) == c(1,1)))
 		stop("The 'scRNAseq' object that you're using with 'retrieveGenesInfo'",
-				" function doesn't have its 'clustersSimilarityMatrix' slot",
-				" updated. Please use 'clusterCellsInternal' on the object",
-				" before.")		
+				" function doesn't have a similarity matrix, Please use ",
+				"'calculateClustersSimilarity' on the object before.")		
 }
 
 
