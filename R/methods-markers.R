@@ -779,7 +779,7 @@ setMethod(
 	experimentName <- getExperimentName(theObject)
 	invisible(mapply(function(currentMarkers, currentClustNb, thres, expN){
 						
-						outputName  <- paste0(expN,"_cluster_", clustIdx)
+						outputName  <- paste0(expN,"_cluster_", currentClustNb)
 						fileName <- paste0(outputName, "_markers.csv")
 						outputFile <- file.path(outputDir, fileName)
 						write.table(currentMarkers, file=outputFile, sep="\t",
