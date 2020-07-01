@@ -219,9 +219,7 @@ setGeneric(
 		
     name = "saveGenesInfos",
 	
-    def = function(theObject, sep=";", header=TRUE, startFromCluster=1,
-			groupBy="clusters", orderGenes="initial", getUniprot=TRUE,
-			silent=FALSE, cores=1) {
+    def = function(theObject) {
         standardGeneric("saveGenesInfos")
     },
     signature = "theObject"
