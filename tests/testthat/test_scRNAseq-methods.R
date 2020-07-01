@@ -887,21 +887,29 @@ test_that("saveGenesInfo method works properly", {
 			expect_error(saveGenesInfo(scrFinal), expM)
 		})
 
-test_that("bestClustersMarkers method works properly", {
+test_that("retrieveTopClustersMarkers method works properly", {
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
-					"'rankGenes' function doesn't have its 'sceNorm' slot ",
-					"updated. Please use 'normaliseCountMatrix' on the object ",
-					"before.")
-			expect_error(bestClustersMarkers(scr), expM)
+					"'retrieveTopClustersMarkers' function doesn't have its ",
+					"'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
+					" on the object before.")
+			expect_error(retrieveTopClustersMarkers(scr), expM)
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
-					"'rankGenes'function doesn't have a correct 'sceNorm' ",
-					"slot. This slot should be a 'SingleCellExperiment' object",
-					" containing 'clusters' column in its colData. Please ",
-					"check if you correctly used 'clusterCellsInternal' on ",
-					"the object.") 
-			expect_error(bestClustersMarkers(scrDbscan),expM)
+					"'retrieveTopClustersMarkers'function doesn't have a ",
+					"correct 'sceNorm' slot. This slot should be a ",
+					"'SingleCellExperiment' object containing 'clusters' ",
+					"column in its colData. Please check if you correctly used",
+					" 'clusterCellsInternal' on the object.")
+			expect_error(retrieveTopClustersMarkers(scrNorm), expM)
+			expect_error(retrieveTopClustersMarkers(scrTsne), expM)
+			expect_error(retrieveTopClustersMarkers(scrDbscan),expM)
+			
+			expM <- paste0("Something wrong with number of clusters. It is ",
+					"supposed to be equal to : 10. Current number: 1. Did you",
+					" use 'calculateClustersSimilarity' and 'rankGenes'?")
+			expect_error(retrieveTopClustersMarkers(scrCCI), expM)
+			expect_error(retrieveTopClustersMarkers(scrCSM), expM)
 			
 		})			
 			
