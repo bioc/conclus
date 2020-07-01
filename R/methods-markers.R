@@ -723,23 +723,26 @@ setMethod(
 	
 	## Check if the normalized matrix is correct
 	if(all(dim(sceObject) == c(0,0)))
-		stop("The 'scRNAseq' object that you're using with 'retrieveTopClustersMarkers' ",
-				"function doesn't have its 'sceNorm' slot updated. Please use",
-				" 'normaliseCountMatrix' on the object before.")
+		stop("The 'scRNAseq' object that you're using with ",
+				"'retrieveTopClustersMarkers' function doesn't have its ",
+				"'sceNorm' slot updated. Please use 'normaliseCountMatrix' on",
+				" the object before.")
 	
 	## Check if the SCE object contain cluster colums in its colDF
 	if(!("clusters" %in% names(colData(sceObject))))
-		stop("The 'scRNAseq' object that you're using with 'retrieveTopClustersMarkers'",
-				"function doesn't have a correct 'sceNorm' slot. This slot ",
-				"should be a 'SingleCellExperiment' object containing ",
-				"'clusters' column in its colData. Please check if you ",
-				"correctly used 'clusterCellsInternal' on the object.")
+		stop("The 'scRNAseq' object that you're using with ",
+				"'retrieveTopClustersMarkers' function doesn't have a correct",
+				" 'sceNorm' slot. This slot should be a 'SingleCellExperiment'",
+				" object containing 'clusters' column in its colData. Please ",
+				"check if you correctly used 'clusterCellsInternal' on the ",
+				"object.")
 	
 	## Check if the markerGenesList is correct
 	if(!isTRUE(all.equal(length(markerGenesList),numberOfClusters)))
 		stop("Something wrong with number of clusters. It is supposed",
-				"to be equal to : ", numberOfClusters, ". Current ",
-				"number: ", length(markerGenesList))
+				" to be equal to : ", numberOfClusters, ". Current ",
+				"number: ", length(markerGenesList), ". Did you use ",
+				"'calculateClustersSimilarity' and 'rankGenes'?")
 }
 
 
