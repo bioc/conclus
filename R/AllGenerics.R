@@ -217,10 +217,10 @@ setGeneric(
 
 setGeneric(
 		
-    name = "saveGenesInfos",
+    name = "saveGenesInfo",
 	
     def = function(theObject) {
-        standardGeneric("saveGenesInfos")
+        standardGeneric("saveGenesInfo")
     },
     signature = "theObject"
 )
