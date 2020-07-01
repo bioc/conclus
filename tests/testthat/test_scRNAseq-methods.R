@@ -108,7 +108,7 @@ markers <- getMarkerGenesList(scrS4MG)
 
 ## Getting marker genes
 
-scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
+scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = F)
 scrFinalWrong <- scrFinal
 setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
@@ -872,19 +872,6 @@ test_that("retrieveGenesInfo method works properly", {
 			expect_error(retrieveGenesInfo(scrS4MG, species="mouse"), expM)
 		})
 			
-
-test_that("saveMarkersLists method works properly", {
-			
-			expM <- paste0("The 'scRNAseq' object that you're using with ",
-					"'saveMarkersLists' does not have marker genes. Please ",
-					"use 'bestClustersMarkers' before.")
-			expect_error(saveMarkersLists(scr), expM)
-			expect_error(saveMarkersLists(scrNorm), expM)
-			expect_error(saveMarkersLists(scrTsne), expM)
-			expect_error(saveMarkersLists(scrDbscan), expM)
-			expect_error(saveMarkersLists(scrCCI), expM)
-			expect_error(saveMarkersLists(scrCSM), expM)
-		})
 
 test_that("saveGenesInfo method works properly", {
 			
