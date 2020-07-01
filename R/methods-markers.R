@@ -347,7 +347,8 @@ setMethod(
 			isTRUE(all.equal(genes$geneName, "gene1")) &&
 			is.na(genes$clusters))
 		stop("The 'scRNAseq' object that you're using with 'retrieveGenesInfo'",
-				" does not have marker genes. Please use 'rankGenes' before.")
+				" does not have marker genes. Please use 'bestClustersMarkers'",
+				" before.")
 }
 
 
