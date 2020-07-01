@@ -667,7 +667,7 @@ setMethod(
 	
 	## Check the marker genes
 	
-	if(isTRUE(all.equal(genes$Gene, "gene1")))
+	if(isTRUE(all.equal(genes[[1]]$Gene, "gene1")))
 		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
 				" does not have marker genes. Please use 'bestClustersMarkers'",
 				" before.")
