@@ -797,11 +797,11 @@ setMethod(
 #' 
 #' @param theObject An Object of class scRNASeq for which rankGenes was 
 #' run. See ?rankGenes.
-#' @param nTop Number of marker genes to retrieve per cluster.
-#' @param If TRUE, duplicated markers are removed from the lists.
+#' @param nTop Number of marker genes to retrieve per cluster. Default=10.
+#' @param If TRUE, duplicated markers are removed from the lists. Default=TRUE.
 #' @param writeMarkerGenes If TRUE, writes one list per cluster in the output
 #' folder defined in theObject, and in the sub-directory 
-#' marker_genes/markers_lists.
+#' marker_genes/markers_lists. Default=FALSE.
 #' 
 #' @aliases retrieveTopClustersMarkers
 #'  
