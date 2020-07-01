@@ -743,6 +743,21 @@ setMethod(
 }
 
 
+#' .writeMarkersList
+#'
+#' @description 
+#' Writes one list per cluster in the output folder defined in theObject, and 
+#' in the sub-directory marker_genes/markers_lists.
+#'
+#' @param theObject An Object of class scRNASeq for which rankGenes was 
+#' run. See ?rankGenes.
+#' @param markersClusters Data frame containing two columns geneName and 
+#' clusters.
+#' @param nTop Number of marker genes to retrieve per cluster.
+#' 
+#' @keywords internal
+#' @noRd
+
 .writeMarkersList <- function(theObject, markersClusters, nTop){
 	
 	## Creating the output folder
@@ -775,26 +790,30 @@ setMethod(
 #'
 #' @description 
 #' This function retrieves the top N marker genes for each cluster. 
-
-
-
 #'
 #' @usage 
-#' saveGenesInfo(theObject)
+#' retrieveTopClustersMarkers(theObject, nTop=10, removeDuplicates = TRUE,
+#' 				writeMarkerGenes = FALSE)
 #' 
-#' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
-#' run. See ?retrieveGenesInfo.
+#' @param theObject An Object of class scRNASeq for which rankGenes was 
+#' run. See ?rankGenes.
+#' @param nTop Number of marker genes to retrieve per cluster.
+#' @param If TRUE, duplicated markers are removed from the lists.
+#' @param writeMarkerGenes If TRUE, writes one list per cluster in the output
+#' folder defined in theObject, and in the sub-directory 
+#' marker_genes/markers_lists.
 #' 
-#' @aliases saveGenesInfo
+#' @aliases retrieveTopClustersMarkers
 #'  
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 #' 
 #' @rdname 
-#' saveGenesInfo-scRNAseq
+#' retrieveTopClustersMarkers-scRNAseq
 #' 
 #' @return 
-#' Output the genes infos to marker_genes/saveGenesInfo.  
+#' Output the list of markers to marker_genes/markers_lists if writeMarkersGenes
+#' is TRUE and return a scRNASeq object with its clustersMarkers slot updated.  
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -828,14 +847,8 @@ setMethod(
 #' ## Ranking genes
 #' scrS4MG <- rankGenes(scrCSM)
 #' 
-#'  ## Getting marker genes
-#' scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
-#' 
-#' ## Getting genes info
-#' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
-#'
-#' ## Export the genes information
-#' saveGenesInfo(scrInfos)
+#' ## Retrieve the top 10 markers per cluster
+#' scrFinal <- retrieveTopClustersMarkers(theObject)
 #' 
 #' @seealso
 #' retrieveGenesInfo
