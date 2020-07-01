@@ -139,13 +139,14 @@ setReplaceMethod(
 
 
 setReplaceMethod(
-    f = "setTsneName",
+    f = "setName",
     signature = "Tsne",
     definition = function(theObject, value){
         theObject@name <- value
         validObject(theObject)
         return(theObject)
     })
+
 
 
 setReplaceMethod(
@@ -184,7 +185,7 @@ setReplaceMethod(
 
 
 setReplaceMethod(
-    f = "setDbscanName",
+    f = "setName",
     signature = "Dbscan",
     definition = function(theObject, value){
         theObject@name <- value
