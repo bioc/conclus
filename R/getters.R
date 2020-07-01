@@ -114,11 +114,12 @@ setMethod(
 ################################################################################
 
 setMethod(
-    f = "getTsneName",
+    f = "getName",
     signature = "Tsne",
     definition = function(theObject){
         return(theObject@name)
     })
+
 
 
 setMethod(
@@ -151,11 +152,12 @@ setMethod(
 ################################################################################
 
 setMethod(
-    f = "getDbscanName",
+    f = "getName",
     signature = "Dbscan",
     definition = function(theObject){
         return(theObject@name)
     })
+
 
 
 
