@@ -594,142 +594,6 @@ setMethod(
 
 
 ###################
-## saveMarkersLists
-###################
-
-
-.checkParamsSaveMarkersList <- function(genes){
-	
-	## Check the marker genes
-	
-	if(isTRUE(all.equal(genes[[1]]$Gene, "gene1")))
-		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
-				" does not have marker genes. Please use 'bestClustersMarkers'",
-				" before.")
-	
-	if(isTRUE(all.equal(dim(genes), c(1,2))) && 
-			isTRUE(all.equal(genes$geneName, "gene1")) &&
-			is.na(genes$clusters))
-		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
-				" does not have marker genes. Please use 'bestClustersMarkers'",
-				" before.")
-}
-
-
-
-#' saveMarkersLists
-#'
-#' @description 
-#' This method exports the results of conclus::rankGenes(), restricting the 
-#' output to the top N markers and saves them to the sub-directory 
-#' marker_genes/markers_lists.
-#'
-#' @usage 
-#' saveMarkersLists(theObject, Ntop=100)
-#' 
-#' @param theObject An Object of class scRNASeq for which rankGenes was run.
-#' See ?rankGenes.
-#' @param Ntop Number of top marker genes to output.
-#' 
-#' @aliases saveMarkersLists
-#'  
-#' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-#' 
-#' @rdname 
-#' saveMarkersLists-scRNAseq
-#' 
-#' @return 
-#' Output the marker gene lists to marker_genes/markers_lists.  
-#' 
-#' @examples
-#' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(file.path(
-#' "tests/testthat/test_data/test_countMatrix.tsv")))
-#' outputDirectory <- "./"
-#' columnsMetaData <- read.delim(
-#' file.path("extdata/Bergiers_colData_filtered.tsv"))
-#' 
-#' ## Create the initial object
-#' scr <- scRNAseq(experimentName = experimentName, 
-#'                 countMatrix     = countMatrix, 
-#'                 species         = "mouse",
-#'                 outputDirectory = outputDirectory)
-#' 
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#' 
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
-#' 
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
-#' 
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
-#' 
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#' 
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#' 
-#' ## Output marker genes
-#' saveMarkersLists(scrS4MG, Ntop=20)
-#' 
-#' @seealso
-#' rankGenes
-#' 
-#' @exportMethod
-
-setMethod(
-		
-		f = "saveMarkersLists",
-		
-		signature = "scRNAseq",
-		
-		definition = function(theObject, Ntop=100){
-			
-			
-			dataDirectory <- getOutputDirectory(theObject)
-			outputDir <- file.path(dataDirectory, 
-						paste0("marker_genes/markers_lists"))
-			
-			if(!file.exists(outputDir))
-				dir.create(outputDir, showWarnings=F)
-			
-			markerGenesList <- getMarkerGenesList(theObject)
-			clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(theObject)
-			checkMarkerGenesList(markerGenesList, clustersSimiliratyOrdered)
-			experimentName <- getExperimentName(theObject)
-			clusterIndexes <- seq_len(length(markerGenesList))
-			
-			.checkParamsSaveMarkersList(markerGenesList)
-			
-			invisible(mapply(function(currentMarkerGenes, clustIdx, threshold, 
-									expN){
-								
-								markerGenes <- currentMarkerGenes[seq_len(
-												threshold), ]
-								markerGenes <- as.data.frame(markerGenes$Gene)
-								outputName  <- paste0(expN,"_cluster_", 
-										clustIdx)
-								colnames(markerGenes) <- "geneName"
-								markerGenes$clusters <- paste0("cluster_", 
-										clustIdx)
-								fileName <- paste0(outputName, "_markers.csv")
-								outputFile <- file.path(outputDir, fileName)
-								write.table(markerGenes, outputFile, 
-										row.names=FALSE, quote=FALSE, sep=";")
-							}, markerGenesList, clusterIndexes, 
-							MoreArgs=list(Ntop, experimentName)))
-			
-			message(paste("You can find all marker genes in :", outputDir, "."))
-		})
-
-
-
-###################
 ## saveGenesInfo
 ###################
 
@@ -907,10 +771,10 @@ setMethod(
 					MoreArgs=list(nTop, experimentName)))
 }
 
-#' bestClustersMarkers
+#' retrieveTopClustersMarkers
 #'
 #' @description 
-#' 
+#' This function retrieves the top N marker genes for each cluster. 
 
 
 
