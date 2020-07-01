@@ -207,7 +207,7 @@ test_that("Errors are thrown when creating scr", {
 							species         = "mouse",
 							outputDirectory = outputDirectory,
 							tSNEList = tsneListWrong), regexp = expM)
-			
+		
 			expM <- "Coordinates should be a matrix with two columns X and Y."
 			expect_error(scRNAseq(experimentName = experimentName,
 							countMatrix     = countMatrix,
@@ -330,8 +330,7 @@ test_that("Errors are thrown when creating scr", {
 
 test_that("Normalization works properly", {
     
-			expect_match(class(sceNorm),
-					class(expectedNormalizedMatrix))
+			expect_match(class(sceNorm), class(expectedNormalizedMatrix))
 			
 			expect_equal(Biobase::exprs(sceNorm),
 					Biobase::exprs(expectedNormalizedMatrix))
@@ -360,26 +359,6 @@ test_that("Normalization works properly", {
 									countMatrix     = countMatrix, 
 									species         = "melanogaster")), 
 					regexp=expM)
-			
-			
-			expect_error(normaliseCountMatrix(scr, coldata=columnsMetaData),
-			               regexp=NA)
-			expect_error(normaliseCountMatrix(scrNorm, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrTsne, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrDbscan, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrCCI, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrCSM, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrS4MG, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrFinal, coldata=columnsMetaData),
-			             regexp=NA)
-			expect_error(normaliseCountMatrix(scrInfos, coldata=columnsMetaData),
-			             regexp=NA)
 })
 
 
