@@ -397,28 +397,12 @@ test_that("Tsne works properly", {
 			expect_error(generateTSNECoordinates(scrNorm, writeOutput="str"),
 					regexp=expM)
 			
-			expM <- paste("The 'scRNAseq' object that you're using with",
-			              "'generateTSNECoordinates' function doesn't have its 'sceNorm'",
-			              "slot updated. Please use 'normaliseCountMatrix'",
-			              "on the object before.")
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'generateTSNECoordinates' function doesn't have its ",
+					"'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
+					" on the object before.")
 			expect_error(generateTSNECoordinates(scr, cores=5),
 			             regexp=expM)
-			expect_error(generateTSNECoordinates(scrNorm, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrTsne, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrDbscan, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrCCI, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrCSM, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrS4MG, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrFinal, cores=5),
-			             regexp=NA)
-			expect_error(generateTSNECoordinates(scrInfos, cores=5),
-			             regexp=NA)
 })
 
 
@@ -474,27 +458,6 @@ test_that("Dbscan works properly", {
 			              "on the object before.")
 			expect_error(runDBSCAN(scrNorm, cores=5),
 			             regexp=expM)
-			
-			expect_error(runDBSCAN(scrTsne, cores=5),
-			             regexp=NA)
-			
-			expect_error(runDBSCAN(scrDbscan, cores=5),
-			             regexp=NA)
-			
-			expect_error(runDBSCAN(scrCCI, cores=5),
-			             regexp=NA)
-			
-			expect_error(runDBSCAN(scrCSM, cores=5),
-			             regexp=NA)
-			
-			expect_error(runDBSCAN(scrS4MG, cores=5),
-			             regexp=NA)
-			
-			expect_error(runDBSCAN(scrFinal, cores=5),
-			             regexp=NA)
-			
-			expect_error(runDBSCAN(scrInfos, cores=5),
-			             regexp=NA)
 })
 
 
@@ -850,7 +813,7 @@ test_that("plotClustersSimilarity work properly", {
 
 ################################  markers  ###################################
 
-test_that("markers methods work properly", {
+test_that("rankGenes method work properly", {
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'rankGenes' function doesn't have its 'SceNorm' slot ",
@@ -871,6 +834,9 @@ test_that("markers methods work properly", {
 					"'clustersSimilarityMatrix' slot updated. Please use ",
 					"'clusterCellsInternal' on the object before.")
 			expect_error(rankGenes(scrCCiwrong), expM)
+		})
+
+test_that("retrieveGenesInfo method work properly", {
 			
 			expM <- "orderGenes should be 'initial' or 'alphabetical'."
 			expect_error(retrieveGenesInfo(scr, species="mouse", 
@@ -878,6 +844,36 @@ test_that("markers methods work properly", {
 			
 			expM <- "species should be: mouse or human"
 			expect_error(retrieveGenesInfo(scrFinal,  species = "droso"), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'retrieveGenesInfo' function doesn't have its 'SceNorm' ",
+					"slot updated. Please use 'normaliseCountMatrix' on the ",
+					"object before.")
+			expect_error(retrieveGenesInfo(scr, species="mouse"), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'retrieveGenesInfo' function doesn't have a correct ",
+					"'SceNorm' slot. This slot should be a ",
+					"'SingleCellExperiment' object containing 'clusters' ",
+					"column in its colData. Please check if you correctly used",
+					" 'clusterCellsInternal' on the object.")
+			expect_error(retrieveGenesInfo(scrDbscan, species="mouse"), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'retrieveGenesInfo' function doesn't have a similarity ",
+					"matrix, Please use 'calculateClustersSimilarity' on the ",
+					"object before.")
+			expect_error(retrieveGenesInfo(scrCCI, species="mouse"), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'retrieveGenesInfo' does not have marker genes. Please ",
+					"use 'bestClustersMarkers' before.")
+			expect_error(retrieveGenesInfo(scrCSM, species="mouse"), expM)
+			expect_error(retrieveGenesInfo(scrS4MG, species="mouse"), expM)
+		})
+			
+			
+test_that("bestClustersMarkers method work properly", {
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'rankGenes' function doesn't have its 'sceNorm' slot ",
@@ -892,7 +888,11 @@ test_that("markers methods work properly", {
 					"check if you correctly used 'clusterCellsInternal' on ",
 					"the object.") 
 			expect_error(bestClustersMarkers(scrDbscan),expM)
-		})
+			
+		})			
+			
+			
+		
 
 
 ##################################  Export  ####################################
