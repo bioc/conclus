@@ -597,6 +597,26 @@ setMethod(
 ## saveMarkersLists
 ###################
 
+
+.checkParamsSaveMarkersList <- function(genes){
+	
+	## Check the marker genes
+	
+	if(isTRUE(all.equal(genes[[1]]$Gene, "gene1")))
+		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
+				" does not have marker genes. Please use 'bestClustersMarkers'",
+				" before.")
+	
+	if(isTRUE(all.equal(dim(genes), c(1,2))) && 
+			isTRUE(all.equal(genes$geneName, "gene1")) &&
+			is.na(genes$clusters))
+		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
+				" does not have marker genes. Please use 'bestClustersMarkers'",
+				" before.")
+}
+
+
+
 #' saveMarkersLists
 #'
 #' @description 
@@ -662,25 +682,6 @@ setMethod(
 #' 
 #' @exportMethod
 
-
-.checkParamsSaveMarkersList <- function(genes){
-	
-	## Check the marker genes
-	
-	if(isTRUE(all.equal(genes[[1]]$Gene, "gene1")))
-		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
-				" does not have marker genes. Please use 'bestClustersMarkers'",
-				" before.")
-	
-	if(isTRUE(all.equal(dim(genes), c(1,2))) && 
-			isTRUE(all.equal(genes$geneName, "gene1")) &&
-			is.na(genes$clusters))
-		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
-				" does not have marker genes. Please use 'bestClustersMarkers'",
-				" before.")
-}
-
-
 setMethod(
 		
 		f = "saveMarkersLists",
@@ -731,6 +732,15 @@ setMethod(
 ###################
 ## saveGenesInfo
 ###################
+
+
+.checkParamsSaveGenesInfo <- function(infos){
+	
+	if(isTRUE(all.equal(infos$uniprot_gn_symbol, "symbol")))
+		stop("Your object does not contain genes information. Please run ",
+				"'retrieveGenesInfo' before.")
+}
+
 
 #' saveGenesInfo
 #'
@@ -817,6 +827,7 @@ setMethod(
 			
 			species <- getSpecies(theObject)	
 			infos <- getGenesInfos(theObject)
+			.checkParamsSaveGenesInfo(infos)
 			infosList <- split(infos, infos$clusters)
 			
 			invisible(lapply(infosList, function(clusterDF){
