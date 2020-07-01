@@ -666,7 +666,15 @@ setMethod(
 .checkParamsSaveMarkersList <- function(genes){
 	
 	## Check the marker genes
-	if(isTRUE(all.equal(genes$geneName, "gene1")))
+	
+	if(isTRUE(all.equal(genes$Gene, "gene1")))
+		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
+				" does not have marker genes. Please use 'bestClustersMarkers'",
+				" before.")
+	
+	if(isTRUE(all.equal(dim(genes), c(1,2))) && 
+			isTRUE(all.equal(genes$geneName, "gene1")) &&
+			is.na(genes$clusters))
 		stop("The 'scRNAseq' object that you're using with 'saveMarkersLists'",
 				" does not have marker genes. Please use 'bestClustersMarkers'",
 				" before.")
