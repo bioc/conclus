@@ -879,6 +879,34 @@ setMethod(
 }
 
 
+.writeMarkersList <- function(theObject, markersClusters, nTop){
+	
+	## Creating the output folder
+	dataDirectory <- getOutputDirectory(theObject)
+	outputDir <- file.path(dataDirectory, paste0("marker_genes/markers_lists"))
+	
+	if(!file.exists(outputDir))
+		dir.create(outputDir, showWarnings=F)
+	
+	message("Writing lists of markers to ", outputDir)
+	
+	## Creating a list of markers per clusters
+	markersClustersList <- split(markersClusters, markersClusters$clusters)
+	
+	## Writing each element of the lists to a corresponding file
+	experimentName <- getExperimentName(theObject)
+	invisible(mapply(function(currentMarkers, currentClustNb, thres, expN){
+						
+						outputName  <- paste0(expN,"_cluster_", clustIdx)
+						fileName <- paste0(outputName, "_markers.csv")
+						outputFile <- file.path(outputDir, fileName)
+						write.table(currentMarkers, file=outputFile, sep="\t",
+								quote=FALSE, row.names=FALSE, col.names=TRUE)
+						
+					}, markersClustersList, names(markersClustersList), 
+					MoreArgs=list(nTop, experimentName)))
+}
+
 #' bestClustersMarkers
 #'
 #' @description 
@@ -978,44 +1006,9 @@ setMethod(
 				markersClusters <- 
 						markersClusters[!duplicated(markersClusters$geneName), ] 
 			
-			if(writeMarkerGenes){
+			if(writeMarkerGenes)
+				.writeMarkersList(theObject, markersClusters, nTop)
 				
-				
-				
-				## Creating the output folder
-				dataDirectory <- getOutputDirectory(theObject)
-				outputDir <- file.path(dataDirectory, 
-						paste0("marker_genes/markers_lists"))
-				
-				if(!file.exists(outputDir))
-					dir.create(outputDir, showWarnings=F)
-				
-				message("Writing lists of markers to ", outputDir)
-				
-				## Creating a list of markers per clusters
-				markersClustersList <- split(markersClusters, 
-						markersClusters$clusters)
-				
-				## Writing each element of the lists to a corresponding file
-				experimentName <- getExperimentName(theObject)
-				invisible(mapply(function(currentMarkers, currentClustNb, 
-										thres, expN){
-									
-									outputName  <- paste0(expN,"_cluster_", 
-											clustIdx)
-									fileName <- paste0(outputName, "_markers.csv")
-									outputFile <- file.path(outputDir, fileName)
-									write.table(currentMarkers, file=outputFile,
-											quote=FALSE, sep="\t",
-											row.names=FALSE, col.names=TRUE)
-								}, markersClustersList, 
-								names(markersClustersList), 
-								MoreArgs=list(nTop, experimentName)))
-				
-			}
-			
-			
-			
 			setClustersMarkers(theObject) <- markersClusters
 			return(theObject)
 		})
