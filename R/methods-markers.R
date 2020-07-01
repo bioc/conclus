@@ -854,18 +854,18 @@ setMethod(
 ## bestClustersMarkers
 ###################
 
-.checkParamsBestClust <- function(sceObject, markerGenesList, 
+.checkParamsTopClust <- function(sceObject, markerGenesList, 
 		numberOfClusters){
 	
 	## Check if the normalized matrix is correct
 	if(all(dim(sceObject) == c(0,0)))
-		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
+		stop("The 'scRNAseq' object that you're using with 'retrieveTopClustersMarkers' ",
 				"function doesn't have its 'sceNorm' slot updated. Please use",
 				" 'normaliseCountMatrix' on the object before.")
 	
 	## Check if the SCE object contain cluster colums in its colDF
 	if(!("clusters" %in% names(colData(sceObject))))
-		stop("The 'scRNAseq' object that you're using with 'rankGenes'",
+		stop("The 'scRNAseq' object that you're using with 'retrieveTopClustersMarkers'",
 				"function doesn't have a correct 'sceNorm' slot. This slot ",
 				"should be a 'SingleCellExperiment' object containing ",
 				"'clusters' column in its colData. Please check if you ",
@@ -876,36 +876,144 @@ setMethod(
 		stop("Something wrong with number of clusters. It is supposed",
 				"to be equal to : ", numberOfClusters, ". Current ",
 				"number: ", length(markerGenesList))
-	
 }
 
 
+#' bestClustersMarkers
+#'
+#' @description 
+#' 
+
+
+
+#'
+#' @usage 
+#' saveGenesInfo(theObject)
+#' 
+#' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
+#' run. See ?retrieveGenesInfo.
+#' 
+#' @aliases saveGenesInfo
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' saveGenesInfo-scRNAseq
+#' 
+#' @return 
+#' Output the genes infos to marker_genes/saveGenesInfo.  
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#'  ## Getting marker genes
+#' scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
+#' 
+#' ## Getting genes info
+#' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
+#'
+#' ## Export the genes information
+#' saveGenesInfo(scrInfos)
+#' 
+#' @seealso
+#' retrieveGenesInfo
+#' 
+#' @exportMethod
+
 setMethod(
 		
-		f = "bestClustersMarkers",
+		f = "retrieveTopClustersMarkers",
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, nTop=10, removeDuplicates = TRUE){
+		definition = function(theObject, nTop=10, removeDuplicates = TRUE,
+				writeMarkerGenes = FALSE){
 			
-			sceObject <- getSceNorm(theObject)
 			markerGenesList <-  getMarkerGenesList(theObject)
+			sceObject <- getSceNorm(theObject)
 			clustVec <- SummarizedExperiment::colData(sceObject)$clusters
-			clustersVec <- unique(clustVec)
-			numberOfClusters <- length(clustersVec)
+			clusterIndexes <- unique(clustVec)
+			numberOfClusters <- length(clusterIndexes)
 			
-			.checkParamsBestClust(sceObject, markerGenesList, numberOfClusters)
+			.checkParamsTopClust(sceObject, markerGenesList, numberOfClusters)
 			
 			##Retrieve the nTop genes in each element of markerGenesList
 			geneName <- unlist(lapply(markerGenesList, 
 							function(currentMarkers) 
 								currentMarkers$Gene[seq_len(nTop)]))
-			clusters <- rep(clustersVec, each=nTop)
+			clusters <- rep(clusterIndexes, each=nTop)
 			markersClusters <- data.frame(geneName, clusters)
 			
 			if(removeDuplicates)
 				markersClusters <- 
 						markersClusters[!duplicated(markersClusters$geneName), ] 
+			
+			if(writeMarkerGenes){
+				
+				
+				
+				## Creating the output folder
+				dataDirectory <- getOutputDirectory(theObject)
+				outputDir <- file.path(dataDirectory, 
+						paste0("marker_genes/markers_lists"))
+				
+				if(!file.exists(outputDir))
+					dir.create(outputDir, showWarnings=F)
+				
+				message("Writing lists of markers to ", outputDir)
+				
+				## Creating a list of markers per clusters
+				markersClustersList <- split(markersClusters, 
+						markersClusters$clusters)
+				
+				## Writing each element of the lists to a corresponding file
+				experimentName <- getExperimentName(theObject)
+				invisible(mapply(function(currentMarkers, currentClustNb, 
+										thres, expN){
+									
+									outputName  <- paste0(expN,"_cluster_", 
+											clustIdx)
+									fileName <- paste0(outputName, "_markers.csv")
+									outputFile <- file.path(outputDir, fileName)
+									write.table(currentMarkers, file=outputFile,
+											quote=FALSE, sep="\t",
+											row.names=FALSE, col.names=TRUE)
+								}, markersClustersList, 
+								names(markersClustersList), 
+								MoreArgs=list(nTop, experimentName)))
+				
+			}
+			
 			
 			
 			setClustersMarkers(theObject) <- markersClusters
