@@ -207,7 +207,7 @@ setGeneric(
 		
     name = "saveMarkersLists",
 	
-    def = function(theObject, pattern="genes.tsv", Ntop=100) {
+    def = function(theObject, Ntop=100) {
         standardGeneric("saveMarkersLists")
     },
     signature = "theObject"
