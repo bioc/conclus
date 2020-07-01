@@ -182,10 +182,11 @@ setGeneric(
 
 setGeneric(
 		
-    name =  "bestClustersMarkers",
+    name =  "retrieveTopClustersMarkers",
 	
-    def = function(theObject, nTop=10, removeDuplicates = TRUE){
-        standardGeneric("bestClustersMarkers")
+    def = function(theObject, nTop=10, removeDuplicates = TRUE, 
+			writeMarkerGenes = FALSE){
+        standardGeneric("retrieveTopClustersMarkers")
     },
     signature="theObject")
 
@@ -200,18 +201,6 @@ setGeneric(
         standardGeneric("retrieveGenesInfo")
     },
     signature="theObject")
-
-
-
-setGeneric(
-		
-    name = "saveMarkersLists",
-	
-    def = function(theObject, Ntop=100) {
-        standardGeneric("saveMarkersLists")
-    },
-    signature = "theObject"
-)
 
 
 
