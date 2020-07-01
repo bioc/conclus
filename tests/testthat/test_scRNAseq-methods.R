@@ -813,7 +813,7 @@ test_that("plotClustersSimilarity work properly", {
 
 ################################  markers  ###################################
 
-test_that("rankGenes method work properly", {
+test_that("rankGenes method works properly", {
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'rankGenes' function doesn't have its 'SceNorm' slot ",
@@ -836,7 +836,7 @@ test_that("rankGenes method work properly", {
 			expect_error(rankGenes(scrCCiwrong), expM)
 		})
 
-test_that("retrieveGenesInfo method work properly", {
+test_that("retrieveGenesInfo method works properly", {
 			
 			expM <- "orderGenes should be 'initial' or 'alphabetical'."
 			expect_error(retrieveGenesInfo(scr, species="mouse", 
@@ -872,8 +872,22 @@ test_that("retrieveGenesInfo method work properly", {
 			expect_error(retrieveGenesInfo(scrS4MG, species="mouse"), expM)
 		})
 			
+
+test_that("saveMarkersLists method works properly", {
 			
-test_that("bestClustersMarkers method work properly", {
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'saveMarkersLists' does not have marker genes. Please ",
+					"use 'bestClustersMarkers' before.")
+			expect_error(saveMarkersLists(scr), expM)
+			expect_error(saveMarkersLists(scrNorm), expM)
+			expect_error(saveMarkersLists(scrTsne), expM)
+			expect_error(saveMarkersLists(scrDbscan), expM)
+			expect_error(saveMarkersLists(scrCCI), expM)
+			expect_error(saveMarkersLists(scrCSM), expM)
+		})
+
+
+test_that("bestClustersMarkers method works properly", {
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'rankGenes' function doesn't have its 'sceNorm' slot ",
