@@ -388,10 +388,10 @@ setGeneric(
 
 setGeneric(
 		
-    name = "getTsneName",
+    name = "getName",
 	
     def = function(theObject){
-        standardGeneric("getTsneName")    
+        standardGeneric("getName")    
     },
     signature = "theObject")
 
@@ -428,16 +428,6 @@ setGeneric(
 
 
 ## Dbscan getters
-
-setGeneric(
-    
-    name = "getDbscanName",
-    
-    def = function(theObject){
-        standardGeneric("getDbscanName")    
-    },
-    signature = "theObject")
-
 
 setGeneric(
 		
@@ -616,8 +606,10 @@ setGeneric(
 
 
 setGeneric(
-    name="setClustersMarkers<-",
-    def=function(theObject, value){
+
+    name = "setClustersMarkers<-",
+    
+    def = function(theObject, value){
         standardGeneric("setClustersMarkers<-")
     },
     signature = "theObject")
@@ -625,7 +617,9 @@ setGeneric(
 
 
 setGeneric(
+
     name="setGenesInfos<-",
+    
     def=function(theObject, value){
         standardGeneric("setGenesInfos<-")
     },
@@ -640,10 +634,10 @@ setGeneric(
 
 setGeneric(
 
-    name = "setTsneName<-",
+    name = "setName<-",
 
     def = function(theObject, value){
-        standardGeneric("setTsneName<-")    
+        standardGeneric("setName<-")    
     },
     signature = "theObject")
 
@@ -684,17 +678,6 @@ setGeneric(
 
 
 #############################  Dbscan class setters ############################
-
-setGeneric(
-
-    name = "setDbscanName<-",
-
-    def = function(theObject, value){
-        standardGeneric("setDbscanName<-")    
-    },
-    signature = "theObject")
-
-
 
 setGeneric(
 
