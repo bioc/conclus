@@ -886,6 +886,19 @@ test_that("saveMarkersLists method works properly", {
 			expect_error(saveMarkersLists(scrCSM), expM)
 		})
 
+test_that("saveGenesInfo method works properly", {
+			
+			expM <- paste0("Your object does not contain genes information. ",
+					"Please run 'retrieveGenesInfo' before.")
+			expect_error(saveGenesInfo(scr), expM)
+			expect_error(saveGenesInfo(scrNorm), expM)
+			expect_error(saveGenesInfo(scrTsne), expM)
+			expect_error(saveGenesInfo(scrDbscan), expM)
+			expect_error(saveGenesInfo(scrCCI), expM)
+			expect_error(saveGenesInfo(scrCSM), expM)
+			expect_error(saveGenesInfo(scrS4MG), expM)
+			expect_error(saveGenesInfo(scrFinal), expM)
+		})
 
 test_that("bestClustersMarkers method works properly", {
 			
