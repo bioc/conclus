@@ -449,7 +449,7 @@ setMethod(
 #' rankGenes bestClustersMarkers 
 #' 
 #' @exportMethod
-#' @importFrom SummarizedExperiment colData
+
 
 
 setMethod(
@@ -567,6 +567,71 @@ setMethod(
 ## saveMarkersLists
 ###################
 
+#' saveMarkersLists
+#'
+#' @description 
+#' This method exports the results of conclus::rankGenes(), restricting the 
+#' output to the top N markers and saves them to the sub-directory 
+#' marker_genes/markers_lists.
+#'
+#' @usage 
+#' saveMarkersLists(theObject, Ntop=100)
+#' 
+#' @param theObject An Object of class scRNASeq for which rankGenes was run.
+#' See ?rankGenes.
+#' @param Ntop Number of top marker genes to output.
+#' 
+#' @aliases saveMarkersLists
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' saveMarkersLists-scRNAseq
+#' 
+#' @return 
+#' Output the marker gene lists to marker_genes/markers_lists.  
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#' ## Output marker genes
+#' saveMarkersLists(scrS4MG, Ntop=20)
+#' 
+#' @seealso
+#' rankGenes
+#' 
+#' @exportMethod
+
 
 setMethod(
 		
@@ -574,12 +639,11 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, dataDirectory, outputDir=NA,
-				pattern="genes.tsv", Ntop=100){
+		definition = function(theObject, Ntop=100){
 			
 			
-			if(is.na(outputDir))
-				outputDir <- file.path(dataDirectory, 
+			dataDirectory <- getOutputDirectory(theObject)
+			outputDir <- file.path(dataDirectory, 
 						paste0("marker_genes/markers_lists"))
 			
 			if(!file.exists(outputDir))
@@ -591,19 +655,23 @@ setMethod(
 			experimentName <- getExperimentName(theObject)
 			clusterIndexes <- seq_len(length(markerGenesList))
 			
-			invisible(mapply(function(currentMarkerGenes, clustIdx, threshold, expN){
+			invisible(mapply(function(currentMarkerGenes, clustIdx, threshold, 
+									expN){
 								
-								markerGenes <- currentMarkerGenes[seq_len(threshold), ]
+								markerGenes <- currentMarkerGenes[seq_len(
+												threshold), ]
 								markerGenes <- as.data.frame(markerGenes$Gene)
-								outputName  <- paste0(expN,"_cluster_", clustIdx)
+								outputName  <- paste0(expN,"_cluster_", 
+										clustIdx)
 								colnames(markerGenes) <- "geneName"
-								markerGenes$clusters <- paste0("cluster_", clustIdx)
+								markerGenes$clusters <- paste0("cluster_", 
+										clustIdx)
 								fileName <- paste0(outputName, "_markers.csv")
 								outputFile <- file.path(outputDir, fileName)
-								write.table(markerGenes, outputFile, row.names=FALSE, 
-										quote=FALSE, sep=";")
-							}, markerGenesList, clusterIndexes, MoreArgs=list(Ntop, 
-									experimentName)))
+								write.table(markerGenes, outputFile, 
+										row.names=FALSE, quote=FALSE, sep=";")
+							}, markerGenesList, clusterIndexes, 
+							MoreArgs=list(Ntop, experimentName)))
 			
 			message(paste("You can find all marker genes in :", outputDir, "."))
 		})
@@ -614,6 +682,74 @@ setMethod(
 ## saveGenesInfo
 ###################
 
+#' saveGenesInfo
+#'
+#' @description 
+#' This method exports the results of conclus::retrieveGenesInfo() to the 
+#' sub-directory marker_genes/saveGenesInfo.
+#'
+#' @usage 
+#' saveGenesInfo(theObject)
+#' 
+#' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
+#' run. See ?retrieveGenesInfo.
+#' 
+#' @aliases saveGenesInfo
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' saveGenesInfo-scRNAseq
+#' 
+#' @return 
+#' Output the genes infos to marker_genes/saveGenesInfo.  
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#'  ## Getting marker genes
+#' scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
+#' 
+#' ## Getting genes info
+#' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
+#'
+#' ## Export the genes information
+#' saveGenesInfo(scrInfos)
+#' 
+#' @seealso
+#' retrieveGenesInfo
+#' 
+#' @exportMethod
 
 setMethod(
 		
@@ -621,10 +757,9 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, outputDir=NA){
+		definition = function(theObject){
 			
-			if(is.na(outputDir))
-				outputDir <- file.path(getOutputDirectory(theObject),
+			outputDir <- file.path(getOutputDirectory(theObject),
 						"marker_genes/saveGenesInfo")
 			
 			if(!file.exists(outputDir))
