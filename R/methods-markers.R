@@ -340,7 +340,14 @@ setMethod(
 	if(all(dim(simMed) == c(0,0)) || all(dim(simMed) == c(1,1)))
 		stop("The 'scRNAseq' object that you're using with 'retrieveGenesInfo'",
 				" function doesn't have a similarity matrix, Please use ",
-				"'calculateClustersSimilarity' on the object before.")		
+				"'calculateClustersSimilarity' on the object before.")
+	
+	## Check the marker genes
+	if(isTRUE(all.equal(dim(genes), c(1,2))) && 
+			isTRUE(all.equal(genes$geneName, "gene1")) &&
+			is.na(genes$clusters))
+		stop("The 'scRNAseq' object that you're using with 'retrieveGenesInfo'",
+				" does not have marker genes. Please use 'rankGenes' before.")
 }
 
 
