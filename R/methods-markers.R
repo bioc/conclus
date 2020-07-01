@@ -309,7 +309,7 @@ setMethod(
 ###################
 
 
-.checkParamsretrieveGenesInfo <- function(orderGenes, genes, species,
+.checkParamsretrieveGenesInfo <- function(theObject, orderGenes, genes, species,
 		databaseDict){
 	
 	if(!isTRUE(all.equal(orderGenes,"initial")) && 
@@ -319,6 +319,29 @@ setMethod(
 	if (!(species %in% names(databaseDict)))
 		stop("species should be: ", paste(names(databaseDict), 
 						collapse = " or "))
+			
+	## Check if the normalized matrix is correct
+	sceObject <- getSceNorm(theObject)
+	if(all(dim(sceObject) == c(0,0)))
+		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
+				"function doesn't have its 'SceNorm' slot updated. Please use",
+				" 'normaliseCountMatrix' on the object before.")
+	
+	## Check if the SCE object contain cluster colums in its colData
+	if(!("clusters" %in% names(colData(sceObject))))
+		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
+				"function doesn't have a correct 'SceNorm' slot. This slot",
+				" should be a 'SingleCellExperiment' object containing ",
+				"'clusters' column in its colData. Please check if you ",
+				"correctly used 'clusterCellsInternal' on the object.")
+	
+	## Check the cluster similarity matrix
+	simMed <- getClustersSimilarityMatrix(theObject)
+	if(all(dim(simMed) == c(0,0)) || all(dim(simMed) == c(1,1)))
+		stop("The 'scRNAseq' object that you're using with 'rankGenes' ",
+				"function doesn't have its 'clustersSimilarityMatrix' slot",
+				" updated. Please use 'clusterCellsInternal' on the object",
+				" before.")		
 }
 
 
@@ -464,7 +487,7 @@ setMethod(
 			genes <- getClustersMarkers(theObject)
 			databaseDict <- c(mouse = "mmusculus_gene_ensembl",
 					human = "hsapiens_gene_ensembl")
-			.checkParamsretrieveGenesInfo(orderGenes, genes, species, 
+			.checkParamsretrieveGenesInfo(theObject, orderGenes, genes, species, 
 					databaseDict)
 			
 			## Additional Special database and columns according to species
