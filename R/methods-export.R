@@ -1,3 +1,36 @@
+.exportTopMarkers <- function(theObject){
+	
+	markers <- getClustersMarkers(theObject)
+	
+	if(isTRUE(all.equal(markers[[1]][1,"geneName"], "gene1")))
+	stop("The 'scRNAseq' object that you're using with 'exportResults' ",
+			"function doesn't have its markerGenesList slot updated. ",
+			"Please use 'rankGenes' on the object before.")
+	
+}
+
+
+.exportFullMarkers <- function(theObject, outputDir){
+	
+	markers <- getMarkerGenesList(theObject)
+	
+	if(isTRUE(all.equal(markers[[1]][1,"Gene"], "gene1")))
+		stop("The 'scRNAseq' object that you're using with 'exportResults' ",
+				"function doesn't have its markerGenesList slot updated. ",
+				"Please use 'rankGenes' on the object before.")
+	
+	invisible(mapply(function(currentMarkers, clustNb){
+						
+						fileName <- paste0("markers_clust", clustNb, ".csv")
+						write.csv(currentMarkers, file=file.path(outputDir, 
+										fileName))
+					}, markers, seq_len(length(markers))))
+	
+	message("Markers list saved.")
+	
+}
+
+
 .conclusResult <- function(theObject, sceObject, outputDir){
 	
 	## Check that the cluster similarity matrix was computed
@@ -131,7 +164,8 @@ setMethod(
 				saveNormalizedMatrix=FALSE, saveColData=FALSE, 
 				saveRowData=FALSE, saveTsne=FALSE, saveDBScan=FALSE, 
 				saveCellsSimilarityMatrix=FALSE, 
-				saveClustersSimilarityMatrix=FALSE){
+				saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
+				saveTopMarkers=FALSE){
 			
 			dataDirectory  <- getOutputDirectory(theObject)
 			experimentName <- getExperimentName(theObject)
@@ -229,5 +263,28 @@ setMethod(
 				
 				## Export Clustering results
 				.conclusResult(theObject, sceObject, outputClust)
-			}	
+			}
+			
+			
+			##########
+			## Saving the full markers lists and the top markers list
+			#########
+			
+			if(saveFullMarkers){
+				
+				outputFull <- file.path(outputDir, "7_fullMarkers")
+				.createFolder(outputFull)
+				
+				## Export the full marker lists
+				.exportFullMarkers(theObject, outputFull)
+			}
+			
+			if(saveTopMarkers){
+				
+				outputTop <- file.path(outputDir, "9_TopMarkers")
+				.createFolder(outputTop)
+				
+				## Export top markers
+				!!
+			}
 		})
