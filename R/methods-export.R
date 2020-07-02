@@ -173,6 +173,7 @@ setMethod(
 			
 			if(saveAll){
 				
+				message("Saving all results.")
 				saveNormalizedMatrix <- TRUE
 				saveColData <- TRUE 
 				saveRowData <- TRUE
