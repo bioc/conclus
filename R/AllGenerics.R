@@ -208,7 +208,7 @@ setGeneric(
 		
     name = "saveGenesInfo",
 	
-    def = function(theObject) {
+    def = function(theObject, outputDir=NA){
         standardGeneric("saveGenesInfo")
     },
     signature = "theObject"
