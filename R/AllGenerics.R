@@ -196,7 +196,7 @@ setGeneric(
 		
     name = "retrieveGenesInfo",
 	
-    def = function(theObject, species, groupBy="clusters", orderGenes="initial",
+    def = function(theObject, groupBy="clusters", orderGenes="initial",
 			getUniprot=TRUE, cores=1){
         standardGeneric("retrieveGenesInfo")
     },
