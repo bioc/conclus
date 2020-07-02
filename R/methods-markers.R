@@ -617,6 +617,8 @@ setMethod(
 #' 
 #' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
 #' run. See ?retrieveGenesInfo.
+#' @param outputDir Directory to write the results to. If NA, the output 
+#' directory is set to marker_genes/saveGenesInfo. Default=NA.
 #' 
 #' @aliases saveGenesInfo
 #'  
@@ -681,9 +683,10 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject){
+		definition = function(theObject, outputDir=NA){
 			
-			outputDir <- file.path(getOutputDirectory(theObject),
+			if(is.na(outputDir))
+				outputDir <- file.path(getOutputDirectory(theObject),
 						"marker_genes/saveGenesInfo")
 			
 			if(!file.exists(outputDir))
