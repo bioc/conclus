@@ -839,8 +839,7 @@ test_that("rankGenes method works properly", {
 test_that("retrieveGenesInfo method works properly", {
 			
 			expM <- "orderGenes should be 'initial' or 'alphabetical'."
-			expect_error(retrieveGenesInfo(scr, species="mouse", 
-							orderGenes="test"), expM)
+			expect_error(retrieveGenesInfo(scr, orderGenes="test"), expM)
 			
 			expM <- "species should be: mouse or human"
 			expect_error(retrieveGenesInfo(scrFinal,  species = "droso"), expM)
@@ -849,7 +848,7 @@ test_that("retrieveGenesInfo method works properly", {
 					"'retrieveGenesInfo' function doesn't have its 'SceNorm' ",
 					"slot updated. Please use 'normaliseCountMatrix' on the ",
 					"object before.")
-			expect_error(retrieveGenesInfo(scr, species="mouse"), expM)
+			expect_error(retrieveGenesInfo(scr), expM)
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'retrieveGenesInfo' function doesn't have a correct ",
@@ -857,19 +856,19 @@ test_that("retrieveGenesInfo method works properly", {
 					"'SingleCellExperiment' object containing 'clusters' ",
 					"column in its colData. Please check if you correctly used",
 					" 'clusterCellsInternal' on the object.")
-			expect_error(retrieveGenesInfo(scrDbscan, species="mouse"), expM)
+			expect_error(retrieveGenesInfo(scrDbscan), expM)
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'retrieveGenesInfo' function doesn't have a similarity ",
 					"matrix, Please use 'calculateClustersSimilarity' on the ",
 					"object before.")
-			expect_error(retrieveGenesInfo(scrCCI, species="mouse"), expM)
+			expect_error(retrieveGenesInfo(scrCCI), expM)
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'retrieveGenesInfo' does not have marker genes. Please ",
 					"use 'retrieveTopClustersMarkers' before.")
-			expect_error(retrieveGenesInfo(scrCSM, species="mouse"), expM)
-			expect_error(retrieveGenesInfo(scrS4MG, species="mouse"), expM)
+			expect_error(retrieveGenesInfo(scrCSM), expM)
+			expect_error(retrieveGenesInfo(scrS4MG), expM)
 		})
 			
 
