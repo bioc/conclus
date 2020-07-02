@@ -1,24 +1,27 @@
-.exportTopMarkers <- function(theObject){
+.exportMarkers <- function(theObject, outputDir, listType="Full marker lists", 
+		top=FALSE){
 	
-	markers <- getClustersMarkers(theObject)
+	if(top){
+		
+		markers <- getClustersMarkers(theObject)
+		firstElement <- markers[1,"geneName"]
+		slotName <- "clustersMarkers"
+		funName <- "retrieveTopClustersMarkers"
+		markers <- split(markers, markers$clusters)
+	}else{
+		
+		markers <- getMarkerGenesList(theObject)
+		firstElement <- markers[[1]][1,"Gene"]
+		slotName <- "markerGenesList"
+		funName <- "rankGenes"
+	}
 	
-	if(isTRUE(all.equal(markers[[1]][1,"geneName"], "gene1")))
-	stop("The 'scRNAseq' object that you're using with 'exportResults' ",
-			"function doesn't have its markerGenesList slot updated. ",
-			"Please use 'rankGenes' on the object before.")
 	
-}
-
-
-.exportFullMarkers <- function(theObject, outputDir){
-	
-	markers <- getMarkerGenesList(theObject)
-	
-	if(isTRUE(all.equal(markers[[1]][1,"Gene"], "gene1")))
+	if(isTRUE(all.equal(firstElement, "gene1")))
 		stop("The 'scRNAseq' object that you're using with 'exportResults' ",
-				"function doesn't have its markerGenesList slot updated. ",
-				"Please use 'rankGenes' on the object before.")
-	
+				"function doesn't have its '", slotName, "' slot updated. ",
+				"Please use '", funName,"' on the object before.")
+		
 	invisible(mapply(function(currentMarkers, clustNb){
 						
 						fileName <- paste0("markers_clust", clustNb, ".csv")
@@ -26,7 +29,8 @@
 										fileName))
 					}, markers, seq_len(length(markers))))
 	
-	message("Markers list saved.")
+	
+	message(listType, " saved.")
 	
 }
 
@@ -276,15 +280,15 @@ setMethod(
 				.createFolder(outputFull)
 				
 				## Export the full marker lists
-				.exportFullMarkers(theObject, outputFull)
+				.exportMarkers(theObject, outputFull)
 			}
 			
 			if(saveTopMarkers){
 				
-				outputTop <- file.path(outputDir, "9_TopMarkers")
+				outputTop <- file.path(outputDir, "8_TopMarkers")
 				.createFolder(outputTop)
 				
 				## Export top markers
-				!!
+				.exportMarkers(theObject, outputTop, "Top markers", top=TRUE)
 			}
 		})
