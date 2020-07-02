@@ -114,7 +114,7 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
+scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
 wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"), 
 		clusters=c("1", "3"), external_gene_name=c("gene1", "gene2"), 
 		go_id=c("GO1,GO2", "GO1,GO3"), 
