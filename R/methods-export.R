@@ -1,3 +1,28 @@
+.conclusResult <- function(theObject, sceObject, outputDir){
+	
+	## Check that the cluster similarity matrix was computed
+	## This step is necessary to  update the 'clusters' column
+	## of the col metadata.
+	matrix <- getClustersSimilarityMatrix(theObject)
+	
+	if(all(dim(matrix) == c(1,1)))
+		stop("The 'scRNAseq' object that you're using with 'exportResults' ",
+				"function doesn't have its columns metadata ",
+				"updated. Please use 'calculateClustersSimilarity' on the ",
+				"object before.")
+	
+	colMetaDf <- SummarizedExperiment::colData(sceObject)
+	results <- data.frame(clusters=colMetaDf$clusters, 
+			cells=colMetaDf$cellName)
+	
+	fileName <- paste0(experimentName,"_clusters_table.tsv")
+	write.table(results, file=file.path(outputDir, fileName), quote=FALSE, 
+			sep="\t", row.names=FALSE, col.names=TRUE)
+	message("Clusters table saved.")
+}
+
+
+
 .exportCSM <- function(theObject, experimentName, outputDir, cell=TRUE){
 	
 	if(cell){
@@ -14,7 +39,7 @@
 		fileName <- "_clusters_similarity_matrix.csv" 
 	}
 		
-	if(all(dim(matrix) == c(0,0)))
+	if(all(dim(matrix) == c(0,0)) || all(dim(matrix) == c(1,1)))
 		stop("The 'scRNAseq' object that you're using with 'exportResults' ",
 				"function doesn't have its '", matType,"' slot ",
 				"updated. Please use '", funName,"' on the object ",
@@ -25,6 +50,30 @@
 	message(matType, " saved.")
 }
 
+
+.exportDBScan <- function(theObject, outputDir){
+	
+	dbscanList <- getDbscanList(theObject)
+	
+	if(isTRUE(all.equal(length(getName(dbscanList[[1]])), 0)))
+		stop("The 'scRNAseq' object that you're using with 'exportResults' ",
+				"method doesn't have its 'dbscanList' slot updated. Please use",
+				" 'runDBSCAN' on the object before.")
+	
+	invisible(lapply(dbscanList, function(currentDBScan){
+						
+						name <- getName(currentDBScan)
+						eps <- getEpsilon(currentDBScan)
+						mPt <- getMinPoints(currentDBScan)
+						fileName <- paste(name, eps, mPt, sep="_")
+						fileName <- paste0(fileName, ".tsv")
+						write.table(getClustering(currentDBScan), 
+								file=file.path(outputDir, fileName),
+								quote=FALSE, row.names=TRUE, col.names=TRUE)
+					}))
+	
+	message("dbScan clustering saved.")
+}
 
 
 .exportTsne <- function(theObject, outputDir){
@@ -78,94 +127,107 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, saveNormalizedMatrix=TRUE,
-				saveColData=TRUE, saveRowData=TRUE, saveTsne=TRUE,
-				saveCellsSimilarityMatrix=TRUE, 
-				saveClustersSimilarityMatrix=TRUE, saveWorkspace=TRUE,
-				saveClusteringResults=TRUE){
+		definition = function(theObject, saveClusteringResults=TRUE, 
+				saveNormalizedMatrix=FALSE, saveColData=FALSE, 
+				saveRowData=FALSE, saveTsne=FALSE, saveDBScan=FALSE, 
+				saveCellsSimilarityMatrix=FALSE, 
+				saveClustersSimilarityMatrix=FALSE){
 			
 			dataDirectory  <- getOutputDirectory(theObject)
 			experimentName <- getExperimentName(theObject)
 			sceObject <- getSceNorm(theObject)
-			outputDir <- file.path(dataDirectory, "output_tables")
+			outputDir <- file.path(dataDirectory, "Results")
 			.createFolder(outputDir)
 			
 			##########
 			## Saving results after normalization
 			#########
 			
-			outputNorm <- file.path(outputDir, "MatrixInfo")
-			.createFolder(outputNorm)
+			if(saveNormalizedMatrix || saveRowData || saveColData){
+				
+				outputNorm <- file.path(outputDir, "1_MatrixInfo")
+				.createFolder(outputNorm)
+				
+				## Export Normalized expression matrix
+				if(saveNormalizedMatrix)
+					.exportNormInfo(theObject, outputNorm, experimentName, 
+							sceObject, Biobase::exprs, "_expression_matrix.tsv", 
+							"Normalized expression matrix")
+				
+				## Export RowData
+				if(saveRowData)
+					.exportNormInfo(theObject, outputNorm, experimentName, 
+							sceObject, SummarizedExperiment::rowData, 
+							"_rowData.tsv", "RowData")
+				
+				## Export ColData
+				if(saveColData)
+					.exportNormInfo(theObject, outputNorm, experimentName, 
+							sceObject, SummarizedExperiment::colData, 
+							"_colData.tsv", "ColData")
+			}
 			
-			## Export Normalized expression matrix
-			if(saveNormalizedMatrix)
-				.exportNormInfo(theObject, outputNorm, experimentName, 
-						sceObject, Biobase::exprs, "_expression_matrix.tsv", 
-						"Normalized expression matrix")
-			
-			## Export RowData
-			if(saveRowData)
-				.exportNormInfo(theObject, outputNorm, experimentName, 
-						sceObject, SummarizedExperiment::rowData, 
-						"_rowData.tsv", "RowData")
-			
-			## Export ColData
-			if(saveColData)
-				.exportNormInfo(theObject, outputNorm, experimentName, 
-						sceObject, SummarizedExperiment::colData, 
-						"_colData.tsv", "ColData")
 			
 			##########
 			## Saving results after tSNE calculation
 			#########
 			
-			outputTSNE <- file.path(outputDir, "TSNECoordinates")
-			.createFolder(outputTSNE)
-			
-			## Export all tSNE coordinates
-			if(saveTsne)
+			if(saveTsne){
+				
+				outputTSNE <- file.path(outputDir, "2_TSNECoordinates")
+				.createFolder(outputTSNE)
+				
+				## Export all tSNE coordinates
 				.exportTsne(theObject, outputTSNE)
+			}
 			
 			
 			##########
 			## Saving results after running dbScan
 			#########
 			
-			outputDBSCAN <- file.path(outputDir, "dbScan")
-			.createFolder(outputDBSCAN)
+			if(saveDBScan){
+				
+				outputDBSCAN <- file.path(outputDir, "3_dbScan")
+				.createFolder(outputDBSCAN)
+				
+				## Export all clustering results given by dbscan
+				.exportDBScan(theObject, outputDBSCAN)
+			}
 			
-			## Export all clustering results given by dbscan
-			
-			
-			
+			##########
+			## Saving results cells and clusters similarity matrices
+			#########
 			
 			## Export CellsSimilarityMatrix
-			if(saveCellsSimilarityMatrix)
-				.exportCSM(theObject, experimentName, outputDir)
+			if(saveCellsSimilarityMatrix){
+				
+				outputCellSM <- file.path(outputDir, "4_CellSimilarityMatrix")
+				.createFolder(outputCellSM)
+				.exportCSM(theObject, experimentName, outputCellSM)
+			}
+				
 				
 			## Export ClustersSimilarityMatrix
-			if(saveClustersSimilarityMatrix)
-				.exportCSM(theObject, experimentName, outputDir, cell=FALSE)
-					
-			## Save workspace
-			if(saveWorkspace){
-				fileName <- paste0(experimentName, "_full_workspace.RData")
-				save.image(file=file.path(outputDir, fileName))
-				message("Workspace saved.")
-			}
-			
-			## Export Clustering results
-			if (saveClusteringResults){
-				tableData <- S4Vectors::DataFrame(
-						clusters=SummarizedExperiment::colData(sceObject)$clusters,
-						row.names=SummarizedExperiment::colData(sceObject)$cellName)
+			if(saveClustersSimilarityMatrix){
 				
-				write.table(tableData,
-						file=file.path(dataDirectory, "output_tables",
-								paste0(experimentName,"_", 
-										"clusters_table.tsv")),
-						sep="\t", quote=FALSE)
-				message("Clusters table saved.")
+				outClustSM <- file.path(outputDir, "5_ClusterSimilarityMatrix")
+				.createFolder(outClustSM)
+				.exportCSM(theObject, experimentName, outClustSM, cell=FALSE)
 			}
+				
+					
+			##########
+			## Saving a table cluster-cell being the result of the consensus
+			## clustering
+			#########
 			
+			if (saveClusteringResults){
+				
+				outputClust <- file.path(outputDir, "6_ConclusResult")
+				.createFolder(outputClust)
+				
+				## Export Clustering results
+				.conclusResult(theObject, sceObject, outputClust)
+			}	
 		})
