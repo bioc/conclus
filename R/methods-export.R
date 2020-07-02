@@ -169,7 +169,21 @@ setMethod(
 				saveRowData=FALSE, saveTsne=FALSE, saveDBScan=FALSE, 
 				saveCellsSimilarityMatrix=FALSE, 
 				saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
-				saveTopMarkers=FALSE){
+				saveTopMarkers=FALSE, saveGenesInfos=FALSE, saveAll=FALSE){
+			
+			if(saveAll){
+				
+				saveNormalizedMatrix <- TRUE
+				saveColData <- TRUE 
+				saveRowData <- TRUE
+				saveTsne <- TRUE
+				saveDBScan <- TRUE 
+				saveCellsSimilarityMatrix <- TRUE 
+				saveClustersSimilarityMatrix <- TRUE
+				saveFullMarkers <- TRUE
+				saveTopMarkers <- TRUE
+				saveGenesInfos <- TRUE
+			}
 			
 			dataDirectory  <- getOutputDirectory(theObject)
 			experimentName <- getExperimentName(theObject)
@@ -272,7 +286,7 @@ setMethod(
 			
 			##########
 			## Saving the full markers lists and the top markers list
-			#########
+			##########
 			
 			if(saveFullMarkers){
 				
@@ -290,5 +304,17 @@ setMethod(
 				
 				## Export top markers
 				.exportMarkers(theObject, outputTop, "Top markers", top=TRUE)
+			}
+			
+			###########
+			## Saving genes infos
+			###########
+			
+			if(saveGenesInfos){
+				
+				outputInfos <- file.path(outputDir, "9_genesInfos")
+				.createFolder(outputInfos)
+				saveGenesInfo(theObject, outputInfos)
+				message("Genes infos saved.")
 			}
 		})
