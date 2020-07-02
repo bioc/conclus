@@ -867,7 +867,7 @@ test_that("retrieveGenesInfo method works properly", {
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'retrieveGenesInfo' does not have marker genes. Please ",
-					"use 'bestClustersMarkers' before.")
+					"use 'retrieveTopClustersMarkers' before.")
 			expect_error(retrieveGenesInfo(scrCSM, species="mouse"), expM)
 			expect_error(retrieveGenesInfo(scrS4MG, species="mouse"), expM)
 		})
