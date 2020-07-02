@@ -488,9 +488,10 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, species, groupBy="clusters", 
+		definition = function(theObject, groupBy="clusters", 
 				orderGenes="initial", getUniprot=TRUE, cores=1){
 			
+			species <- getSpecies(theObject)
 			genes <- getClustersMarkers(theObject)
 			databaseDict <- c(mouse = "mmusculus_gene_ensembl",
 					human = "hsapiens_gene_ensembl")
