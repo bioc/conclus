@@ -265,7 +265,7 @@
 #' scrS4MG <- rankGenes(scrCSM)
 #' 
 #' @seealso
-#' bestClustersMarkers retrieveGenesInfo 
+#' retrieveTopClustersMarkers retrieveGenesInfo 
 #' 
 #' @exportMethod
 #' @importFrom SummarizedExperiment colData
@@ -347,8 +347,8 @@ setMethod(
 			isTRUE(all.equal(genes$geneName, "gene1")) &&
 			is.na(genes$clusters))
 		stop("The 'scRNAseq' object that you're using with 'retrieveGenesInfo'",
-				" does not have marker genes. Please use 'bestClustersMarkers'",
-				" before.")
+				" does not have marker genes. Please use ",
+				"'retrieveTopClustersMarkers' before.")
 }
 
 
@@ -470,13 +470,13 @@ setMethod(
 #' scrS4MG <- rankGenes(scrCSM)
 #' 
 #' ## Getting marker genes
-#' scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
+#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = F)
 #' 
 #' ## Getting genes info
 #' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
 #' 
 #' @seealso
-#' rankGenes bestClustersMarkers 
+#' rankGenes retrieveTopClustersMarkers 
 #' 
 #' @exportMethod
 
@@ -664,7 +664,7 @@ setMethod(
 #' scrS4MG <- rankGenes(scrCSM)
 #' 
 #'  ## Getting marker genes
-#' scrFinal <- bestClustersMarkers(scrS4MG, removeDuplicates = F)
+#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = F)
 #' 
 #' ## Getting genes info
 #' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
@@ -718,7 +718,7 @@ setMethod(
 
 
 ###################
-## bestClustersMarkers
+## retrieveTopClustersMarkers
 ###################
 
 .checkParamsTopClust <- function(sceObject, markerGenesList, 
