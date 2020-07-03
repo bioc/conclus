@@ -15,10 +15,6 @@
 #' @aliases getTsneName getPC getPerplexity getCoordinates
 #' @aliases setTsneName setPC setPerplexity setCoordinates
 #' 
-#' @usage 
-#' Tsne(name = "character", pc = "numeric", perplexity = "numeric", 
-#' coordinates = "matrix")
-#' 
 #' @details
 #'  \describe{
 #'	  Tsne is a vector of principal commponents (PC) and perplexity that are
@@ -106,10 +102,6 @@ Tsne <- setClass(
 #' @rdname Dbscan-class
 #' @aliases getDbscanName getEpsilon getMinPoints getClustering
 #' @aliases setDbscanName setEpsilon setMinPoints setClustering
-#'
-#' @usage 
-#' Dbscan(name = "character", epsilon    = "numeric", minPoints  = "numeric",
-#'         clustering = "matrix")
 #' 
 #' @section Details:
 #'  \describe{
@@ -183,14 +175,6 @@ Dbscan <- setClass(
 #' S4 class and the main class used by CONCLUS containing the results of the 
 #' different steps to analyse rare cell populations.
 #'
-#' @usage
-#' scRNAseq(experimentName = "character", countMatrix = "matrix", 
-#' sceNorm = "SingleCellExperiment", species = "character", 
-#' outputDirectory = "character", tSNEList = "list", dbscanList = "list",
-#' cellsSimilarityMatrix = "matrix", clustersSimilarityMatrix = "matrix",
-#' clustersSimiliratyOrdered = "factor", markerGenesList = "list", 
-#' clustersMarkers = "data.frame", genesInfos = "data.frame")
-#' 	
 #' @name scRNAseq-class
 #' @rdname scRNAseq-class
 #' @aliases getExperimentName getCountMatrix getSceNorm getSpecies
@@ -244,6 +228,15 @@ Dbscan <- setClass(
 #'     
 #' @section Constructor:
 #' \describe{
+#' 
+#' scRNAseq(experimentName = "character", countMatrix = "matrix", 
+#' sceNorm = "SingleCellExperiment", species = "character", 
+#' outputDirectory = "character", tSNEList = "list", dbscanList = "list",
+#' cellsSimilarityMatrix = "matrix", clustersSimilarityMatrix = "matrix",
+#' clustersSimiliratyOrdered = "factor", markerGenesList = "list", 
+#' clustersMarkers = "data.frame", genesInfos = "data.frame")
+#' 
+#' 
 #'    \item{\code{experimentName}:}{String of the name of the experiment.}
 #'    \item{\code{countMatrix}:}{\code{Matrix} containing the raw counts}
 #'    \item{\code{sceNorm}:}{Empty or \code{SingleCellExperiment object }
