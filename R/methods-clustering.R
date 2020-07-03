@@ -788,67 +788,65 @@ setMethod(
 ## addClusteringManually
 ##################
 
-## !!!!!!!!!!!!! NOT DONE
+.checkParamsAddClustering <- function(theObject, clusToAdd, colDf){
+	
+	## Check that the cluster similarity matrix was computed
+	## This step is necessary to  update the 'clusters' column
+	## of the col metadata.
+	matrix <- getClustersSimilarityMatrix(theObject)
+	
+	if(all(dim(matrix) == c(1,1)))
+		stop("The 'scRNAseq' object that you're using with 'exportResults' ",
+				"function doesn't have its columns metadata ",
+				"updated. Please use 'calculateClustersSimilarity' on the ",
+				"object before.")
+	
+	if(!isTRUE(all.equal(ncol(clusToAdd), 2)))
+		stop("The file given to filePathAdd  should contain two columns ",
+				"'clusters' and 'cells'")
+	
+	if(!all(colnames(clusToAdd) %in% c("clusters", "cells")))
+		stop("The file given to filePathAdd  should contain two columns ",
+				"'clusters' and 'cells'")
+	
+	if(!all(colDf$cells %in% clusToAdd$cells))
+		stop("The cells column in theObject clustering results contains cells ",
+				"names that are not the same then the ones of the cluster to ",
+				"add. Make sure that the cells names of the cluster to add ",
+				" are the same.")
+}
+
 
 setMethod(
 		
-		f = "addClusteringManually",
+		f = "addClustering",
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, fileName, columnName = "clusters"){
+		definition = function(theObject, filePathAdd=NA, 
+				columnName = "clusters", clusToAdd=NA){
 			
 			## Check if the Object is valid
 			validObject(theObject)
 			
-			## Check if the normalized matrix is correct
+			## Retrieve the clustering to add
+			if(is.na(clusToAdd))
+				if(!is.na(filePathAdd))
+					clusToAdd <- read.table(filePathAdd, header=TRUE, sep="\t")
+			    else
+					stop("Either filePathAdd or clustToAdd should be given.")
+			
+			## Retrieve the clustering result in theObject
 			sceObject  <- getSceNorm(theObject)
-			
-			if (all(dim(sceObject) == c(0,0)))
-				stop("The 'scRNAseq' object that you're using with ",
-						"'addClusteringManually' function doesn't have its ",
-						"'sceNorm' slot updated. Please use ",
-						"'normaliseCountMatrix' on the object before.")
-			
-			#!! not good use the slot !!
-			tableData <- read.table(file.path(dataDirectory, "output_tables",
-							paste0(experimentName, "_", fileName)), sep="\t")
-			
-			## Already check in validObject
-			dataDirectory  <- getOutputDirectory(theObject)
-			experimentName <- getExperimentName(theObject)
-			
 			colDf <- SummarizedExperiment::colData(sceObject)
+			colDf <- data.frame(clusters=colDf$clusters, cells=colDf$cellName)
 			
-			if(all(rownames(colDf) %in% rownames(tableData))){
-				
-				if(isTRUE(all.equal(ncol(tableData), 1)))
-					colDf$clusters <- factor(tableData[rownames(colDf), ])
-				else
-					colDf$clusters <- factor(
-							tableData[rownames(colDf), ][ columnName])
-				
-				setSceNorm(theObject) <- sceObject
-				return(theObject)
-				
-			}else{
-				
-				msg <- paste("Rownames in colDf are not equal to rownames in",
-						"table. Returning SCE object with cells intersecting ",
-						"with clusters_table.\n",
-						sep="")
-				message(msg)
-				sceObject <- sceObject[, colnames(sceObject) %in%
-								intersect(colnames(sceObject),
-										rownames(tableData))]
-				tableData$randomColumn <- NA
-				tableData <- tableData[rownames(tableData) %in%
-								intersect(colnames(sceObject),
-										rownames(tableData)), ]
-				colDf$clusters <- factor(
-						tableData[rownames(colDf),][,columnName])
-				setSceNorm(theObject) <- sceObject
-				
-				return(theObject)
-			}
+			
+			## Check Parameters
+			.checkParamsAddClustering(theObject, clusToAdd, colDf)
+			
+			colDf$clusters <- clusToAdd[colDf$cells, "clusters"]
+			SummarizedExperiment::colData(sceObject)$clusters <- colDf$clusters 	
+			setSceNorm(theObject) <- sceObject
+			return(theObject)
 		})
