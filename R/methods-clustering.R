@@ -808,7 +808,8 @@ setMethod(
 	
 	if(!all(colnames(clusToAdd) %in% c("clusters", "cells")))
 		stop("The file given to filePathAdd  should contain two columns ",
-				"'clusters' and 'cells'")
+				"'clusters' and 'cells' Instead it contains: ", 
+				paste(colnames(clusToAdd), collapse="-"))
 	
 	if(!all(colDf$cells %in% clusToAdd$cells))
 		stop("The cells column in theObject clustering results contains cells ",
