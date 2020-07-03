@@ -819,14 +819,79 @@ setMethod(
 }
 
 
+
+#' addClustering
+#'
+#' @description 
+#' This method enables to add a clustering to the existing object in order to 
+#' change the coloration of the t-sne. It is particularly useful to compare the
+#'  performance of different tools. 
+#'
+#' @usage 
+#' addClustering(theObject, filePathAdd=NA, columnName = "clusters", 
+#' clusToAdd=NA)
+#' 
+#' @param theObject An Object of class scRNASeq for which 
+#' ?calculateClustersSimilarity was used.
+#' @param filePathAdd Path to the file containing the clustering to replace in 
+#' the object. It should be made of two columns 'clusters' and 'cells'.
+#' @param columnName Default="clusters'. Name of the column to replace in 
+#' 
+#' @aliases calculateClustersSimilarity
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' calculateClustersSimilarity-scRNAseq
+#' 
+#' @return 
+#' An object of class scRNASeq with its clustersSimilarityMatrix and
+#' clustersSimiliratyOrdered slots updated. 
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' @seealso
+#' plotClustersSimilarity 
+#' 
+#' @exportMethod
+#' @importFrom SummarizedExperiment colData
+
+
 setMethod(
 		
 		f = "addClustering",
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, filePathAdd=NA, 
-				columnName = "clusters", clusToAdd=NA){
+		definition = function(theObject, filePathAdd=NA, clusToAdd=NA){
 			
 			## Check if the Object is valid
 			validObject(theObject)
