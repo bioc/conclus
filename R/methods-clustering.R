@@ -828,26 +828,27 @@ setMethod(
 #'  performance of different tools. 
 #'
 #' @usage 
-#' addClustering(theObject, filePathAdd=NA, columnName = "clusters", 
-#' clusToAdd=NA)
+#' addClustering(theObject, filePathAdd=NA, clusToAdd=NA)
 #' 
 #' @param theObject An Object of class scRNASeq for which 
 #' ?calculateClustersSimilarity was used.
-#' @param filePathAdd Path to the file containing the clustering to replace in 
-#' the object. It should be made of two columns 'clusters' and 'cells'.
-#' @param columnName Default="clusters'. Name of the column to replace in 
+#' @param filePathAdd Default=NA. Path to the file containing the clustering to 
+#' replace in the object. It should be made of two columns 'clusters' and 
+#' 'cells'. This should be left to NA if clusToAdd is used. Default=NA.
+#' @param clusToAdd Data frame having two columns 'clusters' and 'cells' 
+#' containing the clustering to be used in theObject. Should be left to NA if 
+#' filePathAdd is used. Default=NA. 
 #' 
-#' @aliases calculateClustersSimilarity
+#' @aliases addClustering
 #'  
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 #' 
 #' @rdname 
-#' calculateClustersSimilarity-scRNAseq
+#' addClustering-scRNAseq
 #' 
 #' @return 
-#' An object of class scRNASeq with its clustersSimilarityMatrix and
-#' clustersSimiliratyOrdered slots updated. 
+#' An object of class scRNASeq with its column name metadata updated. 
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -857,6 +858,9 @@ setMethod(
 #' columnsMetaData <- read.delim(
 #' file.path("extdata/Bergiers_colData_filtered.tsv"))
 #' 
+#' clustAddTab <- read.delim(
+#' file.path("inst/extdata/Bergiers_clusters_table.tsv"))
+#' 		
 #' ## Create the initial object
 #' scr <- scRNAseq(experimentName = experimentName, 
 #'                 countMatrix     = countMatrix, 
@@ -878,8 +882,8 @@ setMethod(
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
 #' 
-#' @seealso
-#' plotClustersSimilarity 
+#' ## Update clustering information
+#' addClustering(scrCSM, clusToAdd=clustAddTab)
 #' 
 #' @exportMethod
 #' @importFrom SummarizedExperiment colData
