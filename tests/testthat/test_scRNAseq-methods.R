@@ -912,46 +912,63 @@ test_that("retrieveTopClustersMarkers method works properly", {
 		
 
 
-##################################  Export  ####################################
+##################################  ExportResults ##############################
 
 test_that("exportResults works properly", {
     
-    ## Test with object doesn't have consensus clusters
-    expM <- paste0("You have to follow all the steps until to have the", 
-                   " clusters similarity matrix to use the exportResults",
-                   " function.")
-    expect_error(exportResults(scr), expM)
     
-    ## Test with incorrect saveCellsSimilarityMatrix
-    expM <- paste0("saveCellsSimilarityMatrix should be a boolean.")
-    expect_error(exportResults(scrFinal, saveCellsSimilarityMatrix="str1" ),
-                 expM)
-    
-    ## Test with incorrect saveClustersSimilarityMatrix
-    expM <- paste0("saveClustersSimilarityMatrix should be a boolean.")
-    expect_error(exportResults(scrFinal, saveClustersSimilarityMatrix="str1" ),
-                 expM)
-    
-    ## Test with incorrect saveNormalizedMatrix
-    expM <- paste0("saveNormalizedMatrix should be a boolean.")
-    expect_error(exportResults(scrFinal, saveNormalizedMatrix="str1" ), expM)
-    
-    ## Test with incorrect saveColData
-    expM <- paste0("saveColData should be a boolean.")
-    expect_error(exportResults(scrFinal, saveColData="str1" ), expM)
-    
-    ## Test with incorrect saveRowData
-    expM <- paste0("saveRowData should be a boolean.")
-    expect_error(exportResults(scrFinal, saveRowData="str1" ), expM)
-    
-    ## Test with incorrect saveWorkspace
-    expM <- paste0("saveWorkspace should be a boolean.")
-    expect_error(exportResults(scrFinal, saveWorkspace="str1" ), expM)
-    
-    ## Test with incorrect saveClusteringResults
-    expM <- paste0("saveClusteringResults should be a boolean.")
-    expect_error(exportResults(scrFinal, saveClusteringResults="str1" ), expM)
-
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+			"'exportResults' method doesn't have its ",
+			"'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
+			" on the object before.")
+			expect_error(exportResults(scr, saveNormalizedMatrix=TRUE), expM)
+			expect_error(exportResults(scr,saveRowData=TRUE),expM)
+			expect_error(exportResults(scr,saveColData=TRUE),expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' method doesn't have its 'tSNEList' slot ",
+					"updated. Please use 'generateTSNECoordinates' on the ",
+					"object before.")
+			expect_error(exportResults(scrNorm, saveTsne=TRUE),expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' method doesn't have its 'dbscanList' slot",
+					" updated. Please use 'runDBSCAN' on the object before.")
+			expect_error(exportResults(scrTsne, saveDBScan=TRUE),expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' function doesn't have its ",
+					"'cellsSimilarityMatrix' slot updated. Please use ",
+					"'clusterCellsInternal' on the object before.")
+			expect_error(exportResults(scrDbscan, 
+							saveCellsSimilarityMatrix=TRUE), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' function doesn't have its ",
+					"'clustersSimilarityMatrix' slot updated. Please use ",
+					"'calculateClustersSimilarity' on the object before.")
+			expect_error(exportResults(scrCCI, 
+							saveClustersSimilarityMatrix=TRUE), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' function doesn't have its columns ",
+					"metadata updated. Please use ",
+					"'calculateClustersSimilarity' on the object before.")
+			expect_error(exportResults(scrCCI), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' function doesn't have its ",
+					"'markerGenesList' slot updated. Please use 'rankGenes' ",
+					"on the object before.")
+			expect_error(exportResults(scrCSM, saveClusteringResults=FALSE, 
+							saveFullMarkers=TRUE), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' function doesn't have its ",
+					"'clustersMarkers' slot updated. Please use ",
+					"'retrieveTopClustersMarkers' on the object before")
+			expect_error(exportResults(scrS4MG, saveClusteringResults=FALSE, 
+							saveTopMarkers=TRUE), expM)
 })
 
 ##################################  testClustering  ###########################
