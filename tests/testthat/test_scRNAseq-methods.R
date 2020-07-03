@@ -51,6 +51,15 @@ countMatrix <- as.matrix(read.delim(
 
 smallMatrix <- countMatrix[,1:50]
 
+## Retrieve the clustering to add
+clustAddTab <- read.delim(
+		file.path("inst/extdata/Bergiers_clusters_table.tsv"))
+clustAddTabColThree <- cbind(clustAddTab, mock=rep(1, nrow(clustAddTab)))
+clustWrongName <- clustAddTab
+colnames(clustWrongName) <- c("test", "test")
+clustWrongcells <- clustAddTab
+clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
+
 ## Load expected results
 
 load(file = "tests/testthat/test_data/scrLight.Rdat")
@@ -1009,8 +1018,47 @@ test_that("testClustering works properly", {
 		})
 				
 	
-	
-	
+
+############################  addClustering  ###########################	
+
+
+
+test_that("addClustering works properly",{
+			
+			expM <- "Either filePathAdd or clustToAdd should be given."
+			expect_error(addClustering(scr), expM)
+			
+			expM <- paste0("The 'scRNAseq' object that you're using with ",
+					"'exportResults' function doesn't have its columns ",
+					"metadata updated. Please use ",
+					"'calculateClustersSimilarity' on the object before.")
+			expect_error(addClustering(scr, clusToAdd=clustAddTab), expM)
+			
+			expM <- paste0("The file given to filePathAdd  should contain ",
+					"two columns 'clusters' and 'cells'. Instead it con")
+			expect_error(addClustering(scrInfos, clusToAdd=clustAddTabColThree),
+					expM)
+			
+			expM <- paste0("The file given to filePathAdd  should contain two",
+					" columns 'clusters' and 'cells'. Instead it contains: ",
+					"clusters-cells-mock")
+			expect_error(addClustering(scrInfos, 
+							clusToAdd=clustAddTabColThree), expM)
+			
+			expM <- paste0("The file given to filePathAdd  should contain two ",
+					"columns 'clusters' and 'cells' Instead it contains: ",
+					"test-test")
+			expect_error(addClustering(scrInfos, 
+							clusToAdd=clustWrongName), expM)
+			
+			expM <- paste0("The cells column in theObject clustering results ",
+					"contains cells names that are not the same then the ones ",
+					"of the cluster to add. Make sure that the cells names of ",
+					"the cluster to add  are the same.")
+			expect_error(addClustering(scrInfos, 
+							clusToAdd=clustWrongcells), expM)
+		})
+
 	
 	
 	
