@@ -76,10 +76,11 @@ setGeneric(
 
 setGeneric(
 		
-	name = "addClusteringManually",
+	name = "addClustering",
 		
-	def = function(theObject, fileName, columnName="clusters"){
-		standardGeneric("addClusteringManually")    
+	def = function(theObject, filePathAdd=NA, columnName = "clusters", 
+			clusToAdd=NA){
+		standardGeneric("addClustering")    
     },
     signature="theObject")
 
