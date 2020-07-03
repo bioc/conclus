@@ -803,7 +803,8 @@ setMethod(
 	
 	if(!isTRUE(all.equal(ncol(clusToAdd), 2)))
 		stop("The file given to filePathAdd  should contain two columns ",
-				"'clusters' and 'cells'")
+				"'clusters' and 'cells'. Instead it contains: ", 
+				paste(colnames(clusToAdd), collapse="-"))
 	
 	if(!all(colnames(clusToAdd) %in% c("clusters", "cells")))
 		stop("The file given to filePathAdd  should contain two columns ",
