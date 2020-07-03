@@ -158,6 +158,88 @@
 		dir.create(outputDir,  showWarnings=FALSE)
 }
 
+
+
+
+#' exportResults
+#'
+#' @description 
+#' Export all the results of Conclus to a Results sub-directory.
+#'
+#' @usage 
+#' exportResults(theObject, saveClusteringResults=TRUE, 
+#' saveNormalizedMatrix=FALSE, saveColData=FALSE, saveRowData=FALSE, 
+#' saveTsne=FALSE, saveDBScan=FALSE, saveCellsSimilarityMatrix=FALSE,
+#' saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE, 
+#' saveTopMarkers=FALSE, saveGenesInfos=FALSE, saveAll=FALSE)
+#' 
+#' @param theObject An Object of class scRNASeq for which different steps of 
+#' CONCLUS was applied to. The number of steps to run depends on what is 
+#' wanted to be saved.
+#' @param saveClusteringResults Default=TRUE. Save the final clustering results
+#' giving the corresponding cluster number to each cell. The method 
+#' calculateClustersSimilarity should have been run on the object.
+#' @param saveAll=FALSE
+#' @param saveNormalizedMatrix=FALSE
+#' @param saveColData=FALSE
+#' @param saveRowData=FALSE
+#' @param saveTsne=FALSE
+#' @param saveDBScan=FALSE
+#' @param saveCellsSimilarityMatrix=FALSE
+#' @param saveClustersSimilarityMatrix=FALSE
+#' @param saveFullMarkers=FALSE
+#' @param saveTopMarkers=FALSE
+#' @param saveGenesInfos=FALSE
+#' 
+#' @aliases calculateClustersSimilarity
+#'  
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' 
+#' @rdname 
+#' calculateClustersSimilarity-scRNAseq
+#' 
+#' @return 
+#' An object of class scRNASeq with its clustersSimilarityMatrix and
+#' clustersSimiliratyOrdered slots updated. 
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' 
+#' ## Create the initial object
+#' scr <- scRNAseq(experimentName = experimentName, 
+#'                 countMatrix     = countMatrix, 
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#' 
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' 
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+#' 
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
+#' 
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+#' 
+#' ## Calculate clusters similarity
+#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' 
+#' @seealso
+#' plotClustersSimilarity 
+#' 
+#' @exportMethod
+#' @importFrom SummarizedExperiment colData
+
+
+
 setMethod(
 		
 		f = "exportResults",
@@ -165,11 +247,11 @@ setMethod(
 		signature = "scRNAseq",
 		
 		definition = function(theObject, saveClusteringResults=TRUE, 
-				saveNormalizedMatrix=FALSE, saveColData=FALSE, 
+				saveAll=FALSE, saveNormalizedMatrix=FALSE, saveColData=FALSE, 
 				saveRowData=FALSE, saveTsne=FALSE, saveDBScan=FALSE, 
 				saveCellsSimilarityMatrix=FALSE, 
 				saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
-				saveTopMarkers=FALSE, saveGenesInfos=FALSE, saveAll=FALSE){
+				saveTopMarkers=FALSE, saveGenesInfos=FALSE){
 			
 			if(saveAll){
 				
