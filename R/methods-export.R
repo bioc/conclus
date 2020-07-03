@@ -1,3 +1,23 @@
+#' .exportMarkers
+#'
+#' @description 
+#' Export the full markers lists (?rankGenes) or the top markers lists 
+#' (?retrieveTopClustersMarkers).
+#'
+#' @param theObject scRNASeq object on which the methods ?rankGenes or 
+#' ?retrieveTopClustersMarkers were run.
+#' @param outputDir Output directory defined as dataDirectory/7_fullMarkers or 
+#' dataDirectory/8_TopMarkers. dataDirectory is directly retrieved from the 
+#' scRNASeq object.
+#' @param listType String displayed in the final message to indicate the type of
+#'  information retrieved.
+#' @param top Default=FALSE. If TRUE, exports the top markers otherwise the 
+#' complete lists. 
+#' 
+#' @keywords internal
+#' @noRd
+
+
 .exportMarkers <- function(theObject, outputDir, listType="Full marker lists", 
 		top=FALSE){
 	
@@ -34,6 +54,23 @@
 	
 }
 
+#' .conclusResult
+#'
+#' @description 
+#' Export the result of the concensus clustering that is defined in the row 
+#' and col metadata of the sceNorm slot of the scRNASeq object.
+#'
+#' @param theObject scRNASeq object on which the method 
+#' ?calculateClustersSimilarity was run.
+#' @param experimentName Name of the experiment retrieved in the corresponding 
+#' slot of the scRNASeq object.
+#' @param sceObject SingleCellExperiment object retrieved with ?getSceNorm. See
+#'  ?SingleCellExperiment::SingleCellExperiment for more details. 
+#' @param outputDir Output directory defined as dataDirectory/6_ConclusResult. 
+#' dataDirectory is directly retrieved from the scRNASeq object.
+#' 
+#' @keywords internal
+#' @noRd
 
 .conclusResult <- function(theObject, sceObject, outputDir){
 	
@@ -59,6 +96,25 @@
 }
 
 
+#' .exportCSM
+#'
+#' @description 
+#' Export the cells and clusters similarity matrices that were obtained with 
+#' ?clusterCellsInternal and ?calculateClustersSimilarity respectively.
+#'
+#' @param theObject scRNASeq object on which the methods mentioned above were 
+#' run.
+#' @param experimentName Name of the experiment retrieved in the corresponding 
+#' slot of the scRNASeq object.
+#' @param outputDir Output directory defined as 
+#' dataDirectory/4_CellSimilarityMatrix or 
+#' dataDirectory/5_ClusterSimilarityMatrix. dataDirectory is directly retrieved 
+#' from the scRNASeq object.
+#' @cell Default=TRUE. If TRUE, exports the cells similarity matrix otherwise 
+#' exports the clusters similarity matrix.
+#' 
+#' @keywords internal
+#' @noRd
 
 .exportCSM <- function(theObject, experimentName, outputDir, cell=TRUE){
 	
@@ -88,6 +144,19 @@
 }
 
 
+#' .exportDBScan
+#'
+#' @description 
+#' Export the dbscan clustering results for each combination of epsilon and 
+#' minPts. These results were obtained with ?runDBSCAN.
+#'
+#' @param theObject scRNASeq object on which ?runDBSCAN was run.
+#' @param outputDir Output directory defined as dataDirectory/3_dbScan. 
+#' dataDirectory is directly retrieved from the scRNASeq object.
+#' 
+#' @keywords internal
+#' @noRd
+
 .exportDBScan <- function(theObject, outputDir){
 	
 	dbscanList <- getDbscanList(theObject)
@@ -112,6 +181,19 @@
 	message("dbScan clustering saved.")
 }
 
+
+#' .exportTsne
+#'
+#' @description 
+#' Export the tsne coordinates for each combination of PCs and perplexities.
+#' These results were obtained with ?generateTSNECoordinates.
+#'
+#' @param theObject scRNASeq object on which ?generateTSNECoordinates was run.
+#' @param outputDir Output directory defined as dataDirectory/2_TSNECoordinates. 
+#' dataDirectory is directly retrieved from the scRNASeq object.
+#' 
+#' @keywords internal
+#' @noRd
 
 .exportTsne <- function(theObject, outputDir){
 	
