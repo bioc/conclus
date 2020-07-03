@@ -136,6 +136,31 @@
 }
 
 
+#' .exportNormInfo
+#'
+#' @description 
+#' Export the normalized matrix, the columns, and the rows metadata to the 
+#' sub-directory '1_MatrixInfo'. These results were obtained with 
+#' ?normaliseCountMatrix.
+#'
+#' @param theObject scRNASeq object on which ?normaliseCountMatrix was run.
+#' @param outputDir Output directory defined as dataDirectory/1_MatrixInfo. 
+#' dataDirectory is directly retrieved from the scRNASeq object.
+#' @param experimentName Name of the experiment retrieved in the corresponding 
+#' slot of the scRNASeq object.
+#' @param sceObject SingleCellExperiment object retrieved with ?getSceNorm. See
+#'  ?SingleCellExperiment::SingleCellExperiment for more details. 
+#' @param f Function defining the type of information retrieved from the 
+#' sceObject. Can be the normalized count matrix with f=Biobase::exprs, the row
+#'  metadata with f=SummarizedExperiment::rowData, or the col metadata with 
+#' f=SummarizedExperiment::colData.
+#' @param fileSuffix Suffix to add to the output files.
+#' @param objectName String used in the message to indicate what object was 
+#' saved.
+#' 
+#' @keywords internal
+#' @noRd
+
 .exportNormInfo <- function(theObject, outputDir, experimentName, sceObject, f,
 		fileSuffix, objectName){
 	
@@ -178,18 +203,42 @@
 #' wanted to be saved.
 #' @param saveClusteringResults Default=TRUE. Save the final clustering results
 #' giving the corresponding cluster number to each cell. The method 
-#' calculateClustersSimilarity should have been run on the object.
-#' @param saveAll=FALSE
-#' @param saveNormalizedMatrix=FALSE
-#' @param saveColData=FALSE
-#' @param saveRowData=FALSE
-#' @param saveTsne=FALSE
-#' @param saveDBScan=FALSE
-#' @param saveCellsSimilarityMatrix=FALSE
-#' @param saveClustersSimilarityMatrix=FALSE
-#' @param saveFullMarkers=FALSE
-#' @param saveTopMarkers=FALSE
-#' @param saveGenesInfos=FALSE
+#' ?calculateClustersSimilarity should have been run on the object. It is saved
+#'  in the sub-directory 6_ConclusResult.
+#' @param saveAll Default=FALSE. Save all results of CONCLUS (see details). The
+#' last step run on the scRNASeq object should be ?retrieveGenesInfo.
+#' @param saveNormalizedMatrix Default=FALSE. Save the normalized count matrix
+#' as a csv file. It is obtained with ?normaliseCountMatrix. The matrix is saved
+#'  to the sub-directory '1_MatrixInfo'.
+#' @param saveColData Default=FALSE. Save the columns metadata of the normalized
+#'  count matrix as a tsv file. These data are obtained with 
+#' ?normaliseCountMatrix or were given as input of the method. These data are 
+#' saved in the sub-directory '1_MatrixInfo'.
+#' @param saveRowData Default=FALSE. Save the raw metadata of the normalized 
+#' count matrix as a tsv file. These data are obtained with 
+#' ?normaliseCountMatrix. They are saved in the sub-directory '1_MatrixInfo'.   
+#' @param saveTsne Default=FALSE. Save the tsne coordinates for each combination
+#'  of PCs and perplexities as tsv files. These coordinates were obtained with
+#'  ?generateTSNECoordinates. They are saved in the sub-directory 
+#' '2_TSNECoordinates'. 
+#' @param saveDBScan Default=FALSE. Save the clustering results of dbscan as tsv
+#'  files. The number of clustering solutions is 
+#' PCs*perplexity*epsilon*minPoints (see ?runDBSCAN, 84 solutions by default). 
+#' These are saved in the sub-directory '3_dbScan'.
+#' @param saveCellsSimilarityMatrix Default=FALSE. Save the cells similarity 
+#' matrix that was obtained with ?clusterCellsInternal. This matrix is saved in
+#'  the sub-directory '4_CellSimilarityMatrix'.
+#' @param saveClustersSimilarityMatrix Default=FALSE. Save the cluster 
+#' similarity matrix that was obtained with ?calculateClustersSimilarity. It is
+#'  saved in the sub-directory '5_ClusterSimilarityMatrix'.
+#' @param saveFullMarkers Default=FALSE. Save the lists of markers that were 
+#' obtained with ?rankGenes to the sub-directory 7_fullMarkers.
+#' @param saveTopMarkers Default=FALSE. Save the top markers per clusters as csv
+#'  files in the sub-directory '8_TopMarkers'. See ?retrieveTopClustersMarkers 
+#' for more details. 
+#' @param saveGenesInfos Default=FALSE. Save the genes information for each 
+#' cluster as csv files in the sub-directory '9_genesInfos'. See 
+#' ?retrieveGenesInfo for more details.
 #' 
 #' @aliases calculateClustersSimilarity
 #'  
@@ -197,11 +246,8 @@
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 #' 
 #' @rdname 
-#' calculateClustersSimilarity-scRNAseq
+#' exportResults-scRNAseq
 #' 
-#' @return 
-#' An object of class scRNASeq with its clustersSimilarityMatrix and
-#' clustersSimiliratyOrdered slots updated. 
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -232,12 +278,21 @@
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
 #' 
-#' @seealso
-#' plotClustersSimilarity 
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
 #' 
+#' ## Getting marker genes
+#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = F)
+#' 
+#' ## Getting genes info
+#' scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
+#' 
+#' ## Saving all results
+#' exportResults(scrInfos, saveAll=TRUE)
 #' @exportMethod
+#' @importFrom SummarizedExperiment rowData
 #' @importFrom SummarizedExperiment colData
-
+#' @importFrom Biobase exprs
 
 
 setMethod(
