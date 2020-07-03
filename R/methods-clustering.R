@@ -830,7 +830,7 @@ setMethod(
 			validObject(theObject)
 			
 			## Retrieve the clustering to add
-			if(is.na(clusToAdd))
+			if(isTRUE(all.equal(length(clusToAdd), 1)) && is.na(clusToAdd))
 				if(!is.na(filePathAdd))
 					clusToAdd <- read.table(filePathAdd, header=TRUE, sep="\t")
 			    else
