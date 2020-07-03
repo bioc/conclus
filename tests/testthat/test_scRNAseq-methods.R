@@ -841,9 +841,6 @@ test_that("retrieveGenesInfo method works properly", {
 			expM <- "orderGenes should be 'initial' or 'alphabetical'."
 			expect_error(retrieveGenesInfo(scr, orderGenes="test"), expM)
 			
-			expM <- "species should be: mouse or human"
-			expect_error(retrieveGenesInfo(scrFinal,  species = "droso"), expM)
-			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
 					"'retrieveGenesInfo' function doesn't have its 'SceNorm' ",
 					"slot updated. Please use 'normaliseCountMatrix' on the ",
@@ -895,11 +892,11 @@ test_that("retrieveTopClustersMarkers method works properly", {
 			expect_error(retrieveTopClustersMarkers(scr), expM)
 			
 			expM <- paste0("The 'scRNAseq' object that you're using with ",
-					"'retrieveTopClustersMarkers'function doesn't have a ",
+					"'retrieveTopClustersMarkers' function doesn't have a ",
 					"correct 'sceNorm' slot. This slot should be a ",
 					"'SingleCellExperiment' object containing 'clusters' ",
-					"column in its colData. Please check if you correctly used",
-					" 'clusterCellsInternal' on the object.")
+					"column in its colData. Please check if you correctly ",
+					"used 'clusterCellsInternal' on the object.")
 			expect_error(retrieveTopClustersMarkers(scrNorm), expM)
 			expect_error(retrieveTopClustersMarkers(scrTsne), expM)
 			expect_error(retrieveTopClustersMarkers(scrDbscan),expM)
@@ -909,7 +906,6 @@ test_that("retrieveTopClustersMarkers method works properly", {
 					" use 'calculateClustersSimilarity' and 'rankGenes'?")
 			expect_error(retrieveTopClustersMarkers(scrCCI), expM)
 			expect_error(retrieveTopClustersMarkers(scrCSM), expM)
-			
 		})			
 			
 			
