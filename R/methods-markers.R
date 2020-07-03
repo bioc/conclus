@@ -315,10 +315,6 @@ setMethod(
 	if(!isTRUE(all.equal(orderGenes,"initial")) && 
 			!isTRUE(all.equal(orderGenes,"alphabetical")))
 		stop("orderGenes should be 'initial' or 'alphabetical'.")
-	
-	if (!(species %in% names(databaseDict)))
-		stop("species should be: ", paste(names(databaseDict), 
-						collapse = " or "))
 			
 	## Check if the normalized matrix is correct
 	sceObject <- getSceNorm(theObject)
