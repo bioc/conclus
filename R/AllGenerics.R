@@ -159,11 +159,11 @@ setGeneric(
 		
 	name = "exportResults",
 		
-	def = function(theObject, saveClusteringResults=TRUE, 
+	def = function(theObject, saveClusteringResults=TRUE, saveAll=FALSE, 
 			saveNormalizedMatrix=FALSE, saveColData=FALSE, saveRowData=FALSE, 
 			saveTsne=FALSE, saveDBScan=FALSE, saveCellsSimilarityMatrix=FALSE, 
 			saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
-			saveTopMarkers=FALSE, saveGenesInfos=FALSE, saveAll=FALSE){
+			saveTopMarkers=FALSE, saveGenesInfos=FALSE){
 			 standardGeneric("exportResults")
         },
     signature="theObject")
