@@ -569,81 +569,81 @@ test_that("plotting methods work properly", {
 		})
 
 
+
 test_that("plotCellSimilarity work properly", {
     ## Test with object doesn't have consensus clusters
-    expM <- paste0("You have to calculate the cells similarity", 
-                   " matrix before plotting.")
+    expM <- paste("You have to calculate the cluster similarity matrix", 
+                  "before plotting.")
     expect_error(plotCellSimilarity(scr), expM)
     
     ## Test with incorrect colorPalette
-    expM <- paste0("The number of clusters is greater than the number of",
-                   " given colors.")
+    expM <- paste("The number of clusters is greater than the number of",
+                  "given colors.")
     expect_error(plotCellSimilarity(scrFinal, colorPalette="str1" ), expM)
     
     ## Test with incorrect statePalette
-    expM <- paste0("The number of clusters is greater than the number of",
-                   " given colors.")
+    expM <- paste("The number of clusters is greater than the number of",
+                  "given colors.")
     expect_error(plotCellSimilarity(scrFinal, statePalette="str1" ), expM)
     
     ## Test with incorrect clusteringMethod
-    expM <- paste0("invalid clustering method")
+    expM <- "invalid clustering method"
     expect_error(plotCellSimilarity(scrFinal, clusteringMethod="str1" ), expM)
     
     ## Test with incorrect orderClusters
-    expM <- paste0("orderClusters should be a boolean.")
+    expM <- "orderClusters should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, orderClusters="str1" ), expM)
-
+    
     ## Test with incorrect plotPDF
-    expM <- paste0("plotPDF should be a boolean.")
+    expM <- "plotPDF should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, plotPDF="str1" ), expM)
     
     ## Test with incorrect returnPlot
-    expM <- paste0("returnPlot should be a boolean.")
+    expM <- "returnPlot should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, returnPlot="str1" ), expM)
     
     ## Test with incorrect width
-    expM <- paste0("width should be a numeric.")
+    expM <- "width should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, width="str1" ), expM)
     
     ## Test with incorrect height
-    expM <- paste0("height should be a numeric.")
+    expM <- "height should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, height="str1" ), expM)
-
+    
     ## Test with incorrect onefile
-    expM <- paste0("onefile should be a boolean.")
+    expM <- "onefile should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, onefile="str1" ), expM)
     
     ## Test with incorrect showRowNames
-    expM <- paste0("showRowNames should be a boolean.")
+    expM <- "showRowNames should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, showRowNames="str1" ), expM)
     
     ## Test with incorrect showColnames
-    expM <- paste0("showColnames should be a boolean.")
+    expM <-"showColnames should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, showColnames="str1" ), expM)
     
     ## Test with incorrect fontsize
-    expM <- paste0("fontsize should be a numeric.")
+    expM <- "fontsize should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, fontsize="str1" ), expM)
     
     ## Test with incorrect fontsizeRow
-    expM <- paste0("fontsizeRow should be a numeric.")
+    expM <- "fontsizeRow should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, fontsizeRow="str1" ), expM)
     
     ## Test with incorrect widthPNG
-    expM <- paste0("widthPNG should be a numeric.")
+    expM <- "widthPNG should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, widthPNG="str1" ), expM)
     
     ## Test with incorrect heightPNG
-    expM <- paste0("heightPNG should be a numeric.")
+    expM <- "heightPNG should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, heightPNG="str1" ), expM)
-   
+    
 })
-
 
 test_that("plotClusteredTSNE work properly", {
     ## Test with no consensus clusters
-    expM <- paste0("You have to calculate the cells similarity", 
-                   " matrix before plotting.")
+    expM <- paste0("You have to calculate the cluster similarity matrix", 
+                   " before plotting.")
     expect_error(plotClusteredTSNE(scr), expM)
     
     ## Test with incorrect colorPalette
@@ -653,8 +653,7 @@ test_that("plotClusteredTSNE work properly", {
     
     ## Test with incorrect PCs
     expM <- "'PCs' parameter should be a vector of numeric." 
-    expect_error(plotClusteredTSNE(scrFinal, PCs=c("str1", "str2"),
-                                   regexp=expM))
+    expect_error(plotClusteredTSNE(scrFinal, PCs=c("str1", "str2"), expM))
     
     ## Test with incorrect perplexities
     expM <- "'perplexities' parameter should be a vector of numeric."
@@ -665,20 +664,24 @@ test_that("plotClusteredTSNE work properly", {
     expM <- "columnName should be: clusters, noColor, or state."
     expect_error(plotClusteredTSNE(scrFinal, columnName="toto"), expM)
     
+    expM <- paste("The number of elements of TSNEList is not equal",
+                  "to PCs x perplexities. Contact the developper.")
+    expect_error(plotClusteredTSNE(scrFinalWrong), expM)
+    
     ## Test with incorrect returnPlot
-    expM <- paste0("returnPlot should be a boolean.")
+    expM <- "returnPlot should be a boolean."
     expect_error(plotClusteredTSNE(scrFinal, returnPlot="str1" ), expM)
     
     ## Test with incorrect width
-    expM <- paste0("width should be a numeric.")
+    expM <- "width should be a numeric."
     expect_error(plotClusteredTSNE(scrFinal, width="str1" ), expM)
     
     ## Test with incorrect height
-    expM <- paste0("height should be a numeric.")
+    expM <- "height should be a numeric."
     expect_error(plotClusteredTSNE(scrFinal, height="str1" ), expM)
     
     ## Test with incorrect onefile
-    expM <- paste0("onefile should be a boolean.")
+    expM <- "onefile should be a boolean."
     expect_error(plotClusteredTSNE(scrFinal, onefile="str1" ), expM)
     
 })
@@ -686,139 +689,137 @@ test_that("plotClusteredTSNE work properly", {
 
 test_that("plotCellHeatmap work properly", {
     ## Test with object doesn't have consensus clusters
-    expM <- paste0("You have to calculate the cells similarity", 
-                   " matrix before plotting.")
+    expM <- paste("You have to calculate the cluster markers before plotting.",
+                  "Please see retrieveTopClustersMarkers() method.")
     expect_error(plotCellHeatmap(scr), expM)
     
     ## Test with incorrect fileName
-    expM <- paste0("fileName should be a simple string.")
+    expM <- "fileName should be a string."
     expect_error(plotCellHeatmap(scrFinal, fileName=TRUE), expM)
     
-    expM <- paste0("fileName should be a simple string.")
+    expM <- "fileName should be a string, no path."
     expect_error(plotCellHeatmap(scrFinal, fileName="dir/file"), expM)
     
     ## Test with incorrect meanCentered
-    expM <- paste0("meanCentered should be a boolean.")
-    expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
-                                 meanCentered="str2"), expM)
+    expM <- "meanCentered should be a boolean."
+    expect_error(plotCellHeatmap(scrFinal, meanCentered="str2"), expM)
     
     ## Test with incorrect orderClusters
-    expM <- paste0("orderClusters should be a boolean.")
+    expM <- "orderClusters should be a boolean."
     expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
                                  orderClusters="str2"), expM)
-
+    
     ## Test with incorrect similarity
-    expM <- paste0("similarity should be a boolean.")
-    expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
-                                 similarity="str2"), expM)
+    expM <- "similarity should be a boolean."
+    expect_error(plotCellHeatmap(scrFinal, similarity="str2"), expM)
     
     ## Test with incorrect orderGenes
-    expM <- paste0("orderGenes should be a boolean.")
+    expM <- "orderGenes should be a boolean."
     expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
                                  orderGenes="str2"), expM)
     
     ## Test with incorrect returnPlot
-    expM <- paste0("returnPlot should be a boolean.")
-    expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
-                                 returnPlot="str2"), expM)
+    expM <- "returnPlot should be a boolean."
+    expect_error(plotCellHeatmap(scrFinal,  returnPlot="str2"), expM)
     
     ## Test with incorrect saveHeatmapTable
-    expM <- paste0("saveHeatmapTable should be a boolean.")
-    expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
-                                 saveHeatmapTable="str2"), expM)
+    expM <- "saveHeatmapTable should be a boolean."
+    expect_error(plotCellHeatmap(scrFinal, saveHeatmapTable="str2"), expM)
     
     ## Test with incorrect width
-    expM <- paste0("width should be a numeric.")
-    expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
-                                 width="str2"), expM)
+    expM <- "width should be a numeric."
+    expect_error(plotCellHeatmap(scrFinal, width="str2"), expM)
     
     ## Test with incorrect height
-    expM <- paste0("height should be a numeric.")
-    expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
-                                 height="str2"), expM)
+    expM <- "height should be a numeric."
+    expect_error(plotCellHeatmap(scrFinal, height="str2"), expM)
 })
 
 
 test_that("plotGeneExpression work properly", {
     ## Test with object doesn't have consensus clusters
-    expM <- paste0("You have to calculate the cells similarity", 
-                   " matrix before plotting.")
+    expM <- paste("You have to calculate the cluster similarity matrix", 
+                   "before plotting.")
     expect_error(plotGeneExpression(scr), expM)
     
     ## Test with incorrect geneName
-    expM <- paste0("The gene should be one of the normalized count matrix.")
-    expect_error(plotGeneExpression(scrFinal, geneName = "gene1"), expM)
+    expM <- paste("geneName should be a marker founded by ",
+                  "retrieveTopClustersMarkers method'. Please see the",
+                  "documentation about retrieveTopClustersMarkers method.")
+    expect_error(plotGeneExpression(scrFinal, geneName="gene1"), expM)
     
     ## Test with incorrect graphsDirectory
-    expM <- paste0("graphsDirectory should be a string.")
+    expM <- paste("graphsDirectory should be a string,",
+                  "the path of the graphs directory")
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-    expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
+
+    expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
                                     graphsDirectory = TRUE), expM)
     
     ## Test with incorrect returnPlot
-    expM <- paste0("returnPlot should be a boolean.")
+    expM <- "returnPlot should be a boolean."
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-    expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
+    expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
                                     returnPlot = "str1"), expM)
     
     ## Test with incorrect tSNEpicture
-    expM <- paste0("tSNEpicture should be a integer")
+    expM <- "tSNEpicture should be a integer"
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     tSNEpicture = "str1"), expM)
-    
+
     ## Test with incorrect commentName
-    expM <- paste0("commentName should be a string.")
+    expM <- "commentName should be a string."
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     commentName = TRUE), expM)
     
     ## Test with incorrect savePlot
-    expM <- paste0("savePlot should be a boolean.")
+    expM <- "savePlot should be a boolean."
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     savePlot = "str1"), expM)
     
     ## Test with incorrect width
-    expM <- paste0("width should be a numeric.")
+    expM <- "width should be a numeric."
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     width = "str1"), expM)
     
     ## Test with incorrect height
-    expM <- paste0("height should be a numeric.")
+    expM <- "height should be a numeric."
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     height = "str1"), expM)
 })
 
-
 test_that("plotClustersSimilarity work properly", {
     ## Test with object doesn't have consensus clusters
-    expM <- paste0("You have to calculate the cells similarity", 
-                   " matrix before plotting.")
+    expM <- paste0("You have to calculate the cluster similarity matrix", 
+                   " before plotting.")
     expect_error(plotClustersSimilarity(scr), expM)
     
     ## Test with incorrect returnPlot
-    expM <- paste0("returnPlot should be a boolean.")
+    expM <- "returnPlot should be a boolean."
     expect_error(plotClustersSimilarity(scrFinal, returnPlot="str1" ), expM)
     
     ## Test with incorrect width
-    expM <- paste0("width should be a numeric.")
+    expM <- "width should be a numeric."
     expect_error(plotClustersSimilarity(scrFinal, width="str1" ), expM)
     
     ## Test with incorrect height
-    expM <- paste0("height should be a numeric.")
+    expM <- "height should be a numeric."
     expect_error(plotClustersSimilarity(scrFinal, height="str1" ), expM)
     
     ## Test with incorrect onefile
-    expM <- paste0("onefile should be a boolean.")
+    expM <- "onefile should be a boolean."
     expect_error(plotClustersSimilarity(scrFinal, onefile="str1" ), expM)
     
     ## Test with incorrect fontsize
-    expM <- paste0("fontsize should be a numeric.")
+    expM <- "fontsize should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, fontsize="str1" ), expM)
 })
+
 
 
 ################################  markers  ###################################
