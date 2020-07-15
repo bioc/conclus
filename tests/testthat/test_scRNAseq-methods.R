@@ -563,7 +563,7 @@ test_that("plotting methods work properly", {
 			expect_error(plotClusteredTSNE(scrFinal, columnName="toto"), expM)
 			
 			expM <- paste0("The number of elements of TSNEList is not equal ",
-					"to PCs\\*perplexities. Contact the developper.")
+					"to PCs x perplexities. Contact the developper.")
 			expect_error(plotClusteredTSNE(scrFinalWrong), expM)
 
 		})
