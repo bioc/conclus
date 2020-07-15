@@ -89,9 +89,12 @@ setGeneric(
 		
 	name = "plotCellSimilarity",
 		
-	def = function(theObject, colorPalette="default", statePalette="default", 
-			clusteringMethod="ward.D2", orderClusters=FALSE, plotPDF=TRUE, 
-			returnPlot=FALSE, width=7, height=6, ...){
+	def = function(theObject, colorPalette="default", 
+                   statePalette="default", clusteringMethod="ward.D2", 
+                   orderClusters=FALSE, plotPDF=TRUE, returnPlot=FALSE, 
+                   width=7, height=6, onefile=FALSE, showRowNames=FALSE,
+                   showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03,
+                   widthPNG=800, heightPNG=750, ...){
 		standardGeneric("plotCellSimilarity")    
     },
     signature="theObject")
@@ -117,11 +120,11 @@ setGeneric(
 		
 	name = "plotCellHeatmap",
 		
-	def = function(theObject, fileName, meanCentered=TRUE,  
-				colorPalette="default", statePalette="default", 
-				clusteringMethod="ward.D2", orderClusters=FALSE, 
-				similarity=FALSE, orderGenes=FALSE, returnPlot=FALSE,
-				saveHeatmapTable=FALSE, width=10, height=8.5, ...){
+	def = function(theObject, fileName=NA, meanCentered=TRUE, 
+                   colorPalette="default", statePalette="default", 
+                   clusteringMethod="ward.D2", orderClusters=FALSE,
+                   similarity=FALSE, orderGenes=FALSE, returnPlot=FALSE,
+                   saveHeatmapTable=FALSE, width=10, height=8, ...){
 		standardGeneric("plotCellHeatmap")    
     },
     signature="theObject")
