@@ -583,7 +583,7 @@ test_that("plotCellSimilarity work properly", {
     expect_error(plotCellSimilarity(scrFinal, orderClusters="str1" ), expM)
     
 	## Test with incorrect savePlot
-	expM <- "savePlot should be a boolean"
+	expM <- "savePlot should be a boolean."
 	expect_error(plotCellSimilarity(scrFinal, savePlot="str1" ), expM)
 	
     ## Test with incorrect plotPDF
