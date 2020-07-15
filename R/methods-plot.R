@@ -2,32 +2,83 @@
 ## plotCellSimilarity
 ################################################################################
 
+#' .saveCellSim
+#' 
+#'
+#' @description 
+#' Save the cell similarity heatmap in pdf or png format in the directory 
+#' defined in theObject (?getOutputDirectory) and in the sub-directory pictures.
+#' 
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to TRUE, and forced to true if file is a pipe.
+#' @param colDf A data frame with information about cells.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 6.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' 
+#' @keywords internal
+#' @noRd
+.saveCellSim <- function(theObject, onefile, colDf, width, height, widthPNG, 
+		heightPNG){
+	
+	message("\nSaving a heatmap with the cell similarity matrix.")
+	
+	experimentName <- getExperimentName(theObject)
+	dataDirectory  <- getOutputDirectory(theObject)
+	graphsDirectory <- "pictures"
+	subdir <- file.path(dataDirectory, graphsDirectory)
+	clustersNumber <- length(unique(colDf$clusters))
+	filePath <- file.path(subdir, paste(experimentName, 
+					"cells_correlation", clustersNumber, "clusters.png",
+					sep="_"))
+	
+	if(!file.exists(subdir))
+		dir.create(subdir, showWarnings=F, recursive = TRUE)
+	
+	if(plotPDF)
+		pdf(file=filePath, width=width, height=height, onefile=onefile)
+	else
+		png(filename= filePath, width=widthPNG, height=heightPNG, 
+				type="cairo")
+	
+	grid::grid.newpage()
+	grid::grid.draw(pheatmapObject$gtable)
+	dev.off()
+}
+
+
 #' .generateAnnotationColors
 #'
 #' @description 
-#' Generate annotation_colors, using by pheatmap(). It's list for specifying 
-#' annotation_row and annotation_col track colors manually. It is possible to 
-#' define the colors for only some of the features.
+#' Generates annotation_colors used by pheatmap(). It is a list that specifies 
+#' annotation_row and annotation_col track colors manually.
 #' 
-#' @param colData A data frame with information about cells. 
-#' @param colorPaletteParameter A vector of colors for clusters. Default = "default",
-#'  see details.
-#' @param statePalette A vector of colors for states or conditions. See details.
+#' @param colDf A data frame with information about cells. 
+#' @param colorPalette A vector of colors for clusters.
+#'  See details of ?plotCellSimilarity.
+#' @param statePalette A vector of colors for states or conditions. 
+#' See details of ?plotCellSimilarity.
 #' 
 #' @keywords internal
-#' @return list for specifying annotation_row and annotation_col 
-#' track colors manually.
-#' @include sharedInernals.R
+#' @return A list of colors.
+#' @include sharedInternals.R
 #' @noRd
-.generateAnnotationColors <- function(colData, colorPaletteParameter,
-                                      statePalette){
+.generateAnnotationColors <- function(colDf, colorPalette, statePalette){
     
-    clusters <- levels(colData$clusters)
-    states <- unique(colData$state)
-    clusterNumber <- length(unique(colData$clusters))
+    clusters <- levels(colDf$clusters)
+    states <- unique(colDf$state)
+    clusterNumber <- length(unique(colDf$clusters))
     
-    colorAnnotationClusters <- .choosePalette(colorPaletteParameter,
-                                              clusterNumber)
+    colorAnnotationClusters <- .choosePalette(colorPalette, clusterNumber)
     colorAnnotationState <- .choosePalette(statePalette, length(states))
     names(colorAnnotationState) <- states
     names(colorAnnotationClusters) <- clusters
@@ -42,21 +93,19 @@
 #' Uses for ordering matrix to further plot it with pheatmap()
 #'
 #' @param cluster Label of cluster
-#' @param colData A data frame with information about cells. 
-#' @param mtx count matrix expression
+#' @param colDf A data frame with information about cells. 
+#' @param mtx Expression count matrix
 #' @param clusteringMethod Clustering method passed to hclust() function. 
 #' See ?hclust for a list of method. Default = "ward.D2"
 #' 
 #' @keywords internal
 #' @return Cells ordered by clustering results.
-#' @importFrom stats hclust
 #' @noRd
-.orderCellsInCluster <- function(cluster, colData, mtx, 
-                                 clusteringMethod="ward.D2"){
+.orderCellsInCluster <- function(cluster, colDf, mtx, 
+		clusteringMethod="ward.D2"){
     
-    
-    
-    cells <- colData[colData$clusters == cluster, ]$cellName
+    cells <- colDf[colDf$clusters == cluster, ]$cellName
+	
     if(length(cells) > 2){
         tree <- hclust(dist(t(mtx[, cells])), method=clusteringMethod)
         return(cells[tree$order])
@@ -68,25 +117,41 @@
 #' .checkParamCellSimilarity
 #' 
 #' @description Check parameters of plotCellSimilarity
-#'
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
-#' @param orderClusters If True, clusters in the similarity matrix of cells will
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
+#' @param orderClusters If TRUE, clusters in the similarity matrix of cells will
 #'  be ordered by name. Default = FALSE.
-#' @param plotPDF If TRUE export to pdf, if FALSE export to png.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in 
+#' theObject (?getOutputDirectory) and in the sub-directory "pictures".
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
 #' @param returnPlot Boolean indicating if the pHeatmap object should  be
-#' returned by the function. Default = FALSE.
+#' returned by the function. Default = TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 6.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
 #' Defaults to TRUE, and forced to true if file is a pipe.
-#'
+#' @param showRowNames pheatmap parameter. Boolean specifying if row names 
+#' are displayed. Default=FALSE. 
+#' @param showColnames pheatmap parameter. Boolean specifying if column names
+#' are displayed. Default=FALSE.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param fontsizeRow pheatmap parameter. Fontsize for rownames. Default=0.03. 
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' 
 #' @keywords internal
 #' @noRd
-.checkParamCellSimilarity <-function(theObject, orderClusters, plotPDF,
-                                     returnPlot, width, height, onefile,
-                                     showRowNames, showColnames, fontsize,
-                                     fontsizeRow, widthPNG, heightPNG){
-    
+
+.checkParamCellSimilarity <-function(theObject, orderClusters, savePlot, 
+		plotPDF, returnPlot, width, height, onefile, showRowNames, showColnames, 
+		fontsize, fontsizeRow, widthPNG, heightPNG){
     
     ## Verify the object contains clustersSimilarityMatrix
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -101,6 +166,10 @@
     if (!is.logical(orderClusters))
         stop("orderClusters should be a boolean.")
     
+	## Verify savePlot
+	if(!is.logical(savePlot))
+		stop("savePlot should be a boolean.")
+	
     ## Verify plotPDF
     if (!is.logical(plotPDF))
         stop("plotPDF should be a boolean.")  
@@ -152,33 +221,56 @@
 #' @description This function plots similarity matrix as a heatmap, so one can 
 #' see similarity between parts of different clusters.
 #'
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
+#' @usage
+#' plotCellSimilarity(theObject, colorPalette="default", statePalette="default",
+#'  clusteringMethod="ward.D2", orderClusters=FALSE, savePlot=FALSE, 
+#' plotPDF=TRUE, returnPlot=TRUE, width=7, height=6, onefile=FALSE, 
+#' showRowNames=FALSE, showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, 
+#' widthPNG=800, heightPNG=750)
+#' 			
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
 #' @param colorPalette A vector of colors for clusters. Default = "default",
 #'  see details.
 #' @param statePalette A vector of colors for states or conditions. See details.
 #' @param clusteringMethod Clustering method passed to hclust() function. 
 #' See ?hclust for a list of method. Default = "ward.D2"
-#' @param orderClusters If True, clusters in the similarity matrix of cells will
+#' @param orderClusters If TRUE, clusters in the similarity matrix of cells will
 #'  be ordered by name. Default = FALSE.
-#' @param plotPDF If TRUE export to pdf, if FALSE export to png.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in 
+#' theObject (?getOutputDirectory) and in the sub-directory "pictures".
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
 #' @param returnPlot Boolean indicating if the pHeatmap object should  be
-#' returned by the function. Default = FALSE.
-#' @param width Width of the plot. Default = 7.
-#' @param height Height of the plot. Default = 6.
+#' returned by the function. Default = TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 6.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
 #' Defaults to TRUE, and forced to true if file is a pipe.
-#' @param showRowNames pheatmap parameter. Boolean specifying if column names 
-#' are be shown.
+#' @param showRowNames pheatmap parameter. Boolean specifying if row names 
+#' are displayed. Default=FALSE. 
 #' @param showColnames pheatmap parameter. Boolean specifying if column names
-#' are be shown.
-#' @param fontsize pheatmap parameter. Base fontsize for the plot
-#' @param fontsizeRow pheatmap parameter. Fontsize for rownames 
-#' @param widthPNG Width of the png
-#' @param heightPNG Height of the png
-#' @param ... Additional parameters to pass to pdf() or png(), 
-#' and pheatmap() functions.
+#' are displayed. Default=FALSE.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param fontsizeRow pheatmap parameter. Fontsize for rownames. Default=0.03. 
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#'
+#' 
+#' @details
+#' colorPalette/statePalette -- A vector of colors for clusters/states or 
+#' 'default' value. If 'default' is selected, the number of clusters is limited 
+#' to 16. If an error message is thrown, re-run the function with your own color
+#'  vector.
+#' 
+#' @aliases plotCellSimilarity
+#' @rdname plotCellSimilarity-scRNAseq
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -216,7 +308,6 @@
 #' @seealso calculateClustersSimilarity 
 #' @exportMethod 
 #' @importFrom SummarizedExperiment colData
-#' @importFrom stats hclust
 #' @importFrom pheatmap pheatmap
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
@@ -227,31 +318,26 @@ setMethod(
     signature = "scRNAseq",
     
     definition = function(theObject, colorPalette="default", 
-                          statePalette="default", clusteringMethod="ward.D2", 
-                          orderClusters=FALSE, plotPDF=TRUE, returnPlot=FALSE, width=7, 
-                          height=6, onefile=FALSE, showRowNames=FALSE, showColnames=FALSE,
-                          fontsize=7.5, fontsizeRow=0.03, widthPNG=800, heightPNG=750,
-                          ...){
+			statePalette="default", clusteringMethod="ward.D2", 
+			orderClusters=FALSE, savePlot=FALSE, plotPDF=TRUE, returnPlot=TRUE,
+			width=7, height=6, onefile=FALSE, showRowNames=FALSE, 
+			showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, widthPNG=800, 
+			heightPNG=750){
         
         ## Verify parameters
         validObject(theObject)
-        .checkParamCellSimilarity(theObject, orderClusters, plotPDF,
-                                  returnPlot, width, height, onefile,
-                                  showRowNames, showColnames, fontsize,
-                                  fontsizeRow, widthPNG, heightPNG)
+        .checkParamCellSimilarity(theObject, orderClusters, savePlot, plotPDF, 
+				returnPlot, width, height, onefile, showRowNames, showColnames, 
+				fontsize, fontsizeRow, widthPNG, heightPNG)
+		
         sceObject <- getSceNorm(theObject)
         cellsSimilarityMatrix <- getCellsSimilarityMatrix(theObject)
-        dataDirectory  <- getOutputDirectory(theObject)
-        experimentName <- getExperimentName(theObject)
-        
-        graphsDirectory <- "pictures"
-        colData <- SummarizedExperiment::colData(sceObject)
-        clustersNumber <- length(unique(colData$clusters))
+        colDf <- SummarizedExperiment::colData(sceObject)
         
         if(orderClusters){
             # Ordering expressionMatrixrix
-            newOrder <- sapply(levels(colData$clusters), function(cluster){ 
-                .orderCellsInCluster(cluster, colData, expressionMatrix,
+            newOrder <- sapply(levels(colDf$clusters), function(cluster){ 
+                .orderCellsInCluster(cluster, colDf, expressionMatrix,
                                      clusteringMethod)})
             newOrder <- unname(unlist(newOrder))
             cellsSimilarityMatrix <- cellsSimilarityMatrix[newOrder, newOrder]
@@ -265,13 +351,11 @@ setMethod(
             clusterRows <- clusteringTree
         }
         
-        annotationColors <- .generateAnnotationColors(colData, colorPalette, 
+        annotationColors <- .generateAnnotationColors(colDf, colorPalette, 
                                                       statePalette)
-        
-        columnsToPlot <- switch(is.null(colData$state) + 1, c("clusters", 
-                                                              "state"), c("clusters"))
-        
-        annotationCol <- as.data.frame(colData[columnsToPlot])
+        columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters", 
+						"state"), c("clusters"))
+        annotationCol <- as.data.frame(colDf[columnsToPlot])
         nbCol <- ncol(cellsSimilarityMatrix)
         nbRow <- nrow(cellsSimilarityMatrix)
         mainTitle <- paste0("Cells similarity matrix ", nbCol, " columns, ", 
@@ -287,30 +371,10 @@ setMethod(
                                              fontsize=fontsize,
                                              main=mainTitle)
         
-        message("\nSaving a heatmap with the cell similarity matrix.")
-        
-        subdir <- file.path(dataDirectory, graphsDirectory)
-        if(!file.exists(subdir))
-            dir.create(subdir, showWarnings=F, recursive = TRUE)
-        
-        if(plotPDF)
-            pdf(file=file.path(dataDirectory, graphsDirectory, 
-                               paste(experimentName, "cells_correlation", 
-                                     clustersNumber, "clusters.pdf", sep="_")),
-                width=width, height=height, onefile=onefile)
-        else{
-            message("Plot type is not pdf. Saving in png.")
-            filePath <- file.path(dataDirectory, graphsDirectory, 
-                                  paste(experimentName, "cells_correlation", clustersNumber,
-                                        "clusters.png", sep="_"))
-            png(filename= filePath, width=widthPNG, height=heightPNG, 
-                type="cairo")
-        }
-        
-        grid::grid.newpage()
-        grid::grid.draw(pheatmapObject$gtable)
-        dev.off()
-        
+		if(savePlot)
+			.saveCellSim(theObject, onefile, colDf, width, height, widthPNG, 
+					heightPNG)
+			
         if(returnPlot)
             return(pheatmapObject)
     })
