@@ -38,16 +38,17 @@
 	subdir <- file.path(dataDirectory, graphsDirectory)
 	clustersNumber <- length(unique(colDf$clusters))
 	filePath <- file.path(subdir, paste(experimentName, 
-					"cells_correlation", clustersNumber, "clusters.png",
+					"cells_correlation", clustersNumber, "clusters",
 					sep="_"))
 	
 	if(!file.exists(subdir))
 		dir.create(subdir, showWarnings=F, recursive = TRUE)
 	
 	if(plotPDF)
-		pdf(file=filePath, width=width, height=height, onefile=onefile)
+		pdf(file=paste0(filePath, ".pdf"), width=width, height=height, 
+				onefile=onefile)
 	else
-		png(filename= filePath, width=widthPNG, height=heightPNG, 
+		png(filename=paste0(filePath, ".png"), width=widthPNG, height=heightPNG, 
 				type="cairo")
 	
 	grid::grid.newpage()
@@ -384,6 +385,77 @@ setMethod(
 ## plotClusteredTSNE
 ################################################################################
 
+
+
+.saveTSNEPlot <- function(tSNEList, tSNEplots, plotPDF, width, height, onefile, 
+		widthPNG, heightPNG, outputDir){
+	
+	tSNENameList <- lapply(tSNEList, function(currentTsne) 
+				return(getName(currentTsne)))		
+	
+	
+	invisible(mapply(function(currentTsne, currentName, plotPDF, width, height, 
+							onefile, widthPNG, heightPNG, outputDir){
+						
+						filePath <- file.path(outputDir,currentName)
+						
+						if(plotPDF)
+							pdf(file=paste0(filePath, ".pdf"), width=width, 
+									height=height,onefile=onefile)
+						else
+							png(filename=paste0(filePath,".png"), 
+									width=widthPNG, height=heightPNG, 
+									type="cairo")
+						
+						print(currentTsne)
+						dev.off()
+						
+					}, tSNEplots, tSNENameList, MoreArgs=list(plotPDF, width, 
+							height, onefile, widthPNG, heightPNG, outputDir)))
+}
+
+
+.computePlotList <- function(tSNEList, sceObject, columnName, colorPalette){
+	
+	resultList <- lapply(tSNEList, function(currentTsne, sceObj, columnName, 
+					colorPalette){
+				
+				tSNEres <- as.data.frame(getCoordinates(currentTsne))
+				coordinatesName <- getName(currentTsne)
+				colDatDf <- SummarizedExperiment::colData(sceObj)
+				
+				## Get coordinates of filtered cells
+				cellVec <- colDatDf$cellName
+				tSNEres <- tSNEres[rownames(tSNEres) %in% cellVec, ]
+				
+				## Add new columns
+				if(!isTRUE(all.equal(columnName, "noColor")))
+					tSNEres[columnName] <- factor(colDatDf[, columnName])
+				
+				if(isTRUE(all.equal(columnName, "noColor")))
+					tmp <- ggplot2::ggplot(tSNEres, 
+									aes_string(x=names(tSNEres)[1],
+											y=names(tSNEres)[2])) +
+							geom_point(size=I(1)) + theme_bw()
+				
+				else
+					tmp <- ggplot2::ggplot(tSNEres, aes_string(
+											x=names(tSNEres)[1],
+											y=names(tSNEres)[2],
+											color=columnName)) +
+							geom_point(size=I(1)) +
+							scale_color_manual(values=colorPalette) + 
+							theme_bw()
+				
+				return(tmp)
+				
+			}, sceObject, columnName, colorPalette)
+	
+	return(resultList)
+}		
+
+
+
 #' .checkParamPlotTSNE
 #' 
 #' @description Check parameters of plotClusteredTSNE
@@ -405,7 +477,8 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .checkParamPlotTSNE <- function(theObject, PCs, perplexities, columnName,
-                                returnPlot, width, height, onefile){
+                                returnPlot, width, height, onefile, silentPlot, 
+								savePlot){
     
     ## Verify the object contains clustersSimilarityMatrix
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -444,7 +517,11 @@ setMethod(
     
     ## Verify onefile
     if (!is.logical(onefile))
-        stop("onefile should be a boolean.")  
+        stop("onefile should be a boolean.")
+	
+	if(silentPlot && !savePlot)
+		stop("You should either plot the results or save the files. Set ", 
+				"silentPlot=FALSE and/or savePlot=TRUE.")
 }			
 
 
@@ -484,8 +561,8 @@ setMethod(
     
     
     outputDir <- file.path(dataDirectory, graphsDirectory, 
-                           graphsTSNEDirectory, paste("tSNE", numberElements, columnName,
-                                                      sep="_"))
+                           graphsTSNEDirectory, paste("tSNE", numberElements, 
+								   columnName, sep="_"))
     
     if(!file.exists(outputDir))
         dir.create(outputDir, showWarnings=F, recursive = TRUE)
@@ -559,6 +636,7 @@ setMethod(
 #' @importFrom SummarizedExperiment colData
 #' @keywords internal
 #' @noRd
+
 setMethod(
     
     f = "plotClusteredTSNE",
@@ -566,14 +644,16 @@ setMethod(
     signature = "scRNAseq",
     
     definition = function(theObject, colorPalette="default",
-                          PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40),
-                          columnName="clusters", returnPlot=FALSE, width=6,
-                          height=5, onefile=FALSE, ...){
+			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
+			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
+			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
+			heightPNG=750, silentPlot=FALSE){
         
         ## Verify parameters
         validObject(theObject)
         .checkParamPlotTSNE(theObject, PCs, perplexities, columnName,
-                            returnPlot, width, height, onefile)
+                            returnPlot, width, height, onefile, silentPlot, 
+							savePlot)
         
         ## Creating output folder			
         sceObject <- getSceNorm(theObject)
@@ -586,7 +666,7 @@ setMethod(
         # generateTSNECoordinates() and clustering results
         # from clusterCellsInternal() or runClustering()
         
-        ### Plot all precalculated pSNEs to show your clusters
+        ### Plot all precalculated tSNEs to show your clusters
         PCA <- rep(PCs, length(perplexities))
         perp <- rep(perplexities, each=length(PCs))
         tSNEList <- getTSNEList(theObject)
@@ -596,53 +676,23 @@ setMethod(
             stop("The number of elements of TSNEList is not equal to ",
                  "PCs x perplexities. Contact the developper.")
         
-        tSNEplots <- lapply(tSNEList, function(currentTsne, sceObj, outputDir,
-                                               widthpdf, heightpdf, onefilepdf){
-            
-            tSNEres <- as.data.frame(getCoordinates(currentTsne))
-            coordinatesName <- getName(currentTsne)
-            colDatDf <- SummarizedExperiment::colData(sceObj)
-            
-            ## Get coordinates of filtered cells
-            cellVec <- colDatDf$cellName
-            tSNEres <-tSNEres[rownames(tSNEres) %in% cellVec, ]
-            
-            ## Add new columns
-            if(!isTRUE(all.equal(columnName, "noColor")))
-                tSNEres[columnName] <- factor(colDatDf[, columnName])
-            
-            ## Create the pdf
-            pdf(paste0(outputDir, "/", coordinatesName, ".pdf"),
-                width=widthpdf, height=heightpdf, 
-                onefile=onefilepdf, ...)
-            
-            if(isTRUE(all.equal(columnName, "noColor")))
-                tmp <- ggplot2::ggplot(tSNEres, 
-                                       aes_string(x=names(tSNEres)[1],
-                                                  y=names(tSNEres)[2])) +
-                geom_point(size=I(1)) + theme_bw()
-            
-            else {
-                tmp <- ggplot2::ggplot(tSNEres, aes_string(
-                    x=names(tSNEres)[1],
-                    y=names(tSNEres)[2],
-                    color=columnName)) +
-                    geom_point(size=I(1)) +
-                    scale_color_manual(values=colorPalette) + 
-                    theme_bw()
-            }
-            
-            print(tmp)
-            dev.off()
-            
-            return(tmp)
-            
-        }, sceObject, outputdir, width, height, onefile)
-        
-        if(returnPlot){
+	    ## Generating the list of clustered tSNEs
+        tSNEplots <- .computePlotList(tSNEList, sceObject, columnName, 
+				colorPalette)
+		
+		## Plotting tSNE
+		if(!silentPlot)
+			invisible(lapply(tSNEplots, function(currentTSNE) 
+								print(currentTSNE)))
+		
+		## Saving tSNEs
+		if(savePlot)
+			.saveTSNEPlot(tSNEList, tSNEplots, plotPDF, width, height, onefile,
+					widthPNG, heightPNG, outputDir)
+		
+        if(returnPlot)
             return(tSNEplots)
-        }
-        rm(PCA, perp)
+        
     })
 
 
