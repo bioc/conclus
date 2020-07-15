@@ -266,8 +266,6 @@
 }
 
 
-
-
 #' exportResults
 #'
 #' @description 
@@ -389,6 +387,7 @@ setMethod(
 				saveCellsSimilarityMatrix=FALSE, 
 				saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
 				saveTopMarkers=FALSE, saveGenesInfos=FALSE){
+			
 			
 			if(saveAll){
 				
