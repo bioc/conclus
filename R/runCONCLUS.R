@@ -1,3 +1,180 @@
+#' .mkOutlierScoreDf
+#'
+#' @param mat Matrix row : dbscan solutions, column : cells
+#'
+#' @return Data frame of cells with associated outliers score
+.mkOutlierScoreDf <- function(mat){
+    
+    outlierScoreDf <- as.data.frame(colnames(mat))
+    colnames(outlierScoreDf) <- "cellName"
+    outlierScoreDf <- dplyr::mutate(outlierScoreDf, outlierScore=NA)
+    
+    for(i in 1:ncol(mat)){
+        vec <- mat[, i]
+        outlierScoreDf$outlierScore[i] <- length(vec[vec == 0])
+    }
+    
+    outlierScoreDf$outlierScorePer <- outlierScoreDf$outlierScore / nrow(mat)
+    return(outlierScoreDf)
+}
+
+
+
+#' .excludeOutliers
+#' 
+#' @description Exclude outliers cells from Dbscan clustering by creating
+#' a dataframe with outliers score and applying the threshold to remove them
+#' 
+#'
+#' @param theObject An Object of class scRNASeq for which 
+#' ?runDBSCAN was used.
+#' @param threshold Threshold to remove outliers cells.
+#' @param minPoints Reachability minimum no. of points parameter of 
+#' fpc::dbscan() function. See Ester et al. (1996) for more details. 
+#' Default = c(3, 4)
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function.
+#' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+.excludeOutliers <- function(theObject, threshold=0.3, minPoints, epsilon){
+    # exclude outliers based on DBSCAN clustering
+    # outliers are the cells which cannot be assigned
+    # to any final cluster
+    
+    dbscanList <- getDbscanList(theObject)
+    sceObject <- getSceNorm(theObject)
+    
+    
+    ## Transform dbscan list to matrix
+    l <- lapply(dbscanList, function(element){
+        clustering <- getClustering(element)
+        return(clustering)
+    })
+    dbscanMatrix <- do.call(rbind, l)
+    outlierInfo <- .mkOutlierScoreDf(dbscanMatrix)
+    colData <- 
+        SummarizedExperiment::colData(
+            sceObject)[SummarizedExperiment::colData(sceObject)$cellName
+                       %in% colnames(dbscanMatrix), ]
+    
+    if(is.vector(colData)){
+        colData <- S4Vectors::DataFrame(cellName=colData, row.names=colData)
+    }
+    
+    colData$outlierScorePer <- NULL
+    colData$outlierScore <- NULL
+    
+    colData <- merge(colData, outlierInfo,
+                     by.x="cellName", by.y="cellName",
+                     all.x=TRUE, all.y=TRUE, sort=FALSE)
+    rownames(colData) <- colData$cellName
+    
+    numberOfCellsBefore <- dim(colData)[1]
+    print(threshold)
+    sceObject <- sceObject[, colData$outlierScorePer < threshold]
+    colData <- colData[colData$outlierScorePer < threshold, ]
+    numberOfCellsAfter <- dim(colData)[1]
+    
+    dbscanMatrix <- dbscanMatrix[, outlierInfo$outlierScorePer < threshold]
+    SummarizedExperiment::colData(sceObject) <- colData
+    
+    message(
+        paste(numberOfCellsBefore - numberOfCellsAfter,
+              "outliers were excluded from the SingleCellExperiment object.\n"))
+    
+    setSceNorm(theObject) <- sceObject
+    
+    return(theObject)
+}
+
+
+
+#' .runClustering
+#' 
+#' @description This function calcultate tSNE coordinates and run DBSCAN
+#' with the possibility to remove outliers from DBSCAN
+#'
+#' @param theObject An scRNAseq object with normalized count matrix.
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function.
+#'  See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
+#' @param minPoints Reachability minimum no. of points parameter of 
+#' fpc::dbscan() function. See Ester et al. (1996) for more details. 
+#' Default = c(3, 4)
+#' @param k Preferred number of clusters. Alternative to deepSplit.
+#'  A parameter of cutree() function. Default = 0
+#' @param deepSplit Intuitive level of clustering depth.
+#' Options are 1, 2, 3, 4. Default = 4
+#' @param clusteringMethod Clustering method passed to hclust() function.
+#'  See ?hclust for a list of method. Default = "ward.D2"
+#' @param cores maximum number of jobs that CONCLUS can run in parallel.
+#'  Default = 1
+#' @param deleteOutliers Boolean indicating if whether cells which were often
+#'  defined as outliers by dbscan must be deleted.It will require recalculating
+#'   of the similarity matrix of cells. Default = FALSE.
+#' @param PCs {a vector of first principal components. For example, to take
+#'  ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' @param perplexities Numeric scalar defining the perplexity parameter,
+#'  see ‘?Rtsne’ for more details. Default = c(30, 40)
+#' @param randomSeed Random seed for reproducibility. Default = 42.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+.runClustering <- function(theObject, epsilon=c(1.3, 1.4, 1.5),
+                           minPoints=c(3, 4), k=0, deepSplit=4,
+                           clusteringMethod = "ward.D2",
+                           cores=14, deleteOutliers = TRUE,
+                           PCs=c(4, 6, 8, 10, 20, 40, 50),
+                           perplexities=c(30,40), randomSeed = 42){
+    
+    # It combines all the clustering parts. Takes tSNE coordinates and gives
+    # results of final clustering: sceObject and cell correlation matrix
+    
+    # run dbscan
+    message("Running dbscan using ", cores, " cores.")
+    scrDBSCAN <- runDBSCAN(theObject, epsilon=epsilon,
+                           minPoints=minPoints, cores=cores)
+    if(deleteOutliers){
+        # filter cluster outliers
+        message("Excluding clustering outliers.")
+        scrFiltered <- .excludeOutliers(scrDBSCAN,
+                                        minPoints=minPoints,
+                                        epsilon=epsilon)
+        message("Getting TSNE coordinates for the filtered sceObject.")
+        scrTsneFiltered <- generateTSNECoordinates(scrFiltered, PCs=PCs,
+                                                   perplexities=perplexities,
+                                                   randomSeed=randomSeed,
+                                                   cores = cores)
+        
+        scrDBSCAN <- runDBSCAN(scrTsneFiltered, epsilon=epsilon,
+                               minPoints=minPoints, cores=cores)
+    } 
+    
+    return(scrDBSCAN)
+}
+
+
+
+# .checkRunConclus <- function(deleteOutliers, manualClusteringObject){
+#     
+#     if(!is.logical(deleteOutliers))
+#         stop("'deleteOutliers' should be boolean.")
+#         
+#     if(!is.na(manualClusteringObject) && 
+#        class(manualClusteringObject) != "scRNAseq")
+#         stop("'manualClusteringObject' should be an scRNAseq object of CONCLUS.")
+#     
+#     clusters <- colData(getSceNorm(manualClusteringObject))$clusters
+#     
+#     if (is.null(clusters))
+#         stop(paste("'manualClusteringObject' should got with addClustering ",
+#                    "method."))  
+# }
+
 #' runCONCLUS
 #'
 #' @description This function performs the core CONCLUS workflow. 
@@ -83,6 +260,22 @@
 #' @return \code{scRNAseq} object containing the similarity matrices and the 
 #' marker genes. Write also marker genes in file for each clusters, tSNE and 
 #' heatmaps.
+#' 
+#' @examples
+#' 
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(file.path(
+#' "tests/testthat/test_data/test_countMatrix.tsv")))
+#' outputDirectory <- "./"
+#' columnsMetaData <- read.delim(
+#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' species <- "mouse"
+#' 
+#' runCONCLUS(dataDirectory=outputDirectory, countMatrix=countMatrix,
+#'            columnsMetaData=columnsMetaData, species=species)
+#' 
+#' 
+#' 
 #' @seealso \code{normaliseCountMatrix}, \code{generateTSNECoordinates}
 #' \code{runDBSCAN}, \code{clusterCellsInternal}, 
 #' \code{calculateClustersSimilarity},  \code{rankGenes}
@@ -90,7 +283,7 @@
 #' \code{saveGenesInfo}, \code{plotClusteredTSNE}, \code{plotCellSimilarity},
 #' \code{plotClustersSimilarity}, \code{exportMatrix},
 #' @export
-#'
+#' @author Ilyess RACHEDI
 runCONCLUS <- function(dataDirectory, experimentName, countMatrix,
                        columnsMetaData = NA,
                        species = NA, colorPalette="default",
@@ -105,7 +298,7 @@ runCONCLUS <- function(dataDirectory, experimentName, countMatrix,
                        tSNEalreadyGenerated = FALSE, tSNEresExp = "",
                        manualClusteringObject = NA){
     
-    
+    # .checkRunConclus(deleteOutliers,manualClusteringObject)
     scr <- scRNAseq(experimentName = experimentName,
                     countMatrix     = countMatrix,
                     species         = species,
@@ -153,6 +346,6 @@ runCONCLUS <- function(dataDirectory, experimentName, countMatrix,
                        plotPDF = plotPDFcellSim)
 
     ## Export
-    exportResults(scrInfos)
+    exportResults(scrInfos, saveAll = T)
     return(scr)
 }
