@@ -557,19 +557,6 @@ test_that("calculateClustersSimilarity works properly", {
 
 ################################## Plotting ####################################
 
-test_that("plotting methods work properly", {
-			
-			expM <- "columnName should be: clusters, noColor, or state."
-			expect_error(plotClusteredTSNE(scrFinal, columnName="toto"), expM)
-			
-			expM <- paste0("The number of elements of TSNEList is not equal ",
-					"to PCs x perplexities. Contact the developper.")
-			expect_error(plotClusteredTSNE(scrFinalWrong), expM)
-
-		})
-
-
-
 test_that("plotCellSimilarity work properly", {
     ## Test with object doesn't have consensus clusters
     expM <- paste("You have to calculate the cluster similarity matrix", 
@@ -641,6 +628,14 @@ test_that("plotCellSimilarity work properly", {
 })
 
 test_that("plotClusteredTSNE work properly", {
+			
+	expM <- "columnName should be: clusters, noColor, or state."
+	expect_error(plotClusteredTSNE(scrFinal, columnName="toto"), expM)
+			
+	expM <- paste0("The number of elements of TSNEList is not equal ",
+					"to PCs x perplexities. Contact the developper.")
+	expect_error(plotClusteredTSNE(scrFinalWrong), expM)
+			
     ## Test with no consensus clusters
     expM <- paste0("You have to calculate the cluster similarity matrix", 
                    " before plotting.")
