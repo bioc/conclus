@@ -558,6 +558,7 @@ test_that("calculateClustersSimilarity works properly", {
 ################################## Plotting ####################################
 
 test_that("plotCellSimilarity work properly", {
+			
     ## Test with object doesn't have consensus clusters
     expM <- paste("You have to calculate the cluster similarity matrix", 
                   "before plotting.")
@@ -581,6 +582,10 @@ test_that("plotCellSimilarity work properly", {
     expM <- "orderClusters should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, orderClusters="str1" ), expM)
     
+	## Test with incorrect savePlot
+	expM <- "savePlot should be a boolean"
+	expect_error(plotCellSimilarity(scrFinal, savePlot="str1" ), expM)
+	
     ## Test with incorrect plotPDF
     expM <- "plotPDF should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, plotPDF="str1" ), expM)
