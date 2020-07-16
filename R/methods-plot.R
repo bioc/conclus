@@ -862,11 +862,12 @@ setMethod(
 #' 
 #' @keywords internal
 #' @noRd
-.checkParamCellHeatmap <- function(theObject, fileName, meanCentered, 
-		orderClusters, orderGenes, returnPlot, savePlot,
-		width, height, markersClusters){
+.checkParamCellHeatmap <- function(fileName, meanCentered, 
+		orderClusters, orderGenes, returnPlot, savePlot, width, 
+		height, markersClusters, onefile, clusterCols, showColnames, 
+		fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG){
     
-    if (!isTRUE((nrow(markersClusters) > 1)))
+    if(!isTRUE((nrow(markersClusters) > 1)))
         stop(paste("You have to calculate the cluster markers before plotting.",
                    "Please see retrieveTopClustersMarkers method."))
     
@@ -875,32 +876,65 @@ setMethod(
         stop("fileName should be a string, no path.")
     
     ## Verify meanCentered
-    if (!is.logical(meanCentered))
+    if(!is.logical(meanCentered))
         stop("meanCentered should be a boolean.")
     
     ## Verify orderClusters
-    if (!is.logical(orderClusters))
+    if(!is.logical(orderClusters))
         stop("orderClusters should be a boolean.")
     
     ## Verify orderGenes
-    if (!is.logical(orderGenes))
+    if(!is.logical(orderGenes))
         stop("orderGenes should be a boolean.")
     
     ## Verify returnPlot
-    if (!is.logical(returnPlot))
+    if(!is.logical(returnPlot))
         stop("returnPlot should be a boolean.")
     
     ## Verify savePlot
-    if (!is.logical(savePlot))
+    if(!is.logical(savePlot))
         stop("savePlot should be a boolean.")
     
     ## Verify width
-    if (!is.numeric(width))
+    if(!is.numeric(width))
         stop("width should be a numeric.")
     
     ## Verify height
-    if (!is.numeric(height))
+    if(!is.numeric(height))
         stop("height should be a numeric.")  
+	
+	## Verify onefile 
+	if(!is.logical(onefile))
+		stop("onefile should be a boolean.")
+	
+	## Verify clusterCols
+	if(!is.logical(clusterCols))
+		stop("clusterCols should be a boolean.")
+	
+	## Verify showColnames
+	if(!is.logical(showColnames))
+		stop("showColnames should be a boolean.")
+	
+	## Verify plotPDF
+	if(!is.logical(plotPDF))
+		stop("plotPDF should be a boolean.")
+	
+	## Verify fontsize
+	if(!is.numeric(fontsize))
+		stop("fontsize should be a numeric.")
+	
+	## Verify fontsizeRow
+	if(!is.numeric(fontsizeRow))
+		stop("fontsizeRow should be a numeric.")
+	
+	## Verify widthPNG
+	if(!is.numeric(widthPNG))
+		stop("widthPNG should be a numeric.")
+	
+	## Verify heightPNG
+	if(!is.numeric(heightPNG))
+		stop("heightPNG should be a numeric.")
+	
     
 }			
 
@@ -985,36 +1019,29 @@ setMethod(
     signature = "scRNAseq",
     
     definition = function(theObject, fileName = NA, meanCentered=TRUE, 
-                          colorPalette="default", statePalette="default", 
-                          clusteringMethod="ward.D2", orderClusters=FALSE,
-                          orderGenes=FALSE, returnPlot=FALSE,
-                          savePlot=FALSE, width=10, height=8.5, onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, fontsizeRow=8, ...){
-			
-					  
-					  
-					   
-					  		  
-					  
-					  
+			colorPalette="default", statePalette="default", 
+			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
+			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
+			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
+			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750){
+
 		## Verify parameters
 		validObject(theObject)
 					  
-		sceObjectFiltered <- getSceNorm(theObject)
-		colDf <- SummarizedExperiment::colData(sceObjectFiltered)
-		markersClusters <- getClustersMarkers(theObject)
 		sceObject <- getSceNorm(theObject)
-		dataDirectory <- getOutputDirectory(theObject)
-		experimentName  <- getExperimentName(theObject)
+		colDf <- SummarizedExperiment::colData(sceObject)
+		markersClusters <- getClustersMarkers(theObject)
 		
 		if(is.na(fileName))
-			fileName <- paste0(exprimentName, "_", "clusters", 
+			fileName <- paste0(getExperimentName(theObject), "_", "clusters", 
 					length(levels(colDf$clusters)), "_meanCentered", 
 					meanCentered, "_orderClusters", orderClusters, 
 					"_orderGenes", orderGenes, "markersPerCluster")
 		
-		.checkParamCellHeatmap(theObject, fileName, meanCentered, orderClusters,
+		.checkParamCellHeatmap(fileName, meanCentered, orderClusters, 
 				orderGenes, returnPlot, savePlot, width, 
-				height, markersClusters)
+				height, markersClusters, onefile, clusterCols, showColnames, 
+				fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG)
 		
 				 
 				 !!!!!!!!!!!!!!!!!!!
@@ -1091,12 +1118,16 @@ setMethod(
 		
 		if(savePlot){
 			
-			subdir <- file.path(dataDirectory, "pictures")
+			subdir <- file.path(getOutputDirectory(theObject), "pictures")
 			if(!file.exists(subdir))
 				dir.create(subdir, showWarnings=F, recursive = TRUE)
 			
-			pdf(file.path(subdir, paste0(fileName, ".pdf")), width=width,
-					height=height, onefile=onefile)
+			if(plotPDF)
+				pdf(file=file.path(subdir, paste0(fileName, ".pdf")), 
+						width=width, height=height, onefile=onefile)
+			else
+				png(filename=file.path(subdir, paste0(fileName, ".png")), 
+								width=widthPNG, height=heightPNG, type="cairo")
 			grid::grid.newpage()
 			grid::grid.draw(pheatmapObject$gtable)
 			dev.off()
