@@ -826,181 +826,13 @@ setMethod(
                                  clusteringMethod="ward.D2"){
     
     genes <- markersClusters[markersClusters$clusters == cluster, ]$geneName
+	
     if(length(genes) > 2){
         tree <- hclust(dist(mtx[genes, ]), method=clusteringMethod)
         return(genes[tree$order])
     } else {
         return(genes)
     }
-}
-
-#' .plotCellHeatmap
-#' 
-#'
-#' @param markersClusters Data frame containing two columns geneName and 
-#' clusters.
-#' @param sceObject A SingleCellExperiment object with your experiment.
-#' @param dataDirectory Output directory of a given CONCLUS run
-#' @param experimentName Prefix used for output files
-#' @param fileName Name of the output file
-#' @param meanCentered Boolean, should mean centering be applied to the 
-#' expression data or not. Default = TRUE.
-#' @param colorPalette A vector of colors for clusters. Default = "default",
-#'  see details.
-#' @param statePalette A vector of colors for states or conditions. See details.
-#' @param clusteringMethod Clustering method passed to hclust() function. 
-#' See ?hclust for a list of method. Default = "ward.D2"
-#' @param orderClusters If True, clusters in the similarity matrix of cells will
-#'  be ordered by name. Default = FALSE.
-#' @param similarity Boolean, should the heatmap be structured by similarities.
-#'  Default = FALSE.
-#' @param orderGenes Boolean, should the heatmap be structured by gene.
-#'  Default = FALSE.
-#' @param returnPlot If TRUE export to pdf, if FALSE export to png.
-#' @param saveHeatmapTable Boolean, whether to save the expression matrix 
-#' used for heatmap into a .csv file or not. 
-#' The file will be saved into 'dataDirectory/output_tables' with the same name
-#'  as the .pdf plot.
-#' @param width Width of the plot. Default = 7.
-#' @param height Height of the plot. Default = 6.
-#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
-#' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
-#' @param clusterCols Boolean.
-#' @param showColnames pheatmap parameter. Boolean specifying if column names
-#' are be shown.
-#' @param fontsize pheatmap parameter. Base fontsize for the plot
-#' @param fontsizeRow pheatmap parameter. Fontsize for rownames 
-#' 
-#' @keywords internal
-#' @importFrom SummarizedExperiment colData
-#' @importFrom Biobase exprs
-#' @importFrom stats hclust
-#' @importFrom pheatmap pheatmap
-#' @noRd
-.plotCellHeatmap <- function(markersClusters, sceObject, dataDirectory,
-                             experimentName, fileName, meanCentered=TRUE, colorPalette="default",
-                             statePalette="default", clusteringMethod="ward.D2", orderClusters=FALSE,
-                             similarity=FALSE, orderGenes=FALSE, returnPlot=FALSE, 
-                             saveHeatmapTable=FALSE, width=10, height=8.5, onefile=FALSE, 
-                             clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, fontsizeRow=8){
-    
-    # plots correlation between cells between clusters
-    colData <- SummarizedExperiment::colData(sceObject)
-    exprsTmp <- Biobase::exprs(sceObject)
-    rowTmp <- rownames(exprsTmp)
-    expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
-    
-    if(meanCentered){
-        meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
-        expressionMatrix <- expressionMatrix - meanRows
-    }
-    
-    if(!orderClusters & orderGenes){
-        message("Genes cannot be ordered without clusters.
-						Returning heatmap with similarity=TRUE")
-        similarity <- TRUE
-    }
-    
-    if(orderClusters){
-        # Ordering expressionMatrixrix
-        newOrder <- unname(unlist(sapply(levels(colData$clusters), 
-                                         function(cluster)
-                                             .orderCellsInCluster(cluster, colData,
-                                                                  expressionMatrix, clusteringMethod))))
-        expressionMatrix <- expressionMatrix[, newOrder]
-        clusterCols <- FALSE
-        
-        if(orderGenes){
-            newOrder <- unname(unlist(sapply(levels(colData$clusters), 
-                                             function(cluster)
-                                                 .orderGenesInCluster(cluster, 
-                                                                      markersClusters, 
-                                                                      expressionMatrix, 
-                                                                      clusteringMethod))))
-            expressionMatrix <- expressionMatrix[newOrder, ]
-            clusterRows <- FALSE
-        }
-        
-    } else if(similarity){
-        
-        cellsSimilarityMatrix <- read.delim(file.path(dataDirectory, 
-                                                      "output_tables", paste0(experimentName, 
-                                                                              "_cellsSimilarityMatrix.csv")), 
-                                            stringsAsFactors=FALSE, header=TRUE, sep=",")
-        
-        clustersSimOrdered <- calculateClustersSimilarity(cellsSimilarityMatrix,
-                                                          sceObject,
-                                                          clusteringMethod)[[2]]
-        newOrder <- unname(unlist(sapply(clustersSimOrdered, function(cluster)
-            .orderCellsInCluster(cluster, colData,
-                                 expressionMatrix, 
-                                 clusteringMethod))))
-        expressionMatrix <- expressionMatrix[, newOrder]
-        clusterCols <- FALSE
-        
-        if(orderGenes){
-            newOrder <- unname(unlist(sapply(clustersSimOrdered, 
-                                             function(cluster)
-                                                 .orderGenesInCluster(cluster, 
-                                                                      markersClusters, 
-                                                                      expressionMatrix,
-                                                                      clusteringMethod))))
-            expressionMatrix <- expressionMatrix[newOrder, ]
-            clusterRows <- FALSE
-        }
-    } else if(!orderClusters){
-        distanceMatrix <- dist(t(expressionMatrix))
-        clusterCols <- hclust(distanceMatrix, method="ward.D2")
-    }
-    
-    if(!orderGenes)
-        clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
-    
-    annotationColors <- .generateAnnotationColors(colData, colorPalette,
-                                                  statePalette)
-    
-    columnsToPlot <- switch(is.null(colData$state) + 1, c("clusters", "state"),
-                            c("clusters"))
-    
-    if(is.null(colData$clusters)){
-        
-        annCol <- switch(is.null(colData$state) + 1, 
-                         as.data.frame(colData["state"]), NA)
-        annColors <- switch(is.null(colData$state) + 1, 
-                            annotationColors[names(annotationColors) == 
-                                                 "state"], NA)
-    } else {
-        annCol <- as.data.frame(colData[columnsToPlot])
-        annColors <- annotationColors
-    }
-    
-    color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
-                                "#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)		
-    
-    pheatmapObject <- pheatmap::pheatmap(expressionMatrix, 
-                                         show_colnames=showColnames, annotation_col=annCol, 
-                                         annotation_colors=annColors, fontsize_row=fontsizeRow, 
-                                         cluster_cols=clusterCols, cluster_rows=clusterRows,
-                                         color=color, fontsize=fontsize)
-    
-    
-    subdir <- file.path(dataDirectory, "pictures")
-    if(!file.exists(subdir))
-        dir.create(subdir, showWarnings=F, recursive = TRUE)
-    
-    pdf(file.path(dataDirectory, "pictures", 
-                  paste0(experimentName, "_", fileName, ".pdf")), width=width,
-        height=height, onefile=onefile)
-    grid::grid.newpage()
-    grid::grid.draw(pheatmapObject$gtable)
-    dev.off()
-    
-    if(saveHeatmapTable)
-        exportMatrix(expressionMatrix, dataDirectory, experimentName, fileName)
-    
-    if(returnPlot)
-        return(pheatmapObject)
 }
 
 
@@ -1030,13 +862,9 @@ setMethod(
 #' 
 #' @keywords internal
 #' @noRd
-.checkParamCellHeatmap <- function(theObject, fileName, 
-                                   meanCentered, orderClusters, similarity,
-                                   orderGenes, returnPlot, saveHeatmapTable,
-                                   width, height){
-    
-    ## Verify the object 
-    markersClusters <- getClustersMarkers(theObject)
+.checkParamCellHeatmap <- function(theObject, fileName, meanCentered, 
+		orderClusters, orderGenes, returnPlot, savePlot,
+		width, height, markersClusters){
     
     if (!isTRUE((nrow(markersClusters) > 1)))
         stop(paste("You have to calculate the cluster markers before plotting.",
@@ -1054,10 +882,6 @@ setMethod(
     if (!is.logical(orderClusters))
         stop("orderClusters should be a boolean.")
     
-    ## Verify similarity
-    if (!is.logical(similarity))
-        stop("similarity should be a boolean.")
-    
     ## Verify orderGenes
     if (!is.logical(orderGenes))
         stop("orderGenes should be a boolean.")
@@ -1066,9 +890,9 @@ setMethod(
     if (!is.logical(returnPlot))
         stop("returnPlot should be a boolean.")
     
-    ## Verify saveHeatmapTable
-    if (!is.logical(saveHeatmapTable))
-        stop("saveHeatmapTable should be a boolean.")
+    ## Verify savePlot
+    if (!is.logical(savePlot))
+        stop("savePlot should be a boolean.")
     
     ## Verify width
     if (!is.numeric(width))
@@ -1163,47 +987,128 @@ setMethod(
     definition = function(theObject, fileName = NA, meanCentered=TRUE, 
                           colorPalette="default", statePalette="default", 
                           clusteringMethod="ward.D2", orderClusters=FALSE,
-                          similarity=FALSE, orderGenes=FALSE, returnPlot=FALSE,
-                          saveHeatmapTable=FALSE, width=10, height=8.5, ...){
-        
-        
-        ## Verify parameters
-        validObject(theObject)
-        
-        sceObjectFiltered <- getSceNorm(theObject)
-        if (is.na(fileName)){
-            fileName=paste0(
-                "clusters",
-                length(
-                    levels(
-                        SummarizedExperiment::colData(
-                            sceObjectFiltered)$clusters)),
-                "_meanCentered",
-                meanCentered,
-                "_orderClusters",
-                orderClusters,
-                "_orderGenes",
-                orderGenes,
-                # "_top",
-                # genesNumber,
-                "markersPerCluster")
-        }
-        
-        .checkParamCellHeatmap(theObject, fileName, 
-                               meanCentered, orderClusters, similarity,
-                               orderGenes, returnPlot, saveHeatmapTable,
-                               width, height)
-        
-        markersClusters <- getClustersMarkers(theObject)
-        sceObject       <- getSceNorm(theObject)
-        dataDirectory   <- getOutputDirectory(theObject)
-        experimentName  <- getExperimentName(theObject)
-        .plotCellHeatmap(markersClusters, sceObject, dataDirectory, 
-                         experimentName, fileName, meanCentered=meanCentered,
-                         colorPalette=colorPalette, statePalette=statePalette,
-                         clusteringMethod=clusteringMethod, orderClusters=orderClusters,
-                         similarity=FALSE, orderGenes=orderGenes, returnPlot=returnPlot,
-                         saveHeatmapTable=saveHeatmapTable, width=width, height=height)
+                          orderGenes=FALSE, returnPlot=FALSE,
+                          savePlot=FALSE, width=10, height=8.5, onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, fontsizeRow=8, ...){
+			
+					  
+					  
+					   
+					  		  
+					  
+					  
+		## Verify parameters
+		validObject(theObject)
+					  
+		sceObjectFiltered <- getSceNorm(theObject)
+		colDf <- SummarizedExperiment::colData(sceObjectFiltered)
+		markersClusters <- getClustersMarkers(theObject)
+		sceObject <- getSceNorm(theObject)
+		dataDirectory <- getOutputDirectory(theObject)
+		experimentName  <- getExperimentName(theObject)
+		
+		if(is.na(fileName))
+			fileName <- paste0(exprimentName, "_", "clusters", 
+					length(levels(colDf$clusters)), "_meanCentered", 
+					meanCentered, "_orderClusters", orderClusters, 
+					"_orderGenes", orderGenes, "markersPerCluster")
+		
+		.checkParamCellHeatmap(theObject, fileName, meanCentered, orderClusters,
+				orderGenes, returnPlot, savePlot, width, 
+				height, markersClusters)
+		
+				 
+				 !!!!!!!!!!!!!!!!!!!
+						 
+		# plots correlation between clusters
+		expressionMatrix <- Biobase::exprs(sceObject)
+		rowTmp <- rownames(exprsTmp)
+		expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
+				 
+		if(meanCentered){
+			meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
+			expressionMatrix <- expressionMatrix - meanRows
+		}
+				 
+				 
+		if(orderClusters){
+			
+			# Ordering expressionMatrixrix
+			newOrder <- unname(unlist(sapply(levels(colDf$clusters), 
+									function(cluster)
+										.orderCellsInCluster(cluster, colDf,
+												expressionMatrix, 
+												clusteringMethod))))
+			expressionMatrix <- expressionMatrix[, newOrder]
+			clusterCols <- FALSE
+			
+			if(orderGenes){
+				
+				newOrder <- unname(unlist(sapply(levels(colDf$clusters),
+										function(cluster)
+											.orderGenesInCluster(cluster,
+													markersClusters, 
+													expressionMatrix,
+													clusteringMethod))))
+				expressionMatrix <- expressionMatrix[newOrder, ]
+				clusterRows <- FALSE
+				}
+					 
+		}else{
+			
+			distanceMatrix <- dist(t(expressionMatrix))
+			clusterCols <- hclust(distanceMatrix, method="ward.D2")
+		}
+				 
+		if(!orderGenes)
+			clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
+				 
+		annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+				statePalette)
+				 
+		columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters", 
+						"state"), c("clusters"))
+				 
+		if(is.null(colDf$clusters)){
+			
+			annCol <- switch(is.null(colDf$state) + 1, 
+					as.data.frame(colDf["state"]), NA)
+			annColors <- switch(is.null(colDf$state) + 1,
+					annotationColors[names(annotationColors) == "state"], NA)
+		}else{
+			annCol <- as.data.frame(colDf[columnsToPlot])
+			annColors <- annotationColors
+		}
+				 
+		color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
+						"#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
+		
+		pheatmapObject <- pheatmap::pheatmap(expressionMatrix, 
+				show_colnames=showColnames, annotation_col=annCol,
+				annotation_colors=annColors, fontsize_row=fontsizeRow, 
+				cluster_cols=clusterCols, cluster_rows=clusterRows,
+				color=color, fontsize=fontsize)
+				 
+		
+		if(savePlot){
+			
+			subdir <- file.path(dataDirectory, "pictures")
+			if(!file.exists(subdir))
+				dir.create(subdir, showWarnings=F, recursive = TRUE)
+			
+			pdf(file.path(subdir, paste0(fileName, ".pdf")), width=width,
+					height=height, onefile=onefile)
+			grid::grid.newpage()
+			grid::grid.draw(pheatmapObject$gtable)
+			dev.off()
+		}
+		
+		
+	
+		
+				 
+				 if(returnPlot)
+					 return(pheatmapObject) 
+				!!!!!!!!!!!!!!!!!!!!!!!!!!
     })
 
 

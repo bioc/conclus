@@ -704,6 +704,21 @@ test_that("plotClusteredTSNE work properly", {
 })
 
 
+theObject=scrFinal
+fileName = NA
+meanCentered=TRUE
+colorPalette="default"
+statePalette="default" 
+clusteringMethod="ward.D2"
+orderClusters=FALSE
+similarity=FALSE
+orderGenes=FALSE
+returnPlot=FALSE
+saveHeatmapTable=FALSE
+width=10
+height=8.5
+
+
 test_that("plotCellHeatmap work properly", {
     ## Test with object doesn't have consensus clusters
     expM <- paste("You have to calculate the cluster markers before plotting.",
