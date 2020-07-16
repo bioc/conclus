@@ -305,8 +305,9 @@
 #' ## Plot the heatmap of the similarity matrix
 #' plotCellSimilarity(scrCSM)
 #' 
-#' 
-#' @seealso calculateClustersSimilarity 
+#' @return A pheatmap object of the similarity heatmap if returnPlot is TRUE.
+#' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
+#' plotGeneExpression plotClustersSimilarity
 #' @exportMethod 
 #' @importFrom SummarizedExperiment colData
 #' @importFrom pheatmap pheatmap
@@ -386,7 +387,28 @@ setMethod(
 ################################################################################
 
 
-
+#' .saveTSNEPlot
+#' 
+#' @description Write the tSNE plots to the output directory obtained with
+#' ?getOutputDirectory in the sub-directories 'pictures/graphsTSNEDirectory'.
+#'
+#' @param tSNEList List of tSNE objects obtained with ?getTSNEList.
+#' @param tSNEplots List of ggplot objects representing the tSNEs.
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 6.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to FALSE, and forced to true if file is a pipe.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param outputDir Path to the output directory.
+#' 
+#' @keywords internal
+#' @noRd
 .saveTSNEPlot <- function(tSNEList, tSNEplots, plotPDF, width, height, onefile, 
 		widthPNG, heightPNG, outputDir){
 	
@@ -415,6 +437,27 @@ setMethod(
 }
 
 
+
+
+#' .computePlotList
+#' 
+#' @description Generates a list of ggplot objects for each tSNE.
+#'
+#' @param tSNEList List of tSNE objects obtained with ?getTSNEList.
+#' @param sceObject SingleCellExperiment object obtained with ?getSceNorm and 
+#' containing the normalized count matrix.
+#' @param columnName Name of the column to color the t-SNE with.
+#'  Possible values are clusters, noColor, or state.
+#' @param colorPalette A vector of colors for clusters. Default = "default",
+#'  see details of plotClusteredTSNE below.
+#' 
+#' @return A list of ggplot objects.
+#' @keywords internal
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 geom_point
+#' @importFrom ggplot2 scaleColorManual
+#' @importFrom ggplot2 theme_bw
+#' @noRd
 .computePlotList <- function(tSNEList, sceObject, columnName, colorPalette){
 	
 	resultList <- lapply(tSNEList, function(currentTsne, sceObj, columnName, 
@@ -460,25 +503,42 @@ setMethod(
 #' 
 #' @description Check parameters of plotClusteredTSNE
 #'
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
 #' @param PCs A vector of first principal components. For example, to take 
-#' ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50).
+#' See ?generateTSNECoordinates for details.
 #' @param perplexities Numeric scalar defining the perplexity parameter, 
-#' see ‘?Rtsne’ for more details. Default = c(30, 40)
-#' @param columnName Name of the column to plot on t-SNE dimensions.
+#' see ?Rtsne and ?generateTSNECoordinates for more details. Default = c(30, 40)
+#' @param columnName Name of the column to color the t-SNE with.
 #'  Possible values are clusters, noColor, or state.
 #' @param returnPlot Boolean indicating if the pHeatmap object should  be
 #' returned by the function. Default = FALSE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 6.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE, and forced to true if file is a pipe.
+#' @param silentPlot If TRUE, the plots are not displayed on the current device.
+#' Default=FALSE.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in 
+#' theObject (?getOutputDirectory) and in the sub-directory 
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' "pictures/tSNE_pictures".
 #' 
 #' @keywords internal
 #' @noRd
 .checkParamPlotTSNE <- function(theObject, PCs, perplexities, columnName,
                                 returnPlot, width, height, onefile, silentPlot, 
-								savePlot){
+								savePlot, plotPDF, widthPNG, heightPNG){
     
     ## Verify the object contains clustersSimilarityMatrix
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -519,6 +579,22 @@ setMethod(
     if (!is.logical(onefile))
         stop("onefile should be a boolean.")
 	
+	## Verify savePlot
+	if (!is.logical(savePlot))
+		stop("savePlot should be a boolean.")
+	
+	## Verify plotPDF
+	if(!is.logical(plotPDF))
+		stop("plotPDF should be a boolean.")
+	
+	## Verify widthPNG
+	if (!is.numeric(widthPNG))
+		stop("widthPNG should be a numeric.")
+	
+	## Verify heightPNG
+	if (!is.numeric(heightPNG))
+		stop("heightPNG should be a numeric.")  
+	
 	if(silentPlot && !savePlot)
 		stop("You should either plot the results or save the files. Set ", 
 				"silentPlot=FALSE and/or savePlot=TRUE.")
@@ -528,18 +604,22 @@ setMethod(
 
 #' .createTSNEDir
 #'
-#' @description Create subfolder for TSNE plot and the colorPalette
+#' @description Create subfolder for TSNE plots and returns the colorPalette.
 #' 
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
-#' @param columnName Name of the column to plot on t-SNE dimensions.
+#' 
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
+#' @param columnName Name of the column to color the t-SNE with.
 #'  Possible values are clusters, noColor, or state.
 #' @param sceObject A SingleCellExperiment object with your experiment.
 #' @param colorPalette A vector of colors for clusters. Default = "default",
-#'  see details.
+#'  see details of plotClusteredTSNE below.
 #'
-#' @return List containint path of the subdirectory for tSNE plots and the color
-#' palette
+#' @return List containing path to the subdirectory 
+#' 'pictures/graphsTSNEDirectory' and the color palette
 #' @importFrom SummarizedExperiment colData
 #' @include sharedInernals.R
 #' @keywords internal
@@ -576,29 +656,54 @@ setMethod(
 #' @description Plot t-SNE generated with different PCs and perplexities.
 #' It can also use a coloring scheme by clusters or states.
 #'
-#' @usage plotClusteredTSNE(sceObject, dataDirectory, experimentName,
-#' tSNEresExp = "", colorPalette = "default", PCs = c(4, 6, 8, 10, 20,40, 50), 
-#' perplexities = c(30, 40), columnName = "clusters", returnPlot = FALSE,
-#'  width = 6, height = 5, ...)
+#' @usage plotClusteredTSNE(theObject, colorPalette="default",
+#' 			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
+#' 			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
+#' 			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
+#' 			heightPNG=750, silentPlot=FALSE)
 #'  
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
 #' @param colorPalette A vector of colors for clusters. Default = "default",
 #'  see details.
 #' @param PCs A vector of first principal components. For example, to take 
-#' ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
+#' ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50).
+#' See ?generateTSNECoordinates for details.
 #' @param perplexities Numeric scalar defining the perplexity parameter, 
-#' see ‘?Rtsne’ for more details. Default = c(30, 40)
-#' @param columnName Name of the column to plot on t-SNE dimensions.
+#' see ?Rtsne and ?generateTSNECoordinates for more details. Default = c(30, 40)
+#' @param columnName Name of the column to color the t-SNE with.
 #'  Possible values are clusters, noColor, or state.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in 
+#' theObject (?getOutputDirectory) and in the sub-directory 
+#' "pictures/tSNE_pictures".
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
 #' @param returnPlot Boolean indicating if the pHeatmap object should  be
 #' returned by the function. Default = FALSE.
-#' @param width Width of the plot. Default = 6.
-#' @param height Height of the plot. Default = 5.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 6.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
-#' @param ... Additional parameters to pass to pdf() functions.
+#' generate a file with name containing the page number for each page.
+#' Defaults to FALSE, and forced to true if file is a pipe.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, the plots are not displayed on the current device.
+#' Default=FALSE.
 #' 
-#'
+#' @aliases plotClusteredTSNE
+#' @rdname plotClusteredTSNE-scRNAseq
+#' 
+#' @details
+#' colorPalette -- A vector of colors for clusters/states or 
+#' 'default' value. If 'default' is selected, the number of clusters is limited 
+#' to 16. If an error message is thrown, re-run the function with your own color
+#'  vector.
+#' 
 #' @examples
 #' experimentName <- "Bergiers"
 #' countMatrix <- as.matrix(read.delim(file.path(
@@ -631,11 +736,12 @@ setMethod(
 #' ## Plot the heatmap of the similarity matrix
 #' plotClusteredTSNE(scrCSM)
 #' 
-#' @seealso calculateClustersSimilarity 
-#' @importFrom ggplot2 ggplot
-#' @importFrom SummarizedExperiment colData
-#' @keywords internal
-#' @noRd
+#' @return A list of ggplot objects if returnPlot is TRUE.
+#' @seealso calculateClustersSimilarity plotCellSimilarity plotCellHeatmap
+#' plotGeneExpression plotClustersSimilarity
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' @exportMethod
 
 setMethod(
     
@@ -653,7 +759,7 @@ setMethod(
         validObject(theObject)
         .checkParamPlotTSNE(theObject, PCs, perplexities, columnName,
                             returnPlot, width, height, onefile, silentPlot, 
-							savePlot)
+							savePlot, plotPDF)
         
         ## Creating output folder			
         sceObject <- getSceNorm(theObject)
