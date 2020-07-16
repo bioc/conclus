@@ -683,7 +683,24 @@ test_that("plotClusteredTSNE work properly", {
     ## Test with incorrect onefile
     expM <- "onefile should be a boolean."
     expect_error(plotClusteredTSNE(scrFinal, onefile="str1" ), expM)
-    
+	
+	
+	expM <- "savePlot should be a boolean."
+	expect_error(plotClusteredTSNE(scrFinal, savePlot="str1" ), expM)
+	
+	expM <- "plotPDF should be a boolean."
+	expect_error(plotClusteredTSNE(scrFinal, plotPDF="str1" ), expM)
+	
+	expM <- "widthPNG should be a numeric."
+	expect_error(plotClusteredTSNE(scrFinal, widthPNG="str1" ), expM)
+	
+	expM <- "heightPNG should be a numeric."
+	expect_error(plotClusteredTSNE(scrFinal, heightPNG="str1" ), expM)
+	
+	expM <- paste0("You should either plot the results or save the files. Set ", 
+				"silentPlot=FALSE and/or savePlot=TRUE.")
+	expect_error(plotClusteredTSNE(scrFinal, silentPlot=TRUE, savePlot=FALSE), 
+			expM)
 })
 
 
