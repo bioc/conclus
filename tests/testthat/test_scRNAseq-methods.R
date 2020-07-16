@@ -704,32 +704,16 @@ test_that("plotClusteredTSNE work properly", {
 })
 
 
-theObject=scrFinal
-fileName = NA
-meanCentered=TRUE
-colorPalette="default"
-statePalette="default" 
-clusteringMethod="ward.D2"
-orderClusters=FALSE
-similarity=FALSE
-orderGenes=FALSE
-returnPlot=FALSE
-saveHeatmapTable=FALSE
-width=10
-height=8.5
-
-
 test_that("plotCellHeatmap work properly", {
+					
     ## Test with object doesn't have consensus clusters
     expM <- paste("You have to calculate the cluster markers before plotting.",
                   "Please see retrieveTopClustersMarkers() method.")
     expect_error(plotCellHeatmap(scr), expM)
     
     ## Test with incorrect fileName
-    expM <- "fileName should be a string."
+	expM <- "fileName should be a string, no path."
     expect_error(plotCellHeatmap(scrFinal, fileName=TRUE), expM)
-    
-    expM <- "fileName should be a string, no path."
     expect_error(plotCellHeatmap(scrFinal, fileName="dir/file"), expM)
     
     ## Test with incorrect meanCentered
@@ -741,10 +725,6 @@ test_that("plotCellHeatmap work properly", {
     expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
                                  orderClusters="str2"), expM)
     
-    ## Test with incorrect similarity
-    expM <- "similarity should be a boolean."
-    expect_error(plotCellHeatmap(scrFinal, similarity="str2"), expM)
-    
     ## Test with incorrect orderGenes
     expM <- "orderGenes should be a boolean."
     expect_error(plotCellHeatmap(scrFinal, fileName="str1", 
@@ -755,8 +735,8 @@ test_that("plotCellHeatmap work properly", {
     expect_error(plotCellHeatmap(scrFinal,  returnPlot="str2"), expM)
     
     ## Test with incorrect saveHeatmapTable
-    expM <- "saveHeatmapTable should be a boolean."
-    expect_error(plotCellHeatmap(scrFinal, saveHeatmapTable="str2"), expM)
+    expM <- "savePlot should be a boolean."
+    expect_error(plotCellHeatmap(scrFinal, savePlot="str2"), expM)
     
     ## Test with incorrect width
     expM <- "width should be a numeric."
@@ -765,6 +745,30 @@ test_that("plotCellHeatmap work properly", {
     ## Test with incorrect height
     expM <- "height should be a numeric."
     expect_error(plotCellHeatmap(scrFinal, height="str2"), expM)
+	
+	expM <- "onefile should be a boolean."
+	expect_error(plotCellHeatmap(scrFinal, onefile="str2"), expM)
+	
+	expM <- "clusterCols should be a boolean."
+	expect_error(plotCellHeatmap(scrFinal, clusterCols="str2"), expM)
+	
+	expM <- "showColnames should be a boolean."
+	expect_error(plotCellHeatmap(scrFinal, showColnames="str2"), expM)
+	
+	expM <- "plotPDF should be a boolean."
+	expect_error(plotCellHeatmap(scrFinal, plotPDF="str2"), expM)
+	
+	expM <- "fontsize should be a numeric."
+	expect_error(plotCellHeatmap(scrFinal, fontsize="str2"), expM)
+	
+	expM <- "fontsizeRow should be a numeric."
+	expect_error(plotCellHeatmap(scrFinal, fontsizeRow="str2"), expM)
+	
+	expM <- "widthPNG should be a numeric."
+	expect_error(plotCellHeatmap(scrFinal, widthPNG="str2"), expM)
+	
+	expM <- "heightPNG should be a numeric."
+	expect_error(plotCellHeatmap(scrFinal, heightPNG="str2"), expM)
 })
 
 
