@@ -136,10 +136,10 @@ setGeneric(
 		
 	name = "plotGeneExpression",
 		
-	def = function(theObject, geneName, graphsDirectory="pictures", 
+	def = function(theObject, geneName, 
 			palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE,
-			tSNEpicture=1, commentName="", savePlot=TRUE, alpha=1, limits=NA,
-			pointSize=1, width=6, height=5, ...){
+			tSNEpicture=1, savePlot=TRUE, alpha=1, limits=NA,
+			pointSize=1, width=6, height=5, plotPDF=TRUE, silentPlot=FALSE){
 		standardGeneric("plotGeneExpression")    
     },
     signature="theObject")
