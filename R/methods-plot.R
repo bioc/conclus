@@ -806,6 +806,46 @@ setMethod(
 ## plotCellHeatmap
 #################
 
+
+.saveHeatmap <- function(theObject, plotPDF, fileName, width, height, onefile, 
+		widthPNG, heightPNG){
+	
+	subdir <- file.path(getOutputDirectory(theObject), "pictures")
+	if(!file.exists(subdir))
+		dir.create(subdir, showWarnings=F, recursive = TRUE)
+	
+	if(plotPDF)
+		pdf(file=file.path(subdir, paste0(fileName, ".pdf")), 
+				width=width, height=height, onefile=onefile)
+	else
+		png(filename=file.path(subdir, paste0(fileName, ".png")), 
+				width=widthPNG, height=heightPNG, type="cairo")
+	grid::grid.newpage()
+	grid::grid.draw(pheatmapObject$gtable)
+	dev.off()
+}
+
+
+.callOrderGenes <- function(colDf, markersClusters, expressionMatrix, 
+		clusteringMethod){
+	
+	return(unname(unlist(sapply(levels(colDf$clusters), function(cluster)
+										.orderGenesInCluster(cluster,
+												markersClusters, 
+												expressionMatrix,
+												clusteringMethod)))))
+}
+
+
+.callOrderCells <- function(colDf, expressionMatrix, clusteringMethod){
+	
+	return(unname(unlist(sapply(levels(colDf$clusters), function(cluster)
+										.orderCellsInCluster(cluster, colDf,
+												expressionMatrix, 
+												clusteringMethod)))))
+}
+
+
 #' .orderGenesInCluster
 #'
 #' @description Order cells according to clustering results.
@@ -828,7 +868,7 @@ setMethod(
     genes <- markersClusters[markersClusters$clusters == cluster, ]$geneName
 	
     if(length(genes) > 2){
-        tree <- hclust(dist(mtx[genes, ]), method=clusteringMethod)
+        tree <- hclust(dist(mtx[as.vector(genes), ]), method=clusteringMethod)
         return(genes[tree$order])
     } else {
         return(genes)
@@ -1043,11 +1083,9 @@ setMethod(
 				height, markersClusters, onefile, clusterCols, showColnames, 
 				fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG)
 		
-				 
-				 !!!!!!!!!!!!!!!!!!!
-						 
+		
 		# plots correlation between clusters
-		expressionMatrix <- Biobase::exprs(sceObject)
+		exprsTmp <- Biobase::exprs(sceObject)
 		rowTmp <- rownames(exprsTmp)
 		expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
 				 
@@ -1060,22 +1098,15 @@ setMethod(
 		if(orderClusters){
 			
 			# Ordering expressionMatrixrix
-			newOrder <- unname(unlist(sapply(levels(colDf$clusters), 
-									function(cluster)
-										.orderCellsInCluster(cluster, colDf,
-												expressionMatrix, 
-												clusteringMethod))))
+			newOrder <- .callOrderCells(colDf, expressionMatrix, 
+					clusteringMethod)
 			expressionMatrix <- expressionMatrix[, newOrder]
 			clusterCols <- FALSE
 			
 			if(orderGenes){
 				
-				newOrder <- unname(unlist(sapply(levels(colDf$clusters),
-										function(cluster)
-											.orderGenesInCluster(cluster,
-													markersClusters, 
-													expressionMatrix,
-													clusteringMethod))))
+				newOrder <- .callOrderGenes(colDf, markersClusters, 
+						expressionMatrix, clusteringMethod) 
 				expressionMatrix <- expressionMatrix[newOrder, ]
 				clusterRows <- FALSE
 				}
@@ -1116,31 +1147,13 @@ setMethod(
 				color=color, fontsize=fontsize)
 				 
 		
-		if(savePlot){
-			
-			subdir <- file.path(getOutputDirectory(theObject), "pictures")
-			if(!file.exists(subdir))
-				dir.create(subdir, showWarnings=F, recursive = TRUE)
-			
-			if(plotPDF)
-				pdf(file=file.path(subdir, paste0(fileName, ".pdf")), 
-						width=width, height=height, onefile=onefile)
-			else
-				png(filename=file.path(subdir, paste0(fileName, ".png")), 
-								width=widthPNG, height=heightPNG, type="cairo")
-			grid::grid.newpage()
-			grid::grid.draw(pheatmapObject$gtable)
-			dev.off()
-		}
-		
-		
-	
-		
-				 
-				 if(returnPlot)
-					 return(pheatmapObject) 
-				!!!!!!!!!!!!!!!!!!!!!!!!!!
-    })
+		if(savePlot)
+			.saveHeatmap(theObject, plotPDF, fileName, width, height, onefile, 
+					widthPNG, heightPNG)
+				
+		if(returnPlot)
+			return(pheatmapObject) 
+})
 
 
 ################################################################################
