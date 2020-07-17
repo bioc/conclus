@@ -773,52 +773,37 @@ test_that("plotCellHeatmap work properly", {
 
 
 test_that("plotGeneExpression work properly", {
-    ## Test with object doesn't have consensus clusters
-    expM <- paste("You have to calculate the cluster similarity matrix", 
-                   "before plotting.")
-    expect_error(plotGeneExpression(scr), expM)
-    
+	
+	## Correct gene name
+	geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
+	
+	## Test that the queried gene is in the expression matrix
+	expM <- "Gene is not found in expression matrix."
+	expect_error(plotGeneExpression(scrFinal, geneName="gene1"), expM)
+	
+	## Verify that the TSNE coordinates are correct
+	expM <- paste0("The row names of the tSNE coordinates matrix should be ",
+			"equal to the colnames of the expression matrix.")
+	expect_error(plotGeneExpression(scrNorm, geneName=geneName), expM)
+	
     ## Test with incorrect geneName
     expM <- paste("geneName should be a marker founded by ",
                   "retrieveTopClustersMarkers method'. Please see the",
                   "documentation about retrieveTopClustersMarkers method.")
-    expect_error(plotGeneExpression(scrFinal, geneName="gene1"), expM)
+    expect_error(plotGeneExpression(scrCSM, geneName=geneName), expM)   
     
-    ## Test with incorrect graphsDirectory
-    expM <- paste("graphsDirectory should be a string,",
-                  "the path of the graphs directory")
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-
-    expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
-                                    graphsDirectory = TRUE), expM)
-    
-    ## Test with incorrect returnPlot
-    expM <- "returnPlot should be a boolean."
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-    expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
-                                    returnPlot = "str1"), expM)
-    
-    ## Test with incorrect tSNEpicture
-    expM <- "tSNEpicture should be a integer"
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-    expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
-                                    tSNEpicture = "str1"), expM)
-
-    ## Test with incorrect commentName
-    expM <- "commentName should be a string."
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-    expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
-                                    commentName = TRUE), expM)
-    
-    ## Test with incorrect savePlot
-    expM <- "savePlot should be a boolean."
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
-    expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
-                                    savePlot = "str1"), expM)
-    
+	## Test with incorrect returnPlot
+	expM <- "returnPlot should be a boolean."
+	expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
+					returnPlot = "str1"), expM)
+	
+	## Test with incorrect savePlot
+	expM <- "savePlot should be a boolean."
+	expect_error(plotGeneExpression(scrFinal, geneName = geneName, savePlot="str1"), 
+			expM)
+	
     ## Test with incorrect width
     expM <- "width should be a numeric."
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     width = "str1"), expM)
     
@@ -827,7 +812,18 @@ test_that("plotGeneExpression work properly", {
     geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
                                     height = "str1"), expM)
+					
+	## Test with incorrect silentPlot
+	expM <- "silentPlot should be a boolean."
+	expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
+					silentPlot="str1"), expM)
+	
+	## Test with incorrect plotPDF
+	expM <- "plotPDF should be a boolean."
+	expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
+					plotPDF="str1"), expM)	
 })
+
 
 test_that("plotClustersSimilarity work properly", {
     ## Test with object doesn't have consensus clusters
