@@ -120,11 +120,12 @@ setGeneric(
 		
 	name = "plotCellHeatmap",
 		
-	def = function(theObject, fileName=NA, meanCentered=TRUE, 
-                   colorPalette="default", statePalette="default", 
-                   clusteringMethod="ward.D2", orderClusters=FALSE,
-                   similarity=FALSE, orderGenes=FALSE, returnPlot=FALSE,
-                   saveHeatmapTable=FALSE, width=10, height=8, ...){
+	def = function(theObject, fileName = NA, meanCentered=TRUE, 
+			colorPalette="default", statePalette="default", 
+			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
+			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
+			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
+			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750){
 		standardGeneric("plotCellHeatmap")    
     },
     signature="theObject")
