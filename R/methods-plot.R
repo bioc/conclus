@@ -807,6 +807,30 @@ setMethod(
 #################
 
 
+#' .callOrderGenes
+#'
+#' @description Save the heatmap in pdf or png format in the directory defined
+#' in theObject (?getOutputDirectory) and in the sub-directory 'pictures'.
+#' 
+#' @param theObject A scRNAseq object with the cluster similarity matrix 
+#' obtained with ?calculateClustersSimilarity method and the top markers 
+#' obtained with ?retrieveTopClustersMarkers.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png 
+#' otherwise. Default = TRUE.
+#' @param fileName Name of the output file to which the heatmap is saved.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 10.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 8.5.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to TRUE, and forced to true if file is a pipe.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' 
+#' @keywords internal
+#' 
+#' @noRd
 .saveHeatmap <- function(theObject, plotPDF, fileName, width, height, onefile, 
 		widthPNG, heightPNG){
 	
@@ -826,6 +850,21 @@ setMethod(
 }
 
 
+#' .callOrderGenes
+#'
+#' @description Call the function .orderGenesInCluster on each cluster.
+#' 
+#' @param colDf A data frame with information about cells.
+#' @param markersClusters Data frame containing two columns geneName and 
+#' clusters.
+#' @param expressionMatrix The count matrix retrieved with ?Biobase::exprs.
+#' @param clusteringMethod Clustering method passed to hclust() function. 
+#' See ?hclust for a list of method. Default = "ward.D2".
+#' 
+#' @keywords internal
+#' @return A vector of ordered cells names
+#' 
+#' @noRd
 .callOrderGenes <- function(colDf, markersClusters, expressionMatrix, 
 		clusteringMethod){
 	
@@ -837,6 +876,19 @@ setMethod(
 }
 
 
+#' .callOrderCells
+#'
+#' @description Call the function .orderCellsInCluster on each cluster.
+#' 
+#' @param colDf A data frame with information about cells.
+#' @param expressionMatrix The count matrix retrieved with ?Biobase::exprs.
+#' @param clusteringMethod Clustering method passed to hclust() function. 
+#' See ?hclust for a list of method. Default = "ward.D2".
+#' 
+#' @keywords internal
+#' @return A vector of ordered cells names
+#' 
+#' @noRd
 .callOrderCells <- function(colDf, expressionMatrix, clusteringMethod){
 	
 	return(unname(unlist(sapply(levels(colDf$clusters), function(cluster)
@@ -851,16 +903,17 @@ setMethod(
 #' @description Order cells according to clustering results.
 #' Uses for ordering matrix to further plot it with pheatmap()
 #' 
-#' @param cluster Label of cluster
+#' @param cluster Label of the current cluster considered in the sapply of 
+#' callOrderGenes.
 #' @param markersClusters Data frame containing two columns geneName and 
 #' clusters.
-#' @param mtx count matrix expression
+#' @param mtx Expression matrix.
 #' @param clusteringMethod Clustering method passed to hclust() function. 
-#' See ?hclust for a list of method. Default = "ward.D2"
+#' See ?hclust for a list of method. Default = "ward.D2".
 #' 
 #' @keywords internal
-#' @return Genes ordered
-#' @importFrom stats hclust
+#' @return The markers clusters data frame ordered by genes.
+#' 
 #' @noRd
 .orderGenesInCluster <- function(cluster, markersClusters, mtx, 
                                  clusteringMethod="ward.D2"){
@@ -881,25 +934,37 @@ setMethod(
 #'
 #' @description checks parameters of plotCellHeatmap
 #' 
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
-#' @param fileName
-#' @param meanCentered Boolean, should mean centering be applied to the 
-#' expression data or not. Default = TRUE.
+#' @param fileName Name of the output file to which the heatmap is saved.
+#' @param meanCentered Boolean indicating if mean centering should be applied 
+#' to the expression matrix. Default = TRUE.
 #' @param orderClusters If True, clusters in the similarity matrix of cells will
 #'  be ordered by name. Default = FALSE.
-#' @param similarity Boolean, should the heatmap be structured by similarities.
-#'  Default = FALSE.
 #' @param orderGenes Boolean, should the heatmap be structured by gene.
 #'  Default = FALSE.
-#' @param returnPlot If TRUE export to pdf, if FALSE export to png.
-#' @param saveHeatmapTable Boolean, whether to save the expression matrix 
-#' used for heatmap into a .csv file or not. 
-#' The file will be saved into 'dataDirectory/output_tables' with the same name
-#' as the .pdf plot.
-#' @param width Width of the plot. Default = 10.
-#' @param height Height of the plot. Default = 8.5.
-#' 
+#' @param returnPlot If TRUE returns a pheatmap object. Default=FALSE.
+#' @param savePlot If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject 
+#' (?getOutputDirectory) and in the sub-directory 'pictures'.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 10.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 8.5.
+#' @param markersClusters Data frame containing two columns geneName and 
+#' clusters.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to TRUE, and forced to true if file is a pipe.
+#' @param clusterCols If TRUE, the columns representing the clusters are also
+#' taken into account in the hierarchical clustering. Default=FALSE.
+#' @param showColnames Shoud the names of the columns (clusters) be indicated on
+#' the heatmap. Default = FALSE.
+#' @param fontsize base fontsize for the plot. Default = 7.5.
+#' @param fontsizeRow fontsize for rownames. Default = 8.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png 
+#' otherwise. Default = TRUE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#'  
 #' @keywords internal
 #' @noRd
 .checkParamCellHeatmap <- function(fileName, meanCentered, 
@@ -985,30 +1050,61 @@ setMethod(
 #' @description This function plots heatmap with marker genes on rows and
 #'  clustered cells on columns.
 #'  
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
-#' @param fileName Name of the output file
-#' @param meanCentered Boolean, should mean centering be applied to the 
-#' expression data or not. Default = TRUE.
+#' @usage
+#' plotCellHeatmap(theObject, fileName = NA, meanCentered=TRUE, 
+#' 			colorPalette="default", statePalette="default", 
+#' 			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
+#' 			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
+#' 			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
+#' 			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750)
+#' 
+#' @param theObject A scRNAseq object with the cluster similarity matrix 
+#' obtained with ?calculateClustersSimilarity method and the top markers 
+#' obtained with ?retrieveTopClustersMarkers.
+#' @param fileName Name of the output file to which the heatmap is saved.
+#' @param meanCentered Boolean indicating if mean centering should be applied 
+#' to the expression matrix. Default = TRUE.
 #' @param colorPalette A vector of colors for clusters. Default = "default",
-#'  see details.
+#'  See details.
 #' @param statePalette A vector of colors for states or conditions. See details.
 #' @param clusteringMethod Clustering method passed to hclust() function. 
-#' See ?hclust for a list of method. Default = "ward.D2"
+#' See ?hclust for a list of method. Default = "ward.D2".
 #' @param orderClusters If True, clusters in the similarity matrix of cells will
 #'  be ordered by name. Default = FALSE.
-#' @param similarity Boolean, should the heatmap be structured by similarities.
-#'  Default = FALSE.
 #' @param orderGenes Boolean, should the heatmap be structured by gene.
 #'  Default = FALSE.
-#' @param returnPlot If TRUE export to pdf, if FALSE export to png.
-#' @param saveHeatmapTable Boolean, whether to save the expression matrix 
-#' used for heatmap into a .csv file or not. 
-#' The file will be saved into 'dataDirectory/output_tables' with the same name
-#'  as the .pdf plot.
-#' @param width Width of the plot. Default = 10.
-#' @param height Height of the plot. Default = 8.5.
-#' @param ... Additional parameters to pass to pdf() and pheatmap() functions.
+#' @param returnPlot If TRUE returns a pheatmap object. Default=FALSE.
+#' @param savePlot If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject 
+#' (?getOutputDirectory) and in the sub-directory 'pictures'.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 10.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 8.5.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to TRUE, and forced to true if file is a pipe.
+#' @param clusterCols If TRUE, the columns representing the clusters are also
+#' taken into account in the hierarchical clustering. Default=FALSE.
+#' @param showColnames Shoud the names of the columns (clusters) be indicated on
+#' the heatmap. Default = FALSE.
+#' @param fontSize base fontsize for the plot. Default = 7.5.
+#' @param fontsizeRow fontsize for rownames. Default = 8.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png 
+#' otherwise. Default = TRUE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' 
+#' #' @details
+#' colorPalette/statePalette -- A vector of colors for clusters/states or 
+#' 'default' value. If 'default' is selected, the number of clusters is limited 
+#' to 16. If an error message is thrown, re-run the function with your own color
+#'  vector.
+#' 
+#' @return A pheatmap object of the heatmap if returnPlot is TRUE.
+#' 
+#' @aliases plotCellHeatmap
+#' @rdname plotCellHeatmap
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -1048,8 +1144,13 @@ setMethod(
 #' ## Plot the heatmap with marker genes
 #' plotCellHeatmap(scrFinal)
 #' 
-#' @seealso retrieveTopClustersMarkers
+#' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellSimilarity
+#' plotGeneExpression plotClustersSimilarity
 #' @exportMethod 
+#' @importFrom SummarizedExperiment colData
+#' @importFrom Biobase exprs
+#' @importFrom pheatmap pheatmap 
+#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
