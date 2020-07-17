@@ -1265,22 +1265,21 @@ setMethod(
 #'
 #' @description checks parameters of plotGeneExpression
 #' 
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
+#' @param theObject A scRNAseq object with the top markers retrieved. See 
+#' ?retrieveTopClustersMarkers.
 #' @param geneName Name of the gene to highlight on the t-SNE plot.
-#' @param graphsDirectory Name of the output subdirectory. 
-#' Default is "pictures".
-#' @param returnPlot If TRUE export to pdf, if FALSE export to png.
-#' @param tSNEpicture Number of picture that you want to use for plotting. 
-#' Please check "dataDirectory/tsnes" or
-#' "dataDirectory/pictures/tSNE_pictures/clusters" to get the number
-#' which corresponds to the number of files, it is usually from 1 to 14.
-#' Default = 1
-#' @param commentName Comment that you want to specify in the filename.
-#' @param savePlot {Boolean, should the function export the plot to pdf or not.
-#'  Default = TRUE
+#' @param returnPlot If TRUE, returns a ggplot object of the tSNE. 
+#' Default = FALSE.
+#' @param savePlot If TRUE, save the tSNE in pdf or png format. Default=FALSE.
 #' @param width Width of the plot. Default = 6.
 #' @param height Height of the plot. Default = 5.
+#' @param expMat Count matrix retrieved with ?Biobase::exprs.
+#' @param tSNECoords Coordinates of the tSNE plot retrieved with 
+#' ?getCoordinates.
+#' @param silentPlot If TRUE, the plots are not displayed on the current device.
+#' Default=FALSE.
+#' @param plotPDF If TRUE export tSNE in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
 #'
 #' @keywords internal
 #' @noRd
@@ -1332,8 +1331,6 @@ setMethod(
 }			
 
 
-
-
 #' plotGeneExpression
 #' 
 #' @description The function saves a t-SNE plot colored by expression of a  
@@ -1341,9 +1338,9 @@ setMethod(
 #'
 #' @usage
 #' plotGeneExpression(theObject, geneName, 
-#' palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE, tSNEpicture=1,
-#'  savePlot=FAlSE, alpha=1, limits=NA, pointSize=1, width=6, height=5, 
-#' plotPDF=TRUE, silentPlot=FALSE)
+#' palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE,
+#' 			tSNEpicture=1, savePlot=FALSE, alpha=1, limits=NA,
+#' 			pointSize=1, width=6, height=5, plotPDF=TRUE, silentPlot=FALSE)
 #' 		
 #' @param theObject A scRNAseq object with the top markers retrieved. See 
 #' ?retrieveTopClustersMarkers.
@@ -1353,14 +1350,27 @@ setMethod(
 #' Default = FALSE.
 #' @param tSNEpicture Number of the tSNE picture that you want to use for 
 #' plotting the gene expression. Default = 1.
-#' @param savePlot {Boolean, should the function export the plot to pdf or not.
-#'  Default = TRUE
-#' @param alpha Opacity of the points of the plot. Default = 1
-#' @param limits Range of the gene expression shown in the legend. See details.
-#' @param pointSize Size of the point. Default = 1.
+#' @param savePlot If TRUE, save the tSNE in pdf or png format. Default=FALSE.
+#' @param alpha Opacity of the points of the plot. Default = 1.
+#' @param limits Range of the gene expression shown in the legend. Default = NA.
+#' See details.
+#' @param pointSize Size of the points on the tSNE. Default = 1.
 #' @param width Width of the plot. Default = 6.
 #' @param height Height of the plot. Default = 5.
-#' @param ... Additional parameters to pass to pdf() functions.
+#' @param plotPDF If TRUE export tSNE in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
+#' @param silentPlot If TRUE, the plots are not displayed on the current device.
+#' Default=FALSE.
+#'
+#' @aliases plotGeneExpression
+#' @rdname plotGeneExpression-scRNAseq
+#' 
+#' @details
+#' limits -- This option allows generating t-SNE plots with equal color scale to 
+#'  compare the expression of different genes. By default, limits are the range
+#'  of expression of a selected gene.
+#' 
+#' @return A ggplot object of the gene expression colored tSNE.
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -1394,8 +1404,13 @@ setMethod(
 #' ## t-SNE plot colored by expression of a  given gene.
 #' plotGeneExpression(scrCSM)
 #' 
-#' @seealso calculateClustersSimilarity
-#' @exportMethod 
+#' @seealso retrieveTopClustersMarkers plotCellSimilarity plotCellHeatmap
+#' plotClusteredTSNE plotClustersSimilarity
+#' @exportMethod
+#' @importFrom SummarizedExperiment colData 
+#' @importFrom Biobase exprs
+#' @importFrom ggplot2 ggplot 
+#'  
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
