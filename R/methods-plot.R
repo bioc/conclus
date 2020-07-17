@@ -1285,8 +1285,7 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .checkParamPlotGeneExpression <- function(theObject, geneName, returnPlot, 
-		tSNEpicture, savePlot, width, height, expMat,
-		tSNECoords, silentPlot, plotPDF){
+		savePlot, width, height, expMat, tSNECoords, silentPlot, plotPDF){
     
 	
 	if(!geneName %in% rownames(expMat))
@@ -1302,10 +1301,6 @@ setMethod(
         stop(paste("geneName should be a marker founded by ",
               "retrieveTopClustersMarkers method'. Please see the",
               "documentation about retrieveTopClustersMarkers method."))
-    
-    ## Verify tSNEpicture
-    if (!is.numeric(tSNEpicture))
-        stop("tSNEpicture should be a integer")
     
     ## Verify returnPlot
     if (!is.logical(returnPlot))
@@ -1422,8 +1417,8 @@ setMethod(
 		expMat <- Biobase::exprs(sceObject)
 		
         .checkParamPlotGeneExpression(theObject, geneName, returnPlot, 
-				tSNEpicture, savePlot, width, height, expMat,
-				tSNECoords, silentPlot, plotPDF)
+				savePlot, width, height, expMat, tSNECoords, silentPlot, 
+				plotPDF)
         
         ## Plot all precalculated t-SNEs to show your clusters
 		tSNECoords$expression <- expMat[geneName, ]
@@ -1457,7 +1452,7 @@ setMethod(
         }
         
         if(!silentPlot)
-			print(tmp)
+			print(ggres)
         
         if(returnPlot)
             return(ggres)
