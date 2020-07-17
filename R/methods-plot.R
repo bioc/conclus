@@ -1499,9 +1499,11 @@ setMethod(
 #' 
 #' @keywords internal
 #' @noRd
-.checkParamClustersSimilarity <- function(theObject, returnPlot, width, height,
-                                          onefile, fontsize){
+.checkParamClustersSimilarity <- function(theObject, returnPlot, savePlot, 
+		plotPDF, width, height, onefile, fontsize, widthPNG, heightPNG){
     
+	
+	!!
     
     ## Verify the object 
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -1607,61 +1609,60 @@ setMethod(
     
     definition = function(theObject, colorPalette="default", 
                           statePalette="default", clusteringMethod="ward.D2", 
-                          returnPlot=FALSE, width=7, height=5.5, onefile=FALSE, fontsize=7.5,
-                          ...){
+                          returnPlot=FALSE, savePlot=FALSE, plotPDF=TRUE, 
+						  width=7, height=5.5, onefile=FALSE, fontsize=7.5,
+						  widthPNG=800, heightPNG=750){
         
         ## Verify parameters
         validObject(theObject)
-        .checkParamClustersSimilarity(theObject, returnPlot, width, height,
-                                      onefile, fontsize)
+        .checkParamClustersSimilarity(theObject, returnPlot, savePlot, plotPDF,
+				width, height, onefile, fontsize, widthPNG, heightPNG)
         
         clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
-        sceObject       <- getSceNorm(theObject)
-        dataDirectory   <- getOutputDirectory(theObject)
-        experimentName  <- getExperimentName(theObject)
-        
-        coldDataDf <- SummarizedExperiment::colData(sceObject)
-        clusters <- coldDataDf$clusters
-        clustersNumber <- length(unique(clusters))
+        colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
+        clusters <- colDf$clusters
         clustersNames <- levels(clusters)
-        dataDirectory <- dataDirectory
-        experimentName <- experimentName
-        graphsDirectory <- "pictures"
-        
         distanceMatrix <- as.dist(sqrt((1-clustersSimilarityMatrix)/2))
         clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
         colDataSimilarity <- data.frame(clusters=clustersNames)
         rownames(colDataSimilarity) <- colDataSimilarity$clusters
         
-        annotationColors <- .generateAnnotationColors(coldDataDf, colorPalette,
+        annotationColors <- .generateAnnotationColors(colDf, colorPalette,
                                                       statePalette)
-        
-        tmpNCol <- ncol(clustersSimilarityMatrix)
-        tmpNRow <- nrow(clustersSimilarityMatrix)
-        main <- paste0("Clusters similarity matrix ", tmpNCol, " columns, ", 
-                       tmpNRow, " rows.")
         
         pheatmapObject <- pheatmap::pheatmap(clustersSimilarityMatrix,
                                              annotation_col=colDataSimilarity,
                                              annotation_colors=annotationColors,
                                              cluster_cols=clusteringTree,
                                              cluster_rows=clusteringTree,
-                                             fontsize=fontsize, main=main)
+                                             fontsize=fontsize, 
+											 main="Clusters similarity matrix")
         
-        message("\nSaving a heatmap with the cluster similarity matrix.")
-        tmpFileP <- paste(experimentName,"clusters_similarity", clustersNumber,
-                          "clusters.pdf", sep="_")
+        if(savePlot){
+			
+			dataDirectory   <- getOutputDirectory(theObject)
+			experimentName  <- getExperimentName(theObject)
+			clustersNumber <- length(unique(clusters))
+			subdir <- file.path(dataDirectory, "pictures")
+			
+			if(!file.exists(subdir))
+				dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
+			
+			fileName <- paste(experimentName,"clusters_similarity", 
+					clustersNumber, "clusters", sep="_")
+			filePath <- file.path(subdir, fileName)
+			
+			if(plotPDF)
+				pdf(file=paste0(filePath, ".pdf"), width=width, height=height, 
+						onefile=onefile)
+			else
+				png(filename=paste0(filePath, ".png"), width=widthPNG, 
+						height=heightPNG, type="cairo")
+			grid::grid.newpage()
+			grid::grid.draw(pheatmapObject$gtable)
+			dev.off()
+		}
         
-        
-        subdir <- file.path(dataDirectory, graphsDirectory)
-        if(!file.exists(subdir))
-            dir.create(subdir, showWarnings=F, recursive = TRUE)
-        
-        pdf(file.path(dataDirectory, graphsDirectory, tmpFileP), width=width, 
-            height=height, onefile=onefile, ...)
-        grid::grid.newpage()
-        grid::grid.draw(pheatmapObject$gtable)
-        dev.off()
         
         if(returnPlot)
             return(pheatmapObject)			
