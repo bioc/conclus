@@ -821,7 +821,13 @@ test_that("plotGeneExpression work properly", {
 	## Test with incorrect plotPDF
 	expM <- "plotPDF should be a boolean."
 	expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
-					plotPDF="str1"), expM)	
+					plotPDF="str1"), expM)
+	
+	## Test when nothing is output
+	expM <- paste0("You should either plot the results or save the files. Set ",
+			"silentPlot=FALSE and/or savePlot=TRUE.")
+	expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
+					savePlot=FALSE, silentPlot=TRUE), expM)
 })
 
 
