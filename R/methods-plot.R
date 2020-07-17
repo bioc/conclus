@@ -1325,6 +1325,10 @@ setMethod(
 	## Verify plotPDF
 	if (!is.logical(plotPDF))
 		stop("plotPDF should be a boolean.")
+	
+	if(silentPlot && !savePlot)
+		stop("You should either plot the results or save the files. Set ", 
+				"silentPlot=FALSE and/or savePlot=TRUE.")
 }			
 
 
@@ -1333,23 +1337,22 @@ setMethod(
 #' plotGeneExpression
 #' 
 #' @description The function saves a t-SNE plot colored by expression of a  
-#' given gene. Warning: filename with t-SNE results is hardcoded, so please 
-#' don't rename the output file.
+#' given gene.
 #'
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
+#' @usage
+#' plotGeneExpression(theObject, geneName, 
+#' palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE, tSNEpicture=1,
+#'  savePlot=FAlSE, alpha=1, limits=NA, pointSize=1, width=6, height=5, 
+#' plotPDF=TRUE, silentPlot=FALSE)
+#' 		
+#' @param theObject A scRNAseq object with the top markers retrieved. See 
+#' ?retrieveTopClustersMarkers.
 #' @param geneName Name of the gene to highlight on the t-SNE plot.
-#' @param graphsDirectory Name of the output subdirectory. 
-#' Default is "pictures".
-#' @param palette Color palette for the legend
-#' @param returnPlot Boolean, should the function return a ggplot object or not.
-#'  Default = FALSE
-#' @param tSNEpicture Number of picture that you want to use for plotting. 
-#' Please check "dataDirectory/tsnes" or
-#' "dataDirectory/pictures/tSNE_pictures/clusters" to get the number
-#' which corresponds to the number of files, it is usually from 1 to 14.
-#' Default = 1
-#' @param commentName Comment that you want to specify in the filename.
+#' @param palette Color palette for the expression levels.
+#' @param returnPlot If TRUE, returns a ggplot object of the tSNE. 
+#' Default = FALSE.
+#' @param tSNEpicture Number of the tSNE picture that you want to use for 
+#' plotting the gene expression. Default = 1.
 #' @param savePlot {Boolean, should the function export the plot to pdf or not.
 #'  Default = TRUE
 #' @param alpha Opacity of the points of the plot. Default = 1
@@ -1403,7 +1406,7 @@ setMethod(
     
     definition = function(theObject, geneName, 
 			palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE,
-			tSNEpicture=1, savePlot=TRUE, alpha=1, limits=NA,
+			tSNEpicture=1, savePlot=FALSE, alpha=1, limits=NA,
 			pointSize=1, width=6, height=5, plotPDF=TRUE, silentPlot=FALSE){
         
         ## Verify parameters
