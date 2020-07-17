@@ -1284,31 +1284,24 @@ setMethod(
 #'
 #' @keywords internal
 #' @noRd
-.checkParamPlotGeneExpression <- function(theObject, geneName, graphsDirectory,
-                                          returnPlot, tSNEpicture, commentName,
-                                          savePlot, width, height){
+.checkParamPlotGeneExpression <- function(theObject, geneName, returnPlot, 
+		tSNEpicture, savePlot, width, height, expMat,
+		tSNECoords, silentPlot, plotPDF){
     
-    ## Verify the object 
-    clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
-    clusters <- colData(getSceNorm(theObject))$clusters
-    nbrClusters <- length(unique(clusters))
-    
-    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
-        stop(paste("You have to calculate the cluster similarity matrix",
-                   "before plotting."))  
-    
-    
+	
+	if(!geneName %in% rownames(expMat))
+		stop("Gene is not found in expression matrix.")
+	
+	if(!isTRUE(all.equal(rownames(tSNECoords), colnames(sceObject))))
+		stop("The row names of the tSNE coordinates matrix should be equal",
+				" to the colnames of the expression matrix.")
+	
     ## Verify the geneName
     markers <- getClustersMarkers(theObject)$geneName 
     if(!geneName %in% markers)
         stop(paste("geneName should be a marker founded by ",
               "retrieveTopClustersMarkers method'. Please see the",
               "documentation about retrieveTopClustersMarkers method."))
-    
-    ## Verify the graphsDirectory
-    if(!is.character(graphsDirectory))
-        stop(paste("graphsDirectory should be a string,",
-                   "the path of the graphs directory"))
     
     ## Verify tSNEpicture
     if (!is.numeric(tSNEpicture))
@@ -1317,10 +1310,6 @@ setMethod(
     ## Verify returnPlot
     if (!is.logical(returnPlot))
         stop("returnPlot should be a boolean.")
-    
-    ## Verify commentName
-    if(!is.character(commentName))
-        stop("commentName should be a string.")
     
     ## Verify savePlot
     if (!is.logical(savePlot))
@@ -1332,8 +1321,15 @@ setMethod(
     
     ## Verify height
     if (!is.numeric(height))
-        stop("height should be a numeric.")  
-    
+        stop("height should be a numeric.")
+	
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")
+	
+	## Verify plotPDF
+	if (!is.logical(plotPDF))
+		stop("plotPDF should be a boolean.")
 }			
 
 
@@ -1410,76 +1406,61 @@ setMethod(
     
     signature = "scRNAseq",
     
-    definition = function(theObject, geneName, graphsDirectory="pictures", 
-                          palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE,
-                          tSNEpicture=1, commentName="", savePlot=TRUE, alpha=1, limits=NA,
-                          pointSize=1, width=6, height=5, ...){
+    definition = function(theObject, geneName, 
+			palette=c("grey","red", "#7a0f09", "black"), returnPlot=FALSE,
+			tSNEpicture=1, savePlot=TRUE, alpha=1, limits=NA,
+			pointSize=1, width=6, height=5, plotPDF=TRUE, silentPlot=FALSE){
         
         ## Verify parameters
         validObject(theObject)
-        .checkParamPlotGeneExpression(theObject=theObject,
-                                      geneName=geneName,
-                                      graphsDirectory=graphsDirectory,
-                                      returnPlot=returnPlot,
-                                      tSNEpicture=tSNEpicture,
-                                      commentName=commentName,
-                                      savePlot=savePlot,
-                                      width=width, 
-                                      height=height)
-        
-        sceObject       <- getSceNorm(theObject)
-        dataDirectory   <- getOutputDirectory(theObject)
-        experimentName  <- getExperimentName(theObject)
-        tSNEDirectory <- "tsnes"
+		sceObject <- getSceNorm(theObject)
+		colDf <- SummarizedExperiment::colData(sceObject)
+		clustersNumber <- length(unique(colDf$clusters))
+		tmpList <- getTSNEList(theObject) 
+		tSNECoords <- as.data.frame(getCoordinates(tmpList[[tSNEpicture]]))
+		tSNECoords <- tSNECoords[colDf$cellName, ]
+		expMat <- Biobase::exprs(sceObject)
+		
+        .checkParamPlotGeneExpression(theObject, geneName, returnPlot, 
+				tSNEpicture, savePlot, width, height, expMat,
+				tSNECoords, silentPlot, plotPDF)
         
         ## Plot all precalculated t-SNEs to show your clusters
-        
-        coldDatDf <- SummarizedExperiment::colData(sceObject)
-        clustersNumber <- length(unique(coldDatDf$clusters))
-        tmpList <- getTSNEList(theObject) 
-        tSNECoords <- as.data.frame(getCoordinates(tmpList[[tSNEpicture]]))
-        tSNECoords <- tSNECoords[coldDatDf$cellName, ]
-        
-        if(!geneName %in% rownames(Biobase::exprs(sceObject)))
-            print("Gene is not found in expression matrix")
-        
-        stopifnot(all(rownames(tSNECoords) == colnames(sceObject)))
-        tSNECoords$expression <- Biobase::exprs(sceObject)[geneName, ]
+		tSNECoords$expression <- expMat[geneName, ]
         
         if(isTRUE(all.equal(length(limits), 1)))
             limits <- c(min(tSNECoords$expression), max(tSNECoords$expression))
         
+		ggres <- ggplot2::ggplot(tSNECoords, aes(x=tSNECoords[,1], 
+								y=tSNECoords[,2], color=expression)) + 
+				geom_point(size=I(pointSize), alpha=alpha) + theme_bw() +
+				scale_colour_gradientn(
+						colours=alpha(colorRampPalette(palette)(100), 0.8), 
+						limits=limits) + ggtitle(geneName)
+		
         
         if(savePlot){
             
-            fileName <- paste(experimentName, "tSNE", clustersNumber, 
-                              "clusters", geneName, commentName, "tSNEpicture", 
-                              tSNEpicture, "_alpha", alpha,sep="_")
-            fileName <- paste0(fileName, ".pdf")
-            
-            
-            subdir <- file.path(dataDirectory, graphsDirectory)
+			dataDirectory  <- getOutputDirectory(theObject)
+			experimentName <- getExperimentName(theObject)
+            subdir <- file.path(dataDirectory, "pictures")
+			fileName <- paste(experimentName, "tSNE", clustersNumber, 
+					"clusters", geneName, "tSNEpicture", 
+					tSNEpicture, "_alpha", alpha,sep="_")
+			
             if(!file.exists(subdir))
-                dir.create(subdir, showWarnings=F, recursive = TRUE)
+                dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
             
-            pdf(file.path(dataDirectory, graphsDirectory, fileName), 
-                width=width, height=height, ...)
+			ggsave(filename= paste0(fileName, if(plotPDF) ".pdf" else ".png"), 
+					plot=ggres, device= if(plotPDF) "pdf" else "png",
+					path=subdir, width= width, height = height)
         }
         
-        tmp <- ggplot2::ggplot(tSNECoords, aes(x=tSNECoords[,1], 
-                                               y=tSNECoords[,2], color=expression)) + 
-            geom_point(size=I(pointSize), alpha=alpha) + theme_bw() +
-            scale_colour_gradientn(colours=alpha(colorRampPalette(palette)(100),
-                                                 0.8), limits=limits) +
-            ggtitle(geneName)
-        
-        print(tmp)
-        
-        if(savePlot)
-            dev.off()
+        if(!silentPlot)
+			print(tmp)
         
         if(returnPlot)
-            return(tmp)
+            return(ggres)
     })
 
 
