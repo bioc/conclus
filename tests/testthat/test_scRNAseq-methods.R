@@ -832,6 +832,7 @@ test_that("plotGeneExpression work properly", {
 
 
 test_that("plotClustersSimilarity work properly", {
+			
     ## Test with object doesn't have consensus clusters
     expM <- paste0("You have to calculate the cluster similarity matrix", 
                    " before plotting.")
@@ -856,9 +857,25 @@ test_that("plotClustersSimilarity work properly", {
     ## Test with incorrect fontsize
     expM <- "fontsize should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, fontsize="str1" ), expM)
+	
+	## Test with incorrect savePlot
+	expM <- "savePlot should be a boolean."
+	expect_error(plotCellSimilarity(scrFinal, savePlot="str1"))
+	
+	## Test with incorrect plotPDF
+	expM <- "plotPDF should be a boolean."
+	expect_error(plotCellSimilarity(scrFinal, plotPDF="str1"))
+	
+	## Test with incorrect widthPNG
+	expM <- "widthPNG should be a numeric."
+	expect_error(plotCellSimilarity(scrFinal, widthPNG="str1"))
+	
+	## Test with incorrect heightPNG
+	expM <- "heightPNG should be a numeric."
+	expect_error(plotCellSimilarity(scrFinal, heightPNG="str1"))
+	
 })
-
-
+		
 
 ################################  markers  ###################################
 
