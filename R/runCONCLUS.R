@@ -351,7 +351,9 @@ runCONCLUS <- function(
                     countMatrix     = countMatrix,
                     species         = species,
                     outputDirectory = outputDirectory)
-    		
+    
+	## Processing
+	
     message("## Performing the normalization ##")
     scrNorm <- normaliseCountMatrix(scr, sizes=sizes, rowdata=rowMetaData, 
 			coldata=columnsMetaData, alreadyCellFiltered=alreadyCellFiltered,
@@ -375,6 +377,8 @@ runCONCLUS <- function(
     scrCSM <- calculateClustersSimilarity(scrCCI, 
 			clusteringMethod=clusteringMethod)
 
+	## Markers
+	
 	message("## Ranking genes ##")
     scrS4MG <- rankGenes(scrCSM, column=columnRankGenes, 
 			writeMarkerGenes=writeOutputRankGenes)
@@ -388,6 +392,7 @@ runCONCLUS <- function(
 			orderGenes=orderGenes, getUniprot=getUniprot, saveInfos=saveInfos)
     
 	## Plotting
+	
 	message("## Plot the cell similarity matrix ##")
 	plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod,
