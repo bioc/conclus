@@ -309,6 +309,45 @@ setMethod(
 ###################
 
 
+#' saveGenesInfo
+#' 
+#' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
+#' run. See ?retrieveGenesInfo.
+#' 
+#' @keywords internal
+#' @noRd
+#' 
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+.saveGenesInfo <- function(theObject){
+	
+	outputDir <- file.path(getOutputDirectory(theObject),
+			"marker_genes/saveGenesInfo")
+	
+	if(!file.exists(outputDir))
+		dir.create(outputDir, recursive=TRUE)
+	
+	infos <- getGenesInfos(theObject)
+	infosList <- split(infos, infos$clusters)
+	
+	invisible(lapply(infosList, function(clusterDF){
+						
+						clustNB <- unique(clusterDF$clusters)
+						
+						if(!isTRUE(all.equal(length(clustNB), 1)))
+							stop("Error in saveGenesInfo. Contact the",
+									" developper.")
+						
+						outputFile <- file.path(outputDir, 
+								paste0("genes_info_clust", clustNB, 
+										".csv"))
+						write.csv(clusterDF, file=outputFile, 
+								row.names=FALSE)
+						
+					}))
+}
+
+
 .checkParamsretrieveGenesInfo <- function(theObject, orderGenes, genes, species,
 		databaseDict){
 	
@@ -403,6 +442,9 @@ setMethod(
 #' Default = TRUE.
 #' @param cores Maximum number of jobs that CONCLUS can run in parallel. 
 #' Default is 1.
+#' @param saveInfos If TRUE, save the genes infos table in the directory 
+#' defined in theObject (?getOutputDirectory) and in the sub-directory 
+#' 'marker_genes/saveGenesInfo'.
 #' 
 #' @details 
 #' The output dataframe is composed of the following columns:
@@ -485,7 +527,8 @@ setMethod(
 		signature = "scRNAseq",
 		
 		definition = function(theObject, groupBy="clusters", 
-				orderGenes="initial", getUniprot=TRUE, cores=1){
+				orderGenes="initial", getUniprot=TRUE, cores=1, 
+				saveInfos=FALSE){
 			
 			species <- getSpecies(theObject)
 			genes <- getClustersMarkers(theObject)
@@ -586,131 +629,12 @@ setMethod(
 			biomartCacheClear()
 			
 			setGenesInfos(theObject) <- result
+			
+			if(saveInfos)
+				.saveGenesInfo(theObject)
+			
 			return(theObject)
 		})
-
-
-###################
-## saveGenesInfo
-###################
-
-
-.checkParamsSaveGenesInfo <- function(infos){
-	
-	if(isTRUE(all.equal(infos$uniprot_gn_symbol, "symbol")))
-		stop("Your object does not contain genes information. Please run ",
-				"'retrieveGenesInfo' before.")
-}
-
-
-#' saveGenesInfo
-#'
-#' @description 
-#' This method exports the results of conclus::retrieveGenesInfo() to the 
-#' sub-directory marker_genes/saveGenesInfo.
-#'
-#' @usage 
-#' saveGenesInfo(theObject)
-#' 
-#' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
-#' run. See ?retrieveGenesInfo.
-#' @param outputDir Directory to write the results to. If NA, the output 
-#' directory is set to marker_genes/saveGenesInfo. Default=NA.
-#' 
-#' @aliases saveGenesInfo
-#'  
-#' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-#' 
-#' @rdname 
-#' saveGenesInfo-scRNAseq
-#' 
-#' @return 
-#' Output the genes infos to marker_genes/saveGenesInfo.  
-#' 
-#' @examples
-#' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(file.path(
-#' "tests/testthat/test_data/test_countMatrix.tsv")))
-#' outputDirectory <- "./"
-#' columnsMetaData <- read.delim(
-#' file.path("extdata/Bergiers_colData_filtered.tsv"))
-#' 
-#' ## Create the initial object
-#' scr <- scRNAseq(experimentName = experimentName, 
-#'                 countMatrix     = countMatrix, 
-#'                 species         = "mouse",
-#'                 outputDirectory = outputDirectory)
-#' 
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#' 
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
-#' 
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=5)
-#' 
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
-#' 
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#' 
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#' 
-#'  ## Getting marker genes
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = F)
-#' 
-#' ## Getting genes info
-#' scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
-#'
-#' ## Export the genes information
-#' saveGenesInfo(scrInfos)
-#' 
-#' @seealso
-#' retrieveGenesInfo
-#' 
-#' @exportMethod
-
-setMethod(
-		
-		f = "saveGenesInfo",
-		
-		signature = "scRNAseq",
-		
-		definition = function(theObject, outputDir=NA){
-			
-			if(is.na(outputDir))
-				outputDir <- file.path(getOutputDirectory(theObject),
-						"marker_genes/saveGenesInfo")
-			
-			if(!file.exists(outputDir))
-				dir.create(outputDir, recursive=TRUE)
-			
-			species <- getSpecies(theObject)	
-			infos <- getGenesInfos(theObject)
-			.checkParamsSaveGenesInfo(infos)
-			infosList <- split(infos, infos$clusters)
-			
-			invisible(lapply(infosList, function(clusterDF){
-								
-								clustNB <- unique(clusterDF$clusters)
-								
-								if(!isTRUE(all.equal(length(clustNB), 1)))
-									stop("Error in saveGenesInfo. Contact the",
-											" developper.")
-								
-								outputFile <- file.path(outputDir, 
-										paste0("genes_info_clust", clustNB, 
-												".csv"))
-								write.csv(clusterDF, file=outputFile, 
-										row.names=FALSE)
-								
-							}))
-		})
-
 
 
 
