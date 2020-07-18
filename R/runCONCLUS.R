@@ -281,44 +281,76 @@
 #' @export
 #' @author Ilyess RACHEDI
 runCONCLUS <- function(outputDirectory, experimentName, countMatrix,
-		species, columnsMetaData = NA,
+		species, cores=1, clusteringMethod="ward.D2",
+		
+		sizes=c(20,40,60,80,100),
+		rowMetaData=NULL,
+		columnsMetaData = NULL,
+		alreadyCellFiltered=FALSE,
+		runQuickCluster=TRUE,
+		
+		randomSeed = 42,
+		PCs=c(4, 6, 8, 10, 20, 40, 50),
+		perplexities=c(30,40),
+		writeOutputTSne = FALSE,
+		
+		epsilon=c(1.3, 1.4, 1.5),
+		minPoints=c(3, 4),
+		writeOutputDbScan=FALSE,
+		
+		clusterNumber=10,
+		deepSplit=4,
+		
+		
                         colorPalette="default",
-                       statePalette="default", clusteringMethod="ward.D2",
-                       epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4), 
-                       PCs=c(4, 6, 8, 10, 20, 40, 50), 
-                       perplexities=c(30,40), randomSeed = 42,
-                       clusterNumber=10, deepSplit=4,
-                       preClustered = FALSE, orderClusters = FALSE, cores=1,
+                       statePalette="default",                         
+                       preClustered = FALSE, orderClusters = FALSE, 
                        plotPDFcellSim = TRUE, deleteOutliers = TRUE,
                        removeDuplicates = FALSE,
                        tSNEalreadyGenerated = FALSE, tSNEresExp = "",
                        manualClusteringObject = NA){
     
+	
+	## Verify parameters
+	!!
     # .checkRunConclus(deleteOutliers,manualClusteringObject)
+	
+	message("## Building the single-cell RNA-Seq object ##")
     scr <- scRNAseq(experimentName = experimentName,
                     countMatrix     = countMatrix,
                     species         = species,
                     outputDirectory = outputDirectory)
-    
-    ## Performing the normalization
-    scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+    		
+    message("## Performing the normalization ##")
+    scrNorm <- normaliseCountMatrix(scr, sizes=sizes, rowdata=rowMetaData, 
+			coldata=columnsMetaData, alreadyCellFiltered=alreadyCellFiltered,
+			runQuickCluster=runQuickCluster)
+	
+	message("## Calculating all tSNEs ##")
+    scrTsne <- generateTSNECoordinates(scrNorm, randomSeed=randomSeed, 
+			cores=cores, PCs=PCs, perplexities=perplexities, 
+			writeOutput=writeOutputTSne)
+	
+	message("## Clustering with DbScan ##")
+    scrDbscan <- runDBSCAN(scrTsne, cores=cores, epsilon=epsilon, 
+			minPoints=minPoints, writeOutput=writeOutputDbScan)
 
-    ## Performing tSNE
-    scrTsne <- generateTSNECoordinates(scrNorm, cores=cores)
-
-    ## Running DbScan
-    scrDbscan <- runDBSCAN(scrTsne, cores=cores)
-
-    ## Running cluster cells internal
+    message("## Computing the cells similarity matrix ##")
     scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=clusterNumber,
                                    deepSplit=deepSplit, cores=cores,
                                    clusteringMethod=clusteringMethod)
 
-    ## Calculate clusters similarity
-    scrCSM <- calculateClustersSimilarity(scrCCI)
+	message("## Computing the clusters similarity matrix ##")
+    scrCSM <- calculateClustersSimilarity(scrCCI, 
+			clusteringMethod=clusteringMethod)
 
-    ## Ranking genes
+	message("## Ranking genes ##")
     scrS4MG <- rankGenes(scrCSM)
+	
+	!!
+	
+	
+	
 
     ## Getting marker genes
     scrFinal <- retrieveTopClustersMarkers(scrS4MG, 
