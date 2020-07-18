@@ -203,22 +203,11 @@ setGeneric(
     name = "retrieveGenesInfo",
 	
     def = function(theObject, groupBy="clusters", orderGenes="initial",
-			getUniprot=TRUE, cores=1){
+			getUniprot=TRUE, cores=1, saveInfos=FALSE){
         standardGeneric("retrieveGenesInfo")
     },
     signature="theObject")
 
-
-
-setGeneric(
-		
-    name = "saveGenesInfo",
-	
-    def = function(theObject, outputDir=NA){
-        standardGeneric("saveGenesInfo")
-    },
-    signature = "theObject"
-)
 
 
 ################################################################################
