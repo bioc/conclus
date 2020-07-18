@@ -103,8 +103,6 @@
 #' @param minPoints Reachability minimum no. of points parameter of 
 #' fpc::dbscan() function. See Ester et al. (1996) for more details. 
 #' Default = c(3, 4)
-#' @param k Preferred number of clusters. Alternative to deepSplit.
-#'  A parameter of cutree() function. Default = 0
 #' @param deepSplit Intuitive level of clustering depth.
 #' Options are 1, 2, 3, 4. Default = 4
 #' @param clusteringMethod Clustering method passed to hclust() function.
@@ -125,7 +123,7 @@
 #'
 #' @examples
 .runClustering <- function(theObject, epsilon=c(1.3, 1.4, 1.5),
-                           minPoints=c(3, 4), k=0, deepSplit=4,
+                           minPoints=c(3, 4), deepSplit=4,
                            clusteringMethod = "ward.D2",
                            cores=14, deleteOutliers = TRUE,
                            PCs=c(4, 6, 8, 10, 20, 40, 50),
@@ -185,7 +183,7 @@
 #'  3) Calculates similarity matrices of cells and clusters
 #'  4) Assigns cells to clusters
 #'  5) Searches for positive markers for each cluster
-#'  6) Saves plots and tables into dataDirectory.
+#'  6) Saves plots and tables into outputDirectory.
 #'  
 #'  columnsMetaData -- Dataframe containing three columns:
 #'  cellName, state, and cellBarcode.
@@ -203,7 +201,7 @@
 #' on the new defined clusters.
 #'
 #' 
-#' @param dataDirectory CONCLUS will create this directory if it doesn't exist
+#' @param outputDirectory CONCLUS will create this directory if it doesn't exist
 #' and store there all output files.
 #' @param experimentName Prefix used for output files.
 #' @param countMatrix The count matrix with raw values or UMI
@@ -223,8 +221,6 @@
 #' @param minPoints Reachability minimum no. of points parameter of 
 #' fpc::dbscan() function. See Ester et al. (1996) for more details. 
 #' Default = c(3, 4)
-#' @param k Preferred number of clusters. Alternative to deepSplit.
-#'  A parameter of cutree() function. Default = 0
 #' @param PCs {a vector of first principal components. For example, to take
 #'  ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
 #' @param perplexities Numeric scalar defining the perplexity parameter,
@@ -271,7 +267,7 @@
 #' file.path("extdata/Bergiers_colData_filtered.tsv"))
 #' species <- "mouse"
 #' 
-#' runCONCLUS(dataDirectory=outputDirectory, countMatrix=countMatrix,
+#' runCONCLUS(outputDirectory=outputDirectory, countMatrix=countMatrix,
 #'            columnsMetaData=columnsMetaData, species=species)
 #' 
 #' 
@@ -284,15 +280,15 @@
 #' \code{plotClustersSimilarity}, \code{exportMatrix},
 #' @export
 #' @author Ilyess RACHEDI
-runCONCLUS <- function(dataDirectory, experimentName, countMatrix,
-                       columnsMetaData = NA,
-                       species = NA, colorPalette="default",
+runCONCLUS <- function(outputDirectory, experimentName, countMatrix,
+		species, columnsMetaData = NA,
+                        colorPalette="default",
                        statePalette="default", clusteringMethod="ward.D2",
                        epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4), 
-                       k=0, PCs=c(4, 6, 8, 10, 20, 40, 50), 
+                       PCs=c(4, 6, 8, 10, 20, 40, 50), 
                        perplexities=c(30,40), randomSeed = 42,
                        clusterNumber=10, deepSplit=4,
-                       preClustered = F, orderClusters = FALSE, cores=1,
+                       preClustered = FALSE, orderClusters = FALSE, cores=1,
                        plotPDFcellSim = TRUE, deleteOutliers = TRUE,
                        removeDuplicates = FALSE,
                        tSNEalreadyGenerated = FALSE, tSNEresExp = "",
@@ -302,7 +298,7 @@ runCONCLUS <- function(dataDirectory, experimentName, countMatrix,
     scr <- scRNAseq(experimentName = experimentName,
                     countMatrix     = countMatrix,
                     species         = species,
-                    outputDirectory = dataDirectory)
+                    outputDirectory = outputDirectory)
     
     ## Performing the normalization
     scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
