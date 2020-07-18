@@ -318,7 +318,10 @@ runCONCLUS <- function(
 		
 		## plotCellHeatmap parameters
 		meanCentered=TRUE, orderGenesCH=FALSE, savePlotCH=FALSE, widthCH=10,
-		heightCH=8.5, clusterCols=FALSE,
+		heightCH=8.5, clusterCols=FALSE, heightPlotCustSM=5.5,
+		
+		## plotClustersSimilarity parameters
+		savePlotClustSM=FALSE, widthPlotCustSM=7, 
 		
                        preClustered = FALSE,  
                        plotPDFcellSim = TRUE, deleteOutliers = TRUE,
@@ -331,7 +334,16 @@ runCONCLUS <- function(
     # .checkRunConclus(deleteOutliers,manualClusteringObject)
 	
 	if(exportAllResults){
-		!!!!
+		
+		writeOutputTSne <- FALSE
+		writeOutputDbScan <- FALSE
+		writeOutputRankGenes <- FALSE
+		writeTopMarkers <- FALSE
+		saveInfos <- FALSE
+		writeCSM <- FALSE
+		savePlotCTSNE <- FALSE
+		savePlotCH <- FALSE
+		savePlotClustSM <- FALSE
 	}		
 			
 	message("## Building the single-cell RNA-Seq object ##")
@@ -394,9 +406,15 @@ runCONCLUS <- function(
 			clusteringMethod=clusteringMethod, orderClusters=orderClusters, 
 			orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH, 
 			height=heightCH, clusterCols=clusterCols)
+	
+	message("## Plot the clusters similarity heatmap ##")
+	plotClustersSimilarity(scrInfos, colorPalette=colorPalette, 
+			statePalette=statePalette, clusteringMethod=clusteringMethod, 
+			savePlot=savePlotClustSM, width=widthPlotCustSM, 
+			height=heightPlotCustSM)
 			  
-			  
-			  
+	!! see the original code for the rest
+	
 	
 	if(exportAllResults)
 		exportResults(scrInfos, saveAll=TRUE)
