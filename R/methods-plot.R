@@ -758,8 +758,8 @@ setMethod(
         ## Verify parameters
         validObject(theObject)
         .checkParamPlotTSNE(theObject, PCs, perplexities, columnName,
-                            returnPlot, width, height, onefile, silentPlot, 
-							savePlot, plotPDF)
+				returnPlot, width, height, onefile, silentPlot, 
+				savePlot, plotPDF, widthPNG, heightPNG)
         
         ## Creating output folder			
         sceObject <- getSceNorm(theObject)
