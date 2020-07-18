@@ -151,8 +151,9 @@ setGeneric(
 	name = "plotClustersSimilarity",
 		
 	def = function(theObject, colorPalette="default", statePalette="default", 
-			clusteringMethod="ward.D2", returnPlot=FALSE, width=7, height=5.5, 
-			...){
+			clusteringMethod="ward.D2", returnPlot=FALSE, savePlot=FALSE, 
+			plotPDF=TRUE, width=7, height=5.5, onefile=FALSE, fontsize=7.5,
+			widthPNG=800, heightPNG=750){
 		standardGeneric("plotClustersSimilarity")    
     },
     signature="theObject")
