@@ -1284,7 +1284,8 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .checkParamPlotGeneExpression <- function(theObject, geneName, returnPlot, 
-		savePlot, width, height, expMat, tSNECoords, silentPlot, plotPDF){
+		savePlot, width, height, expMat, tSNECoords, silentPlot, plotPDF,
+		sceObject){
     
 	
 	if(!geneName %in% rownames(expMat))
@@ -1436,7 +1437,7 @@ setMethod(
 		
         .checkParamPlotGeneExpression(theObject, geneName, returnPlot, 
 				savePlot, width, height, expMat, tSNECoords, silentPlot, 
-				plotPDF)
+				plotPDF, sceObject)
         
         ## Plot all precalculated t-SNEs to show your clusters
 		tSNECoords$expression <- expMat[geneName, ]
