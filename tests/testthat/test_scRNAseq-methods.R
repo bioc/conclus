@@ -37,6 +37,38 @@ pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
 # source("R/runCONCLUS.R")
 
 
+!!!!!!!!!!!
+		
+outputDirectory<- "YourOutputDirectory"
+experimentName<- "Bergiers"
+countMatrix<- as.matrix(read.delim(
+				file.path("tests/testthat/test_data/test_countMatrix.tsv")))
+columnsMetaData <- read.delim(
+		file.path("inst/extdata/Bergiers_colData_filtered.tsv"))
+species <- "mouse"
+colorPalette <- "default"
+statePalette <- "default"
+clusteringMethod<- "ward.D2"
+epsilon <- c(1.3, 1.4, 1.5)
+minPoints <- c(3, 4) 
+PCs <- c(4, 6, 8, 10, 20, 40, 50) 
+perplexities <- c(30,40)
+randomSeed <- 42
+clusterNumber <- 10
+deepSplit <- 4
+preClustered <- FALSE
+orderClusters <- FALSE
+cores <- 5
+plotPDFcellSim <- TRUE
+deleteOutliers <- TRUE
+removeDuplicates <- FALSE
+tSNEalreadyGenerated <- FALSE
+tSNEresExp <- ""
+manualClusteringObject <- NA		
+		
+!!!!!!!!!!!!!!
+
+
 library(conclus)
 ## Data
 
@@ -934,20 +966,6 @@ test_that("retrieveGenesInfo method works properly", {
 			expect_error(retrieveGenesInfo(scrS4MG), expM)
 		})
 			
-
-test_that("saveGenesInfo method works properly", {
-			
-			expM <- paste0("Your object does not contain genes information. ",
-					"Please run 'retrieveGenesInfo' before.")
-			expect_error(saveGenesInfo(scr), expM)
-			expect_error(saveGenesInfo(scrNorm), expM)
-			expect_error(saveGenesInfo(scrTsne), expM)
-			expect_error(saveGenesInfo(scrDbscan), expM)
-			expect_error(saveGenesInfo(scrCCI), expM)
-			expect_error(saveGenesInfo(scrCSM), expM)
-			expect_error(saveGenesInfo(scrS4MG), expM)
-			expect_error(saveGenesInfo(scrFinal), expM)
-		})
 
 test_that("retrieveTopClustersMarkers method works properly", {
 			
