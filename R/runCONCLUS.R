@@ -280,33 +280,39 @@
 #' \code{plotClustersSimilarity}, \code{exportMatrix},
 #' @export
 #' @author Ilyess RACHEDI
-runCONCLUS <- function(outputDirectory, experimentName, countMatrix,
-		species, cores=1, clusteringMethod="ward.D2",
+runCONCLUS <- function(
+		## General parameters
+		utputDirectory, experimentName, countMatrix, species, cores=1, 
+		clusteringMethod="ward.D2", exportAllResults=TRUE,
 		
-		sizes=c(20,40,60,80,100),
-		rowMetaData=NULL,
-		columnsMetaData = NULL,
-		alreadyCellFiltered=FALSE,
-		runQuickCluster=TRUE,
+		## Normalisation parameters
+		sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
+		alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
 		
-		randomSeed = 42,
-		PCs=c(4, 6, 8, 10, 20, 40, 50),
-		perplexities=c(30,40),
+		## tSNE parameters
+		randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
 		writeOutputTSne = FALSE,
 		
-		epsilon=c(1.3, 1.4, 1.5),
-		minPoints=c(3, 4),
-		writeOutputDbScan=FALSE,
+		## Dbscan parameters
+		epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4), writeOutputDbScan=FALSE,
 		
-		clusterNumber=10,
-		deepSplit=4,
+		## Cell Similarity matrix parameters
+		clusterNumber=10, deepSplit=4,
 		
+		## Rank genes parameters
+		columnRankGenes="clusters", writeOutputRankGenes=FALSE,
+		
+		## Retrieving top markers parameters
+		nTopMarkers=10, removeDuplicates = TRUE, writeTopMarkers=FALSE,
+		
+		## Retrieving genes infos parameters
+		groupBy="clusters", orderGenes="initial", getUniprot=TRUE, 
+		saveInfos=FALSE,
 		
                         colorPalette="default",
                        statePalette="default",                         
                        preClustered = FALSE, orderClusters = FALSE, 
                        plotPDFcellSim = TRUE, deleteOutliers = TRUE,
-                       removeDuplicates = FALSE,
                        tSNEalreadyGenerated = FALSE, tSNEresExp = "",
                        manualClusteringObject = NA){
     
@@ -315,6 +321,10 @@ runCONCLUS <- function(outputDirectory, experimentName, countMatrix,
 	!!
     # .checkRunConclus(deleteOutliers,manualClusteringObject)
 	
+	if(exportAllResults){
+		!!!!
+	}		
+			
 	message("## Building the single-cell RNA-Seq object ##")
     scr <- scRNAseq(experimentName = experimentName,
                     countMatrix     = countMatrix,
@@ -345,24 +355,29 @@ runCONCLUS <- function(outputDirectory, experimentName, countMatrix,
 			clusteringMethod=clusteringMethod)
 
 	message("## Ranking genes ##")
-    scrS4MG <- rankGenes(scrCSM)
+    scrS4MG <- rankGenes(scrCSM, column=columnRankGenes, 
+			writeMarkerGenes=writeOutputRankGenes)
 	
-	!!
-	
-	
-	
+    message("## Getting marker genes ##")
+    scrFinal <- retrieveTopClustersMarkers(scrS4MG, nTop=nTopMarkers, 
+			removeDuplicates=removeDuplicates, writeMarkerGenes=writeTopMarkers)
+    
+	message("## Getting genes info ##")
+    scrInfos <- retrieveGenesInfo(scrFinal, cores=cores, groupBy=groupBy,
+			orderGenes=orderGenes, getUniprot=getUniprot)
+    
+	if(saveInfos){
+		## Save genes info
+		saveGenesInfo(scrInfos)
+		message("Gene informations exported.")
+	}
+			 
+	 
+			
 
-    ## Getting marker genes
-    scrFinal <- retrieveTopClustersMarkers(scrS4MG, 
-                                           removeDuplicates=removeDuplicates)
+
+	
     
-    ## Getting genes info
-    scrInfos <- retrieveGenesInfo(scrFinal, cores=cores)
-    message("Gene informations got.")
-    
-    ## Save genes info
-    saveGenesInfo(scrInfos)
-    message("Gene informations exported.")
     # Plotting
     plotClusteredTSNE(scrInfos, PCs=PCs, perplexities=perplexities,
                       colorPalette, columnName = "clusters", )
@@ -372,8 +387,9 @@ runCONCLUS <- function(outputDirectory, experimentName, countMatrix,
     plotCellSimilarity(scrInfos, statePalette = statePalette,
                        clusteringMethod = clusteringMethod,
                        plotPDF = plotPDFcellSim)
-
-    ## Export
-    exportResults(scrInfos, saveAll = T)
+	
+	if(exportAllResults)
+		exportResults(scrInfos, saveAll=TRUE)
+	
     return(scr)
 }
