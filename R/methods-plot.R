@@ -16,7 +16,7 @@
 #' ?calculateClustersSimilarity).
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param colDf A data frame with information about cells.
 #' @param width Width of the plot in the pdf file. See ?pdf for more details.
 #'  Default = 7.
@@ -137,7 +137,7 @@
 #' Default = 6.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param showRowNames pheatmap parameter. Boolean specifying if row names 
 #' are displayed. Default=FALSE. 
 #' @param showColnames pheatmap parameter. Boolean specifying if column names
@@ -253,7 +253,7 @@
 #' Default = 6.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param showRowNames pheatmap parameter. Boolean specifying if row names 
 #' are displayed. Default=FALSE. 
 #' @param showColnames pheatmap parameter. Boolean specifying if column names
@@ -523,7 +523,7 @@ setMethod(
 #' Default = 5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to FALSE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
 #' Default=FALSE.
 #' @param savePlot If TRUE, the heatmap is saved in the directory defined in 
@@ -689,7 +689,7 @@ setMethod(
 #' Default = 5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to FALSE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
@@ -824,7 +824,7 @@ setMethod(
 #' Default = 8.5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' 
@@ -953,7 +953,7 @@ setMethod(
 #' clusters.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param clusterCols If TRUE, the columns representing the clusters are also
 #' taken into account in the hierarchical clustering. Default=FALSE.
 #' @param showColnames Shoud the names of the columns (clusters) be indicated on
@@ -1083,7 +1083,7 @@ setMethod(
 #' Default = 8.5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
 #' @param clusterCols If TRUE, the columns representing the clusters are also
 #' taken into account in the hierarchical clustering. Default=FALSE.
 #' @param showColnames Shoud the names of the columns (clusters) be indicated on
@@ -1095,7 +1095,7 @@ setMethod(
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' 
-#' #' @details
+#' @details
 #' colorPalette/statePalette -- A vector of colors for clusters/states or 
 #' 'default' value. If 'default' is selected, the number of clusters is limited 
 #' to 16. If an error message is thrown, re-run the function with your own color
@@ -1486,17 +1486,25 @@ setMethod(
 #'
 #' @description checks parameters of plotCellSimilarity
 #' 
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
-#' @param returnPlot If TRUE export to pdf, if FALSE export to png.
+#' @param theObject A scRNAseq object with the cluster similarity matrix 
+#' obtained with ?calculateClustersSimilarity.
+#' @param returnPlot Boolean indicating if the pHeatmap object should  be
+#' returned by the function. Default = FALSE.
+#' @param savePlot If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject 
+#' (?getOutputDirectory) and in the sub-directory 'pictures'.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png 
+#' otherwise. Default = TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
-#' @param width Width of the plot. Default = 7.
-#' @param height Height of the plot. Default = 6.
-#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
-#' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
+#' Defaults to FALSE.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' 
 #' @keywords internal
 #' @noRd
@@ -1550,15 +1558,18 @@ setMethod(
 }
 
 
-
-
-#' plotCellSimilarity
+#' plotClustersSimilarity
 #' 
-#' @description This function plots similarity matrix as a heatmap, so one can 
-#' see similarity between parts of different clusters.
+#' @description This function plots the clusters similarity matrix as a heatmap.
 #'
-#' @param theObject A scRNAseq object with the cluster similarity matrix got 
-#' with calculateClustersSimilarity method.
+#' @usage
+#' plotClustersSimilarity(theObject, colorPalette="default", 
+#' statePalette="default", clusteringMethod="ward.D2", returnPlot=FALSE, 
+#' savePlot=FALSE, plotPDF=TRUE, width=7, height=5.5, onefile=FALSE, 
+#' fontsize=7.5, widthPNG=800, heightPNG=750)
+#' 
+#' @param theObject A scRNAseq object with the cluster similarity matrix 
+#' obtained with ?calculateClustersSimilarity.
 #' @param colorPalette A vector of colors for clusters. Default = "default",
 #'  see details.
 #' @param statePalette A vector of colors for states or conditions. See details.
@@ -1566,13 +1577,30 @@ setMethod(
 #' See ?hclust for a list of method. Default = "ward.D2"
 #' @param returnPlot Boolean indicating if the pHeatmap object should  be
 #' returned by the function. Default = FALSE.
-#' @param width Width of the plot. Default = 7.
-#' @param height Height of the plot. Default = 6.
+#' @param savePlot If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject 
+#' (?getOutputDirectory) and in the sub-directory 'pictures'.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png 
+#' otherwise. Default = TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.5.
 #' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
 #' generate a file with name containing the page number for each page.
-#' Defaults to TRUE, and forced to true if file is a pipe.
-#' @param fontsize pheatmap parameter. Base fontsize for the plot
-#' @param ... other parameters of the pdf() function.
+#' Defaults to FALSE.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' 
+#' @details
+#' colorPalette/statePalette -- A vector of colors for clusters/states or 
+#' 'default' value. If 'default' is selected, the number of clusters is limited 
+#' to 16. If an error message is thrown, re-run the function with your own color
+#'  vector.
+#' 
+#' @aliases plotClustersSimilarity
+#' @rdname plotClustersSimilarity
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
@@ -1606,13 +1634,13 @@ setMethod(
 #' ## Plot similarity matrix as a heatmap
 #' plotClustersSimilarity(scrCSM)
 #' 
-#' 
+#' @return A pheatmap object of the clusters similarity matrix.
+#' @seealso alculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
+#' plotGeneExpression plotCellSimilarity
 #' @exportMethod 
-#' @importFrom SummarizedExperiment colData
-#' @importFrom stats hclust
-#' @importFrom pheatmap pheatmap
+#' @importFrom SummarizedExperiment colData 
+#' @importFrom pheatmap pheatmap 
 #' 
-#' @seealso calculateClustersSimilarity
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
