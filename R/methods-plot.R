@@ -752,7 +752,7 @@ setMethod(
     definition = function(theObject, colorPalette="default",
 			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
 			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
-			returnPlot=TRUE, width=6, height=5, onefile=FALSE, widthPNG=800, 
+			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
 			heightPNG=750, silentPlot=FALSE){
         
         ## Verify parameters
@@ -1162,7 +1162,7 @@ setMethod(
     definition = function(theObject, fileName = NA, meanCentered=TRUE, 
 			colorPalette="default", statePalette="default", 
 			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
-			returnPlot=TRUE, savePlot=FALSE, width=10, height=8.5, 
+			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
 			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
 			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750){
 
