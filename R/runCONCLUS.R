@@ -364,26 +364,18 @@ runCONCLUS <- function(
     
 	message("## Getting genes info ##")
     scrInfos <- retrieveGenesInfo(scrFinal, cores=cores, groupBy=groupBy,
-			orderGenes=orderGenes, getUniprot=getUniprot)
+			orderGenes=orderGenes, getUniprot=getUniprot, saveInfos=saveInfos)
     
-	if(saveInfos){
-		## Save genes info
-		saveGenesInfo(scrInfos)
-		message("Gene informations exported.")
-	}
-			 
-	 
-			
-
-
-	
-    
-    # Plotting
+	# Plotting
     plotClusteredTSNE(scrInfos, PCs=PCs, perplexities=perplexities,
                       colorPalette, columnName = "clusters", )
     plotClusteredTSNE(scrInfos, PCs=PCs, perplexities=perplexities,
                       colorPalette, columnName = "noColor")
 
+	!!		  
+			  
+			  
+			  
     plotCellSimilarity(scrInfos, statePalette = statePalette,
                        clusteringMethod = clusteringMethod,
                        plotPDF = plotPDFcellSim)
