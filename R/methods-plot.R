@@ -1502,9 +1502,6 @@ setMethod(
 .checkParamClustersSimilarity <- function(theObject, returnPlot, savePlot, 
 		plotPDF, width, height, onefile, fontsize, widthPNG, heightPNG){
     
-	
-	!!
-    
     ## Verify the object 
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
     clusters <- colData(getSceNorm(theObject))$clusters
@@ -1518,6 +1515,14 @@ setMethod(
     if (!is.logical(returnPlot))
         stop("returnPlot should be a boolean.")  
     
+	## Verify savePlot
+	if (!is.logical(savePlot))
+		stop("savePlot should be a boolean.")
+	
+	## Verify plotPDF
+	if (!is.logical(plotPDF))
+		stop("plotPDF should be a boolean.")
+	
     ## Verify width
     if (!is.numeric(width))
         stop("width should be a numeric.")
@@ -1528,11 +1533,19 @@ setMethod(
     
     ## Verify onefile
     if (!is.logical(onefile))
-        stop("onefile should be a boolean.")  
+        stop("onefile should be a boolean.")
     
     ## Verify fontsize
     if (!is.numeric(fontsize))
         stop("fontsize should be a numeric.")
+	
+	## Verify widthPNG
+	if (!is.numeric(widthPNG))
+		stop("widthPNG should be a numeric.")
+	
+	## Verify heightPNG
+	if (!is.numeric(heightPNG))
+		stop("heightPNG should be a numeric.")
 }
 
 
