@@ -964,6 +964,9 @@ test_that("retrieveGenesInfo method works properly", {
 					"use 'retrieveTopClustersMarkers' before.")
 			expect_error(retrieveGenesInfo(scrCSM), expM)
 			expect_error(retrieveGenesInfo(scrS4MG), expM)
+			
+			expM <- "saveInfos should be a boolean."
+			expect_error(retrieveGenesInfo(scrFinal, saveInfos="str1"))
 		})
 			
 
