@@ -307,11 +307,18 @@ runCONCLUS <- function(
 		
 		## Retrieving genes infos parameters
 		groupBy="clusters", orderGenes="initial", getUniprot=TRUE, 
-		saveInfos=FALSE,
+		saveInfos=FALSE, 
 		
-                        colorPalette="default",
-                       statePalette="default",                         
-                       preClustered = FALSE, orderClusters = FALSE, 
+		## plotCellSimilarity parameters
+		colorPalette="default", statePalette="default", orderClusters=FALSE,
+		writeCSM=FALSE, widthCSM=7, heightCSM=6,
+		
+		## plotClusteredTSNE parameters
+		savePlotCTSNE=FALSE, widthPlotClustTSNE=6, heightPlotClustTSNE=5,
+		
+		
+		
+                       preClustered = FALSE,  
                        plotPDFcellSim = TRUE, deleteOutliers = TRUE,
                        tSNEalreadyGenerated = FALSE, tSNEresExp = "",
                        manualClusteringObject = NA){
@@ -366,19 +373,23 @@ runCONCLUS <- function(
     scrInfos <- retrieveGenesInfo(scrFinal, cores=cores, groupBy=groupBy,
 			orderGenes=orderGenes, getUniprot=getUniprot, saveInfos=saveInfos)
     
-	# Plotting
-    plotClusteredTSNE(scrInfos, PCs=PCs, perplexities=perplexities,
-                      colorPalette, columnName = "clusters", )
-    plotClusteredTSNE(scrInfos, PCs=PCs, perplexities=perplexities,
-                      colorPalette, columnName = "noColor")
+	## Plotting
+	message("## Plot the cell similarity matrix ##")
+	plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
+			statePalette=statePalette, clusteringMethod=clusteringMethod,
+			orderClusters=orderClusters, savePlot=writeCSM, returnPlot=FALSE,
+			widthCSM=7, heightCSM=6)
+	
+	message("## Plot clustered tSNE ##")
+	plotClusteredTSNE(theObject, colorPalette=colorPalette, PCs=PCs, 
+			perplexities=perplexities, columnName=columnRankGenes, 
+			savePlot=savePlotCTSNE, returnPlot=FALSE, width=widthPlotClustTSNE, 
+			height=heightPlotClustTSNE)
 
-	!!		  
+
 			  
 			  
 			  
-    plotCellSimilarity(scrInfos, statePalette = statePalette,
-                       clusteringMethod = clusteringMethod,
-                       plotPDF = plotPDFcellSim)
 	
 	if(exportAllResults)
 		exportResults(scrInfos, saveAll=TRUE)
