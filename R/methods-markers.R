@@ -349,7 +349,7 @@ setMethod(
 
 
 .checkParamsretrieveGenesInfo <- function(theObject, orderGenes, genes, species,
-		databaseDict){
+		databaseDict, saveInfos){
 	
 	if(!isTRUE(all.equal(orderGenes,"initial")) && 
 			!isTRUE(all.equal(orderGenes,"alphabetical")))
@@ -384,6 +384,10 @@ setMethod(
 		stop("The 'scRNAseq' object that you're using with 'retrieveGenesInfo'",
 				" does not have marker genes. Please use ",
 				"'retrieveTopClustersMarkers' before.")
+	
+	## Check saveInfos
+	if(!is.logical(saveInfos))
+		stop("saveInfos should be a boolean.")
 }
 
 
@@ -535,7 +539,7 @@ setMethod(
 			databaseDict <- c(mouse = "mmusculus_gene_ensembl",
 					human = "hsapiens_gene_ensembl")
 			.checkParamsretrieveGenesInfo(theObject, orderGenes, genes, species, 
-					databaseDict)
+					databaseDict, saveInfos)
 			
 			## Additional Special database and columns according to species
 			if(isTRUE(all.equal(species, "mouse"))){
