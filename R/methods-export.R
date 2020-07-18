@@ -1,3 +1,39 @@
+#' .exportGenesInfos
+#'
+#' @description 
+#' Export the genes information tables per cluster.
+#'
+#' @param theObject scRNASeq object on which the methods ?retrieveGenesInfo 
+#' was run.
+#' @param outputDir Output directory defined as dataDirectory/9_genesInfos 
+#' 
+#' @keywords internal
+#' @noRd
+.exportGenesInfos <- function(theObject, outputInfos){
+
+	infos <- getGenesInfos(theObject)
+	infosList <- split(infos, infos$clusters)
+	
+	invisible(lapply(infosList, function(clusterDF){
+						
+						clustNB <- unique(clusterDF$clusters)
+						
+						if(!isTRUE(all.equal(length(clustNB), 1)))
+							stop("Error in saveGenesInfo. Contact the",
+									" developper.")
+						
+						outputFile <- file.path(outputDir, 
+								paste0("genes_info_clust", clustNB, 
+										".csv"))
+						write.csv(clusterDF, file=outputFile, 
+								row.names=FALSE)
+						
+					}))
+	
+	message("Genes infos saved.")
+}
+
+
 #' .exportMarkers
 #'
 #' @description 
@@ -16,8 +52,6 @@
 #' 
 #' @keywords internal
 #' @noRd
-
-
 .exportMarkers <- function(theObject, outputDir, listType="Full marker lists", 
 		top=FALSE){
 	
@@ -71,7 +105,6 @@
 #' 
 #' @keywords internal
 #' @noRd
-
 .conclusResult <- function(theObject, sceObject, outputDir){
 	
 	## Check that the cluster similarity matrix was computed
@@ -115,7 +148,6 @@
 #' 
 #' @keywords internal
 #' @noRd
-
 .exportCSM <- function(theObject, experimentName, outputDir, cell=TRUE){
 	
 	if(cell){
@@ -156,7 +188,6 @@
 #' 
 #' @keywords internal
 #' @noRd
-
 .exportDBScan <- function(theObject, outputDir){
 	
 	dbscanList <- getDbscanList(theObject)
@@ -194,7 +225,6 @@
 #' 
 #' @keywords internal
 #' @noRd
-
 .exportTsne <- function(theObject, outputDir){
 	
 	tsneList <- getTSNEList(theObject)
@@ -242,7 +272,6 @@
 #' 
 #' @keywords internal
 #' @noRd
-
 .exportNormInfo <- function(theObject, outputDir, experimentName, sceObject, f,
 		fileSuffix, objectName){
 	
@@ -533,7 +562,8 @@ setMethod(
 				
 				outputInfos <- file.path(outputDir, "9_genesInfos")
 				.createFolder(outputInfos)
-				saveGenesInfo(theObject, outputInfos)
-				message("Genes infos saved.")
+				
+				## Export genes infos
+				.exportGenesInfos(theObject, outputInfos)
 			}
 		})
