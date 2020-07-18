@@ -283,7 +283,7 @@
 runCONCLUS <- function(
 		## General parameters
 		utputDirectory, experimentName, countMatrix, species, cores=1, 
-		clusteringMethod="ward.D2", exportAllResults=TRUE,
+		clusteringMethod="ward.D2", exportAllResults=TRUE, orderClusters=FALSE,
 		
 		## Normalisation parameters
 		sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
@@ -310,13 +310,15 @@ runCONCLUS <- function(
 		saveInfos=FALSE, 
 		
 		## plotCellSimilarity parameters
-		colorPalette="default", statePalette="default", orderClusters=FALSE,
-		writeCSM=FALSE, widthCSM=7, heightCSM=6,
+		colorPalette="default", statePalette="default", writeCSM=FALSE, 
+		widthCSM=7, heightCSM=6,
 		
 		## plotClusteredTSNE parameters
 		savePlotCTSNE=FALSE, widthPlotClustTSNE=6, heightPlotClustTSNE=5,
 		
-		
+		## plotCellHeatmap parameters
+		meanCentered=TRUE, orderGenesCH=FALSE, savePlotCH=FALSE, widthCH=10,
+		heightCH=8.5, clusterCols=FALSE,
 		
                        preClustered = FALSE,  
                        plotPDFcellSim = TRUE, deleteOutliers = TRUE,
@@ -377,16 +379,21 @@ runCONCLUS <- function(
 	message("## Plot the cell similarity matrix ##")
 	plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod,
-			orderClusters=orderClusters, savePlot=writeCSM, returnPlot=FALSE,
-			widthCSM=7, heightCSM=6)
+			orderClusters=orderClusters, savePlot=writeCSM, widthCSM=7, 
+			heightCSM=6)
 	
 	message("## Plot clustered tSNE ##")
-	plotClusteredTSNE(theObject, colorPalette=colorPalette, PCs=PCs, 
+	plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs, 
 			perplexities=perplexities, columnName=columnRankGenes, 
-			savePlot=savePlotCTSNE, returnPlot=FALSE, width=widthPlotClustTSNE, 
+			savePlot=savePlotCTSNE, width=widthPlotClustTSNE, 
 			height=heightPlotClustTSNE)
 
-
+    message("## Plot the cell heatmap ##")
+	plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
+			colorPalette=colorPalette, statePalette=statePalette, 
+			clusteringMethod=clusteringMethod, orderClusters=orderClusters, 
+			orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH, 
+			height=heightCH, clusterCols=clusterCols)
 			  
 			  
 			  
