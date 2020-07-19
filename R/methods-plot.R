@@ -215,6 +215,10 @@
     if (!is.numeric(heightPNG))
         stop("heightPNG should be a numeric.")
 	
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")  
+	
 	if(silentPlot && !returnPlot && !savePlot)
 		stop("You do not plot, neither save the heatmap or return the object.",
 				" Nothing will happen. You should either plot the results, ",
