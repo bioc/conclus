@@ -6,7 +6,7 @@
 #' @usage 
 #' runCONCLUS(
 #' 		## General parameters
-#' 		utputDirectory, experimentName, countMatrix, species, cores=1, 
+#' 		outputDirectory, experimentName, countMatrix, species, cores=1, 
 #' 		clusteringMethod="ward.D2", exportAllResults=TRUE, orderClusters=FALSE,
 #' 		clusToAdd=NA,
 #' 		
@@ -49,7 +49,64 @@
 #' 		savePlotClustSM=FALSE, widthPlotCustSM=7)
 #' 
 #' 
-#' @param 
+#' @param outputDirectory Directory to which results should be written. This 
+#' needs to be defined even if you choose to not output any results.
+#' @param experimentName String of the name of the experiment.
+#' @param countMatrix Matrix containing the raw counts.
+#' @param species Character string of the species of interest. Shoud be mouse or
+#'  human.
+#' @param cores  Maximum number of jobs that CONCLUS can run in parallel. This 
+#' parameter is used by ?generateTSNECoordinates, ?runDBSCAN, 
+#' ?clusterCellsInternal, and ?retrieveGenesInfo. Default=1. 
+#' @param clusteringMethod Clustering method passed to hclust() function. See 
+#' ?hclust for a list of method. This parameter is used by 
+#' ?clusterCellsInternal, ?calculateClustersSimilarity, ?plotCellSimilarity, 
+#' ?plotClusteredTSNE, ?plotCellHeatmap, and ?plotClustersSimilarity. 
+#' Default = "ward.D2".
+#' @param exportAllResults If TRUE, Save all results of CONCLUS. See 
+#' ?exportResults for details. Default=TRUE.
+#' @param orderClusters
+#' @param clusToAdd
+#' @param sizes
+#' @param rowMetaData
+#' @param columnsMetaData
+#' @param alreadyCellFiltered
+#' @param runQuickCluster
+#' @param randomSeed
+#' @param PCs
+#' @param perplexities
+#' @param writeOutputTSne
+#' @param epsilon
+#' @param minPoints
+#' @param writeOutputDbScan
+#' @param clusterNumber
+#' @param deepSplit
+#' @param columnRankGenes
+#' @param writeOutputRankGenes
+#' @param nTopMarkers
+#' @param removeDuplicates
+#' @param writeTopMarkers
+#' @param groupBy
+#' @param orderGenes
+#' @param getUniprot 
+#' @param saveInfos 
+#' @param colorPalette
+#' @param statePalette
+#' @param writeCSM 
+#' @param widthCSM
+#' @param heightCSM
+#' @param savePlotCTSNE
+#' @param widthPlotClustTSNE
+#' @param heightPlotClustTSNE
+#' @param meanCentered
+#' @param orderGenesCH
+#' @param savePlotCH
+#' @param widthCH
+#' @param heightCH
+#' @param clusterCols
+#' @param heightPlotCustSM
+#' @param savePlotClustSM
+#' @param widthPlotCustSM
 #'
 #'
 #' 
@@ -105,7 +162,7 @@
 #' @author Ilyess RACHEDI
 runCONCLUS <- function(
 		## General parameters
-		utputDirectory, experimentName, countMatrix, species, cores=1, 
+		outputDirectory, experimentName, countMatrix, species, cores=1, 
 		clusteringMethod="ward.D2", exportAllResults=TRUE, orderClusters=FALSE,
 		clusToAdd=NA,
 		
