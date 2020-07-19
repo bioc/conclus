@@ -906,10 +906,11 @@ test_that("plotGeneExpression work properly", {
 					plotPDF="str1"), expM)
 	
 	## Test when nothing is output
-	expM <- paste0("You should either plot the results or save the files. Set ",
-			"silentPlot=FALSE and/or savePlot=TRUE.")
+	expM <- paste0("You do not plot, neither save the heatmap or return the ",
+			"object. Nothing will happen. You should either plot the results, ",
+			"return the object or save the heatmap.")
 	expect_error(plotGeneExpression(scrFinal, geneName=geneName, 
-					savePlot=FALSE, silentPlot=TRUE), expM)
+					silentPlot=TRUE, savePlot=FALSE, returnPlot=FALSE), expM)
 })
 
 
