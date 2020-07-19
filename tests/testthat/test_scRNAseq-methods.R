@@ -842,6 +842,15 @@ test_that("plotCellHeatmap work properly", {
 	
 	expM <- "heightPNG should be a numeric."
 	expect_error(plotCellHeatmap(scrFinal, heightPNG="str2"), expM)
+	
+	expM <- "silentPlot should be a boolean."
+	expect_error(plotCellHeatmap(scrFinal, silentPlot="str1" ), expM)
+	
+	expM <- paste0("You do not plot, neither save the heatmap or return the ",
+			"object. Nothing will happen. You should either plot the results, ",
+			"return the object or save the heatmap.")
+	expect_error(plotCellHeatmap(scrFinal, silentPlot=TRUE, savePlot=FALSE, 
+					returnPlot=FALSE), expM)
 })
 
 
