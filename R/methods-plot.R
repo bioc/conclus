@@ -1544,11 +1544,13 @@ setMethod(
 #' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
 #' 
 #' @keywords internal
 #' @noRd
 .checkParamClustersSimilarity <- function(theObject, returnPlot, savePlot, 
-		plotPDF, width, height, onefile, fontsize, widthPNG, heightPNG){
+		plotPDF, width, height, onefile, fontsize, widthPNG, heightPNG,
+		silentPlot){
     
     ## Verify the object 
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -1594,6 +1596,15 @@ setMethod(
 	## Verify heightPNG
 	if (!is.numeric(heightPNG))
 		stop("heightPNG should be a numeric.")
+	
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")  
+	
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
 }
 
 
@@ -1698,7 +1709,8 @@ setMethod(
         ## Verify parameters
         validObject(theObject)
         .checkParamClustersSimilarity(theObject, returnPlot, savePlot, plotPDF,
-				width, height, onefile, fontsize, widthPNG, heightPNG)
+				width, height, onefile, fontsize, widthPNG, heightPNG, 
+				silentPlot)
         
         clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
         colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
