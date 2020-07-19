@@ -1,21 +1,3 @@
-
-
-# .checkRunConclus <- function(deleteOutliers, manualClusteringObject){
-#     
-#     if(!is.logical(deleteOutliers))
-#         stop("'deleteOutliers' should be boolean.")
-#         
-#     if(!is.na(manualClusteringObject) && 
-#        class(manualClusteringObject) != "scRNAseq")
-#         stop("'manualClusteringObject' should be an scRNAseq object of CONCLUS.")
-#     
-#     clusters <- colData(getSceNorm(manualClusteringObject))$clusters
-#     
-#     if (is.null(clusters))
-#         stop(paste("'manualClusteringObject' should got with addClustering ",
-#                    "method."))  
-# }
-
 #' runCONCLUS
 #'
 #' @description This function performs the core CONCLUS workflow. 
@@ -127,6 +109,7 @@ runCONCLUS <- function(
 		## General parameters
 		utputDirectory, experimentName, countMatrix, species, cores=1, 
 		clusteringMethod="ward.D2", exportAllResults=TRUE, orderClusters=FALSE,
+		clusToAdd=NA,
 		
 		## Normalisation parameters
 		sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
@@ -164,12 +147,7 @@ runCONCLUS <- function(
 		heightCH=8.5, clusterCols=FALSE, heightPlotCustSM=5.5,
 		
 		## plotClustersSimilarity parameters
-		savePlotClustSM=FALSE, widthPlotCustSM=7, 
-		
-                       preClustered = FALSE,  
-                       plotPDFcellSim = TRUE, deleteOutliers = TRUE,
-                       tSNEalreadyGenerated = FALSE, tSNEresExp = "",
-                       manualClusteringObject = NA){
+		savePlotClustSM=FALSE, widthPlotCustSM=7){
     
 	
 	## Verify parameters
@@ -220,6 +198,11 @@ runCONCLUS <- function(
     scrCSM <- calculateClustersSimilarity(scrCCI, 
 			clusteringMethod=clusteringMethod)
 
+	if(!is.na(clusToAdd)){
+		message("Adding the provided clustering manually.")
+		scrCSM <- addClustering(scrCSM, clusToAdd=clusToAdd)
+	}
+		
 	## Markers
 	
 	message("## Ranking genes ##")
@@ -260,12 +243,10 @@ runCONCLUS <- function(
 			statePalette=statePalette, clusteringMethod=clusteringMethod, 
 			savePlot=savePlotClustSM, width=widthPlotCustSM, 
 			height=heightPlotCustSM)
-			  
-	!! see the original code for the rest
 	
 	
 	if(exportAllResults)
 		exportResults(scrInfos, saveAll=TRUE)
 	
-    return(scr)
+    return(scrInfos)
 }
