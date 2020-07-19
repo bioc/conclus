@@ -1364,9 +1364,10 @@ setMethod(
 	if (!is.logical(plotPDF))
 		stop("plotPDF should be a boolean.")
 	
-	if(silentPlot && !savePlot)
-		stop("You should either plot the results or save the files. Set ", 
-				"silentPlot=FALSE and/or savePlot=TRUE.")
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
 }			
 
 
