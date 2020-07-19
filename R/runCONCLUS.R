@@ -351,26 +351,26 @@ runCONCLUS <- function(
 	## Plotting
 	
 	message("## Plot the cell similarity matrix (step 10/13) ##")
-	
-	!!!
-	
-	plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
+	pCSM <- plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod,
 			orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM, 
-			height=heightCSM)
+			height=heightCSM, returnPlot=TRUE, silentPlot=TRUE)
 	
 	message("## Plot the cell heatmap (step 11/13) ##")
-	plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
+	pCH <- plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
 			colorPalette=colorPalette, statePalette=statePalette, 
 			clusteringMethod=clusteringMethod, orderClusters=orderClusters, 
 			orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH, 
-			height=heightCH, clusterCols=clusterCols)
+			height=heightCH, clusterCols=clusterCols, returnPlot=TRUE, 
+			silentPlot=TRUE)
 	
 	message("## Plot the clusters similarity heatmap (step 12/13) ##")
-	plotClustersSimilarity(scrInfos, colorPalette=colorPalette, 
+	pClustSM <- plotClustersSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod, 
 			savePlot=savePlotClustSM, width=widthPlotClustSM, 
-			height=heightPlotClustSM)
+			height=heightPlotClustSM, returnPlot=TRUE, silentPlot=TRUE)
+	
+	gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], pClustSM[[4]]))
 	
 	
 	message("## Plot clustered tSNE (step 13/13) ##")
