@@ -43,10 +43,10 @@
 #' 		
 #' 		## plotCellHeatmap parameters
 #' 		meanCentered=TRUE, orderGenesCH=FALSE, savePlotCH=FALSE, widthCH=10,
-#' 		heightCH=8.5, clusterCols=FALSE, heightPlotCustSM=5.5,
+#' 		heightCH=8.5, clusterCols=FALSE,
 #' 		
 #' 		## plotClustersSimilarity parameters
-#' 		savePlotClustSM=FALSE, widthPlotCustSM=7)
+#' 		savePlotClustSM=FALSE, widthPlotClustSM=7, heightPlotClustSM=5.5)
 #' 
 #' 
 #' @param outputDirectory Directory to which results should be written. This 
@@ -156,42 +156,68 @@
 #' to the expression matrix. See ?plotCellHeatmap. Default = TRUE.
 #' @param orderGenesCH Boolean, should the heatmap be structured by gene. See 
 #' ?plotCellHeatmap. Default=FALSE.
-#' @param savePlotCH
-#' @param widthCH
-#' @param heightCH
-#' @param clusterCols
-#' @param heightPlotCustSM
-#' @param savePlotClustSM
-#' @param widthPlotCustSM
+#' @param savePlotCH If TRUE save the cell heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject 
+#' (?getOutputDirectory) and in the sub-directory 'pictures'. Default=FALSE.
+#' Ignored if exportAllResults=TRUE.
+#' @param widthCH Width of the cell heatmap saved in ?pdf. Default = 10.
+#' @param heightCH Height of the cell heatmap saved in ?pdf. Default = 8.5.
+#' @param clusterCols If TRUE, the columns representing the clusters are also
+#' taken into account in the hierarchical clustering of the cell heatmap. 
+#' Default=FALSE.
+#' @param savePlotClustSM If TRUE, save the cluster similarity heatmap in pdf 
+#' format. The heatmap is saved in the output directory defined in theObject 
+#' (?getOutputDirectory) and in the sub-directory 'pictures'. Default=FALSE.
+#' Ignored if exportAllResults=TRUE.
+#' @param widthPlotCustSM Width of the clusters similarity heatmap in the pdf 
+#' file. See ?pdf for more details. Default = 7.
+#' @param heightPlotCustSM Height of the clusters similarity heatmap in the pdf 
+#' file. See ?pdf for more details. Default = 5.5.
 #'
 #'
 #' 
-#' @details This function performs the following steps:
-#'  1) It generates PCA and t-SNE coordinates
-#'  2) runs DBSCAN 
-#'  3) Calculates similarity matrices of cells and clusters
-#'  4) Assigns cells to clusters
-#'  5) Searches for positive markers for each cluster
-#'  6) Saves plots and tables into outputDirectory.
+#' @details 
+#' CONCLUS is a tool for robust clustering and positive marker features 
+#' selection of single-cell RNA-seq (sc-RNA-seq) datasets. Of note, CONCLUS does
+#'  not cover the preprocessing steps of sequencing files obtained following 
+#' next-generation sequencing.
+#' 
+#' CONCLUS is organized into the following steps:
+#' 
+#' 1) Generation of multiple t-SNE plots with a range of parameters including 
+#' different selection of genes extracted from PCA.
+#' 2) Use the Density-based spatial clustering of applications with noise 
+#' (DBSCAN) algorithm for idenfication of clusters in each generated t-SNE plot.
+#' 3) All DBSCAN results are combined into a cell similarity matrix.
+#' 4) The cell similarity matrix is used to define "CONSENSUS" clusters 
+#' conserved accross the previously defined clustering solutions.
+#' 5) Identify marker genes for each concensus cluster.
+#' 
+#' This wrapper function performs the following steps:
+#' 
+#' 1) Building the single-cell RNA-Seq object. See ?scRNAseq-class.
+#' 2) Performing the normalization. See ?normaliseCountMatrix. 
+#' 3) Calculating all tSNEs. See ?generateTSNECoordinates.
+#' 4) Clustering with DbScan. See ?runDBSCAN.
+#' 5) Computing the cells similarity matrix. See ?clusterCellsInternal.
+#' 6) Computing the clusters similarity matrix. If clusToAdd is not NA, add
+#' the provided clustering. See ?calculateClustersSimilarity and ?addClustering.
+#' 7) Ranking genes. See ?rankGenes.
+#' 8) Getting marker genes. See ?retrieveTopClustersMarkers.
+#' 9) Getting genes info. See ?retrieveGenesInfo.
+#' 10) Plot the cell similarity matrix. See ?plotCellSimilarity.
+#' 11) Plot clustered tSNE. See ?plotClusteredTSNE.
+#' 12) Plot the cell heatmap. See ?plotCellHeatmap.
+#' 13) Plot the clusters similarity heatmap. See ?plotClustersSimilarity.
+#' 14) Exporting all results to outputDirectory if exportAllResults=TRUE.
+#' See ?exportAllResults.
+#' 15) Return an object containing all the results provided by CONCLUS.
 #'  
-#'  columnsMetaData -- Dataframe containing three columns:
-#'  cellName, state, and cellBarcode.
-#'  Not used if manualClusteringObject is defined.
-#'
-#' colorPalette/statePalette -- A vector of colors for clusters/states or 
-#''default' value. If 'default' is selected, the number of clusters is limited
-#' to 16. 
-#' If an error message is thrown, re-run the function with your own color vector.  
-#'
-#' manualClusteringObject -- After running once runCONCLUS, one could which to
-#' modify the obtained clusters manually. This is achieved with the function
-#' addClusteringManually'. The result of 'addClusteringManually' should be passed
-#' to the manualClusteringObject parameter to re-run CONCLUS 
-#' on the new defined clusters.
+#' @return A \code{scRNAseq} object containing the similarity matrices and the 
+#' marker genes.
 #' 
-#' @return \code{scRNAseq} object containing the similarity matrices and the 
-#' marker genes. Write also marker genes in file for each clusters, tSNE and 
-#' heatmaps.
+#' @aliases runCONCLUS
+#' @rdname runCONCLUS
 #' 
 #' @examples
 #' 
@@ -203,19 +229,11 @@
 #' file.path("extdata/Bergiers_colData_filtered.tsv"))
 #' species <- "mouse"
 #' 
-#' runCONCLUS(outputDirectory=outputDirectory, countMatrix=countMatrix,
-#'            columnsMetaData=columnsMetaData, species=species)
+#' runCONCLUS(outputDirectory, experimentName, countMatrix, species, 
+#' 		columnsMetaData=columnsMetaData)
 #' 
-#' 
-#' 
-#' @seealso \code{normaliseCountMatrix}, \code{generateTSNECoordinates}
-#' \code{runDBSCAN}, \code{clusterCellsInternal}, 
-#' \code{calculateClustersSimilarity},  \code{rankGenes}
-#' \code{retrieveTopClustersMarkers}, \code{retrieveGenesInfo}, 
-#' \code{saveGenesInfo}, \code{plotClusteredTSNE}, \code{plotCellSimilarity},
-#' \code{plotClustersSimilarity}, \code{exportMatrix},
 #' @export
-#' @author Ilyess RACHEDI
+#' @author Nicolas Descostes
 runCONCLUS <- function(
 		## General parameters
 		outputDirectory, experimentName, countMatrix, species, cores=1, 
@@ -255,10 +273,10 @@ runCONCLUS <- function(
 		
 		## plotCellHeatmap parameters
 		meanCentered=TRUE, orderGenesCH=FALSE, savePlotCH=FALSE, widthCH=10,
-		heightCH=8.5, clusterCols=FALSE, heightPlotCustSM=5.5,
+		heightCH=8.5, clusterCols=FALSE, 
 		
 		## plotClustersSimilarity parameters
-		savePlotClustSM=FALSE, widthPlotCustSM=7){
+		savePlotClustSM=FALSE, widthPlotClustSM=7, heightPlotClustSM=5.5){
     
 	
 	if(exportAllResults){
@@ -307,7 +325,7 @@ runCONCLUS <- function(
 			clusteringMethod=clusteringMethod)
 
 	if(!is.na(clusToAdd)){
-		message("Adding the provided clustering manually.")
+		message("Adding the provided clustering.")
 		scrCSM <- addClustering(scrCSM, clusToAdd=clusToAdd)
 	}
 		
@@ -350,8 +368,8 @@ runCONCLUS <- function(
 	message("## Plot the clusters similarity heatmap (step 13/13) ##")
 	plotClustersSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod, 
-			savePlot=savePlotClustSM, width=widthPlotCustSM, 
-			height=heightPlotCustSM)
+			savePlot=savePlotClustSM, width=widthPlotClustSM, 
+			height=heightPlotClustSM)
 	
 	
 	if(exportAllResults){
