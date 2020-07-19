@@ -215,9 +215,9 @@
     if (!is.numeric(heightPNG))
         stop("heightPNG should be a numeric.")
 	
-	if(silentPlot && !savePlot)
-		stop("You should either plot the results or save the files. Set ", 
-				"silentPlot=FALSE and/or savePlot=TRUE.")
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save it or return it. You should either",
+				" plot the results, return the object or save the files.")
 }
 
 
