@@ -65,41 +65,97 @@
 #' Default = "ward.D2".
 #' @param exportAllResults If TRUE, Save all results of CONCLUS. See 
 #' ?exportResults for details. Default=TRUE.
-#' @param orderClusters
-#' @param clusToAdd
-#' @param sizes
-#' @param rowMetaData
-#' @param columnsMetaData
-#' @param alreadyCellFiltered
-#' @param runQuickCluster
-#' @param randomSeed
-#' @param PCs
-#' @param perplexities
-#' @param writeOutputTSne
-#' @param epsilon
-#' @param minPoints
-#' @param writeOutputDbScan
-#' @param clusterNumber
-#' @param deepSplit
-#' @param columnRankGenes
-#' @param writeOutputRankGenes
-#' @param nTopMarkers
-#' @param removeDuplicates
-#' @param writeTopMarkers
-#' @param groupBy
-#' @param orderGenes
-#' @param getUniprot 
-#' @param saveInfos 
-#' @param colorPalette
-#' @param statePalette
-#' @param writeCSM 
-#' @param widthCSM
-#' @param heightCSM
-#' @param savePlotCTSNE
-#' @param widthPlotClustTSNE
-#' @param heightPlotClustTSNE
-#' @param meanCentered
-#' @param orderGenesCH
+#' @param orderClusters If TRUE, clusters in the cells and clusters similarity 
+#' matrix of cells will be ordered by name. Default = FALSE.
+#' @param  If not NA, defines the clustering to be used in theObject. This is 
+#' particularly useful when one wants to compare the clustering performance of 
+#' different tools. It should be a data frame having two columns 'clusters' and 
+#' 'cells'. Default=NA.
+#' @param sizes Vector of size factors from scran::computeSumFactors() function
+#' used by ?normaliseCountMatrix.
+#' @param rowMetaData Data frame containing genes informations. Default is NULL.
+#' See ?normaliseCountMatrix.
+#' @param columnsMetaData Data frame containing cells informations. 
+#' Default is NULL. See ?normaliseCountMatrix.
+#' @param alreadyCellFiltered If TRUE, quality check and filtering will not be 
+#' applied during the normalization of the count matrix. 
+#' See ?normaliseCountMatrix.
+#' @param runQuickCluster If TRUE scran::quickCluster() function will
+#'  be applied. It usually improves the normalization for medium-size count
+#'  matrices. However, it is not recommended for datasets with less than 200
+#'  cells and may take too long for datasets with more than 10000 cells. 
+#' Default=TRUE. See ?normaliseCountMatrix.
+#' @param randomSeed Default is 42. Seeds used to generate the tSNE. See 
+#' ?generateTSNECoordinates.
+#' @param PCs Vector of first principal components. For example, to take ranges 
+#' 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50). See 
+#' ?generateTSNECoordinates.
+#' @param perplexities A vector of perplexity (t-SNE parameter). See 
+#' ?generateTSNECoordinates for details. Default = c(30, 40).
+#' @param writeOutputTSne If TRUE, write the tsne parameters to the output 
+#' directory defined in theObject. Default = FALSE. Ignored if 
+#' exportAllResults=TRUE.
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function. 
+#' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5).
+#' @param minPoints Reachability minimum no. of points parameter of 
+#' fpc::dbscan() function. See Ester et al. (1996) for more details. 
+#' Default = c(3, 4).
+#' @param writeOutputDbScan If TRUE, write the results of the dbScan clustering 
+#'  to the output directory defined in theObject, in the sub-directory 
+#' output_tables. Default = FALSE. Ignored if exportAllResults=TRUE.
+#' @param clusterNumber Exact number of cluster. Default = 0 that will determine
+#' the number of clusters automatically. See ?clusterCellsInternal.
+#' @param deepSplit Intuitive level of clustering depth. Options are 1, 2, 3, 4.
+#' See ?clusterCellsInternal. Default = 4.
+#' @param columnRankGenes Name of the column with a clustering result. See 
+#' ?rankGenes. Default="clusters". 
+#' @param writeOutputRankGenes If TRUE, output one list of marker genes per 
+#' cluster in the output directory defined in theObject and in the sub-directory 
+#' 'marker_genes'. Default=FALSE. Ignored if exportAllResults=TRUE.
+#' @param nTopMarkers Number of marker genes to retrieve per cluster. See 
+#' ?retrieveTopClustersMarkers. Default=10.
+#' @param removeDuplicates If TRUE, duplicated markers are removed from the 
+#' lists. See ?retrieveTopClustersMarkers. Default=TRUE.
+#' @param writeTopMarkers If TRUE, writes one list per cluster in the output
+#' folder defined in theObject, and in the sub-directory 
+#' marker_genes/markers_lists. Default=FALSE. Ignored if exportAllResults=TRUE.
+#' @param groupBy A column in the input table used for grouping the genes in 
+#' the output tables. This option is useful if a table contains genes from 
+#' different clusters. See ?retrieveGenesInfo. Default = "clusters".
+#' @param orderGenes If "initial" then the order of genes will not be changed. 
+#' The other option is "alphabetical". See ?retrieveGenesInfo. 
+#' Default="initial".
+#' @param getUniprot Boolean, whether to get information from UniProt or not. 
+#' See ?retrieveGenesInfo. Default = TRUE.
+#' @param saveInfos If TRUE, save the genes infos table in the directory 
+#' defined in theObject (?getOutputDirectory) and in the sub-directory 
+#' 'marker_genes/saveGenesInfo'. Default=FALSE. Ignored if 
+#' exportAllResults=TRUE.
+#' @param colorPalette A vector of colors for clusters. This parameter is used 
+#' by all plotting methods. Default = "default". See ?plotClustersSimilarity
+#' for details.
+#' @param statePalette  A vector of colors for states or conditions. This 
+#' parameter is used by all plotting functions except ?plotClusteredTSNE. 
+#' See ?plotClustersSimilarity for details.
+#' @param writeCSM If TRUE, the cells similarity heatmap is saved in the 
+#' directory defined in theObject (?getOutputDirectory) and in the sub-directory
+#'  "pictures". Default=FALSE. Ignored if exportAllResults=TRUE.
+#' @param widthCSM Width of the plot in the pdf file. See ?pdf for more details.
+#'  Default = 7.
+#' @param heightCSM Height of the plot in the pdf file. See ?pdf for more 
+#' details. Default = 6.
+#' @param savePlotCTSNE If TRUE, the heatmap of the clustered tSNE is saved in 
+#' the directory defined in theObject (?getOutputDirectory) and in the 
+#' sub-directory "pictures/tSNE_pictures". Default=FALSE. Ignored if 
+#' exportAllResults=TRUE.
+#' @param widthPlotClustTSNE Width of the clustered tSNE plot in the pdf file. 
+#' See ?pdf for more details. Default = 6.
+#' @param heightPlotClustTSNE Height of the clustered tSNE plot in the pdf file.
+#'  See ?pdf for more details. Default = 5.
+#' @param meanCentered Boolean indicating if mean centering should be applied 
+#' to the expression matrix. See ?plotCellHeatmap. Default = TRUE.
+#' @param orderGenesCH Boolean, should the heatmap be structured by gene. See 
+#' ?plotCellHeatmap. Default=FALSE.
 #' @param savePlotCH
 #' @param widthCH
 #' @param heightCH
