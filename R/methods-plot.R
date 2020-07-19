@@ -1608,6 +1608,7 @@ setMethod(
 #' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
 #' 
 #' @details
 #' colorPalette/statePalette -- A vector of colors for clusters/states or 
@@ -1669,7 +1670,7 @@ setMethod(
                           statePalette="default", clusteringMethod="ward.D2", 
                           returnPlot=FALSE, savePlot=FALSE, plotPDF=TRUE, 
 						  width=7, height=5.5, onefile=FALSE, fontsize=7.5,
-						  widthPNG=800, heightPNG=750){
+						  widthPNG=800, heightPNG=750, silentPlot=FALSE){
         
         ## Verify parameters
         validObject(theObject)
@@ -1694,7 +1695,8 @@ setMethod(
                                              cluster_cols=clusteringTree,
                                              cluster_rows=clusteringTree,
                                              fontsize=fontsize, 
-											 main="Clusters similarity matrix")
+											 main="Clusters similarity matrix",
+											 silent=silentPlot)
         
         if(savePlot){
 			
