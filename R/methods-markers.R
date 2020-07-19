@@ -429,7 +429,7 @@ setMethod(
 #'
 #' @usage 
 #' retrieveGenesInfo(theObject, species, groupBy="clusters", 
-#' orderGenes="initial", getUniprot=TRUE, cores=1)
+#' orderGenes="initial", getUniprot=TRUE, cores=1, saveInfos)
 #' 
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
