@@ -216,8 +216,9 @@
         stop("heightPNG should be a numeric.")
 	
 	if(silentPlot && !returnPlot && !savePlot)
-		stop("You do not plot, neither save it or return it. You should either",
-				" plot the results, return the object or save the files.")
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
 }
 
 
