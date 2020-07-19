@@ -351,33 +351,36 @@ runCONCLUS <- function(
 	## Plotting
 	
 	message("## Plot the cell similarity matrix (step 10/13) ##")
+	
+	!!!
+	
 	plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod,
 			orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM, 
 			height=heightCSM)
 	
-	message("## Plot clustered tSNE (step 11/13) ##")
-	dev.new()
-	plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs, 
-			perplexities=perplexities, columnName=columnRankGenes, 
-			savePlot=savePlotCTSNE, width=widthPlotClustTSNE, 
-			height=heightPlotClustTSNE, tSNENb=tSNENb)
-
-    message("## Plot the cell heatmap (step 12/13) ##")
-	dev.new()
+	message("## Plot the cell heatmap (step 11/13) ##")
 	plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
 			colorPalette=colorPalette, statePalette=statePalette, 
 			clusteringMethod=clusteringMethod, orderClusters=orderClusters, 
 			orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH, 
 			height=heightCH, clusterCols=clusterCols)
 	
-	message("## Plot the clusters similarity heatmap (step 13/13) ##")
-	dev.new()
+	message("## Plot the clusters similarity heatmap (step 12/13) ##")
 	plotClustersSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod, 
 			savePlot=savePlotClustSM, width=widthPlotClustSM, 
 			height=heightPlotClustSM)
 	
+	
+	message("## Plot clustered tSNE (step 13/13) ##")
+	dev.new()
+	plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs, 
+			perplexities=perplexities, columnName=columnRankGenes, 
+			savePlot=savePlotCTSNE, width=widthPlotClustTSNE, 
+			height=heightPlotClustTSNE, tSNENb=tSNENb)
+
+    
 	
 	if(exportAllResults){
 		message("Exporting all results to ", outputDirectory)
