@@ -40,7 +40,8 @@
 #' 		
 #' 		## plotClusteredTSNE parameters
 #' 		savePlotCTSNE=FALSE, widthPlotClustTSNE=6, heightPlotClustTSNE=5,
-#' 		
+#' 		tSNENb=NA,
+#' 
 #' 		## plotCellHeatmap parameters
 #' 		meanCentered=TRUE, orderGenesCH=FALSE, savePlotCH=FALSE, widthCH=10,
 #' 		heightCH=8.5, clusterCols=FALSE,
@@ -152,6 +153,8 @@
 #' See ?pdf for more details. Default = 6.
 #' @param heightPlotClustTSNE Height of the clustered tSNE plot in the pdf file.
 #'  See ?pdf for more details. Default = 5.
+#' @param Give the number of the tSNE to plot. If NA, all tSNE solutions are 
+#' plotted (14 tSNE by default). Default=NA.
 #' @param meanCentered Boolean indicating if mean centering should be applied 
 #' to the expression matrix. See ?plotCellHeatmap. Default = TRUE.
 #' @param orderGenesCH Boolean, should the heatmap be structured by gene. See 
@@ -230,7 +233,7 @@
 #' species <- "mouse"
 #' 
 #' runCONCLUS(outputDirectory, experimentName, countMatrix, species, 
-#' 		columnsMetaData=columnsMetaData)
+#' 		columnsMetaData=columnsMetaData, tSNENb=1)
 #' 
 #' @export
 #' @author Nicolas Descostes
@@ -270,6 +273,7 @@ runCONCLUS <- function(
 		
 		## plotClusteredTSNE parameters
 		savePlotCTSNE=FALSE, widthPlotClustTSNE=6, heightPlotClustTSNE=5,
+		tSNENb=NA,
 		
 		## plotCellHeatmap parameters
 		meanCentered=TRUE, orderGenesCH=FALSE, savePlotCH=FALSE, widthCH=10,
@@ -349,16 +353,18 @@ runCONCLUS <- function(
 	message("## Plot the cell similarity matrix (step 10/13) ##")
 	plotCellSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod,
-			orderClusters=orderClusters, savePlot=writeCSM, widthCSM=7, 
-			heightCSM=6)
+			orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM, 
+			height=heightCSM)
 	
 	message("## Plot clustered tSNE (step 11/13) ##")
+	dev.new()
 	plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs, 
 			perplexities=perplexities, columnName=columnRankGenes, 
 			savePlot=savePlotCTSNE, width=widthPlotClustTSNE, 
-			height=heightPlotClustTSNE)
+			height=heightPlotClustTSNE, tSNENb=tSNENb)
 
     message("## Plot the cell heatmap (step 12/13) ##")
+	dev.new()
 	plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
 			colorPalette=colorPalette, statePalette=statePalette, 
 			clusteringMethod=clusteringMethod, orderClusters=orderClusters, 
