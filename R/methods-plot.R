@@ -262,7 +262,7 @@
 #' @param fontsizeRow pheatmap parameter. Fontsize for rownames. Default=0.03. 
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#'
+#' @param silentPlot If TRUE, does not plot the heatmap. Default=FALSE.
 #' 
 #' @details
 #' colorPalette/statePalette -- A vector of colors for clusters/states or 
@@ -324,7 +324,7 @@ setMethod(
 			orderClusters=FALSE, savePlot=FALSE, plotPDF=TRUE, returnPlot=FALSE,
 			width=7, height=6, onefile=FALSE, showRowNames=FALSE, 
 			showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, widthPNG=800, 
-			heightPNG=750){
+			heightPNG=750, silentPlot=FALSE){
         
         ## Verify parameters
         validObject(theObject)
@@ -371,7 +371,8 @@ setMethod(
                                              cluster_cols=clusterCols,
                                              cluster_rows=clusterRows,
                                              fontsize=fontsize,
-                                             main=mainTitle)
+                                             main=mainTitle,
+											 silent=silentPlot)
         
 		if(savePlot)
 			.saveCellSim(theObject, onefile, colDf, width, height, widthPNG, 
