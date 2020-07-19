@@ -999,7 +999,7 @@ setMethod(
 .checkParamCellHeatmap <- function(fileName, meanCentered, 
 		orderClusters, orderGenes, returnPlot, savePlot, width, 
 		height, markersClusters, onefile, clusterCols, showColnames, 
-		fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG){
+		fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG, silentPlot){
     
     if(!isTRUE((nrow(markersClusters) > 1)))
         stop(paste("You have to calculate the cluster markers before plotting.",
@@ -1069,7 +1069,14 @@ setMethod(
 	if(!is.numeric(heightPNG))
 		stop("heightPNG should be a numeric.")
 	
-    
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")  
+	
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
 }			
 
 
@@ -1213,7 +1220,7 @@ setMethod(
 		.checkParamCellHeatmap(fileName, meanCentered, orderClusters, 
 				orderGenes, returnPlot, savePlot, width, 
 				height, markersClusters, onefile, clusterCols, showColnames, 
-				fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG)
+				fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG, silentPlot)
 		
 		
 		# plots correlation between clusters
