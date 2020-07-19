@@ -442,16 +442,22 @@
 #'  be applied. It usually improves the normalization for medium-size count
 #'  matrices. However, it is not recommended for datasets with less than 200
 #'  cells and may take too long for datasets with more than 10000 cells.
+#' 
 #' @aliases normaliseCountMatrix
+#' 
 #' @details
 #' This function uses the normalization method of the scater package. For more
 #' details about the normalization used see ?scater::normalize. The size factors
 #'  used in the normalization are calculated with scran::computeSumFactors.
+#' 
 #' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
 #' DESCOSTES.
+#' 
 #' @rdname normaliseCountMatrix-scRNAseq
+#' 
 #' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scater logNormCounts
+#' 
 #' @return Returns a scRNASeq object with its SCEnorm slot updated. This slot
 #' contains a SingleCellExperiment object having the normalized count matrix,
 #' the colData (table with cells informations), and the rowData (table with the
