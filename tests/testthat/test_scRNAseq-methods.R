@@ -683,6 +683,13 @@ test_that("plotCellSimilarity work properly", {
     ## Test with incorrect heightPNG
     expM <- "heightPNG should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, heightPNG="str1" ), expM)
+	
+	
+	
+	expM <- paste0("You do not plot, neither save it or return it. You should",
+			" either plot the results, return the object or save the files.")
+	expect_error(plotCellSimilarity(scrFinal, silentPlot=TRUE, savePlot=FALSE, 
+					returnPlot=FALSE), expM)
     
 })
 
