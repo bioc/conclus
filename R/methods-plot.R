@@ -152,7 +152,7 @@
 
 .checkParamCellSimilarity <-function(theObject, orderClusters, savePlot, 
 		plotPDF, returnPlot, width, height, onefile, showRowNames, showColnames, 
-		fontsize, fontsizeRow, widthPNG, heightPNG){
+		fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot){
     
     ## Verify the object contains clustersSimilarityMatrix
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -213,7 +213,11 @@
     
     ## Verify heightPNG
     if (!is.numeric(heightPNG))
-        stop("heightPNG should be a numeric.") 
+        stop("heightPNG should be a numeric.")
+	
+	if(silentPlot && !savePlot)
+		stop("You should either plot the results or save the files. Set ", 
+				"silentPlot=FALSE and/or savePlot=TRUE.")
 }
 
 
@@ -330,7 +334,7 @@ setMethod(
         validObject(theObject)
         .checkParamCellSimilarity(theObject, orderClusters, savePlot, plotPDF, 
 				returnPlot, width, height, onefile, showRowNames, showColnames, 
-				fontsize, fontsizeRow, widthPNG, heightPNG)
+				fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot)
 		
         sceObject <- getSceNorm(theObject)
         cellsSimilarityMatrix <- getCellsSimilarityMatrix(theObject)
