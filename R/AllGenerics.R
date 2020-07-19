@@ -108,7 +108,7 @@ setGeneric(
 			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
 			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
 			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
-			heightPNG=750, silentPlot=FALSE){
+			heightPNG=750, silentPlot=FALSE, tSNENb=NA){
 		standardGeneric("plotClusteredTSNE")
 			
     },
