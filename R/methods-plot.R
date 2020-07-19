@@ -788,8 +788,10 @@ setMethod(
 		
 		## Plotting tSNE
 		if(!silentPlot)
-			invisible(lapply(tSNEplots, function(currentTSNE) 
-								print(currentTSNE)))
+			invisible(lapply(tSNEplots, function(currentTSNE){
+								dev.new()
+								print(currentTSNE)
+							}))
 		
 		## Saving tSNEs
 		if(savePlot)
