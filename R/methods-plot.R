@@ -146,6 +146,7 @@
 #' @param fontsizeRow pheatmap parameter. Fontsize for rownames. Default=0.03. 
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
 #' 
 #' @keywords internal
 #' @noRd
@@ -543,6 +544,7 @@ setMethod(
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' "pictures/tSNE_pictures".
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
 #' 
 #' @keywords internal
 #' @noRd
@@ -993,7 +995,8 @@ setMethod(
 #' otherwise. Default = TRUE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#'  
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE. 
+#' 
 #' @keywords internal
 #' @noRd
 .checkParamCellHeatmap <- function(fileName, meanCentered, 
