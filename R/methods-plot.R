@@ -603,7 +603,7 @@ setMethod(
 		stop("tSNENb should be a numeric.")
 	
 	if(tSNENb > (length(PCs)*length(perplexities)))
-		stop("The chosen tSNENb should be smaller than (PCs*perplexities).")
+		stop("The chosen tSNENb should be smaller than PCs x perplexities.")
 }			
 
 
