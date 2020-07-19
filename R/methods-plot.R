@@ -798,8 +798,8 @@ setMethod(
 		if(!silentPlot){
 			if(is.na(tSNENb))
 				invisible(lapply(tSNEplots, function(currentTSNE){
-									dev.new()
-									print(currentTSNE)}))
+									print(currentTSNE)
+									dev.new()}))
 			else
 				print(tSNEplots[[tSNENb]])
 		}
