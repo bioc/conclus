@@ -757,10 +757,11 @@ test_that("plotClusteredTSNE work properly", {
 	expM <- "heightPNG should be a numeric."
 	expect_error(plotClusteredTSNE(scrFinal, heightPNG="str1" ), expM)
 	
-	expM <- paste0("You should either plot the results or save the files. Set ", 
-				"silentPlot=FALSE and/or savePlot=TRUE.")
-	expect_error(plotClusteredTSNE(scrFinal, silentPlot=TRUE, savePlot=FALSE), 
-			expM)
+	expM <- paste0("You do not plot, neither save the heatmap or return the ",
+			"object. Nothing will happen. You should either plot the results, ",
+			"return the object or save the heatmap.")
+	expect_error(plotClusteredTSNE(scrFinal, silentPlot=TRUE, savePlot=FALSE, 
+					returnPlot=FALSE), expM)
 
 	expM <- "tSNENb should be a numeric."
 	expect_error(plotClusteredTSNE(scrFinal, tSNENb="str1"), expM)
