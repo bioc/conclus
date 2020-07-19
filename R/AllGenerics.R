@@ -125,7 +125,8 @@ setGeneric(
 			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
 			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
 			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
-			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750){
+			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750, 
+			silentPlot=FALSE){
 		standardGeneric("plotCellHeatmap")    
     },
     signature="theObject")
