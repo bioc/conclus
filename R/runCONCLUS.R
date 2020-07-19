@@ -92,68 +92,7 @@
 
 
 
-#' .runClustering
-#' 
-#' @description This function calcultate tSNE coordinates and run DBSCAN
-#' with the possibility to remove outliers from DBSCAN
-#'
-#' @param theObject An scRNAseq object with normalized count matrix.
-#' @param epsilon Reachability distance parameter of fpc::dbscan() function.
-#'  See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
-#' @param minPoints Reachability minimum no. of points parameter of 
-#' fpc::dbscan() function. See Ester et al. (1996) for more details. 
-#' Default = c(3, 4)
-#' @param deepSplit Intuitive level of clustering depth.
-#' Options are 1, 2, 3, 4. Default = 4
-#' @param clusteringMethod Clustering method passed to hclust() function.
-#'  See ?hclust for a list of method. Default = "ward.D2"
-#' @param cores maximum number of jobs that CONCLUS can run in parallel.
-#'  Default = 1
-#' @param deleteOutliers Boolean indicating if whether cells which were often
-#'  defined as outliers by dbscan must be deleted.It will require recalculating
-#'   of the similarity matrix of cells. Default = FALSE.
-#' @param PCs {a vector of first principal components. For example, to take
-#'  ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50)
-#' @param perplexities Numeric scalar defining the perplexity parameter,
-#'  see ‘?Rtsne’ for more details. Default = c(30, 40)
-#' @param randomSeed Random seed for reproducibility. Default = 42.
-#'
-#' @return
-#' @export
-#'
-#' @examples
-.runClustering <- function(theObject, epsilon=c(1.3, 1.4, 1.5),
-                           minPoints=c(3, 4), deepSplit=4,
-                           clusteringMethod = "ward.D2",
-                           cores=14, deleteOutliers = TRUE,
-                           PCs=c(4, 6, 8, 10, 20, 40, 50),
-                           perplexities=c(30,40), randomSeed = 42){
-    
-    # It combines all the clustering parts. Takes tSNE coordinates and gives
-    # results of final clustering: sceObject and cell correlation matrix
-    
-    # run dbscan
-    message("Running dbscan using ", cores, " cores.")
-    scrDBSCAN <- runDBSCAN(theObject, epsilon=epsilon,
-                           minPoints=minPoints, cores=cores)
-    if(deleteOutliers){
-        # filter cluster outliers
-        message("Excluding clustering outliers.")
-        scrFiltered <- .excludeOutliers(scrDBSCAN,
-                                        minPoints=minPoints,
-                                        epsilon=epsilon)
-        message("Getting TSNE coordinates for the filtered sceObject.")
-        scrTsneFiltered <- generateTSNECoordinates(scrFiltered, PCs=PCs,
-                                                   perplexities=perplexities,
-                                                   randomSeed=randomSeed,
-                                                   cores = cores)
-        
-        scrDBSCAN <- runDBSCAN(scrTsneFiltered, epsilon=epsilon,
-                               minPoints=minPoints, cores=cores)
-    } 
-    
-    return(scrDBSCAN)
-}
+
 
 
 
