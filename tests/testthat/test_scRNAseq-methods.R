@@ -684,6 +684,9 @@ test_that("plotCellSimilarity work properly", {
     expM <- "heightPNG should be a numeric."
     expect_error(plotCellSimilarity(scrFinal, heightPNG="str1" ), expM)
 	
+	expM <- "silentPlot should be a boolean."
+	expect_error(plotCellSimilarity(scrFinal, silentPlot="str1" ), expM)
+	
 	expM <- paste0("You do not plot, neither save the heatmap or return the ",
 			"object. Nothing will happen. You should either plot the results, ",
 			"return the object or save the heatmap.")
@@ -756,6 +759,9 @@ test_that("plotClusteredTSNE work properly", {
 	
 	expM <- "heightPNG should be a numeric."
 	expect_error(plotClusteredTSNE(scrFinal, heightPNG="str1" ), expM)
+	
+	expM <- "silentPlot should be a boolean."
+	expect_error(plotClusteredTSNE(scrFinal, silentPlot="str1" ), expM)
 	
 	expM <- paste0("You do not plot, neither save the heatmap or return the ",
 			"object. Nothing will happen. You should either plot the results, ",
