@@ -372,6 +372,7 @@ runCONCLUS <- function(
 			height=heightCH, clusterCols=clusterCols)
 	
 	message("## Plot the clusters similarity heatmap (step 13/13) ##")
+	dev.new()
 	plotClustersSimilarity(scrInfos, colorPalette=colorPalette, 
 			statePalette=statePalette, clusteringMethod=clusteringMethod, 
 			savePlot=savePlotClustSM, width=widthPlotClustSM, 
