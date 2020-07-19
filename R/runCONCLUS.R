@@ -1,29 +1,3 @@
-#' .mkOutlierScoreDf
-#'
-#' @param mat Matrix row : dbscan solutions, column : cells
-#'
-#' @return Data frame of cells with associated outliers score
-.mkOutlierScoreDf <- function(mat){
-    
-    outlierScoreDf <- as.data.frame(colnames(mat))
-    colnames(outlierScoreDf) <- "cellName"
-    outlierScoreDf <- dplyr::mutate(outlierScoreDf, outlierScore=NA)
-    
-    for(i in 1:ncol(mat)){
-        vec <- mat[, i]
-        outlierScoreDf$outlierScore[i] <- length(vec[vec == 0])
-    }
-    
-    outlierScoreDf$outlierScorePer <- outlierScoreDf$outlierScore / nrow(mat)
-    return(outlierScoreDf)
-}
-
-
-
-
-
-
-
 
 
 # .checkRunConclus <- function(deleteOutliers, manualClusteringObject){
