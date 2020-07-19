@@ -5,7 +5,7 @@
 #'
 #' @param theObject scRNASeq object on which the methods ?retrieveGenesInfo 
 #' was run.
-#' @param outputDir Output directory defined as dataDirectory/9_genesInfos 
+#' @param outputInfos Output directory defined as dataDirectory/9_genesInfos. 
 #' 
 #' @keywords internal
 #' @noRd
@@ -22,7 +22,7 @@
 							stop("Error in saveGenesInfo. Contact the",
 									" developper.")
 						
-						outputFile <- file.path(outputDir, 
+						outputFile <- file.path(outputInfos, 
 								paste0("genes_info_clust", clustNB, 
 										".csv"))
 						write.csv(clusterDF, file=outputFile, 
