@@ -538,7 +538,7 @@ setMethod(
 #' @noRd
 .checkParamPlotTSNE <- function(theObject, PCs, perplexities, columnName,
                                 returnPlot, width, height, onefile, silentPlot, 
-								savePlot, plotPDF, widthPNG, heightPNG){
+								savePlot, plotPDF, widthPNG, heightPNG, tSNENb){
     
     ## Verify the object contains clustersSimilarityMatrix
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
@@ -598,6 +598,12 @@ setMethod(
 	if(silentPlot && !savePlot)
 		stop("You should either plot the results or save the files. Set ", 
 				"silentPlot=FALSE and/or savePlot=TRUE.")
+	
+	if(!is.na(tSNENb) && !is.numeric(tSNENb))
+		stop("tSNENb should be a numeric.")
+	
+	if(tSNENb > (PCs*perplexities))
+		stop("The chosen tSNENb should be smaller than (PCs*perplexities).")
 }			
 
 
@@ -694,6 +700,8 @@ setMethod(
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
 #' Default=FALSE.
+#' @param Give the number of the tSNE to plot. If NA, all tSNE solutions are 
+#' plotted (14 tSNE by default). Default=NA.
 #' 
 #' @aliases plotClusteredTSNE
 #' @rdname plotClusteredTSNE-scRNAseq
@@ -753,13 +761,13 @@ setMethod(
 			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
 			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
 			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
-			heightPNG=750, silentPlot=FALSE){
+			heightPNG=750, silentPlot=FALSE, tSNENb=NA){
         
         ## Verify parameters
         validObject(theObject)
         .checkParamPlotTSNE(theObject, PCs, perplexities, columnName,
 				returnPlot, width, height, onefile, silentPlot, 
-				savePlot, plotPDF, widthPNG, heightPNG)
+				savePlot, plotPDF, widthPNG, heightPNG, tSNENb)
         
         ## Creating output folder			
         sceObject <- getSceNorm(theObject)
@@ -787,11 +795,14 @@ setMethod(
 				colorPalette)
 		
 		## Plotting tSNE
-		if(!silentPlot)
-			invisible(lapply(tSNEplots, function(currentTSNE){
-								dev.new()
-								print(currentTSNE)
-							}))
+		if(!silentPlot){
+			if(is.na(tSNENb))
+				invisible(lapply(tSNEplots, function(currentTSNE){
+									dev.new()
+									print(currentTSNE)}))
+			else
+				print(tSNEplots[[tSNENb]])
+		}
 		
 		## Saving tSNEs
 		if(savePlot)
