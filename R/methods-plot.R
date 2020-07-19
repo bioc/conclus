@@ -602,7 +602,7 @@ setMethod(
 	if(!is.na(tSNENb) && !is.numeric(tSNENb))
 		stop("tSNENb should be a numeric.")
 	
-	if(tSNENb > (PCs*perplexities))
+	if(tSNENb > (length(PCs)*length(perplexities)))
 		stop("The chosen tSNENb should be smaller than (PCs*perplexities).")
 }			
 
