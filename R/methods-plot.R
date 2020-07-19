@@ -1108,6 +1108,7 @@ setMethod(
 #' otherwise. Default = TRUE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
 #' 
 #' @details
 #' colorPalette/statePalette -- A vector of colors for clusters/states or 
@@ -1178,7 +1179,8 @@ setMethod(
 			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
 			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
 			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
-			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750){
+			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750, 
+			silentPlot=FALSE){
 
 		## Verify parameters
 		validObject(theObject)
@@ -1259,7 +1261,7 @@ setMethod(
 				show_colnames=showColnames, annotation_col=annCol,
 				annotation_colors=annColors, fontsize_row=fontsizeRow, 
 				cluster_cols=clusterCols, cluster_rows=clusterRows,
-				color=color, fontsize=fontsize)
+				color=color, fontsize=fontsize, silent=silentPlot)
 				 
 		
 		if(savePlot)
