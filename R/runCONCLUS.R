@@ -236,6 +236,7 @@
 #' 		columnsMetaData=columnsMetaData, tSNENb=1)
 #' 
 #' @export
+#' @importFrom gridExtra grid.arrange
 #' @author Nicolas Descostes
 runCONCLUS <- function(
 		## General parameters
