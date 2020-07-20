@@ -645,7 +645,7 @@ setMethod(
 #' @return List containing path to the subdirectory 
 #' 'pictures/graphsTSNEDirectory' and the color palette
 #' @importFrom SummarizedExperiment colData
-#' @include sharedInernals.R
+#' @include sharedInternals.R
 #' @keywords internal
 #' @noRd
 .createTSNEDir <- function(theObject, columnName, sceObject, colorPalette){
