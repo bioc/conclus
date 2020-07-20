@@ -3,7 +3,7 @@
 \name{normaliseCountMatrix,scRNAseq-method}
 \alias{normaliseCountMatrix,scRNAseq-method}
 \alias{normaliseCountMatrix}
-\title{normaliseCountMatrix()}
+\title{normaliseCountMatrix}
 \usage{
 \S4method{normaliseCountMatrix}{scRNAseq}(
   theObject,
@@ -61,6 +61,7 @@ scr <- scRNAseq(experimentName = experimentName,
                 outputDirectory = outputDirectory)
 
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+
 }
 \author{
 Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
