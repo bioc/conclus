@@ -38,4 +38,4 @@ Imports:
 Suggests:
     S4Vectors,
     matrixStats
-    
+  
