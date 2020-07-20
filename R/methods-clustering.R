@@ -184,7 +184,7 @@
 #' @param width Width of the pdf file. Default=7. See ?pdf for details.
 #' @param height Height of the pdf file. Default=7. See ?pdf for details.
 #' @param tSNE Result of the function .getTSNEresults.
-#' @param epsilon Single value for the distance parameter of dbscan. 
+#' @param dbscanEpsilon Single value for the distance parameter of dbscan. 
 #' Default = 1.4. See ?runDBSCAN for more details.
 #' @param minPoints Single value for the minimum no. of points parameter of 
 #' dbscan. Default = 5. See ?runDBSCAN for more details. 
@@ -196,7 +196,7 @@
 #' @noRd
 
 .printDBScan <- function(writeOutput, dataDirectory, width, height, tSNE, 
-		epsilon, minPts, fileClust, ...){
+		dbscanEpsilon, minPts, fileClust, ...){
 	
 	p <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
 			minNeighbours=minPts)
@@ -341,7 +341,7 @@ setMethod(
 			.printDist(writeOutput, dataDirectory, width, height, tSNE,
 					dbscanEpsilon, minPts, fileDist, ...)
 			.printDBScan(writeOutput, dataDirectory, width, height, tSNE, 
-					epsilon, minPts, fileClust, ...)
+					dbscanEpsilon, minPts, fileClust, ...)
 		})
 
 
