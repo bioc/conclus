@@ -152,8 +152,6 @@
 #' @param writeOutput If TRUE, write the tsne parameters to the output directory
 #'  defined in theObject. Default = FALSE.
 #' 
-#' @aliases generateTSNECoordinates
-#' 
 #' @details
 #' Generates an object of fourteen (by default) tables with tSNE coordinates. 
 #' Fourteen because it will vary seven values of principal components 
@@ -166,11 +164,8 @@
 #' *PCs=c(8, 10, 20, 40, 50, 80, 100)* and *perplexities=c(200, 240)*. For 
 #' details about perplexities parameter see ‘?Rtsne’.
 #' 
-#' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-#' 
-#' @rdname 
-#' generateTSNECoordinates-scRNAseq
+#' @rdname generateTSNECoordinates-scRNAseq
+#' @aliases generateTSNECoordinates
 #' 
 #' @return 
 #' An object of class scRNASeq with its tSNEList slot updated. Also writes 
@@ -200,7 +195,10 @@
 #' @seealso
 #' normaliseCountMatrix
 #' 
-#' @exportMethod
+#' @exportMethod generateTSNECoordinates
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+
 setMethod(
 		
 		f = "generateTSNECoordinates",
