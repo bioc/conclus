@@ -235,9 +235,10 @@
 #' runCONCLUS(outputDirectory, experimentName, countMatrix, species, 
 #' 		columnsMetaData=columnsMetaData, tSNENb=1)
 #' 
-#' @export
+#' @export runConclus
 #' @importFrom gridExtra grid.arrange
 #' @author Nicolas Descostes
+
 runCONCLUS <- function(
 		## General parameters
 		outputDirectory, experimentName, countMatrix, species, cores=1, 
