@@ -327,8 +327,7 @@ setMethod(
 #' @keywords internal
 #' @noRd
 #' 
-#' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' @importFrom utils write.table
 .saveGenesInfo <- function(theObject){
 	
 	outputDir <- file.path(getOutputDirectory(theObject),

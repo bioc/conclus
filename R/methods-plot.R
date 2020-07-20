@@ -872,6 +872,9 @@ setMethod(
 #' 
 #' @keywords internal
 #' 
+#' @importFrom grDevices pdf
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
 #' @noRd
 .saveHeatmap <- function(theObject, plotPDF, fileName, width, height, onefile, 
 		widthPNG, heightPNG){
