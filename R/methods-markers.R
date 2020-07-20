@@ -267,7 +267,7 @@
 #' @seealso
 #' retrieveTopClustersMarkers retrieveGenesInfo 
 #' 
-#' @exportMethod
+#' @exportMethod rankGenes
 #' @importFrom SummarizedExperiment colData
 #' @importFrom Biobase exprs
 
@@ -309,7 +309,7 @@ setMethod(
 ###################
 
 
-#' saveGenesInfo
+#' .saveGenesInfo
 #' 
 #' @param theObject An Object of class scRNASeq for which retrieveGenesInfo was 
 #' run. See ?retrieveGenesInfo.
@@ -470,9 +470,6 @@ setMethod(
 #' 
 #' @aliases retrieveGenesInfo
 #'  
-#' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-#' 
 #' @rdname 
 #' retrieveGenesInfo-scRNAseq
 #' 
@@ -520,8 +517,9 @@ setMethod(
 #' @seealso
 #' rankGenes retrieveTopClustersMarkers 
 #' 
-#' @exportMethod
-
+#' @exportMethod retrieveGenesInfo
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 
 
 setMethod(
@@ -736,10 +734,6 @@ setMethod(
 #' marker_genes/markers_lists. Default=FALSE.
 #' 
 #' @aliases retrieveTopClustersMarkers
-#'  
-#' @author 
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-#' 
 #' @rdname 
 #' retrieveTopClustersMarkers-scRNAseq
 #' 
@@ -785,7 +779,9 @@ setMethod(
 #' @seealso
 #' retrieveGenesInfo
 #' 
-#' @exportMethod
+#' @exportMethod retrieveTopClustersMarkers
+#' @author 
+#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 
 setMethod(
 		
