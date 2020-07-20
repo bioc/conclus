@@ -15,7 +15,6 @@
 #'
 #' @importFrom biomaRt useMart getBM
 #' @importFrom AnnotationDbi keys select
-#' @importFrom S4Vectors isEmpty
 #' @return Returns the rowData filled with annotations
 #' @noRd
  .annotateGenes <- function(countMatrix, species, rowdataDF){
