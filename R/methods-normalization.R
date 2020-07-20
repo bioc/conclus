@@ -274,12 +274,13 @@
 #' @description 
 #' This function counts the number of genes having read counts > 1 in a cell
 #'
+#' @param countMatrix The count matrix.
 #' @param cell Name of the cell considered in the sapply (see.
 #' @param coldata Data frame containing some informations about cells.
 #'
 #' @keywords internal
 #' @noRd
-.fillGenesNumColumn <- function(cell, coldata){
+.fillGenesNumColumn <- function(cell, coldata, countMatrix){
 	
     readsCell <- countMatrix[, cell]
     coldata$genesNum[coldata$cellName == cell] <- length(
@@ -293,12 +294,13 @@
 #' @description 
 #' This function fills the OneUMiColumn of the report table for one cell.
 #'
+#' @param countMatrix The count matrix.
 #' @param cell Cell to count
 #' @param coldata  Data frame containing informations about cells
 #'
 #' @keywords internal
 #' @noRd
-.fillOneUmmiColumn <- function(cell, coldata){
+.fillOneUmmiColumn <- function(cell, coldata, countMatrix){
 	
     readsCell <- countMatrix[, cell]
     coldata$oneUMI[coldata$cellName == cell] <- length(
@@ -331,8 +333,9 @@
     coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
     coldata$genesSum <- colSums(countMatrix)
     coldata$genesNum <- sapply(colnames(countMatrix), .fillGenesNumColumn, 
-			coldata)
-    coldata$oneUMI <- sapply(colnames(countMatrix), .fillOneUmmiColumn, coldata)
+			coldata, countMatrix)
+    coldata$oneUMI <- sapply(colnames(countMatrix), .fillOneUmmiColumn, 
+			coldata, countMatrix)
     coldata <- dplyr::mutate(coldata,
                              oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
     
