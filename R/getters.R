@@ -2,7 +2,7 @@
 ########################  Getters of scRNAseq class ############################
 ################################################################################
 
-
+#' @exportMethod getExperimentName
 setMethod(
     f = "getExperimentName",
     signature = "scRNAseq",
@@ -11,6 +11,7 @@ setMethod(
     })
 
 
+#' @exportMethod getCountMatrix
 setMethod(
     f = "getCountMatrix",
     signature = "scRNAseq",
@@ -19,6 +20,7 @@ setMethod(
     })
 
 
+#' @exportMethod getSceNorm
 setMethod(
     f = "getSceNorm",
     signature = "scRNAseq",
@@ -27,6 +29,7 @@ setMethod(
     })
 
 
+#' @exportMethod getSpecies
 setMethod(
     f = "getSpecies",
     signature = "scRNAseq",
@@ -35,7 +38,7 @@ setMethod(
     })
 
 
-
+#' @exportMethod getOutputDirectory
 setMethod(
     f = "getOutputDirectory",
     signature = "scRNAseq",
@@ -44,7 +47,7 @@ setMethod(
     })
 
 
-
+#' @exportMethod getTSNEList
 setMethod(
     f = "getTSNEList",
     signature = "scRNAseq",
@@ -53,6 +56,7 @@ setMethod(
     })
 
 
+#' @exportMethod getDbscanList
 setMethod(
     f = "getDbscanList",
     signature = "scRNAseq",
@@ -60,7 +64,7 @@ setMethod(
         return(theObject@dbscanList)
     })
 
-
+#' @exportMethod getCellsSimilarityMatrix
 setMethod(
     f = "getCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -69,6 +73,7 @@ setMethod(
     })
 
 
+#' @exportMethod getClustersSimilarityMatrix
 setMethod(
     f = "getClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -77,6 +82,7 @@ setMethod(
     })
 
 
+#' @exportMethod getClustersSimiliratyOrdered
 setMethod(
 		f = "getClustersSimiliratyOrdered",
 		signature = "scRNAseq",
@@ -85,6 +91,7 @@ setMethod(
 		})
 
 
+#' @exportMethod getMarkerGenesList
 setMethod(
     f = "getMarkerGenesList",
     signature = "scRNAseq",
@@ -93,6 +100,7 @@ setMethod(
     })
 
 
+#' @exportMethod getClustersMarkers
 setMethod(
     f="getClustersMarkers",
     signature="scRNAseq",
@@ -101,6 +109,7 @@ setMethod(
     })
 
 
+#' @exportMethod getGenesInfos
 setMethod(
     f="getGenesInfos",
     signature="scRNAseq",
@@ -113,6 +122,7 @@ setMethod(
 ############################  Getter of Tsne Class  ############################
 ################################################################################
 
+#' @exportMethod getName
 setMethod(
     f = "getName",
     signature = "Tsne",
@@ -121,7 +131,7 @@ setMethod(
     })
 
 
-
+#' @exportMethod getPerplexity
 setMethod(
     f = "getPerplexity",
     signature = "Tsne",
@@ -130,6 +140,7 @@ setMethod(
     })
 
 
+#' @exportMethod getPC
 setMethod(
     f = "getPC",
     signature = "Tsne",
@@ -138,6 +149,7 @@ setMethod(
     })
 
 
+#' @exportMethod getCoordinates
 setMethod(
     f = "getCoordinates",
     signature = "Tsne",
@@ -151,6 +163,7 @@ setMethod(
 ###########################  Getter of Dbscan Class  ###########################
 ################################################################################
 
+#' @exportMethod getName
 setMethod(
     f = "getName",
     signature = "Dbscan",
@@ -159,8 +172,7 @@ setMethod(
     })
 
 
-
-
+#' @exportMethod getEpsilon
 setMethod(
     f = "getEpsilon",
     signature = "Dbscan",
@@ -169,6 +181,7 @@ setMethod(
     })
 
 
+#' @exportMethod getMinPoints
 setMethod(
     f = "getMinPoints",
     signature = "Dbscan",
@@ -177,6 +190,7 @@ setMethod(
     })
 
 
+#' @exportMethod getClustering
 setMethod(
     f = "getClustering",
     signature = "Dbscan",
