@@ -297,7 +297,7 @@
 #' @seealso
 #' normaliseCountMatrix runDBSCAN pdf
 #' 
-#' @exportMethod
+#' @exportMethod testClustering
 #' @importFrom Biobase exprs
 
 setMethod(
@@ -533,7 +533,7 @@ setMethod(
 #' @seealso
 #' plotCellSimilarity 
 #' 
-#' @exportMethod
+#' @exportMethod clusterCellsInternal
 #' @importFrom SummarizedExperiment colData
 
 
@@ -740,7 +740,7 @@ setMethod(
 #' @seealso
 #' plotClustersSimilarity 
 #' 
-#' @exportMethod
+#' @exportMethod calculateClustersSimilarity
 #' @importFrom SummarizedExperiment colData
 
 setMethod(
@@ -885,7 +885,7 @@ setMethod(
 #' ## Update clustering information
 #' addClustering(scrCSM, clusToAdd=clustAddTab)
 #' 
-#' @exportMethod
+#' @exportMethod addClustering
 #' @importFrom SummarizedExperiment colData
 
 
