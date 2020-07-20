@@ -106,7 +106,7 @@
 				tTestFDR <- lapply(otherGroups, function(currentOther){
 							
 							tTestFDR[, paste0("vs_", currentOther)] <- 
-									p.adjust(tTestPval[, paste0("vs_", 
+									stats::p.adjust(tTestPval[, paste0("vs_", 
 															currentOther)], 
 											method="fdr")
 							return(tTestFDR)
