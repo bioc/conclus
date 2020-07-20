@@ -235,7 +235,7 @@
 #' runCONCLUS(outputDirectory, experimentName, countMatrix, species, 
 #' 		columnsMetaData=columnsMetaData, tSNENb=1)
 #' 
-#' @export runConclus
+#' @export runCONCLUS
 #' @importFrom gridExtra grid.arrange
 #' @author Nicolas Descostes
 
