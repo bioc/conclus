@@ -13,7 +13,8 @@
 #' 
 #' @keywords internal
 #' 
-#' @importFrom dbscan kNNdistplot 
+#' @importFrom dbscan kNNdistplot
+#' @importFrom graphics abline
 #' @noRd
 .plotDistanceGraphWithEpsilon <- function(tSNEData, minNeighbours=5,
 		epsilon=1.2){

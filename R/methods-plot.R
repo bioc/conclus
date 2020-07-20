@@ -101,6 +101,9 @@
 #' 
 #' @keywords internal
 #' @return Cells ordered by clustering results.
+#' 
+#' @importFrom stats hclust
+#' @importFrom stats dist
 #' @noRd
 .orderCellsInCluster <- function(cluster, colDf, mtx, 
 		clusteringMethod="ward.D2"){
@@ -946,6 +949,8 @@ setMethod(
 #' @keywords internal
 #' @return The markers clusters data frame ordered by genes.
 #' 
+#' @importFrom stats hclust
+#' @importFrom stats dist
 #' @noRd
 .orderGenesInCluster <- function(cluster, markersClusters, mtx, 
                                  clusteringMethod="ward.D2"){
