@@ -71,6 +71,11 @@
 #' @description 
 #' Generate genes list for each cluster.
 #'
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see 
+#' ?calculateClustersSimilarity).
 #' @param groups Character vector of the different clusters names.
 #' @param simMedRowList List of similarity values per cluster.
 #' @param exprM Normalized expression matrix.
@@ -85,8 +90,8 @@
 #' @return A list containing for each cluster the marker genes.
 #' @noRd
 
-.buildMarkerGenesList <- function(groups, simMedRowList, exprM, column, 
-		colNamesVec, colDF, writeMarkerGenes){
+.buildMarkerGenesList <- function(theObject, groups, simMedRowList, exprM, 
+		column, colNamesVec, colDF, writeMarkerGenes){
 	
 	result <- mapply(function(currentGroup, currentSimMed, mat, 
 					allGroups, colLabel, simMedNames){
@@ -294,8 +299,9 @@ setMethod(
 			simMedRowList <- split(simMed, seq_len(nrow(simMed)))
 			colNamesVec <- as.numeric(colnames(simMed))
 			
-			markerGenesList <- .buildMarkerGenesList(groups, simMedRowList, 
-					exprM, column, colNamesVec, colDF, writeMarkerGenes) 		
+			markerGenesList <- .buildMarkerGenesList(theObject, groups, 
+					simMedRowList, exprM, column, colNamesVec, colDF, 
+					writeMarkerGenes) 		
 			
 			setMarkerGenesList(theObject) <- markerGenesList
 			rm(markerGenesList, simMed, groups)
