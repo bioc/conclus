@@ -359,7 +359,7 @@
 #' cluster as csv files in the sub-directory '9_genesInfos'. See 
 #' ?retrieveGenesInfo for more details.
 #' 
-#' @aliases calculateClustersSimilarity
+#' @aliases exportResults
 #'  
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
