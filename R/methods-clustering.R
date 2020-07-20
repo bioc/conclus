@@ -606,7 +606,6 @@ setMethod(
 #' 
 #' @keywords internal
 #' @return A median matrix.
-#' @importFrom matrixStats rowMedians
 #' @noRd
 
 .computeClusMat <- function(clustersNames, mat, clusters){
