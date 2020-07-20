@@ -1746,9 +1746,9 @@ setMethod(
 #' @importFrom pheatmap pheatmap
 #' @importFrom stats as.dist
 #' @importFrom stats hclust
-#' @importFrom grDvices pdf
-#' @importFrom grDvices png
-#' @importFrom grDvices dev.off
+#' @importFrom grDevices pdf
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
 #' @importFrom methods validObject 
 #' 
 #' @author 
