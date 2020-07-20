@@ -13,7 +13,6 @@
 #'
 #' @keywords internal
 #'
-#' @import BiocManager
 #' @importFrom biomaRt useMart getBM
 #' @importFrom AnnotationDbi keys select
 #' @import org.Hs.eg.db
