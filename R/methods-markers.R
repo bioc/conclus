@@ -99,7 +99,7 @@
 				## Create a dataframe clustering vs clustering
 				tTestPval <- .buildTTestPval(otherGroups, tTestPval, colDF, mat,
 						colLabel, currentGroup) 
-				tTestPval <- bind_cols(tTestPval)
+				tTestPval <- dplyr::bind_cols(tTestPval)
 				tTestPval <- cbind(Gene=rownames(mat), tTestPval)
 				
 				## Apply the FDR
@@ -111,7 +111,7 @@
 											method="fdr")
 							return(tTestFDR)
 						})
-				tTestFDR <- bind_cols(tTestFDR)
+				tTestFDR <- dplyr::bind_cols(tTestFDR)
 				tTestFDR <- cbind(Gene=as.factor(rownames(mat)), tTestFDR)
 				
 				submat <- as.matrix(tTestFDR[, 2:(length(otherGroups) + 1 )])
