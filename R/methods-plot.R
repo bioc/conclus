@@ -353,6 +353,7 @@ setMethod(
 				fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot)
 		
         sceObject <- getSceNorm(theObject)
+		expressionMatrix <-  Biobase::exprs(sceObject)
         cellsSimilarityMatrix <- getCellsSimilarityMatrix(theObject)
         colDf <- SummarizedExperiment::colData(sceObject)
         
