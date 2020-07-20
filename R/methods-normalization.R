@@ -1,4 +1,4 @@
-# .annotateGenes
+#' .annotateGenes
 #' Filling the rowData
 #'
 #' This function returns a rowData with the same rownames as in countMatrix
@@ -425,7 +425,7 @@
 }
 
 
-#' normaliseCountMatrix()
+#' normaliseCountMatrix
 #'
 #' @description
 #' This function uses coldata (cells informations) and rowdata (genes 
@@ -443,17 +443,14 @@
 #'  matrices. However, it is not recommended for datasets with less than 200
 #'  cells and may take too long for datasets with more than 10000 cells.
 #' 
-#' @aliases normaliseCountMatrix
-#' 
 #' @details
 #' This function uses the normalization method of the scater package. For more
 #' details about the normalization used see ?scater::normalize. The size factors
 #'  used in the normalization are calculated with scran::computeSumFactors.
 #' 
-#' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
-#' DESCOSTES.
 #' 
 #' @rdname normaliseCountMatrix-scRNAseq
+#' @aliases normaliseCountMatrix
 #' 
 #' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scater logNormCounts
@@ -479,8 +476,11 @@
 #'                 outputDirectory = outputDirectory)
 #' 
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#' @exportMethod 
- 
+#' 
+#' @exportMethod normaliseCountMatrix
+#' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
+#' DESCOSTES.
+
 setMethod(
 		
     f = "normaliseCountMatrix",
