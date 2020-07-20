@@ -5,11 +5,12 @@
 \alias{plotCellSimilarity}
 \title{plotCellSimilarity}
 \usage{
-plotCellSimilarity(theObject, colorPalette="default", statePalette="default",
- clusteringMethod="ward.D2", orderClusters=FALSE, savePlot=FALSE, 
-plotPDF=TRUE, returnPlot=TRUE, width=7, height=6, onefile=FALSE, 
-showRowNames=FALSE, showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, 
-widthPNG=800, heightPNG=750)
+plotCellSimilarity(theObject, colorPalette="default", 
+			statePalette="default", clusteringMethod="ward.D2", 
+			orderClusters=FALSE, savePlot=FALSE, plotPDF=TRUE, returnPlot=FALSE,
+			width=7, height=6, onefile=FALSE, showRowNames=FALSE, 
+			showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, widthPNG=800, 
+			heightPNG=750, silentPlot=FALSE)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was

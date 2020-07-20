@@ -2,14 +2,14 @@
 % Please edit documentation in R/methods-export.R
 \name{exportResults,scRNAseq-method}
 \alias{exportResults,scRNAseq-method}
-\alias{calculateClustersSimilarity}
+\alias{exportResults}
 \title{exportResults}
 \usage{
-exportResults(theObject, saveClusteringResults=TRUE, 
+exportResults(theObject, saveClusteringResults=TRUE, saveAll=FALSE, 
 saveNormalizedMatrix=FALSE, saveColData=FALSE, saveRowData=FALSE, 
 saveTsne=FALSE, saveDBScan=FALSE, saveCellsSimilarityMatrix=FALSE,
-saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE, 
-saveTopMarkers=FALSE, saveGenesInfos=FALSE, saveAll=FALSE)
+saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
+saveTopMarkers=FALSE, saveGenesInfos=FALSE)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which different steps of 

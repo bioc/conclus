@@ -5,8 +5,9 @@
 \alias{retrieveGenesInfo}
 \title{retrieveGenesInfo}
 \usage{
-retrieveGenesInfo(theObject, species, groupBy="clusters", 
-orderGenes="initial", getUniprot=TRUE, cores=1, saveInfos)
+retrieveGenesInfo(theObject, groupBy="clusters", 
+				orderGenes="initial", getUniprot=TRUE, cores=1, 
+				saveInfos=FALSE)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
@@ -31,8 +32,6 @@ Default is 1.}
 \item{saveInfos}{If TRUE, save the genes infos table in the directory 
 defined in theObject (?getOutputDirectory) and in the sub-directory 
 'marker_genes/saveGenesInfo'.}
-
-\item{species}{Allowed values are 'human' and 'mouse'.}
 }
 \value{
 An object of class scRNASeq with its genesInfos slot updated.

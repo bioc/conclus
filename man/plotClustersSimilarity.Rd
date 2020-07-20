@@ -8,7 +8,7 @@
 plotClustersSimilarity(theObject, colorPalette="default", 
 statePalette="default", clusteringMethod="ward.D2", returnPlot=FALSE, 
 savePlot=FALSE, plotPDF=TRUE, width=7, height=5.5, onefile=FALSE, 
-fontsize=7.5, widthPNG=800, heightPNG=750)
+fontsize=7.5, widthPNG=800, heightPNG=750, silentPlot=FALSE)
 }
 \arguments{
 \item{theObject}{A scRNAseq object with the cluster similarity matrix 

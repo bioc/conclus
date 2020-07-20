@@ -9,7 +9,7 @@ plotClusteredTSNE(theObject, colorPalette="default",
 			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
 			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
 			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
-			heightPNG=750, silentPlot=FALSE)
+			heightPNG=750, silentPlot=FALSE, tSNENb=NA)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
@@ -58,8 +58,8 @@ Defaults to FALSE.}
 \item{silentPlot}{If TRUE, the plots are not displayed on the current device.
 Default=FALSE.}
 
-\item{Give}{the number of the tSNE to plot. If NA, all tSNE solutions are 
-plotted (14 tSNE by default). Default=NA.}
+\item{tSNENb}{Give the number of the tSNE to plot. If NA, all tSNE solutions 
+are plotted (14 tSNE by default). Default=NA.}
 }
 \value{
 A list of ggplot objects if returnPlot is TRUE.
