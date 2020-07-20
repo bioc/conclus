@@ -172,11 +172,12 @@
 #' 
 #' ## Perform the clustering with dbScan
 #' scrDbscan <- runDBSCAN(scrTsne, cores=5)
-#' 
+#'
+#' @exportMethod runDBSCAN 
 #' @seealso
 #' normaliseCountMatrix generateTSNECoordinates
 #' 
-#' @exportMethod
+
 setMethod(
 		
 		f = "runDBSCAN",
