@@ -331,7 +331,7 @@ scRNAseq <- setClass(
 		genesInfos = "data.frame"
     ),
     prototype = list(
-        sceNorm = SingleCellExperiment(),
+        sceNorm = SingleCellExperiment::SingleCellExperiment(),
         tSNEList = list(new("Tsne")),
         dbscanList = list(new("Dbscan")),
         clustersSimilarityMatrix = as.matrix(data.frame(1, row.names=1)),  
