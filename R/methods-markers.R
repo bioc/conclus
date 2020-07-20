@@ -142,7 +142,7 @@
 					outputDir <- file.path(getOutputDirectory(theObject), 
 							"marker_genes")
 					outputFile <- paste0(getExperimentName(theObject),
-							"_cluster_", allGroups[i], "_genes.tsv")
+							"_cluster_", currentGroup, "_genes.tsv")
 					
 					write.table(tTestFDR, file.path(outputDir, outputFile),
 							col.names=TRUE, row.names=FALSE, quote=FALSE,
