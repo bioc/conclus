@@ -429,6 +429,10 @@ setMethod(
 #' @param outputDir Path to the output directory.
 #' 
 #' @keywords internal
+#' 
+#' @importFrom grDevices pdf
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
 #' @noRd
 .saveTSNEPlot <- function(tSNEList, tSNEplots, plotPDF, width, height, onefile, 
 		widthPNG, heightPNG, outputDir){

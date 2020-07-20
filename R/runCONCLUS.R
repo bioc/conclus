@@ -237,6 +237,7 @@
 #' 
 #' @export runCONCLUS
 #' @importFrom gridExtra grid.arrange
+#' @importFrom grDevices dev.new
 #' @author Nicolas Descostes
 
 runCONCLUS <- function(
