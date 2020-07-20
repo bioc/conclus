@@ -26,11 +26,16 @@
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
 #' png format. Default=TRUE.
+#' @param pheatmapObject Object containing the pheatmap
 #' 
 #' @keywords internal
+#' 
+#' @importFrom grDevices pdf
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off 
 #' @noRd
 .saveCellSim <- function(theObject, onefile, colDf, width, height, widthPNG, 
-		heightPNG, plotPDF){
+		heightPNG, plotPDF, pheatmapObject){
 	
 	message("\nSaving a heatmap with the cell similarity matrix.")
 	
@@ -391,7 +396,7 @@ setMethod(
         
 		if(savePlot)
 			.saveCellSim(theObject, onefile, colDf, width, height, widthPNG, 
-					heightPNG, plotPDF)
+					heightPNG, plotPDF, pheatmapObject)
 			
         if(returnPlot)
             return(pheatmapObject)
