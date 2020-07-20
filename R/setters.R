@@ -2,7 +2,7 @@
 ########################  Setters for scRNAseq class  ##########################
 ################################################################################
 
-#' @exportMethod setExperimentName
+#' @exportMethod setExperimentName<-
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -13,7 +13,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setCountMatrix
+#' @exportMethod setCountMatrix<-
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -24,7 +24,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setSceNorm
+#' @exportMethod setSceNorm<-
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -35,7 +35,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setSpecies
+#' @exportMethod setSpecies<-
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -46,7 +46,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setOutputDirectory
+#' @exportMethod setOutputDirectory<-
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -57,7 +57,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setTSNEList
+#' @exportMethod setTSNEList<-
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -68,7 +68,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setDbscanList
+#' @exportMethod setDbscanList<-
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -79,7 +79,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setCellsSimilarityMatrix
+#' @exportMethod setCellsSimilarityMatrix<-
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -90,7 +90,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setClustersSimilarityMatrix
+#' @exportMethod setClustersSimilarityMatrix<-
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -101,7 +101,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setClustersSimiliratyOrdered
+#' @exportMethod setClustersSimiliratyOrdered<-
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -112,7 +112,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setMarkerGenesList
+#' @exportMethod setMarkerGenesList<-
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -123,7 +123,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setClustersMarkers
+#' @exportMethod setClustersMarkers<-
 setReplaceMethod(
 		f="setClustersMarkers",
 		signature="scRNAseq",
@@ -134,7 +134,7 @@ setReplaceMethod(
 		})
 
 
-#' @exportMethod setGenesInfos
+#' @exportMethod setGenesInfos<-
 setReplaceMethod(
 		f="setGenesInfos",
 		signature="scRNAseq",
@@ -150,7 +150,7 @@ setReplaceMethod(
 ############################  Setters for Tsne class  ##########################
 ################################################################################
 
-#' @exportMethod setName
+#' @exportMethod setName<-
 setReplaceMethod(
     f = "setName",
     signature = "Tsne",
@@ -161,7 +161,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setPC
+#' @exportMethod setPC<-
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -172,7 +172,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setPerplexity
+#' @exportMethod setPerplexity<-
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -183,7 +183,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setCoordinates
+#' @exportMethod setCoordinates<-
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -198,7 +198,7 @@ setReplaceMethod(
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
-#' @exportMethod setName
+#' @exportMethod setName<-
 setReplaceMethod(
     f = "setName",
     signature = "Dbscan",
@@ -209,7 +209,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setEpsilon
+#' @exportMethod setEpsilon<-
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -220,7 +220,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setMinPoints
+#' @exportMethod setMinPoints<-
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -231,7 +231,7 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setClustering
+#' @exportMethod setClustering<-
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
