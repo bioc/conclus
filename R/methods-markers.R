@@ -89,6 +89,9 @@
 #' @keywords internal
 #' @return A list containing for each cluster the marker genes.
 #' @importFrom utils write.table
+#' @importFrom stats p.adjust
+#' @importFrom stats var
+#' @importFrom stats pt
 #' @noRd
 
 .buildMarkerGenesList <- function(theObject, groups, simMedRowList, exprM, 
@@ -112,7 +115,7 @@
 				tTestFDR <- lapply(otherGroups, function(currentOther){
 							
 							tTestFDR[, paste0("vs_", currentOther)] <- 
-									stats::p.adjust(tTestPval[, paste0("vs_", 
+									p.adjust(tTestPval[, paste0("vs_", 
 															currentOther)], 
 											method="fdr")
 							return(tTestFDR)

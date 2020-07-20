@@ -467,6 +467,8 @@ setMethod(
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_point
 #' @importFrom ggplot2 theme_bw
+#' @importFrom ggplot2 aes_string
+#' @importFrom ggplot2 scale_color_manual
 #' @noRd
 .computePlotList <- function(tSNEList, sceObject, columnName, colorPalette){
 	
