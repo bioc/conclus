@@ -850,7 +850,7 @@ setMethod(
 		## Saving tSNEs
 		if(savePlot)
 			.saveTSNEPlot(tSNEList, tSNEplots, plotPDF, width, height, onefile,
-					widthPNG, heightPNG, outputDir)
+					widthPNG, heightPNG, outputdir)
 		
         if(returnPlot)
             return(tSNEplots)
