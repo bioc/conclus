@@ -102,10 +102,12 @@
 #'  ?SingleCellExperiment::SingleCellExperiment for more details. 
 #' @param outputDir Output directory defined as dataDirectory/6_ConclusResult. 
 #' dataDirectory is directly retrieved from the scRNASeq object.
+#' @param experimentName Name of the experiment obtained with 
+#' ?getExperimentName.
 #' 
 #' @keywords internal
 #' @noRd
-.conclusResult <- function(theObject, sceObject, outputDir){
+.conclusResult <- function(theObject, sceObject, outputDir, experimentName){
 	
 	## Check that the cluster similarity matrix was computed
 	## This step is necessary to  update the 'clusters' column
@@ -528,7 +530,8 @@ setMethod(
 				.createFolder(outputClust)
 				
 				## Export Clustering results
-				.conclusResult(theObject, sceObject, outputClust)
+				.conclusResult(theObject, sceObject, outputClust, 
+						experimentName)
 			}
 			
 			
