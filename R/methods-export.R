@@ -8,6 +8,7 @@
 #' @param outputInfos Output directory defined as dataDirectory/9_genesInfos. 
 #' 
 #' @keywords internal
+#' @importFrom utils write.csv
 #' @noRd
 .exportGenesInfos <- function(theObject, outputInfos){
 
@@ -51,6 +52,7 @@
 #' complete lists. 
 #' 
 #' @keywords internal
+#' @importFrom utils write.csv
 #' @noRd
 .exportMarkers <- function(theObject, outputDir, listType="Full marker lists", 
 		top=FALSE){
@@ -106,6 +108,7 @@
 #' ?getExperimentName.
 #' 
 #' @keywords internal
+#' @importFrom utils write.table
 #' @noRd
 .conclusResult <- function(theObject, sceObject, outputDir, experimentName){
 	
@@ -149,6 +152,8 @@
 #' exports the clusters similarity matrix. Default=TRUE.
 #' 
 #' @keywords internal
+#' 
+#' @importFrom utils write.csv
 #' @noRd
 .exportCSM <- function(theObject, experimentName, outputDir, cell=TRUE){
 	
@@ -189,6 +194,7 @@
 #' dataDirectory is directly retrieved from the scRNASeq object.
 #' 
 #' @keywords internal
+#' @importFrom utils write.table
 #' @noRd
 .exportDBScan <- function(theObject, outputDir){
 	
@@ -226,6 +232,7 @@
 #' dataDirectory is directly retrieved from the scRNASeq object.
 #' 
 #' @keywords internal
+#' @importFrom utils write.table
 #' @noRd
 .exportTsne <- function(theObject, outputDir){
 	
@@ -273,6 +280,7 @@
 #' saved.
 #' 
 #' @keywords internal
+#' @importFrom utils write.table
 #' @noRd
 .exportNormInfo <- function(theObject, outputDir, experimentName, sceObject, f,
 		fileSuffix, objectName){

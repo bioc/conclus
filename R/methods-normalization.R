@@ -172,7 +172,9 @@
  #' @param colData Data frame containing informations about cells
  #' @param mb Vector of positive features reflecting the quality of cells
  #' @param mw Vector of negative features reflecting the lack of quality of cell
- #' @importFrom methods is 
+ #' 
+ #' @importFrom methods is
+ #' @importFrom stats quantile
  #' @import doParallel
  #' @keywords internal
  #'
