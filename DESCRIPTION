@@ -38,4 +38,5 @@ Imports:
     pheatmap,
     ggplot2,
     gridExtra,
-    SingleCellExperiment
+    SingleCellExperiment,
+    utils
