@@ -547,7 +547,6 @@ setMethod(
 #' @importFrom SummarizedExperiment colData
 #' @importFrom stats hclust
 #' @importFrom stats as.dist
-#' @importFrom dynamicTreeCut cutreeDynamic
 #' @importFrom stats cutree
 #' @importFrom methods validObject
 
