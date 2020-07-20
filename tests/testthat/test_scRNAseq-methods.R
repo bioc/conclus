@@ -37,60 +37,6 @@ pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
 # source("R/runCONCLUS.R")
 
 
-!!!!!!!!!!!
-		
-outputDirectory="YourOutputDirectory"
-experimentName="Bergiers"
-countMatrix=as.matrix(read.delim(file.path("tests/testthat/test_data/test_countMatrix.tsv")))
-species="mouse"
-cores=1 
-clusteringMethod="ward.D2"
-exportAllResults=TRUE
-orderClusters=FALSE
-clusToAdd=NA
-sizes=c(20,40,60,80,100)
-rowMetaData=NULL
-columnsMetaData = read.delim(file.path("inst/extdata/Bergiers_colData_filtered.tsv"))
-alreadyCellFiltered=FALSE
-runQuickCluster=TRUE
-randomSeed = 42
-PCs=c(4, 6, 8, 10, 20, 40, 50)
-perplexities=c(30,40)
-writeOutputTSne = FALSE
-epsilon=c(1.3, 1.4, 1.5)
-minPoints=c(3, 4)
-writeOutputDbScan=FALSE
-clusterNumber=10
-deepSplit=4
-columnRankGenes="clusters"
-writeOutputRankGenes=FALSE
-nTopMarkers=10
-removeDuplicates = TRUE
-writeTopMarkers=FALSE
-groupBy="clusters"
-orderGenes="initial"
-getUniprot=TRUE 
-saveInfos=FALSE 
-colorPalette="default"
-statePalette="default"
-writeCSM=FALSE 
-widthCSM=7
-heightCSM=6
-savePlotCTSNE=FALSE
-widthPlotClustTSNE=6
-heightPlotClustTSNE=5
-meanCentered=TRUE
-orderGenesCH=FALSE
-savePlotCH=FALSE
-widthCH=10
-heightCH=8.5
-clusterCols=FALSE 
-savePlotClustSM=FALSE
-widthPlotClustSM=7
-heightPlotClustSM=5.5		
-!!!!!!!!!!!!!!
-
-
 library(conclus)
 ## Data
 
