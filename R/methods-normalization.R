@@ -24,14 +24,14 @@
 	 if(isTRUE(all.equal(species, "human"))){
 		 
 		 # suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
-		 genomeAnnot <- org.Hs.eg.db
+		 genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
 		 ensemblPattern <- "ENSG"
 		 ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
 		 
 	 }else if(isTRUE(all.equal(species, "mouse"))){
 		 
 		 # suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
-		 genomeAnnot <- org.Mm.eg.db
+		 genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
 		 ensemblPattern <- "ENSMUSG"
 		 ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
 		 
