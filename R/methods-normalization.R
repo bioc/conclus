@@ -457,6 +457,8 @@
 #' 
 #' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scater logNormCounts
+#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom SingleCellExperiment sizeFactors
 #' 
 #' @return Returns a scRNASeq object with its SCEnorm slot updated. This slot
 #' contains a SingleCellExperiment object having the normalized count matrix,

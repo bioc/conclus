@@ -71,6 +71,7 @@ createDirectory <- function(dataDirectory, directory){
 #' 
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom foreach foreach
+#' @importFrom SingleCellExperiment SingleCellExperiment
 #' @import doParallel
 #' @return Returns the combinations of tSNES
 #' @noRd
@@ -86,7 +87,8 @@ createDirectory <- function(dataDirectory, directory){
 					.packages="SingleCellExperiment") %dopar% {
 				
 				listsce <- list(logcounts=t(PCAData[, 1:PCA]))
-				sce <- SingleCellExperiment(assays=listsce)
+				sce <- SingleCellExperiment::SingleCellExperiment(
+						assays=listsce)
 				
 				tsneCoord <- scater::runTSNE(sce, scale_features=FALSE,
                 perplexity=perp, rand_seed=randomSeed, theme_size=13,
