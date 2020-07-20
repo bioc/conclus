@@ -1211,7 +1211,10 @@ setMethod(
 #' @exportMethod plotCellHeatmap
 #' @importFrom SummarizedExperiment colData
 #' @importFrom Biobase exprs
-#' @importFrom pheatmap pheatmap 
+#' @importFrom pheatmap pheatmap
+#' @importFrom stats dist
+#' @importFrom stats hclust
+#' @importFrom grDevices colorRampPalette
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(

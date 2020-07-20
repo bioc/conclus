@@ -540,12 +540,14 @@ setMethod(
 #' ## Compute the cell similarity matrix
 #' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
 #' 
-#' @seealso
-#' plotCellSimilarity 
+#' @seealso plotCellSimilarity 
 #' 
 #' @exportMethod clusterCellsInternal
 #' @importFrom SummarizedExperiment colData
-
+#' @importFrom stats hclust
+#' @importFrom stats as.dist
+#' @importFrom dynamicTreeCut cutreeDynamic
+#' @importFrom stats cutree
 
 setMethod(
 		
@@ -752,7 +754,8 @@ setMethod(
 #' 
 #' @exportMethod calculateClustersSimilarity
 #' @importFrom SummarizedExperiment colData
-
+#' @importFrom stats as.dist
+#' @importFrom stats hclust
 setMethod(
 		
 		f = "calculateClustersSimilarity",
@@ -897,6 +900,7 @@ setMethod(
 #' 
 #' @exportMethod addClustering
 #' @importFrom SummarizedExperiment colData
+#' @importFrom utils read.table
 
 
 setMethod(
