@@ -186,10 +186,10 @@ Dbscan <- setClass(
 #' setClustersSimilarityMatrix setClustersSimiliratyOrdered
 #' setMarkerGenesList setClustersMarkers setGenesInfos
 #' @exportClass scRNAseq
-#' @import SingleCellExperiment
+#' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom methods new
 #'
-#' @section Details:
+#' @details
 #' \describe{
 #'    \item{\code{experimentName}:}{\code{"character"} string representing 
 #'    the name of the experiment. Many output of scRNAseq will use
@@ -225,7 +225,7 @@ Dbscan <- setClass(
 #'     the markers genes each clusters. See ?retrieveGenesInfo}
 #' }
 #'     
-#'     
+#'    
 #' @section Constructor:
 #' \describe{
 #' 
