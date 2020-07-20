@@ -11,7 +11,7 @@ Depends: R (>= 4.1)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown
@@ -35,3 +35,18 @@ Imports:
     ggplot2,
     gridExtra,
     SingleCellExperiment
+Collate: 
+    'AllClasses.R'
+    'AllGenerics.R'
+    'checkFunctions.R'
+    'getters.R'
+    'methods-clustering.R'
+    'methods-dbscan.R'
+    'methods-export.R'
+    'methods-markers.R'
+    'methods-normalization.R'
+    'sharedInternals.R'
+    'methods-plot.R'
+    'methods-tsne.R'
+    'runCONCLUS.R'
+    'setters.R'
