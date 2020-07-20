@@ -37,7 +37,7 @@ pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
 # source("R/runCONCLUS.R")
 
 
-library(conclus)
+#library(conclus)
 ## Data
 
 outputDirectory <- "YourOutputDirectory"
