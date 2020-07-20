@@ -14,7 +14,9 @@ LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    S4Vectors,
+    matrixStats
 VignetteBuilder: knitr
 Imports: 
     dbscan,
@@ -35,7 +37,3 @@ Imports:
     ggplot2,
     gridExtra,
     SingleCellExperiment
-Suggests:
-    S4Vectors,
-    matrixStats
-  
