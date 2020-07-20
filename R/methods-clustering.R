@@ -107,6 +107,8 @@
 #' 
 #' @keywords internal
 #' 
+#' @importFrom grDevices pdf
+#' @importFrom grDevices dev.off
 #' @noRd
 
 .printTSNE <- function(writeOutput, dataDirectory, width, height, tSNE, 
@@ -149,6 +151,9 @@
 #' 
 #' @keywords internal
 #' 
+#' @importFrom grDevices pdf
+#' @importFrom grDevices dev.off
+#' @importFrom grDevices dev.new
 #' @noRd
 
 .printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
@@ -192,6 +197,10 @@
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #' 
 #' @keywords internal
+#' 
+#' @importFrom grDevices pdf
+#' @importFrom grDevices dev.off
+#' @importFrom grDevices dev.new
 #' 
 #' @noRd
 
