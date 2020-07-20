@@ -39,4 +39,5 @@ Imports:
     ggplot2,
     gridExtra,
     SingleCellExperiment,
-    utils
+    utils,
+    stats
