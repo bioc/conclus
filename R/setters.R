@@ -2,6 +2,7 @@
 ########################  Setters for scRNAseq class  ##########################
 ################################################################################
 
+#' @exportMethod setExperimentName
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -12,6 +13,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setCountMatrix
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -22,6 +24,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setSceNorm
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -32,6 +35,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setSpecies
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -42,6 +46,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setOutputDirectory
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -52,6 +57,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setTSNEList
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -62,6 +68,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setDbscanList
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -72,6 +79,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setCellsSimilarityMatrix
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -82,6 +90,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setClustersSimilarityMatrix
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -92,6 +101,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setClustersSimiliratyOrdered
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -102,6 +112,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setMarkerGenesList
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -112,6 +123,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setClustersMarkers
 setReplaceMethod(
 		f="setClustersMarkers",
 		signature="scRNAseq",
@@ -122,6 +134,7 @@ setReplaceMethod(
 		})
 
 
+#' @exportMethod setGenesInfos
 setReplaceMethod(
 		f="setGenesInfos",
 		signature="scRNAseq",
@@ -137,7 +150,7 @@ setReplaceMethod(
 ############################  Setters for Tsne class  ##########################
 ################################################################################
 
-
+#' @exportMethod setName
 setReplaceMethod(
     f = "setName",
     signature = "Tsne",
@@ -148,7 +161,7 @@ setReplaceMethod(
     })
 
 
-
+#' @exportMethod setPC
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -159,6 +172,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setPerplexity
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -169,6 +183,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setCoordinates
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -183,7 +198,7 @@ setReplaceMethod(
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
-
+#' @exportMethod setName
 setReplaceMethod(
     f = "setName",
     signature = "Dbscan",
@@ -194,6 +209,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setEpsilon
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -204,6 +220,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setMinPoints
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -214,6 +231,7 @@ setReplaceMethod(
     })
 
 
+#' @exportMethod setClustering
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
