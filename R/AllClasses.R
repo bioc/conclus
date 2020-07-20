@@ -189,7 +189,7 @@ Dbscan <- setClass(
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom methods new
 #'
-#' @details
+#' @section details:
 #' \describe{
 #'    \item{\code{experimentName}:}{\code{"character"} string representing 
 #'    the name of the experiment. Many output of scRNAseq will use
