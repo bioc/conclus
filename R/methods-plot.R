@@ -326,11 +326,16 @@
 #' plotCellSimilarity(scrCSM)
 #' 
 #' @return A pheatmap object of the similarity heatmap if returnPlot is TRUE.
+#' 
 #' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
 #' plotGeneExpression plotClustersSimilarity
+#' 
 #' @exportMethod plotCellSimilarity
 #' @importFrom SummarizedExperiment colData
 #' @importFrom pheatmap pheatmap
+#' @importFrom Biobase exprs
+#' @importFrom stats as.dist
+#' @importFrom stats hclust
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
@@ -779,9 +784,13 @@ setMethod(
 #' plotClusteredTSNE(scrCSM)
 #' 
 #' @return A list of ggplot objects if returnPlot is TRUE.
+#' 
 #' @seealso calculateClustersSimilarity plotCellSimilarity plotCellHeatmap
 #' plotGeneExpression plotClustersSimilarity
+#' 
 #' @exportMethod plotClusteredTSNE
+#' @importFrom grDevices dev.new
+#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 
