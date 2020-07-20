@@ -437,15 +437,15 @@ setMethod(
 #' querying the Ensembl database with biomaRt.
 #'
 #' @usage 
-#' retrieveGenesInfo(theObject, species, groupBy="clusters", 
-#' orderGenes="initial", getUniprot=TRUE, cores=1, saveInfos)
+#' retrieveGenesInfo(theObject, groupBy="clusters", 
+#' 				orderGenes="initial", getUniprot=TRUE, cores=1, 
+#' 				saveInfos=FALSE)
 #' 
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
 #' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
 #' clustered (see ?clusterCellsInternal), as clusters themselves (see 
 #' ?calculateClustersSimilarity).
-#' @param species Allowed values are 'human' and 'mouse'.
 #' @param groupBy A column in the input table used for grouping the genes in 
 #' the output tables. This option is useful if a table contains genes from 
 #' different clusters. Default = "clusters".

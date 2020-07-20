@@ -243,11 +243,12 @@
 #' see similarity between parts of different clusters.
 #'
 #' @usage
-#' plotCellSimilarity(theObject, colorPalette="default", statePalette="default",
-#'  clusteringMethod="ward.D2", orderClusters=FALSE, savePlot=FALSE, 
-#' plotPDF=TRUE, returnPlot=TRUE, width=7, height=6, onefile=FALSE, 
-#' showRowNames=FALSE, showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, 
-#' widthPNG=800, heightPNG=750)
+#' plotCellSimilarity(theObject, colorPalette="default", 
+#' 			statePalette="default", clusteringMethod="ward.D2", 
+#' 			orderClusters=FALSE, savePlot=FALSE, plotPDF=TRUE, returnPlot=FALSE,
+#' 			width=7, height=6, onefile=FALSE, showRowNames=FALSE, 
+#' 			showColnames=FALSE, fontsize=7.5, fontsizeRow=0.03, widthPNG=800, 
+#' 			heightPNG=750, silentPlot=FALSE)
 #' 			
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
@@ -707,7 +708,7 @@ setMethod(
 #' 			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
 #' 			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
 #' 			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
-#' 			heightPNG=750, silentPlot=FALSE)
+#' 			heightPNG=750, silentPlot=FALSE, tSNENb=NA)
 #'  
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
@@ -741,8 +742,8 @@ setMethod(
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
 #' Default=FALSE.
-#' @param Give the number of the tSNE to plot. If NA, all tSNE solutions are 
-#' plotted (14 tSNE by default). Default=NA.
+#' @param tSNENb Give the number of the tSNE to plot. If NA, all tSNE solutions 
+#' are plotted (14 tSNE by default). Default=NA.
 #' 
 #' @aliases plotClusteredTSNE
 #' @rdname plotClusteredTSNE-scRNAseq
@@ -1129,7 +1130,8 @@ setMethod(
 #' 			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
 #' 			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
 #' 			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
-#' 			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750)
+#' 			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750, 
+#'          silentPlot)
 #' 
 #' @param theObject A scRNAseq object with the cluster similarity matrix 
 #' obtained with ?calculateClustersSimilarity method and the top markers 
@@ -1161,7 +1163,7 @@ setMethod(
 #' taken into account in the hierarchical clustering. Default=FALSE.
 #' @param showColnames Shoud the names of the columns (clusters) be indicated on
 #' the heatmap. Default = FALSE.
-#' @param fontSize base fontsize for the plot. Default = 7.5.
+#' @param fontsize base fontsize for the plot. Default = 7.5.
 #' @param fontsizeRow fontsize for rownames. Default = 8.
 #' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png 
 #' otherwise. Default = TRUE.
@@ -1665,7 +1667,7 @@ setMethod(
 #' plotClustersSimilarity(theObject, colorPalette="default", 
 #' statePalette="default", clusteringMethod="ward.D2", returnPlot=FALSE, 
 #' savePlot=FALSE, plotPDF=TRUE, width=7, height=5.5, onefile=FALSE, 
-#' fontsize=7.5, widthPNG=800, heightPNG=750)
+#' fontsize=7.5, widthPNG=800, heightPNG=750, silentPlot=FALSE)
 #' 
 #' @param theObject A scRNAseq object with the cluster similarity matrix 
 #' obtained with ?calculateClustersSimilarity.
