@@ -3,7 +3,8 @@
 #' @description 
 #' Use doParallel to calculate clusters with dbScan algorithm.
 #'
-#' @param tSNEList
+#' @param tSNEList List of tSNE coordinates obtained with 
+#' ?generateTSNECoordinates.
 #' @param cores The number of cores to use for parallelisation. Default = 1.
 #' @param epsilon Reachability distance parameter of fpc::dbscan() function. 
 #' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
