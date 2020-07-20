@@ -88,6 +88,7 @@
 #' 
 #' @keywords internal
 #' @return A list containing for each cluster the marker genes.
+#' @importFrom utils write.table
 #' @noRd
 
 .buildMarkerGenesList <- function(theObject, groups, simMedRowList, exprM, 
