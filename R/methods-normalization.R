@@ -15,8 +15,6 @@
 #'
 #' @importFrom biomaRt useMart getBM
 #' @importFrom AnnotationDbi keys select
-#' @import org.Hs.eg.db
-#' @import org.Mm.eg.db
 #' @return Returns the rowData filled with annotations
 #' @noRd
  .annotateGenes <- function(countMatrix, species, rowdataDF){
