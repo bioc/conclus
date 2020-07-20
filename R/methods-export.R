@@ -398,7 +398,7 @@
 #' 
 #' ## Saving all results
 #' exportResults(scrInfos, saveAll=TRUE)
-#' @exportMethod
+#' @exportMethod exportResults
 #' @importFrom SummarizedExperiment rowData
 #' @importFrom SummarizedExperiment colData
 #' @importFrom Biobase exprs
