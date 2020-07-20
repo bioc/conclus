@@ -7,67 +7,57 @@
 
 #' The Tsne class
 #'
+#' @description
 #' S4 class containing the features to plot tSNEs. This constructor is internal
 #' and is used by the method generateTSNECoordinates.
 #'
-#' @name Tsne-class
 #' @rdname Tsne-class
-#' @aliases getTsneName getPC getPerplexity getCoordinates
-#' @aliases setTsneName setPC setPerplexity setCoordinates
+#' @aliases Tsne-class Tsne getTsneName getPC getPerplexity getCoordinates
+#' setTsneName setPC setPerplexity setCoordinates
+#' 
+#' @slot name A 'character' string representing the name of the tSNE 
+#' coordinates.
+#' @slot pc A 'numeric' value representing the number of principal components 
+#' used by CONCLUS to perfom a PCA before calculating the tSNE. 
+#' @slot perplexity A 'numeric'. Default: c(30, 40)
+#' @slot coordinates A 'numeric' matrix that contains the coordinates of one 
+#' tSNE solution.
 #' 
 #' @details
-#'  \describe{
-#'	  Tsne is a vector of principal commponents (PC) and perplexity that are
-#'    the parameters necessary to reduce the dimensionality of the data in the
-#'   the form of a t-distributed stochastic neighbor embedding (t-SNE). For 
-#'   details about perplexities parameter see ‘?Rtsne’. This information is 
-#'   stored in four components:
-#'
-#'    \item{\code{name}:}{A \code{"character"} string representing the name of 
-#'    the tSNE coordinates.}
-#'    \item{\code{pc}:}{A \code{"numeric"} value representing the number
-#'    of principal components used by CONCLUS to perfom a PCA before performing
-#'    the tSNE. 
-#'    \item{\code{perplexity}:}{A \code{"numeric"}. Default: c(30, 40) }
-#'    \item{\code{coordinates}:}{A \code{"numeric"} \code{"matrix"} that 
-#'    contains the coordinates of one tSNE solution.}
-#'    }}
-#'
+#'	Tsne is a vector of principal commponents (PC) and perplexity that are the 
+#' parameters necessary to reduce the dimensionality of the data in the the form
+#'  of a t-distributed stochastic neighbor embedding (t-SNE). For details about 
+#' perplexities parameter see ‘?Rtsne’.
 #'
 #' @section Constructor:
-#' \describe{
 #'    Tsne(name = "character", pc = "numeric", perplexity = "numeric", 
 #'         coordinates = "matrix")
 #' 
-#'    \item{\code{name}:}{Empty character string or the name of the tSNE.}
-#'    \item{\code{pc}:}{Empty \code{"numeric"} number of PCs.}
-#'    \item{\code{perplexity}:}{Empty \code{"numeric"} perplexity values.}
-#'    \item{\code{coordinates}:}{Empty \code{"numeric"} \code{"matrix"} or 
-#'    matrix of coordinates.}}
+#'    name: Empty character string or the name of the tSNE.
+#'    pc: Empty 'numeric' number of PCs.
+#'    perplexity: Empty 'numeric' perplexity values.
+#'    coordinates: Empty 'numeric' "matrix" or matrix of coordinates.
 #'
-#'  
 #' @section Accessors:
-#'   \describe{
-#'     In the following snippets, x is a Tsne object.
+#'
+#' In the following snippets, x is a Tsne object.
 #' 
-#'     \item{\code{getTsneName(x)}: Get the name of the tSNE.}
-#'     \item{\code{getPC(x)}: Get the PC used} 
-#'     \item{\code{getPerplexity(x)}: Get the perplexity used}
-#'     \item{\code{getCoordinates(x)}: Get the matrix of tSNE coordinates.}}
-#' 
+#' getTsneName(x): Get the name of the tSNE.
+#' getPC(x): Get the PC used. 
+#' getPerplexity(x): Get the perplexity used.
+#' getCoordinates(x): Get the matrix of tSNE coordinates.
 #' 
 #' @section Subsetting:
-#'   \describe{
+#' 
 #'     In the following snippets, x is a Tsne object.
 #' 
-#'     \item{\code{setTsneName(x) <- value}: Set the name of the tSNE.}
-#'     \item{\code{setPC(x) <- value}: Set the PC parameter.} 
-#'     \item{\code{setPerplexity(x) <- value}: Set the perplexity parameter.}
-#'     \item{\code{setCoordinates(x) <- value}: Set the matrix of tSNE 
-#'     coordinates.}}
+#'     setTsneName(x) <- value: Set the name of the tSNE.
+#'     setPC(x) <- value: Set the PC parameter. 
+#'     setPerplexity(x) <- value: Set the perplexity parameter.
+#'     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.
 #' 
 #' @author Ilyess Rachedi
-#' @seealso \code{\link{generateTSNECoordinates}}
+#' @seealso generateTSNECoordinates
 
 Tsne <- setClass(
     "Tsne",
@@ -95,65 +85,55 @@ Tsne <- setClass(
 
 #' The Dbscan class
 #'
+#' @description
 #' S4 class containing the features to plot DBSCAN. This constructor is internal
 #' and is used by the method runDBSCAN.
 #'
-#' @name Dbscan-class
 #' @rdname Dbscan-class
-#' @aliases getDbscanName getEpsilon getMinPoints getClustering
-#' @aliases setDbscanName setEpsilon setMinPoints setClustering
+#' @aliases Dbscan Dbscan-class getDbscanName getEpsilon getMinPoints 
+#' getClustering setDbscanName setEpsilon setMinPoints setClustering
 #' 
-#' @section Details:
-#'  \describe{
-#'    \item{\code{name}:}{A \code{"character"} string representing the name of 
-#'    the Dbscan clustering.}
-#'    \item{\code{epsilon}:}{\code{"numeric"} value. The epsilon
-#'    is the distance to consider two points belonging to the same cluster.
-#'    Default epsilon= c(1.3, 1.4, 1.5)}
-#'    \item{\code{minPoints}:}{\code{"numeric"} value. The minPoints
-#'    is the minimum number of points to construct a cluster.}
-#'    \item{\code{clustering}:}{A \code{"matrix"} that contains
-#'    the result of one DBSCAN clustering solution.}}
+#' @slot name A 'character' string representing the name of the Dbscan 
+#' clustering.
+#' @slot epsilon A 'numeric' value. The epsilon is the distance to consider two 
+#' points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)
+#' @slot minPoints A 'numeric' value. The minPoints is the minimum number of 
+#' points to construct a cluster.
+#' @slot clustering A 'matrix' that contains the result of one DBSCAN clustering
+#' solution.
 #'
 #' @section Constructor:
-#' \describe{
+#' 
 #'    Dbscan(name = "character", epsilon = "numeric", minPoints = "numeric", 
 #'         clustering = "matrix")
 #' 
-#'    \item{\code{name}:}{Empty character string or the name of the tSNE.}
-#'    \item{\code{epsilon}:}{Empty \code{"numeric"} representing the epsilon.}
-#'    \item{\code{minPoints}:}{Empty \code{"numeric"} representing the
-#'     minPoints value.}
-#'    \item{\code{clustering}:}{Empty \code{"numeric"} \code{"matrix"} or 
-#'    matrix of clustering}}
+#'    name: Empty character string or the name of the tSNE.
+#'    epsilon: Empty 'numeric' representing the epsilon.
+#'    minPoints: Empty 'numeric' representing the minPoints value.
+#'    clustering: Empty 'numeric' "matrix" or matrix of clustering.
 #'
 #'  
 #' @section Accessors:
-#'   \describe{
+#' 
 #'     In the following snippets, x is a Dbscan object.
 #' 
-#'     \item{\code{getDbscanName(x)}: Get the name of the Dbscan}
-#'     \item{\code{getEpsilon(x)}: Get the epsilon used.} 
-#'     \item{\code{getMinPoints(x)}: Get the MinPoint used.}
-#'     \item{\code{getClustering(x)}: Get the matrix of DBSCAN clustering}}
+#'     getDbscanName(x): Get the name of the Dbscan.
+#'     getEpsilon(x): Get the epsilon used. 
+#'     getMinPoints(x): Get the MinPoint used.
+#'     getClustering(x): Get the matrix of DBSCAN clustering.
 #' 
 #' 
 #' @section Subsetting:
-#'   \describe{
+#' 
 #'     In the following snippets, x is a Dbscan object.
 #' 
-#'     \item{\code{setDbscanName(x) <- value}: Set the name of the Dbscan}
-#'     \item{\code{setEpsilon(x) <- value}: Set the epsilon used.} 
-#'     \item{\code{setMinPoints(x) <- value}: Set the minPoints used}
-#'     \item{\code{setClustering(x) <- value}: Set the matrix of Dbscan
-#'     clustering..}}
+#'     setDbscanName(x) <- value: Set the name of the Dbscan.
+#'     setEpsilon(x) <- value: Set the epsilon used. 
+#'     setMinPoints(x) <- value: Set the minPoints used.
+#'     setClustering(x) <- value: Set the matrix of Dbscan clustering.
 #' 
 #' @author Ilyess Rachedi
-#' 
-#' @section See also:
-#' \describe{
-#'   \code{\link{runDBSCAN}}
-#' }  
+#' @seealso runDBSCAN
 
 Dbscan <- setClass(
     "Dbscan",
@@ -172,62 +152,50 @@ Dbscan <- setClass(
 
 #' The scRNAseq class
 #'
+#' @description
 #' S4 class and the main class used by CONCLUS containing the results of the 
 #' different steps to analyse rare cell populations.
 #'
-#' @name scRNAseq-class
+#' @slot experimentName 'character' string representing the name of the 
+#' experiment. Many output of scRNAseq will use this name.
+#' @slot countMatrix An 'integer matrix' representing the raw count matrix with 
+#' reads or unique molecular identifiers (UMIs).
+#' @slot sceNorm Object of class SingleCellExperiment that contains the colData 
+#' giving informations about cells and the rowData giving informations about 
+#' genes. It also contains the normalized count matrix.
+#' @slot species 'character' string representing the species of interest. 
+#' Currently limited to "mouse" and "human".
+#' @slot outputDirectory A 'character' string of the path to the root output 
+#' folder.
+#' @slot tSNEList List of 'Tsne' objects representing the different tSNE 
+#' coordinates generated by CONCLUS.
+#' @slot dbscanList List of 'Dbscan' objects representing the different Dbscan 
+#' clustering generated by CONCLUS.
+#' @slot cellsSimilarityMatrix A numeric Matrix defining how many times two 
+#' cells have been associated to the same cluster across the 84 solutions of 
+#' clustering.
+#' @slot clustersSimilarityMatrix A numeric matrix comparing the robustness of 
+#' the consensus clusters.
+#' @slot clustersSimiliratyOrdered A factor representing the clusters ordered by
+#'  similarity.
+#' @slot markerGenesList list of data.frames. Each data frame contains the 
+#' ranked genes of one cluster.
+#' @slot clustersMarkers A data frame containing the top 10 (by default) marker 
+#' genes of each clusters.
+#' @slot genesInfos A data frame containing informations of the markers genes 
+#' for each clusters.
+#' 
 #' @rdname scRNAseq-class
-#' @aliases getExperimentName getCountMatrix getSceNorm getSpecies
-#' getOutputDirectory getTSNEList getDbscanList getCellsSimilarityMatrix
-#' getClustersSimilarityMatrix getClustersSimiliratyOrdered
-#' getMarkerGenesList getClustersMarkers getGenesInfos
-#' @aliases setExperimentName setCountMatrix setSceNorm setSpecies
+#' @aliases scRNAseq scRNAseq-class getExperimentName getCountMatrix getSceNorm
+#'  getSpecies getOutputDirectory getTSNEList getDbscanList 
+#' getCellsSimilarityMatrix getClustersSimilarityMatrix 
+#' getClustersSimiliratyOrdered getMarkerGenesList getClustersMarkers 
+#' getGenesInfos setExperimentName setCountMatrix setSceNorm setSpecies
 #' setOutputDirectory setTSNEList setDbscanList setCellsSimilarityMatrix
 #' setClustersSimilarityMatrix setClustersSimiliratyOrdered
 #' setMarkerGenesList setClustersMarkers setGenesInfos
-#' @exportClass scRNAseq
-#' @importFrom SingleCellExperiment SingleCellExperiment
-#' @importFrom methods new
 #'
-#' @section details:
-#' \describe{
-#'    \item{\code{experimentName}:}{\code{"character"} string representing 
-#'    the name of the experiment. Many output of scRNAseq will use
-#'    this name.}
-#'    \item{\code{countMatrix}:}{\code{"integer"}{\code{"matrix"} representing,
-#'    the raw matrix with reads or unique molecular identifiers (UMIs).}
-#'    \item{\code{sceNorm}:}{Object of class SingleCellExperiment.
-#'    Contain the colData giving informations about cell;
-#'    the rowData giving informations about genes and the normalized
-#'    count matrix. Fill it with \code{\link{normaliseCountMatrix}.}
-#'    \item{\code{species}:}{\code{"character"} string representing the species
-#'     of interest. Actually limited to "mouse" and "human".}
-#'    \item{\code{outputDirectory}:}{\code{"character"} string representing the
-#'     path to the root output folder.}
-#'    \item{\code{tSNEList}:}{List of \code{"Tsne"} objects representing the
-#'    different tSNE coordinates generated by CONCLUS.}
-#'    \item{\code{dbscanList}:}{List of \code{"Dbscan"} objects representing the
-#'    different Dbscan clustering generated by CONCLUS.}
-#'    \item{\code{cellsSimilarityMatrix}:}{ Numeric \code{Matrix}. Define how 
-#'    many times twos cell have been associated to the same cluster across the 
-#'    84 solutions of clustering. }
-#'    \item{\code{clustersSimilarityMatrix}:}{"Numeric" \code{"matrix"}
-#'    comparing the robustness of the consensus clusters. 
-#'    See vignette for details.}
-#'    \item{\code{clustersSimiliratyOrdered}:}{\code{factor} representing 
-#'    the clusters ordered by similarity.}
-#'    \item{\code{markerGenesList}:}{\code{list} of data.frames. Each data frame 
-#'    contains the ranked genes of one cluster. See ?rankGenes for details.}
-#'    \item{\code{clustersMarkers}:}{\code{data.frame} containing the top 10 
-#'    (by default) of marker genes of each clusters. See 
-#'    ?retrieveTopClustersMarkers}
-#'    \item{\code{genesInfos}:}{\code{data.frame} containing informations of
-#'     the markers genes each clusters. See ?retrieveGenesInfo}
-#' }
-#'     
-#'    
 #' @section Constructor:
-#' \describe{
 #' 
 #' scRNAseq(experimentName = "character", countMatrix = "matrix", 
 #' sceNorm = "SingleCellExperiment", species = "character", 
@@ -236,82 +204,81 @@ Dbscan <- setClass(
 #' clustersSimiliratyOrdered = "factor", markerGenesList = "list", 
 #' clustersMarkers = "data.frame", genesInfos = "data.frame")
 #' 
-#' 
-#'    \item{\code{experimentName}:}{String of the name of the experiment.}
-#'    \item{\code{countMatrix}:}{\code{Matrix} containing the raw counts}
-#'    \item{\code{sceNorm}:}{Empty or \code{SingleCellExperiment object }
-#'    containing, the normalized count matrix, the colData and the rowData.}
-#'    \item{\code{species}:}{\code{"Character"} representing the species of
-#'    interest. Shoud be mouse or human.}
-#'    \item{\code{outputDirectory}:}{\code{"Character"} representing the path
-#'    to the output directory.}
-#'    \item{\code{tSNEList}:}{Empty or list of \code{Tsne} object.}
-#'    \item{\code{dbscanList}:}{Empty or list of \code{Dbscan} object.}
-#'    \item{\code{cellsSimilarityMatrix}:}{Empty or cells * cells \code{matrix} 
-#'    with similarity scores.}
-#'    \item{\code{clustersSimilarityMatrix}:}{Empty or clusters
-#'    \code{matrix} with similarity scores.}
-#'    \item{\code{clustersSimiliratyOrdered}:}{Empty or \code{factor}
-#'     representing the clusters ordered by similarity.}
-#'    \item{\code{markerGenesList}:}{Empty of \code{list} of data.frames. 
-#'    Each data frame contains the ranked genes of one cluster.}
-#'    \item{\code{clustersMarkers}:}{Empty or \code{data.frame} containing the 
-#'    top 10 (by default) of marker genes of each clusters.}
-#'    \item{\code{genesInfos}:}{Empty or \code{data.frame} containing 
-#'    informations about the markers genes each clusters.}}
+#' experimentName: String of the name of the experiment.
+#' countMatrix Matrix containing the raw counts.
+#' sceNorm: Empty or SingleCellExperiment object containing the normalized count
+#'  matrix, the colData and the rowData.
+#' species: 'character' representing the species of interest. Shoud be mouse or 
+#' human.
+#' outputDirectory: 'character' representing the path to the output directory.
+#' tSNEList: Empty or list of Tsne objects.
+#' dbscanList: Empty or list of Dbscan objects.
+#' cellsSimilarityMatrix: Empty or cells matrix with similarity scores.
+#' clustersSimilarityMatrix: Empty or clusters matrix with similarity scores.
+#' clustersSimiliratyOrdered: Empty or factor representing the clusters ordered 
+#' by similarity.
+#' markerGenesList: Empty or list of data frames. Each data frame contains the 
+#' ranked genes of one cluster.
+#' clustersMarkers: Empty or data frame containing the top 10 (by default) 
+#' marker genes of each clusters.
+#' genesInfos: Empty or dataframe containing informations about the markers 
+#' genes each clusters.
 #'    
 #'    
 #' @section Accessors:
-#'   \describe{
+#' 
 #'     In the following snippets, x is a scRNAseq object.
 #' 
-#'     \item{\code{getExperimentName(x)}: Get the name of the experiment}
-#'     \item{\code{getCountMatrix(x)}: Get the count matrix.} 
-#'     \item{\code{getSceNorm(x)}: Get the SingleCellExperiment object used.}
-#'     \item{\code{getSpecies(x)}: Get the species.}  
-#'     \item{\code{getOutputDirectory(x)}: Get the path of the output directory.} 
-#'     \item{\code{getTSNEList(x)}: Get the list of Tsne objects.}
-#'     \item{\code{getDbscanList(x)}: Get the list of Dbscan objects.}
-#'     \item{\code{getCellsSimilarityMatrix(x)}: Get the cell similarity 
+#'     getExperimentName(x)}: Get the name of the experiment}
+#'     getCountMatrix(x)}: Get the count matrix.} 
+#'     getSceNorm(x)}: Get the SingleCellExperiment object used.}
+#'     getSpecies(x)}: Get the species.}  
+#'     getOutputDirectory(x)}: Get the path of the output directory.} 
+#'     getTSNEList(x)}: Get the list of Tsne objects.}
+#'     getDbscanList(x)}: Get the list of Dbscan objects.}
+#'     getCellsSimilarityMatrix(x)}: Get the cell similarity 
 #'     matrix.} 
-#'     \item{\code{getClustersSimilarityMatrix(x)}: Get the cluster similarity
+#'     getClustersSimilarityMatrix(x)}: Get the cluster similarity
 #'      matrix.}
-#'     \item{\code{getClustersSimiliratyOrdered(x)}: Get the clusters ordered
+#'     getClustersSimiliratyOrdered(x)}: Get the clusters ordered
 #'      by similarity}
-#'     \item{\code{getMarkerGenesList(x)}: Get the list of marker genes by 
+#'     getMarkerGenesList(x)}: Get the list of marker genes by 
 #'     clusters.}
-#'     \item{\code{getClustersMarkers(x)}: Get the most significant markers by 
+#'     getClustersMarkers(x)}: Get the most significant markers by 
 #'     clusters into a data.frame}
-#'     \item{\code{getGenesInfos(x)}: Get a data.frame containing informations
+#'     getGenesInfos(x)}: Get a data.frame containing informations
 #'      about marker genes}}
 #' 
 #' @section Subsetting:
 #'   \describe{
 #'     In the following snippets, x is a scRNAseq object.
 #' 
-#'     \item{\code{setExperimentName(x)}: Set the name of the experiment}
-#'     \item{\code{setCountMatrix(x)}: Set the count matrix.} 
-#'     \item{\code{setSceNorm(x)}: Set the SingleCellExperiment object used.}
-#'     \item{\code{setSpecies(x)}: Set the species.} 
-#'     \item{\code{setOutputDirectory(x)}: Set the path of the output 
+#'     setExperimentName(x)}: Set the name of the experiment}
+#'     setCountMatrix(x)}: Set the count matrix.} 
+#'     setSceNorm(x)}: Set the SingleCellExperiment object used.}
+#'     setSpecies(x)}: Set the species.} 
+#'     setOutputDirectory(x)}: Set the path of the output 
 #'     directory.} 
-#'     \item{\code{setTSNEList(x)}: Set the list of Tsne objects.}
-#'     \item{\code{setDbscanList(x)}: Set the list of Dbscan objects.}
-#'     \item{\code{setCellsSimilarityMatrix(x)}: Set the cell similarity 
+#'     setTSNEList(x)}: Set the list of Tsne objects.}
+#'     setDbscanList(x)}: Set the list of Dbscan objects.}
+#'     setCellsSimilarityMatrix(x)}: Set the cell similarity 
 #'     matrix.} 
-#'     \item{\code{setClustersSimilarityMatrix(x)}: Set the cluster similarity
+#'     setClustersSimilarityMatrix(x)}: Set the cluster similarity
 #'      matrix.}
-#'     \item{\code{setClustersSimiliratyOrdered(x)}: Set the clusters ordered
+#'     setClustersSimiliratyOrdered(x)}: Set the clusters ordered
 #'      by similarity}   
-#'     \item{\code{setMarkerGenesList(x)}: Set the list of marker genes by 
+#'     setMarkerGenesList(x)}: Set the list of marker genes by 
 #'     clusters.}
-#'     \item{\code{setClustersMarkers(x)}: Set the more significant markers by 
+#'     setClustersMarkers(x)}: Set the more significant markers by 
 #'     clusters into a data.frame}
-#'     \item{\code{setGenesInfos(x)}: Set a data.frame containing informations
+#'     setGenesInfos(x)}: Set a data.frame containing informations
 #'      about marker genes}}
 #' 
+#' @exportClass scRNAseq
+#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom methods new
 #' @author Ilyess Rachedi
-#' @seealso \code{\link{scRNAseq}}
+#' @seealso \link{scRNAseq}}
 
 scRNAseq <- setClass(
     "scRNAseq",
