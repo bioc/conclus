@@ -143,8 +143,8 @@
 #' dataDirectory/4_CellSimilarityMatrix or 
 #' dataDirectory/5_ClusterSimilarityMatrix. dataDirectory is directly retrieved 
 #' from the scRNASeq object.
-#' @cell Default=TRUE. If TRUE, exports the cells similarity matrix otherwise 
-#' exports the clusters similarity matrix.
+#' @param cell If TRUE, exports the cells similarity matrix otherwise 
+#' exports the clusters similarity matrix. Default=TRUE.
 #' 
 #' @keywords internal
 #' @noRd
