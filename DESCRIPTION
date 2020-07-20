@@ -33,4 +33,5 @@ Imports:
     scater,
     pheatmap,
     ggplot2,
-    gridExtra
+    gridExtra,
+    SingleCellExperiment
