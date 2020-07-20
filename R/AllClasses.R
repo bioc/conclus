@@ -56,7 +56,7 @@
 #'     setPerplexity(x) <- value: Set the perplexity parameter.
 #'     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.
 #' 
-#' @author Ilyess Rachedi
+#' @author Ilyess Rachedi and Nicolas Descostes
 #' @seealso generateTSNECoordinates
 
 Tsne <- setClass(
@@ -132,7 +132,7 @@ Tsne <- setClass(
 #'     setMinPoints(x) <- value: Set the minPoints used.
 #'     setClustering(x) <- value: Set the matrix of Dbscan clustering.
 #' 
-#' @author Ilyess Rachedi
+#' @author Ilyess Rachedi and Nicolas Descostes
 #' @seealso runDBSCAN
 
 Dbscan <- setClass(
@@ -229,56 +229,45 @@ Dbscan <- setClass(
 #' 
 #'     In the following snippets, x is a scRNAseq object.
 #' 
-#'     getExperimentName(x)}: Get the name of the experiment}
-#'     getCountMatrix(x)}: Get the count matrix.} 
-#'     getSceNorm(x)}: Get the SingleCellExperiment object used.}
-#'     getSpecies(x)}: Get the species.}  
-#'     getOutputDirectory(x)}: Get the path of the output directory.} 
-#'     getTSNEList(x)}: Get the list of Tsne objects.}
-#'     getDbscanList(x)}: Get the list of Dbscan objects.}
-#'     getCellsSimilarityMatrix(x)}: Get the cell similarity 
-#'     matrix.} 
-#'     getClustersSimilarityMatrix(x)}: Get the cluster similarity
-#'      matrix.}
-#'     getClustersSimiliratyOrdered(x)}: Get the clusters ordered
-#'      by similarity}
-#'     getMarkerGenesList(x)}: Get the list of marker genes by 
-#'     clusters.}
-#'     getClustersMarkers(x)}: Get the most significant markers by 
-#'     clusters into a data.frame}
-#'     getGenesInfos(x)}: Get a data.frame containing informations
-#'      about marker genes}}
+#'     getExperimentName(x): Get the name of the experiment.
+#'     getCountMatrix(x): Get the count matrix. 
+#'     getSceNorm(x): Get the SingleCellExperiment object used.
+#'     getSpecies(x): Get the species.  
+#'     getOutputDirectory(x): Get the path of the output directory. 
+#'     getTSNEList(x): Get the list of Tsne objects.
+#'     getDbscanList(x): Get the list of Dbscan objects.
+#'     getCellsSimilarityMatrix(x): Get the cell similarity matrix. 
+#'     getClustersSimilarityMatrix(x): Get the cluster similarity matrix.
+#'     getClustersSimiliratyOrdered(x): Get the clusters ordered by similarity.
+#'     getMarkerGenesList(x): Get the list of marker genes by clusters.
+#'     getClustersMarkers(x): Get the most significant markers by clusters into 
+#'                            a data.frame.
+#'     getGenesInfos(x): Get a data frame containing informations about marker 
+#'                       genes.
 #' 
 #' @section Subsetting:
-#'   \describe{
+#'
 #'     In the following snippets, x is a scRNAseq object.
 #' 
-#'     setExperimentName(x)}: Set the name of the experiment}
-#'     setCountMatrix(x)}: Set the count matrix.} 
-#'     setSceNorm(x)}: Set the SingleCellExperiment object used.}
-#'     setSpecies(x)}: Set the species.} 
-#'     setOutputDirectory(x)}: Set the path of the output 
-#'     directory.} 
-#'     setTSNEList(x)}: Set the list of Tsne objects.}
-#'     setDbscanList(x)}: Set the list of Dbscan objects.}
-#'     setCellsSimilarityMatrix(x)}: Set the cell similarity 
-#'     matrix.} 
-#'     setClustersSimilarityMatrix(x)}: Set the cluster similarity
-#'      matrix.}
-#'     setClustersSimiliratyOrdered(x)}: Set the clusters ordered
-#'      by similarity}   
-#'     setMarkerGenesList(x)}: Set the list of marker genes by 
-#'     clusters.}
-#'     setClustersMarkers(x)}: Set the more significant markers by 
-#'     clusters into a data.frame}
-#'     setGenesInfos(x)}: Set a data.frame containing informations
-#'      about marker genes}}
+#'     setExperimentName(x): Set the name of the experiment.
+#'     setCountMatrix(x): Set the count matrix. 
+#'     setSceNorm(x): Set the SingleCellExperiment object used.
+#'     setSpecies(x): Set the species. 
+#'     setOutputDirectory(x): Set the path of the output directory. 
+#'     setTSNEList(x): Set the list of Tsne objects.
+#'     setDbscanList(x): Set the list of Dbscan objects.
+#'     setCellsSimilarityMatrix(x): Set the cell similarity matrix. 
+#'     setClustersSimilarityMatrix(x): Set the cluster similarity matrix.
+#'     setClustersSimiliratyOrdered(x): Set the clusters ordered by similarity.   
+#'     setMarkerGenesList(x): Set the list of marker genes by clusters.
+#'     setClustersMarkers(x): Set the most significant markers by clusters.
+#'     setGenesInfos(x): Set a data.frame containing informations about the 
+#'                       marker genes.
 #' 
 #' @exportClass scRNAseq
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom methods new
-#' @author Ilyess Rachedi
-#' @seealso \link{scRNAseq}}
+#' @author Ilyess Rachedi and Nicolas Descostes
 
 scRNAseq <- setClass(
     "scRNAseq",
