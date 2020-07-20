@@ -336,6 +336,8 @@
 #' @importFrom Biobase exprs
 #' @importFrom stats as.dist
 #' @importFrom stats hclust
+#' @importFrom methods validObject
+#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
@@ -790,6 +792,7 @@ setMethod(
 #' 
 #' @exportMethod plotClusteredTSNE
 #' @importFrom grDevices dev.new
+#' @importFrom methods validObject
 #' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
@@ -1225,6 +1228,8 @@ setMethod(
 #' @importFrom stats dist
 #' @importFrom stats hclust
 #' @importFrom grDevices colorRampPalette
+#' @importFrom methods validObject
+#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
@@ -1487,7 +1492,14 @@ setMethod(
 #' @exportMethod plotGeneExpression
 #' @importFrom SummarizedExperiment colData 
 #' @importFrom Biobase exprs
-#' @importFrom ggplot2 ggplot 
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 scale_colour_gradientn
+#' @importFrom ggplot2 ggtitle
+#' @importFrom ggplot2 ggsave
+#' @importFrom grDevices colorRampPalette
+#' @importFrom methods validObject
+#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
@@ -1730,6 +1742,13 @@ setMethod(
 #' @exportMethod plotClustersSimilarity
 #' @importFrom SummarizedExperiment colData 
 #' @importFrom pheatmap pheatmap
+#' @importFrom stats as.dist
+#' @importFrom stats hclust
+#' @importFrom grDvices pdf
+#' @importFrom grDvices png
+#' @importFrom grDvices dev.off
+#' @importFrom methods validObject 
+#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(

@@ -309,6 +309,7 @@
 #' 
 #' @exportMethod testClustering
 #' @importFrom Biobase exprs
+#' @importFrom methods validObject
 
 setMethod(
 		
@@ -548,6 +549,7 @@ setMethod(
 #' @importFrom stats as.dist
 #' @importFrom dynamicTreeCut cutreeDynamic
 #' @importFrom stats cutree
+#' @importFrom methods validObject
 
 setMethod(
 		
@@ -756,6 +758,8 @@ setMethod(
 #' @importFrom SummarizedExperiment colData
 #' @importFrom stats as.dist
 #' @importFrom stats hclust
+#' @importFrom methods validObject
+
 setMethod(
 		
 		f = "calculateClustersSimilarity",
@@ -901,7 +905,7 @@ setMethod(
 #' @exportMethod addClustering
 #' @importFrom SummarizedExperiment colData
 #' @importFrom utils read.table
-
+#' @importFrom methods validObject
 
 setMethod(
 		

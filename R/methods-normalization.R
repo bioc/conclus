@@ -480,6 +480,8 @@
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #' 
 #' @exportMethod normaliseCountMatrix
+#' @importFrom methods validObject
+#' 
 #' @author Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
 #' DESCOSTES.
 
