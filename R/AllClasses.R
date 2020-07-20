@@ -16,10 +16,10 @@
 #' setTsneName setPC setPerplexity setCoordinates
 #' 
 #' @slot name A 'character' string representing the name of the tSNE 
-#' coordinates.
+#'            coordinates.
 #' @slot pc A 'numeric' value representing the number of principal components 
-#' used by CONCLUS to perfom a PCA before calculating the tSNE. 
-#' @slot perplexity A 'numeric'. Default: c(30, 40)
+#'         used by CONCLUS to perfom a PCA before calculating the tSNE. 
+#' @slot perplexity  A 'numeric'. Default: c(30, 40)
 #' @slot coordinates A 'numeric' matrix that contains the coordinates of one 
 #' tSNE solution.
 #' 
@@ -33,27 +33,27 @@
 #'    Tsne(name = "character", pc = "numeric", perplexity = "numeric", 
 #'         coordinates = "matrix")
 #' 
-#'    name: Empty character string or the name of the tSNE.
-#'    pc: Empty 'numeric' number of PCs.
-#'    perplexity: Empty 'numeric' perplexity values.
+#'    name:        Empty character string or the name of the tSNE.
+#'    pc:          Empty 'numeric' number of PCs.
+#'    perplexity:  Empty 'numeric' perplexity values.
 #'    coordinates: Empty 'numeric' "matrix" or matrix of coordinates.
 #'
 #' @section Accessors:
 #'
 #' In the following snippets, x is a Tsne object.
 #' 
-#' getTsneName(x): Get the name of the tSNE.
-#' getPC(x): Get the PC used. 
-#' getPerplexity(x): Get the perplexity used.
+#' getTsneName(x):    Get the name of the tSNE.
+#' getPC(x):          Get the PC used. 
+#' getPerplexity(x):  Get the perplexity used.
 #' getCoordinates(x): Get the matrix of tSNE coordinates.
 #' 
 #' @section Subsetting:
 #' 
 #'     In the following snippets, x is a Tsne object.
 #' 
-#'     setTsneName(x) <- value: Set the name of the tSNE.
-#'     setPC(x) <- value: Set the PC parameter. 
-#'     setPerplexity(x) <- value: Set the perplexity parameter.
+#'     setTsneName(x) <- value:    Set the name of the tSNE.
+#'     setPC(x) <- value:          Set the PC parameter. 
+#'     setPerplexity(x) <- value:  Set the perplexity parameter.
 #'     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.
 #' 
 #' @author Ilyess Rachedi and Nicolas Descostes
@@ -107,9 +107,9 @@ Tsne <- setClass(
 #'    Dbscan(name = "character", epsilon = "numeric", minPoints = "numeric", 
 #'         clustering = "matrix")
 #' 
-#'    name: Empty character string or the name of the tSNE.
-#'    epsilon: Empty 'numeric' representing the epsilon.
-#'    minPoints: Empty 'numeric' representing the minPoints value.
+#'    name:       Empty character string or the name of the tSNE.
+#'    epsilon:    Empty 'numeric' representing the epsilon.
+#'    minPoints:  Empty 'numeric' representing the minPoints value.
 #'    clustering: Empty 'numeric' "matrix" or matrix of clustering.
 #'
 #'  
@@ -118,8 +118,8 @@ Tsne <- setClass(
 #'     In the following snippets, x is a Dbscan object.
 #' 
 #'     getDbscanName(x): Get the name of the Dbscan.
-#'     getEpsilon(x): Get the epsilon used. 
-#'     getMinPoints(x): Get the MinPoint used.
+#'     getEpsilon(x):    Get the epsilon used. 
+#'     getMinPoints(x):  Get the MinPoint used.
 #'     getClustering(x): Get the matrix of DBSCAN clustering.
 #' 
 #' 
@@ -128,8 +128,8 @@ Tsne <- setClass(
 #'     In the following snippets, x is a Dbscan object.
 #' 
 #'     setDbscanName(x) <- value: Set the name of the Dbscan.
-#'     setEpsilon(x) <- value: Set the epsilon used. 
-#'     setMinPoints(x) <- value: Set the minPoints used.
+#'     setEpsilon(x) <- value:    Set the epsilon used. 
+#'     setMinPoints(x) <- value:  Set the minPoints used.
 #'     setClustering(x) <- value: Set the matrix of Dbscan clustering.
 #' 
 #' @author Ilyess Rachedi and Nicolas Descostes
@@ -204,65 +204,79 @@ Dbscan <- setClass(
 #' clustersSimiliratyOrdered = "factor", markerGenesList = "list", 
 #' clustersMarkers = "data.frame", genesInfos = "data.frame")
 #' 
-#' experimentName: String of the name of the experiment.
-#' countMatrix Matrix containing the raw counts.
-#' sceNorm: Empty or SingleCellExperiment object containing the normalized count
-#'  matrix, the colData and the rowData.
-#' species: 'character' representing the species of interest. Shoud be mouse or 
-#' human.
-#' outputDirectory: 'character' representing the path to the output directory.
-#' tSNEList: Empty or list of Tsne objects.
-#' dbscanList: Empty or list of Dbscan objects.
-#' cellsSimilarityMatrix: Empty or cells matrix with similarity scores.
-#' clustersSimilarityMatrix: Empty or clusters matrix with similarity scores.
+#' experimentName:            String of the name of the experiment.
+#'  
+#' countMatrix:               Matrix containing the raw counts.
+#' 
+#' sceNorm:                   Empty or SingleCellExperiment object containing 
+#'                            the normalized count matrix, the colData and the 
+#'                            rowData.
+#' species:                   'character' representing the species of interest. 
+#'                            Shoud be mouse or human.
+#' 
+#' outputDirectory:           'character' representing the path to the output 
+#'                            directory.
+#' 
+#' tSNEList:                  Empty or list of Tsne objects.
+#' 
+#' dbscanList:                Empty or list of Dbscan objects.
+#' 
+#' cellsSimilarityMatrix:     Empty or cells matrix with similarity scores.
+#' 
+#' clustersSimilarityMatrix:  Empty or clusters matrix with similarity scores.
+#' 
 #' clustersSimiliratyOrdered: Empty or factor representing the clusters ordered 
-#' by similarity.
-#' markerGenesList: Empty or list of data frames. Each data frame contains the 
-#' ranked genes of one cluster.
-#' clustersMarkers: Empty or data frame containing the top 10 (by default) 
-#' marker genes of each clusters.
-#' genesInfos: Empty or dataframe containing informations about the markers 
-#' genes each clusters.
+#'                            by similarity.
+#' 
+#' markerGenesList:           Empty or list of data frames. Each data frame 
+#'                            contains the ranked genes of one cluster.
+#' 
+#' clustersMarkers:           Empty or data frame containing the top 10 (by 
+#'                            default) marker genes of each clusters.
+#' 
+#' genesInfos:                Empty or dataframe containing informations about 
+#'                            the markers genes each clusters.
 #'    
 #'    
 #' @section Accessors:
 #' 
 #'     In the following snippets, x is a scRNAseq object.
 #' 
-#'     getExperimentName(x): Get the name of the experiment.
-#'     getCountMatrix(x): Get the count matrix. 
-#'     getSceNorm(x): Get the SingleCellExperiment object used.
-#'     getSpecies(x): Get the species.  
-#'     getOutputDirectory(x): Get the path of the output directory. 
-#'     getTSNEList(x): Get the list of Tsne objects.
-#'     getDbscanList(x): Get the list of Dbscan objects.
-#'     getCellsSimilarityMatrix(x): Get the cell similarity matrix. 
-#'     getClustersSimilarityMatrix(x): Get the cluster similarity matrix.
+#'     getExperimentName(x):            Get the name of the experiment.
+#'     getCountMatrix(x):               Get the count matrix. 
+#'     getSceNorm(x):                   Get the SingleCellExperiment object used
+#'     getSpecies(x):                   Get the species.  
+#'     getOutputDirectory(x):           Get the path of the output directory. 
+#'     getTSNEList(x):                  Get the list of Tsne objects.
+#'     getDbscanList(x):                Get the list of Dbscan objects.
+#'     getCellsSimilarityMatrix(x):     Get the cell similarity matrix. 
+#'     getClustersSimilarityMatrix(x):  Get the cluster similarity matrix.
 #'     getClustersSimiliratyOrdered(x): Get the clusters ordered by similarity.
-#'     getMarkerGenesList(x): Get the list of marker genes by clusters.
-#'     getClustersMarkers(x): Get the most significant markers by clusters into 
-#'                            a data.frame.
-#'     getGenesInfos(x): Get a data frame containing informations about marker 
-#'                       genes.
+#'     getMarkerGenesList(x):           Get the list of marker genes by clusters
+#'     getClustersMarkers(x):           Get the most significant markers by 
+#'                                      clusters into a data.frame.
+#'     getGenesInfos(x):                Get a data frame containing informations
+#'                                      about marker genes.
 #' 
 #' @section Subsetting:
 #'
 #'     In the following snippets, x is a scRNAseq object.
 #' 
-#'     setExperimentName(x): Set the name of the experiment.
-#'     setCountMatrix(x): Set the count matrix. 
-#'     setSceNorm(x): Set the SingleCellExperiment object used.
-#'     setSpecies(x): Set the species. 
-#'     setOutputDirectory(x): Set the path of the output directory. 
-#'     setTSNEList(x): Set the list of Tsne objects.
-#'     setDbscanList(x): Set the list of Dbscan objects.
-#'     setCellsSimilarityMatrix(x): Set the cell similarity matrix. 
-#'     setClustersSimilarityMatrix(x): Set the cluster similarity matrix.
+#'     setExperimentName(x):            Set the name of the experiment.
+#'     setCountMatrix(x):               Set the count matrix. 
+#'     setSceNorm(x):                   Set the SingleCellExperiment object used
+#'     setSpecies(x):                   Set the species. 
+#'     setOutputDirectory(x):           Set the path of the output directory. 
+#'     setTSNEList(x):                  Set the list of Tsne objects.
+#'     setDbscanList(x):                Set the list of Dbscan objects.
+#'     setCellsSimilarityMatrix(x):     Set the cell similarity matrix. 
+#'     setClustersSimilarityMatrix(x):  Set the cluster similarity matrix.
 #'     setClustersSimiliratyOrdered(x): Set the clusters ordered by similarity.   
-#'     setMarkerGenesList(x): Set the list of marker genes by clusters.
-#'     setClustersMarkers(x): Set the most significant markers by clusters.
-#'     setGenesInfos(x): Set a data.frame containing informations about the 
-#'                       marker genes.
+#'     setMarkerGenesList(x):           Set the list of marker genes by clusters
+#'     setClustersMarkers(x):           Set the most significant markers by 
+#'                                      clusters.
+#'     setGenesInfos(x):                Set a data.frame containing informations
+#'                                      about the marker genes.
 #' 
 #' @exportClass scRNAseq
 #' @importFrom SingleCellExperiment SingleCellExperiment
