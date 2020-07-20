@@ -69,7 +69,6 @@ createDirectory <- function(dataDirectory, directory){
 #' 
 #' @keywords internal
 #' 
-#' @importFrom stats prcomp
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom foreach foreach
 #' @import doParallel
