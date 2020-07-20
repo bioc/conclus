@@ -318,7 +318,7 @@
 #' @return A pheatmap object of the similarity heatmap if returnPlot is TRUE.
 #' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
 #' plotGeneExpression plotClustersSimilarity
-#' @exportMethod 
+#' @exportMethod plotCellSimilarity
 #' @importFrom SummarizedExperiment colData
 #' @importFrom pheatmap pheatmap
 #' @author 
@@ -765,9 +765,9 @@ setMethod(
 #' @return A list of ggplot objects if returnPlot is TRUE.
 #' @seealso calculateClustersSimilarity plotCellSimilarity plotCellHeatmap
 #' plotGeneExpression plotClustersSimilarity
+#' @exportMethod plotClusteredTSNE
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-#' @exportMethod
 
 setMethod(
     
@@ -1186,11 +1186,11 @@ setMethod(
 #' 
 #' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellSimilarity
 #' plotGeneExpression plotClustersSimilarity
-#' @exportMethod 
+#' 
+#' @exportMethod plotCellHeatmap
 #' @importFrom SummarizedExperiment colData
 #' @importFrom Biobase exprs
 #' @importFrom pheatmap pheatmap 
-#' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
@@ -1449,11 +1449,11 @@ setMethod(
 #' 
 #' @seealso retrieveTopClustersMarkers plotCellSimilarity plotCellHeatmap
 #' plotClusteredTSNE plotClustersSimilarity
-#' @exportMethod
+#' 
+#' @exportMethod plotGeneExpression
 #' @importFrom SummarizedExperiment colData 
 #' @importFrom Biobase exprs
 #' @importFrom ggplot2 ggplot 
-#'  
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
@@ -1689,12 +1689,13 @@ setMethod(
 #' plotClustersSimilarity(scrCSM)
 #' 
 #' @return A pheatmap object of the clusters similarity matrix.
+#' 
 #' @seealso alculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
 #' plotGeneExpression plotCellSimilarity
-#' @exportMethod 
-#' @importFrom SummarizedExperiment colData 
-#' @importFrom pheatmap pheatmap 
 #' 
+#' @exportMethod plotClustersSimilarity
+#' @importFrom SummarizedExperiment colData 
+#' @importFrom pheatmap pheatmap
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
 setMethod(
