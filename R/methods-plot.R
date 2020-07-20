@@ -24,11 +24,13 @@
 #' Default = 6.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in 
+#' png format. Default=TRUE.
 #' 
 #' @keywords internal
 #' @noRd
 .saveCellSim <- function(theObject, onefile, colDf, width, height, widthPNG, 
-		heightPNG){
+		heightPNG, plotPDF){
 	
 	message("\nSaving a heatmap with the cell similarity matrix.")
 	
@@ -389,7 +391,7 @@ setMethod(
         
 		if(savePlot)
 			.saveCellSim(theObject, onefile, colDf, width, height, widthPNG, 
-					heightPNG)
+					heightPNG, plotPDF)
 			
         if(returnPlot)
             return(pheatmapObject)
