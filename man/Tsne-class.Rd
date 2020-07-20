@@ -43,9 +43,9 @@ tSNE solution.}
    Tsne(name = "character", pc = "numeric", perplexity = "numeric", 
         coordinates = "matrix")
 
-   name: Empty character string or the name of the tSNE.
-   pc: Empty 'numeric' number of PCs.
-   perplexity: Empty 'numeric' perplexity values.
+   name:        Empty character string or the name of the tSNE.
+   pc:          Empty 'numeric' number of PCs.
+   perplexity:  Empty 'numeric' perplexity values.
    coordinates: Empty 'numeric' "matrix" or matrix of coordinates.
 }
 
@@ -54,9 +54,9 @@ tSNE solution.}
 
 In the following snippets, x is a Tsne object.
 
-getTsneName(x): Get the name of the tSNE.
-getPC(x): Get the PC used. 
-getPerplexity(x): Get the perplexity used.
+getTsneName(x):    Get the name of the tSNE.
+getPC(x):          Get the PC used. 
+getPerplexity(x):  Get the perplexity used.
 getCoordinates(x): Get the matrix of tSNE coordinates.
 }
 
@@ -65,9 +65,9 @@ getCoordinates(x): Get the matrix of tSNE coordinates.
 
     In the following snippets, x is a Tsne object.
 
-    setTsneName(x) <- value: Set the name of the tSNE.
-    setPC(x) <- value: Set the PC parameter. 
-    setPerplexity(x) <- value: Set the perplexity parameter.
+    setTsneName(x) <- value:    Set the name of the tSNE.
+    setPC(x) <- value:          Set the PC parameter. 
+    setPerplexity(x) <- value:  Set the perplexity parameter.
     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.
 }
 

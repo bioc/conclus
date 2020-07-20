@@ -39,9 +39,9 @@ solution.}
    Dbscan(name = "character", epsilon = "numeric", minPoints = "numeric", 
         clustering = "matrix")
 
-   name: Empty character string or the name of the tSNE.
-   epsilon: Empty 'numeric' representing the epsilon.
-   minPoints: Empty 'numeric' representing the minPoints value.
+   name:       Empty character string or the name of the tSNE.
+   epsilon:    Empty 'numeric' representing the epsilon.
+   minPoints:  Empty 'numeric' representing the minPoints value.
    clustering: Empty 'numeric' "matrix" or matrix of clustering.
 }
 
@@ -51,8 +51,8 @@ solution.}
     In the following snippets, x is a Dbscan object.
 
     getDbscanName(x): Get the name of the Dbscan.
-    getEpsilon(x): Get the epsilon used. 
-    getMinPoints(x): Get the MinPoint used.
+    getEpsilon(x):    Get the epsilon used. 
+    getMinPoints(x):  Get the MinPoint used.
     getClustering(x): Get the matrix of DBSCAN clustering.
 }
 
@@ -62,8 +62,8 @@ solution.}
     In the following snippets, x is a Dbscan object.
 
     setDbscanName(x) <- value: Set the name of the Dbscan.
-    setEpsilon(x) <- value: Set the epsilon used. 
-    setMinPoints(x) <- value: Set the minPoints used.
+    setEpsilon(x) <- value:    Set the epsilon used. 
+    setMinPoints(x) <- value:  Set the minPoints used.
     setClustering(x) <- value: Set the matrix of Dbscan clustering.
 }
 

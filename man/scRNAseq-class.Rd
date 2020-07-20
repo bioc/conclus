@@ -90,25 +90,38 @@ cellsSimilarityMatrix = "matrix", clustersSimilarityMatrix = "matrix",
 clustersSimiliratyOrdered = "factor", markerGenesList = "list", 
 clustersMarkers = "data.frame", genesInfos = "data.frame")
 
-experimentName: String of the name of the experiment.
-countMatrix Matrix containing the raw counts.
-sceNorm: Empty or SingleCellExperiment object containing the normalized count
- matrix, the colData and the rowData.
-species: 'character' representing the species of interest. Shoud be mouse or 
-human.
-outputDirectory: 'character' representing the path to the output directory.
-tSNEList: Empty or list of Tsne objects.
-dbscanList: Empty or list of Dbscan objects.
-cellsSimilarityMatrix: Empty or cells matrix with similarity scores.
-clustersSimilarityMatrix: Empty or clusters matrix with similarity scores.
+experimentName:            String of the name of the experiment.
+ 
+countMatrix:               Matrix containing the raw counts.
+
+sceNorm:                   Empty or SingleCellExperiment object containing 
+                           the normalized count matrix, the colData and the 
+                           rowData.
+species:                   'character' representing the species of interest. 
+                           Shoud be mouse or human.
+
+outputDirectory:           'character' representing the path to the output 
+                           directory.
+
+tSNEList:                  Empty or list of Tsne objects.
+
+dbscanList:                Empty or list of Dbscan objects.
+
+cellsSimilarityMatrix:     Empty or cells matrix with similarity scores.
+
+clustersSimilarityMatrix:  Empty or clusters matrix with similarity scores.
+
 clustersSimiliratyOrdered: Empty or factor representing the clusters ordered 
-by similarity.
-markerGenesList: Empty or list of data frames. Each data frame contains the 
-ranked genes of one cluster.
-clustersMarkers: Empty or data frame containing the top 10 (by default) 
-marker genes of each clusters.
-genesInfos: Empty or dataframe containing informations about the markers 
-genes each clusters.
+                           by similarity.
+
+markerGenesList:           Empty or list of data frames. Each data frame 
+                           contains the ranked genes of one cluster.
+
+clustersMarkers:           Empty or data frame containing the top 10 (by 
+                           default) marker genes of each clusters.
+
+genesInfos:                Empty or dataframe containing informations about 
+                           the markers genes each clusters.
 }
 
 \section{Accessors}{
@@ -116,21 +129,21 @@ genes each clusters.
 
     In the following snippets, x is a scRNAseq object.
 
-    getExperimentName(x): Get the name of the experiment.
-    getCountMatrix(x): Get the count matrix. 
-    getSceNorm(x): Get the SingleCellExperiment object used.
-    getSpecies(x): Get the species.  
-    getOutputDirectory(x): Get the path of the output directory. 
-    getTSNEList(x): Get the list of Tsne objects.
-    getDbscanList(x): Get the list of Dbscan objects.
-    getCellsSimilarityMatrix(x): Get the cell similarity matrix. 
-    getClustersSimilarityMatrix(x): Get the cluster similarity matrix.
+    getExperimentName(x):            Get the name of the experiment.
+    getCountMatrix(x):               Get the count matrix. 
+    getSceNorm(x):                   Get the SingleCellExperiment object used
+    getSpecies(x):                   Get the species.  
+    getOutputDirectory(x):           Get the path of the output directory. 
+    getTSNEList(x):                  Get the list of Tsne objects.
+    getDbscanList(x):                Get the list of Dbscan objects.
+    getCellsSimilarityMatrix(x):     Get the cell similarity matrix. 
+    getClustersSimilarityMatrix(x):  Get the cluster similarity matrix.
     getClustersSimiliratyOrdered(x): Get the clusters ordered by similarity.
-    getMarkerGenesList(x): Get the list of marker genes by clusters.
-    getClustersMarkers(x): Get the most significant markers by clusters into 
-                           a data.frame.
-    getGenesInfos(x): Get a data frame containing informations about marker 
-                      genes.
+    getMarkerGenesList(x):           Get the list of marker genes by clusters
+    getClustersMarkers(x):           Get the most significant markers by 
+                                     clusters into a data.frame.
+    getGenesInfos(x):                Get a data frame containing informations
+                                     about marker genes.
 }
 
 \section{Subsetting}{
@@ -138,20 +151,21 @@ genes each clusters.
 
     In the following snippets, x is a scRNAseq object.
 
-    setExperimentName(x): Set the name of the experiment.
-    setCountMatrix(x): Set the count matrix. 
-    setSceNorm(x): Set the SingleCellExperiment object used.
-    setSpecies(x): Set the species. 
-    setOutputDirectory(x): Set the path of the output directory. 
-    setTSNEList(x): Set the list of Tsne objects.
-    setDbscanList(x): Set the list of Dbscan objects.
-    setCellsSimilarityMatrix(x): Set the cell similarity matrix. 
-    setClustersSimilarityMatrix(x): Set the cluster similarity matrix.
+    setExperimentName(x):            Set the name of the experiment.
+    setCountMatrix(x):               Set the count matrix. 
+    setSceNorm(x):                   Set the SingleCellExperiment object used
+    setSpecies(x):                   Set the species. 
+    setOutputDirectory(x):           Set the path of the output directory. 
+    setTSNEList(x):                  Set the list of Tsne objects.
+    setDbscanList(x):                Set the list of Dbscan objects.
+    setCellsSimilarityMatrix(x):     Set the cell similarity matrix. 
+    setClustersSimilarityMatrix(x):  Set the cluster similarity matrix.
     setClustersSimiliratyOrdered(x): Set the clusters ordered by similarity.   
-    setMarkerGenesList(x): Set the list of marker genes by clusters.
-    setClustersMarkers(x): Set the most significant markers by clusters.
-    setGenesInfos(x): Set a data.frame containing informations about the 
-                      marker genes.
+    setMarkerGenesList(x):           Set the list of marker genes by clusters
+    setClustersMarkers(x):           Set the most significant markers by 
+                                     clusters.
+    setGenesInfos(x):                Set a data.frame containing informations
+                                     about the marker genes.
 }
 
 \author{
