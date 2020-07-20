@@ -869,6 +869,7 @@ setMethod(
 #' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param pheatmapObject Object containing the cell heatmap.
 #' 
 #' @keywords internal
 #' 
@@ -877,7 +878,7 @@ setMethod(
 #' @importFrom grDevices dev.off
 #' @noRd
 .saveHeatmap <- function(theObject, plotPDF, fileName, width, height, onefile, 
-		widthPNG, heightPNG){
+		widthPNG, heightPNG, pheatmapObject){
 	
 	subdir <- file.path(getOutputDirectory(theObject), "pictures")
 	if(!file.exists(subdir))
@@ -1307,7 +1308,7 @@ setMethod(
 		
 		if(savePlot)
 			.saveHeatmap(theObject, plotPDF, fileName, width, height, onefile, 
-					widthPNG, heightPNG)
+					widthPNG, heightPNG, pheatmapObject)
 				
 		if(returnPlot)
 			return(pheatmapObject) 
