@@ -4,7 +4,6 @@
 
 #' @exportMethod getExperimentName
 #' @describeIn scRNAseq-class Get the name of the experiment.
-## Described in scRNAseq-class
 setMethod(
     f = "getExperimentName",
     signature = "scRNAseq",
@@ -15,7 +14,6 @@ setMethod(
 
 #' @exportMethod getCountMatrix
 #' @describeIn scRNAseq-class Get the count matrix.
-## Described in scRNAseq-class
 setMethod(
     f = "getCountMatrix",
     signature = "scRNAseq",
@@ -25,8 +23,7 @@ setMethod(
 
 
 #' @exportMethod getSceNorm
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Get the SingleCellExperiment object used.
 setMethod(
     f = "getSceNorm",
     signature = "scRNAseq",
@@ -35,9 +32,8 @@ setMethod(
     })
 
 
-#' @exportMethod getSpecies
-#' @noRd
-## Described in scRNAseq-class
+#' @exportMethod getSpecies Get the species.
+#' @describeIn scRNAseq-class
 setMethod(
     f = "getSpecies",
     signature = "scRNAseq",
@@ -46,9 +42,8 @@ setMethod(
     })
 
 
-#' @exportMethod getOutputDirectory
-#' @noRd
-## Described in scRNAseq-class
+#' @exportMethod getOutputDirectory Get the path of the output directory.
+#' @describeIn scRNAseq-class
 setMethod(
     f = "getOutputDirectory",
     signature = "scRNAseq",
@@ -57,9 +52,8 @@ setMethod(
     })
 
 
-#' @exportMethod getTSNEList
-#' @noRd
-## Described in scRNAseq-class
+#' @exportMethod getTSNEList Get the list of Tsne objects.
+#' @describeIn scRNAseq-class
 setMethod(
     f = "getTSNEList",
     signature = "scRNAseq",
@@ -68,9 +62,8 @@ setMethod(
     })
 
 
-#' @exportMethod getDbscanList
-#' @noRd
-## Described in scRNAseq-class
+#' @exportMethod getDbscanList Get the list of Dbscan objects.
+#' @describeIn scRNAseq-class
 setMethod(
     f = "getDbscanList",
     signature = "scRNAseq",
@@ -79,7 +72,7 @@ setMethod(
     })
 
 #' @exportMethod getCellsSimilarityMatrix
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Get the cell similarity matrix.
 setMethod(
     f = "getCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -88,9 +81,8 @@ setMethod(
     })
 
 
-#' @exportMethod getClustersSimilarityMatrix
-#' @noRd
-## Described in scRNAseq-class
+#' @exportMethod getClustersSimilarityMatrix Get the cluster similarity matrix.
+#' @describeIn scRNAseq-class
 setMethod(
     f = "getClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -100,8 +92,7 @@ setMethod(
 
 
 #' @exportMethod getClustersSimiliratyOrdered
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Get the clusters ordered by similarity.
 setMethod(
 		f = "getClustersSimiliratyOrdered",
 		signature = "scRNAseq",
@@ -111,8 +102,7 @@ setMethod(
 
 
 #' @exportMethod getMarkerGenesList
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Get the list of marker genes by clusters
 setMethod(
     f = "getMarkerGenesList",
     signature = "scRNAseq",
@@ -122,8 +112,7 @@ setMethod(
 
 
 #' @exportMethod getClustersMarkers
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Get the most significant markers by clusters.
 setMethod(
     f="getClustersMarkers",
     signature="scRNAseq",
@@ -133,8 +122,7 @@ setMethod(
 
 
 #' @exportMethod getGenesInfos
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Get informations about marker genes.
 setMethod(
     f="getGenesInfos",
     signature="scRNAseq",

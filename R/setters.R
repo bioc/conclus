@@ -3,8 +3,7 @@
 ################################################################################
 
 #' @exportMethod setExperimentName<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the name of the experiment.
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -16,8 +15,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setCountMatrix<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the count matrix.
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -29,8 +27,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setSceNorm<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the SingleCellExperiment object used.
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -42,8 +39,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setSpecies<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the species. 
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -55,8 +51,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setOutputDirectory<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the path of the output directory.
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -68,8 +63,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setTSNEList<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the list of Tsne objects.
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -81,8 +75,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setDbscanList<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the list of Dbscan objects. 
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -94,8 +87,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setCellsSimilarityMatrix<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the cell similarity matrix.
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -107,8 +99,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustersSimilarityMatrix<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the cluster similarity matrix.
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -120,8 +111,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustersSimiliratyOrdered<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the clusters ordered by similarity. 
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -133,8 +123,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setMarkerGenesList<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the list of marker genes by clusters. 
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -146,8 +135,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustersMarkers<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set the most significant markers by clusters. 
 setReplaceMethod(
 		f="setClustersMarkers",
 		signature="scRNAseq",
@@ -159,8 +147,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setGenesInfos<-
-#' @noRd
-## Described in scRNAseq-class
+#' @describeIn scRNAseq-class Set a data.frame containing informations about 
+#' the marker genes.
 setReplaceMethod(
 		f="setGenesInfos",
 		signature="scRNAseq",
