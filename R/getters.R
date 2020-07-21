@@ -2,6 +2,7 @@
 ########################  Getters of scRNAseq class ############################
 ################################################################################
 
+#' @describeIn scRNAseq-class Get the name of the experiment.
 #' @exportMethod getExperimentName
 setMethod(
     f = "getExperimentName",
