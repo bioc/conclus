@@ -110,6 +110,11 @@
 
 \S4method{setGenesInfos}{scRNAseq}(theObject) <- value
 }
+\arguments{
+\item{theObject}{An object of class scRNAseq.}
+
+\item{value}{A numeric matrix.}
+}
 \description{
 S4 class and the main class used by CONCLUS containing the results of the 
 different steps to analyse rare cell populations.
