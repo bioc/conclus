@@ -79,7 +79,6 @@ setMethod(
     })
 
 #' @exportMethod getCellsSimilarityMatrix
-#' @inheri
 ## Described in scRNAseq-class
 setMethod(
     f = "getCellsSimilarityMatrix",
