@@ -18,8 +18,11 @@ setGeneric(
 		
 	name = "testClustering",
 		
-	def = function(theObject, dbscanEpsilon=1.4, minPts=5, perplexities=c(30), 
-			PCs=c(4), randomSeed=42, width=7, height=7, onefile=FALSE, ...){
+	def = function(theObject, dbscanEpsilon=1.4, minPts=5, 
+			perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
+			cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf", 
+			fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
+			...){
 			standardGenericic("testClustering")    
     },
     signature="theObject")
