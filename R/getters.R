@@ -32,8 +32,8 @@ setMethod(
     })
 
 
-#' @exportMethod getSpecies Get the species.
-#' @describeIn scRNAseq-class
+#' @exportMethod getSpecies
+#' @describeIn scRNAseq-class Get the species.
 setMethod(
     f = "getSpecies",
     signature = "scRNAseq",
@@ -42,8 +42,8 @@ setMethod(
     })
 
 
-#' @exportMethod getOutputDirectory Get the path of the output directory.
-#' @describeIn scRNAseq-class
+#' @exportMethod getOutputDirectory
+#' @describeIn scRNAseq-class Get the path of the output directory.
 setMethod(
     f = "getOutputDirectory",
     signature = "scRNAseq",
@@ -52,8 +52,8 @@ setMethod(
     })
 
 
-#' @exportMethod getTSNEList Get the list of Tsne objects.
-#' @describeIn scRNAseq-class
+#' @exportMethod getTSNEList
+#' @describeIn scRNAseq-class Get the list of Tsne objects.
 setMethod(
     f = "getTSNEList",
     signature = "scRNAseq",
@@ -62,8 +62,8 @@ setMethod(
     })
 
 
-#' @exportMethod getDbscanList Get the list of Dbscan objects.
-#' @describeIn scRNAseq-class
+#' @exportMethod getDbscanList
+#' @describeIn scRNAseq-class Get the list of Dbscan objects.
 setMethod(
     f = "getDbscanList",
     signature = "scRNAseq",
@@ -81,8 +81,8 @@ setMethod(
     })
 
 
-#' @exportMethod getClustersSimilarityMatrix Get the cluster similarity matrix.
-#' @describeIn scRNAseq-class
+#' @exportMethod getClustersSimilarityMatrix
+#' @describeIn scRNAseq-class Get the cluster similarity matrix.
 setMethod(
     f = "getClustersSimilarityMatrix",
     signature = "scRNAseq",
