@@ -6,7 +6,7 @@
 #' setExperimentName(theObject) <- value
 #' 
 #' @description
-#' Update the experiment name slot with value.
+#' setExperimentName: Update the experiment name slot with a character string.
 #' 
 #' @param theObject A scRNA-seq object to update.
 #' @param value The value to update the slot with.
@@ -30,7 +30,7 @@ setReplaceMethod(
 #' setCountMatrix(theObject) <- value
 #' 
 #' @description
-#' Update the countMatrix slot with value.
+#' setCountMatrix: Update the countMatrix slot with a matrix of numeric.
 #' 
 #' @rdname setters
 #' @aliases setCountMatrix<-
