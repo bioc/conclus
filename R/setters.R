@@ -11,10 +11,10 @@
 #' @param theObject A scRNA-seq object to update.
 #' @param value The value to update the slot with.
 #' 
-#' @rdname setters
-#' @aliases setExperimentName<-
-#' @title setters
-#' @name setters
+#' @rdname setters-scRNAseq
+#' @aliases setExperimentName<- setExperimentName
+#' @title setters-scRNAseq
+#' @name setters-scRNAseq
 #' 
 #' @exportMethod setExperimentName<-
 setReplaceMethod(
@@ -32,8 +32,8 @@ setReplaceMethod(
 #' @description
 #' setCountMatrix: Update the countMatrix slot with a matrix of numeric.
 #' 
-#' @rdname setters
-#' @aliases setCountMatrix<-
+#' @rdname setters-scRNAseq
+#' @aliases setCountMatrix<- setCountMatrix
 #' @exportMethod setCountMatrix<-
 setReplaceMethod(
     f = "setCountMatrix",
