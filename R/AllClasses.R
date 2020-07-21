@@ -51,7 +51,7 @@
 #' 
 #'     In the following snippets, x is a Tsne object.
 #' 
-#'     setTsneName(x) <- value:    Set the name of the tSNE.
+#'     setName(x) <- value:    Set the name of the tSNE.
 #'     setPC(x) <- value:          Set the PC parameter. 
 #'     setPerplexity(x) <- value:  Set the perplexity parameter.
 #'     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.
@@ -127,7 +127,7 @@ Tsne <- setClass(
 #' 
 #'     In the following snippets, x is a Dbscan object.
 #' 
-#'     setDbscanName(x) <- value: Set the name of the Dbscan.
+#'     setName(x) <- value: Set the name of the Dbscan.
 #'     setEpsilon(x) <- value:    Set the epsilon used. 
 #'     setMinPoints(x) <- value:  Set the minPoints used.
 #'     setClustering(x) <- value: Set the matrix of Dbscan clustering.

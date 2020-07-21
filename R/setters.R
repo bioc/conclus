@@ -3,6 +3,8 @@
 ################################################################################
 
 #' @exportMethod setExperimentName<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -14,6 +16,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setCountMatrix<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -25,6 +29,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setSceNorm<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -36,6 +42,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setSpecies<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -47,6 +55,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setOutputDirectory<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -58,6 +68,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setTSNEList<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -69,6 +81,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setDbscanList<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -80,6 +94,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setCellsSimilarityMatrix<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -91,6 +107,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustersSimilarityMatrix<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -102,6 +120,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustersSimiliratyOrdered<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -113,6 +133,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setMarkerGenesList<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -124,6 +146,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustersMarkers<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
 		f="setClustersMarkers",
 		signature="scRNAseq",
@@ -135,6 +159,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setGenesInfos<-
+#' @noRd
+## Described in scRNAseq-class
 setReplaceMethod(
 		f="setGenesInfos",
 		signature="scRNAseq",
@@ -151,6 +177,8 @@ setReplaceMethod(
 ################################################################################
 
 #' @exportMethod setName<-
+#' @noRd
+## Described in Tsne-class
 setReplaceMethod(
     f = "setName",
     signature = "Tsne",
@@ -162,6 +190,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setPC<-
+#' @noRd
+## Described in Tsne-class
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -173,6 +203,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setPerplexity<-
+#' @noRd
+## Described in Tsne-class
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -184,6 +216,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setCoordinates<-
+#' @noRd
+## Described in Tsne-class
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -199,6 +233,8 @@ setReplaceMethod(
 ################################################################################
 
 #' @exportMethod setName<-
+#' @noRd
+## Described in Dbscan-class
 setReplaceMethod(
     f = "setName",
     signature = "Dbscan",
@@ -210,6 +246,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setEpsilon<-
+#' @noRd
+## Described in Dbscan-class
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -221,6 +259,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setMinPoints<-
+#' @noRd
+## Described in Dbscan-class
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -232,6 +272,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustering<-
+#' @noRd
+## Described in Dbscan-class
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
