@@ -3,7 +3,7 @@
 ################################################################################
 
 #' @exportMethod getExperimentName
-#' @noRd
+#' @describeIn scRNAseq-class Get the name of the experiment.
 ## Described in scRNAseq-class
 setMethod(
     f = "getExperimentName",
@@ -14,7 +14,7 @@ setMethod(
 
 
 #' @exportMethod getCountMatrix
-#' @noRd
+#' @describeIn scRNAseq-class Get the count matrix.
 ## Described in scRNAseq-class
 setMethod(
     f = "getCountMatrix",
@@ -79,7 +79,7 @@ setMethod(
     })
 
 #' @exportMethod getCellsSimilarityMatrix
-#' @noRd
+#' @inheri
 ## Described in scRNAseq-class
 setMethod(
     f = "getCellsSimilarityMatrix",
