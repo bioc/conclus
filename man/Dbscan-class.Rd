@@ -4,14 +4,6 @@
 \name{Dbscan-class}
 \alias{Dbscan-class}
 \alias{Dbscan}
-\alias{getDbscanName}
-\alias{getEpsilon}
-\alias{getMinPoints}
-\alias{getClustering}
-\alias{setDbscanName}
-\alias{setEpsilon}
-\alias{setMinPoints}
-\alias{setClustering}
 \alias{getName,Dbscan-method}
 \alias{getEpsilon,Dbscan-method}
 \alias{getMinPoints,Dbscan-method}

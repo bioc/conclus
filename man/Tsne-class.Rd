@@ -4,14 +4,6 @@
 \name{Tsne-class}
 \alias{Tsne-class}
 \alias{Tsne}
-\alias{getTsneName}
-\alias{getPC}
-\alias{getPerplexity}
-\alias{getCoordinates}
-\alias{setTsneName}
-\alias{setPC}
-\alias{setPerplexity}
-\alias{setCoordinates}
 \alias{getName,Tsne-method}
 \alias{getPerplexity,Tsne-method}
 \alias{getPC,Tsne-method}
