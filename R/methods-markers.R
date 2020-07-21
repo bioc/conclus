@@ -176,7 +176,7 @@
 #' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
 #' clustered (see ?clusterCellsInternal), as clusters themselves (see 
 #' ?calculateClustersSimilarity).
-#' @param columns Name of the column with a clustering result. 
+#' @param column Name of the column with a clustering result. 
 #' Default="clusters"
 #' @param writeMarkerGenes If TRUE, output one list of marker genes per cluster 
 #' in the output directory defined in theObject and in the sub-directory 
