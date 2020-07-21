@@ -17,7 +17,7 @@ setCountMatrix(theObject) <- value
 \item{value}{The value to update the slot with.}
 }
 \description{
-Update the experiment name slot with value.
+setExperimentName: Update the experiment name slot with a character string.
 
-Update the countMatrix slot with value.
+setCountMatrix: Update the countMatrix slot with a matrix of numeric.
 }
