@@ -240,7 +240,7 @@
 #' normalized. See ?normaliseCountMatrix.
 #' @param dbscanEpsilon Single value for the distance parameter of dbscan. 
 #' Default = 1.4. See ?runDBSCAN for more details.
-#' @param minPoints Single value for the minimum no. of points parameter of 
+#' @param minPts Single value for the minimum no. of points parameter of 
 #' dbscan. Default = 5. See ?runDBSCAN for more details. 
 #' @param perplexities A single value of perplexity (t-SNE parameter). 
 #' Default = 30. See ?generateTSNECoordinates for details.
