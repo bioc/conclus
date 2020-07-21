@@ -291,7 +291,7 @@ setReplaceMethod(
 #' 
 #' @description
 #' setName: Update the Tsne name slot with a character string.
-
+#' 
 #' @rdname setters-Tsne
 #' @aliases setName<- setName
 #' @title setters-Tsne
@@ -369,8 +369,24 @@ setReplaceMethod(
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
-#' @exportMethod setName<-
-#' @describeIn Dbscan-class Set the name of the Dbscan. 
+#' @usage
+#' setName(theObject) <- value
+#' 
+#' @description
+#' Update a slot of a Dbscan-class object.
+#' 
+#' @param theObject A Dbscan object to update. See description or ?Dbscan.
+#' @param value The value to update the slot with. See description or ?Dbscan.
+#' 
+#' @description
+#' setName: Update the Dbscan name slot with a character string.
+#' 
+#' @rdname setters-Dbscan
+#' @aliases setName<- setName
+#' @title setters-Dbscan
+#' @name setters-Dbscan
+#' 
+#' @exportMethod setName<- 
 setReplaceMethod(
     f = "setName",
     signature = "Dbscan",
@@ -381,8 +397,16 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setEpsilon(theObject) <- value
+#' 
+#' @description
+#' setEpsilon: Update the epsilon slot with a vector of numeric.
+#' 
+#' @rdname setters-Dbscan
+#' @aliases setEpsilon<- setEpsilon
+#' 
 #' @exportMethod setEpsilon<-
-#' @describeIn Dbscan-class Set the epsilon used.
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -393,8 +417,16 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setMinPoints(theObject) <- value
+#' 
+#' @description
+#' setMinPoints: Update the minPoints slot with a vector of numeric.
+#' 
+#' @rdname setters-Dbscan
+#' @aliases setMinPoints<- setMinPoints
+#' 
 #' @exportMethod setMinPoints<-
-#' @describeIn Dbscan-class Set the minPoints used.
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -405,8 +437,16 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setClustering<-
-#' @describeIn Dbscan-class Set the matrix of Dbscan clustering. 
+#' @usage
+#' setClustering(theObject) <- value
+#' 
+#' @description
+#' setClustering: Update the clustering slot with a matrix of numeric.
+#' 
+#' @rdname setters-Dbscan
+#' @aliases setClustering<- setClustering
+#' 
+#' @exportMethod setClustering<- 
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
