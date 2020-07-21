@@ -68,10 +68,10 @@
 #' ?exportResults for details. Default=TRUE.
 #' @param orderClusters If TRUE, clusters in the cells and clusters similarity 
 #' matrix of cells will be ordered by name. Default = FALSE.
-#' @param  If not NA, defines the clustering to be used in theObject. This is 
-#' particularly useful when one wants to compare the clustering performance of 
-#' different tools. It should be a data frame having two columns 'clusters' and 
-#' 'cells'. Default=NA.
+#' @param clusToAdd If not NA, defines the clustering to be used in theObject. 
+#' This is particularly useful when one wants to compare the clustering 
+#' performance of different tools. It should be a data frame having two columns
+#'  'clusters' and 'cells'. Default=NA.
 #' @param sizes Vector of size factors from scran::computeSumFactors() function
 #' used by ?normaliseCountMatrix.
 #' @param rowMetaData Data frame containing genes informations. Default is NULL.
@@ -153,8 +153,8 @@
 #' See ?pdf for more details. Default = 6.
 #' @param heightPlotClustTSNE Height of the clustered tSNE plot in the pdf file.
 #'  See ?pdf for more details. Default = 5.
-#' @param Give the number of the tSNE to plot. If NA, all tSNE solutions are 
-#' plotted (14 tSNE by default). Default=NA.
+#' @param tSNENb Give the number of the tSNE to plot. If NA, all tSNE solutions 
+#' are plotted (14 tSNE by default). Default=NA.
 #' @param meanCentered Boolean indicating if mean centering should be applied 
 #' to the expression matrix. See ?plotCellHeatmap. Default = TRUE.
 #' @param orderGenesCH Boolean, should the heatmap be structured by gene. See 
@@ -172,9 +172,9 @@
 #' format. The heatmap is saved in the output directory defined in theObject 
 #' (?getOutputDirectory) and in the sub-directory 'pictures'. Default=FALSE.
 #' Ignored if exportAllResults=TRUE.
-#' @param widthPlotCustSM Width of the clusters similarity heatmap in the pdf 
+#' @param widthPlotClustSM Width of the clusters similarity heatmap in the pdf 
 #' file. See ?pdf for more details. Default = 7.
-#' @param heightPlotCustSM Height of the clusters similarity heatmap in the pdf 
+#' @param heightPlotClustSM Height of the clusters similarity heatmap in the pdf 
 #' file. See ?pdf for more details. Default = 5.5.
 #'
 #'
