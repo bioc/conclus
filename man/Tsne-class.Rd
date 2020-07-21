@@ -54,7 +54,7 @@ tSNE solution.}
 
 In the following snippets, x is a Tsne object.
 
-getTsneName(x):    Get the name of the tSNE.
+getName(x):    Get the name of the tSNE.
 getPC(x):          Get the PC used. 
 getPerplexity(x):  Get the perplexity used.
 getCoordinates(x): Get the matrix of tSNE coordinates.
@@ -65,7 +65,7 @@ getCoordinates(x): Get the matrix of tSNE coordinates.
 
     In the following snippets, x is a Tsne object.
 
-    setTsneName(x) <- value:    Set the name of the tSNE.
+    setName(x) <- value:    Set the name of the tSNE.
     setPC(x) <- value:          Set the PC parameter. 
     setPerplexity(x) <- value:  Set the perplexity parameter.
     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.

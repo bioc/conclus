@@ -14,12 +14,12 @@ normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 clustered (see ?clusterCellsInternal), as clusters themselves (see 
 ?calculateClustersSimilarity).}
 
+\item{column}{Name of the column with a clustering result. 
+Default="clusters"}
+
 \item{writeMarkerGenes}{If TRUE, output one list of marker genes per cluster 
 in the output directory defined in theObject and in the sub-directory 
 'marker_genes'. Default=FALSE.}
-
-\item{columns}{Name of the column with a clustering result. 
-Default="clusters"}
 }
 \value{
 An object of class scRNASeq with its markerGenesList slot updated.

@@ -76,6 +76,11 @@ Default = "ward.D2".}
 \item{orderClusters}{If TRUE, clusters in the cells and clusters similarity 
 matrix of cells will be ordered by name. Default = FALSE.}
 
+\item{clusToAdd}{If not NA, defines the clustering to be used in theObject. 
+This is particularly useful when one wants to compare the clustering 
+performance of different tools. It should be a data frame having two columns
+ 'clusters' and 'cells'. Default=NA.}
+
 \item{sizes}{Vector of size factors from scran::computeSumFactors() function
 used by ?normaliseCountMatrix.}
 
@@ -188,6 +193,9 @@ See ?pdf for more details. Default = 6.}
 \item{heightPlotClustTSNE}{Height of the clustered tSNE plot in the pdf file.
 See ?pdf for more details. Default = 5.}
 
+\item{tSNENb}{Give the number of the tSNE to plot. If NA, all tSNE solutions 
+are plotted (14 tSNE by default). Default=NA.}
+
 \item{meanCentered}{Boolean indicating if mean centering should be applied 
 to the expression matrix. See ?plotCellHeatmap. Default = TRUE.}
 
@@ -212,18 +220,10 @@ format. The heatmap is saved in the output directory defined in theObject
 (?getOutputDirectory) and in the sub-directory 'pictures'. Default=FALSE.
 Ignored if exportAllResults=TRUE.}
 
-\item{If}{not NA, defines the clustering to be used in theObject. This is 
-particularly useful when one wants to compare the clustering performance of 
-different tools. It should be a data frame having two columns 'clusters' and 
-'cells'. Default=NA.}
-
-\item{Give}{the number of the tSNE to plot. If NA, all tSNE solutions are 
-plotted (14 tSNE by default). Default=NA.}
-
-\item{widthPlotCustSM}{Width of the clusters similarity heatmap in the pdf 
+\item{widthPlotClustSM}{Width of the clusters similarity heatmap in the pdf 
 file. See ?pdf for more details. Default = 7.}
 
-\item{heightPlotCustSM}{Height of the clusters similarity heatmap in the pdf 
+\item{heightPlotClustSM}{Height of the clusters similarity heatmap in the pdf 
 file. See ?pdf for more details. Default = 5.5.}
 }
 \value{

@@ -50,7 +50,7 @@ solution.}
 
     In the following snippets, x is a Dbscan object.
 
-    getDbscanName(x): Get the name of the Dbscan.
+    getName(x): Get the name of the Dbscan.
     getEpsilon(x):    Get the epsilon used. 
     getMinPoints(x):  Get the MinPoint used.
     getClustering(x): Get the matrix of DBSCAN clustering.
@@ -61,7 +61,7 @@ solution.}
 
     In the following snippets, x is a Dbscan object.
 
-    setDbscanName(x) <- value: Set the name of the Dbscan.
+    setName(x) <- value: Set the name of the Dbscan.
     setEpsilon(x) <- value:    Set the epsilon used. 
     setMinPoints(x) <- value:  Set the minPoints used.
     setClustering(x) <- value: Set the matrix of Dbscan clustering.
