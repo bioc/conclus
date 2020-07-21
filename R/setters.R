@@ -280,8 +280,24 @@ setReplaceMethod(
 ############################  Setters for Tsne class  ##########################
 ################################################################################
 
-#' @exportMethod setName<-
-#' @describeIn Tsne-class Set the name of the tSNE. 
+#' @usage
+#' setName(theObject) <- value
+#' 
+#' @description
+#' Update a slot of a Tsne-class object.
+#' 
+#' @param theObject A Tsne object to update. See description or ?Tsne.
+#' @param value The value to update the slot with. See description or ?Tsne.
+#' 
+#' @description
+#' setName: Update the Tsne name slot with a character string.
+
+#' @rdname setters-Tsne
+#' @aliases setName<- setName
+#' @title setters-Tsne
+#' @name setters-Tsne
+#' 
+#' @exportMethod setName<- 
 setReplaceMethod(
     f = "setName",
     signature = "Tsne",
@@ -291,9 +307,15 @@ setReplaceMethod(
         return(theObject)
     })
 
-
+#' @usage
+#' setPC(theObject) <- value
+#' 
+#' @description
+#' setPC: Update the pc slot with a vector of numeric.
+#' 
+#' @rdname setters-Tsne
+#' @aliases setPC<- setPC
 #' @exportMethod setPC<-
-#' @describeIn Tsne-class Set the PC parameter.
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -304,8 +326,15 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setPerplexity(theObject) <- value
+#' 
+#' @description
+#' setPerplexity: Update the perplexity slot with a vector of numeric.
+#' 
+#' @rdname setters-Tsne
+#' @aliases setPerplexity<- setPerplexity
 #' @exportMethod setPerplexity<-
-#' @describeIn Tsne-class Set the perplexity parameter.
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -316,8 +345,15 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setCoordinates(theObject) <- value
+#' 
+#' @description
+#' setCoordinates: Update the coordinates slot with a matrix of numeric.
+#' 
+#' @rdname setters-Tsne
+#' @aliases setCoordinates<- setCoordinates
 #' @exportMethod setCoordinates<-
-#' @describeIn Tsne-class Set the matrix of tSNE coordinates.
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
