@@ -6,11 +6,14 @@
 #' setExperimentName(theObject) <- value
 #' 
 #' @description
+#' Update a slot of a scRNA-seq object.
+#' 
+#' @param theObject A scRNA-seq object to update. See description or ?scRNAseq.
+#' @param value The value to update the slot with. See description or ?scRNAseq.
+#' 
+#' @description
 #' setExperimentName: Update the experiment name slot with a character string.
-#' 
-#' @param theObject A scRNA-seq object to update.
-#' @param value The value to update the slot with.
-#' 
+
 #' @rdname setters-scRNAseq
 #' @aliases setExperimentName<- setExperimentName
 #' @title setters-scRNAseq
@@ -44,9 +47,16 @@ setReplaceMethod(
         return(theObject)
     })
 
-
+#' @usage
+#' setSceNorm(theObject) <- value
+#' 
+#' @description
+#' setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment 
+#' object.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setSceNorm<- setSceNorm
 #' @exportMethod setSceNorm<-
-#' @describeIn scRNAseq-class Set the SingleCellExperiment object used.
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -57,8 +67,16 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setSpecies<-
-#' @describeIn scRNAseq-class Set the species. 
+#' @usage
+#' setSpecies(theObject) <- value
+#' 
+#' @description
+#' setSpecies: Update the species slot with a character string. Value should be
+#'  mouse or human.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setSpecies<- setSpecies
+#' @exportMethod setSpecies<- 
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -69,8 +87,16 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setOutputDirectory(theObject) <- value
+#' 
+#' @description
+#' setOutputDirectory: Update the outputDirectory slot with a character string.
+#' Value should be a valid path.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setOutputDirectory<- setOutputDirectory
 #' @exportMethod setOutputDirectory<-
-#' @describeIn scRNAseq-class Set the path of the output directory.
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -81,8 +107,16 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setTSNEList(theObject) <- value
+#' 
+#' @description
+#' setTSNEList: Update the tSNEList slot with a list of tSNE objects. See 
+#' ?Tsne-class.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setTSNEList<- setTSNEList
 #' @exportMethod setTSNEList<-
-#' @describeIn scRNAseq-class Set the list of Tsne objects.
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -93,6 +127,15 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setDbscanList(theObject) <- value
+#' 
+#' @description
+#' setDbscanList: Update the dbscanList slot with a list of dbscan objects. See 
+#' ?Dbscan-class.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setDbscanList<- setDbscanList
 #' @exportMethod setDbscanList<-
 #' @describeIn scRNAseq-class Set the list of Dbscan objects. 
 setReplaceMethod(
@@ -105,10 +148,16 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setCellsSimilarityMatrix(theObject) <- value
+#' 
+#' @description
+#' setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a 
+#' numeric matrix.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setCellsSimilarityMatrix<- setCellsSimilarityMatrix
 #' @exportMethod setCellsSimilarityMatrix<-
-#' @param theObject An object of class scRNAseq.
-#' @param value A numeric matrix. 
-#' @describeIn scRNAseq-class Set the cell similarity matrix.
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -119,8 +168,16 @@ setReplaceMethod(
     })
 
 
+#' @usage
+#' setClustersSimilarityMatrix(theObject) <- value
+#' 
+#' @description
+#' setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a 
+#' numeric matrix.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setClustersSimilarityMatrix<- setClustersSimilarityMatrix
 #' @exportMethod setClustersSimilarityMatrix<-
-#' @describeIn scRNAseq-class Set the cluster similarity matrix.
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -131,8 +188,16 @@ setReplaceMethod(
     })
 
 
-#' @exportMethod setClustersSimiliratyOrdered<-
-#' @describeIn scRNAseq-class Set the clusters ordered by similarity. 
+#' @usage
+#' setClustersSimiliratyOrdered(theObject) <- value
+#' 
+#' @description
+#' setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with 
+#' a numeric factor.
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setClustersSimiliratyOrdered<- setClustersSimiliratyOrdered
+#' @exportMethod setClustersSimiliratyOrdered<- 
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -142,9 +207,18 @@ setReplaceMethod(
         return(theObject)
     })
 
-
-#' @exportMethod setMarkerGenesList<-
-#' @describeIn scRNAseq-class Set the list of marker genes by clusters. 
+#' @usage
+#' setMarkerGenesList(theObject) <- value
+#' 
+#' @description
+#' setMarkerGenesList: Update the markerGenesList slot with a list of data 
+#' frame. The data frame structure should be: 
+#' data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA), 
+#' score = c(NA))
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setMarkerGenesList<- setMarkerGenesList
+#' @exportMethod setMarkerGenesList<- 
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -154,9 +228,17 @@ setReplaceMethod(
         return(theObject)
     })
 
-
-#' @exportMethod setClustersMarkers<-
-#' @describeIn scRNAseq-class Set the most significant markers by clusters. 
+#' @usage
+#' setClustersMarkers(theObject) <- value
+#' 
+#' @description
+#' setClustersMarkers: Update the clustersMarkers slot with a data frame. 
+#' The data frame structure should be: 
+#' data.frame(geneName="gene1", clusters=NA)
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setClustersMarkers<- setClustersMarkers
+#' @exportMethod setClustersMarkers<- 
 setReplaceMethod(
 		f="setClustersMarkers",
 		signature="scRNAseq",
@@ -167,9 +249,22 @@ setReplaceMethod(
 		})
 
 
+#' @usage
+#' setGenesInfos(theObject) <- value
+#' 
+#' @description
+#' setGenesInfos: Update the genesInfos slot with a data frame. 
+#' The data frame structure should be: 
+#' data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
+#' 				external_gene_name="gene", go_id="GO1,GO2", 
+#' 				mgi_description="description", entrezgene_description="descr",
+#' 				gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+#' 				ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+#' 				uniprot_gn_id="ID")
+#' 
+#' @rdname setters-scRNAseq
+#' @aliases setGenesInfos<- setGenesInfos
 #' @exportMethod setGenesInfos<-
-#' @describeIn scRNAseq-class Set a data.frame containing informations about 
-#' the marker genes.
 setReplaceMethod(
 		f="setGenesInfos",
 		signature="scRNAseq",
