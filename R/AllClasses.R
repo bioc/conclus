@@ -12,8 +12,7 @@
 #' and is used by the method generateTSNECoordinates.
 #'
 #' @rdname Tsne-class
-#' @aliases Tsne-class Tsne getTsneName getPC getPerplexity getCoordinates
-#' setTsneName setPC setPerplexity setCoordinates
+#' @aliases Tsne-class Tsne
 #' 
 #' @slot name A 'character' string representing the name of the tSNE 
 #'            coordinates.
@@ -90,8 +89,7 @@ Tsne <- setClass(
 #' and is used by the method runDBSCAN.
 #'
 #' @rdname Dbscan-class
-#' @aliases Dbscan Dbscan-class getDbscanName getEpsilon getMinPoints 
-#' getClustering setDbscanName setEpsilon setMinPoints setClustering
+#' @aliases Dbscan Dbscan-class
 #' 
 #' @slot name A 'character' string representing the name of the Dbscan 
 #' clustering.
@@ -186,14 +184,7 @@ Dbscan <- setClass(
 #' for each clusters.
 #' 
 #' @rdname scRNAseq-class
-#' @aliases scRNAseq scRNAseq-class getExperimentName getCountMatrix getSceNorm
-#'  getSpecies getOutputDirectory getTSNEList getDbscanList 
-#' getCellsSimilarityMatrix getClustersSimilarityMatrix 
-#' getClustersSimiliratyOrdered getMarkerGenesList getClustersMarkers 
-#' getGenesInfos setExperimentName setCountMatrix setSceNorm setSpecies
-#' setOutputDirectory setTSNEList setDbscanList setCellsSimilarityMatrix
-#' setClustersSimilarityMatrix setClustersSimiliratyOrdered
-#' setMarkerGenesList setClustersMarkers setGenesInfos
+#' @aliases scRNAseq scRNAseq-class
 #'
 #' @section Constructor:
 #' 
