@@ -7,19 +7,118 @@
 \alias{setCountMatrix<-,scRNAseq-method}
 \alias{setCountMatrix<-}
 \alias{setCountMatrix}
+\alias{setSceNorm<-,scRNAseq-method}
+\alias{setSceNorm<-}
+\alias{setSceNorm}
+\alias{setSpecies<-,scRNAseq-method}
+\alias{setSpecies<-}
+\alias{setSpecies}
+\alias{setOutputDirectory<-,scRNAseq-method}
+\alias{setOutputDirectory<-}
+\alias{setOutputDirectory}
+\alias{setTSNEList<-,scRNAseq-method}
+\alias{setTSNEList<-}
+\alias{setTSNEList}
+\alias{setDbscanList<-,scRNAseq-method}
+\alias{setDbscanList<-}
+\alias{setDbscanList}
+\alias{setCellsSimilarityMatrix<-,scRNAseq-method}
+\alias{setCellsSimilarityMatrix<-}
+\alias{setCellsSimilarityMatrix}
+\alias{setClustersSimilarityMatrix<-,scRNAseq-method}
+\alias{setClustersSimilarityMatrix<-}
+\alias{setClustersSimilarityMatrix}
+\alias{setClustersSimiliratyOrdered<-,scRNAseq-method}
+\alias{setClustersSimiliratyOrdered<-}
+\alias{setClustersSimiliratyOrdered}
+\alias{setMarkerGenesList<-,scRNAseq-method}
+\alias{setMarkerGenesList<-}
+\alias{setMarkerGenesList}
+\alias{setClustersMarkers<-,scRNAseq-method}
+\alias{setClustersMarkers<-}
+\alias{setClustersMarkers}
+\alias{setGenesInfos<-,scRNAseq-method}
+\alias{setGenesInfos<-}
+\alias{setGenesInfos}
 \title{setters-scRNAseq}
 \usage{
 setExperimentName(theObject) <- value
 
 setCountMatrix(theObject) <- value
+
+setSceNorm(theObject) <- value
+
+setSpecies(theObject) <- value
+
+setOutputDirectory(theObject) <- value
+
+setTSNEList(theObject) <- value
+
+setDbscanList(theObject) <- value
+
+setCellsSimilarityMatrix(theObject) <- value
+
+setClustersSimilarityMatrix(theObject) <- value
+
+setClustersSimiliratyOrdered(theObject) <- value
+
+setMarkerGenesList(theObject) <- value
+
+setClustersMarkers(theObject) <- value
+
+setGenesInfos(theObject) <- value
 }
 \arguments{
-\item{theObject}{A scRNA-seq object to update.}
+\item{theObject}{A scRNA-seq object to update. See description or ?scRNAseq.}
 
-\item{value}{The value to update the slot with.}
+\item{value}{The value to update the slot with. See description or ?scRNAseq.}
 }
 \description{
+Update a slot of a scRNA-seq object.
+
 setExperimentName: Update the experiment name slot with a character string.
 
 setCountMatrix: Update the countMatrix slot with a matrix of numeric.
+
+setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment 
+object.
+
+setSpecies: Update the species slot with a character string. Value should be
+ mouse or human.
+
+setOutputDirectory: Update the outputDirectory slot with a character string.
+Value should be a valid path.
+
+setTSNEList: Update the tSNEList slot with a list of tSNE objects. See 
+?Tsne-class.
+
+setDbscanList: Update the dbscanList slot with a list of dbscan objects. See 
+?Dbscan-class.
+
+setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a 
+numeric matrix.
+
+setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a 
+numeric matrix.
+
+setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with 
+a numeric factor.
+
+setMarkerGenesList: Update the markerGenesList slot with a list of data 
+frame. The data frame structure should be: 
+data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA), 
+score = c(NA))
+
+setClustersMarkers: Update the clustersMarkers slot with a data frame. 
+The data frame structure should be: 
+data.frame(geneName="gene1", clusters=NA)
+
+setGenesInfos: Update the genesInfos slot with a data frame. 
+The data frame structure should be: 
+data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
+				external_gene_name="gene", go_id="GO1,GO2", 
+				mgi_description="description", entrezgene_description="descr",
+				gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+				ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+				uniprot_gn_id="ID")
 }
