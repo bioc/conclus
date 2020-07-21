@@ -42,7 +42,7 @@
 #'
 #' In the following snippets, x is a Tsne object.
 #' 
-#' getTsneName(x):    Get the name of the tSNE.
+#' getName(x):    Get the name of the tSNE.
 #' getPC(x):          Get the PC used. 
 #' getPerplexity(x):  Get the perplexity used.
 #' getCoordinates(x): Get the matrix of tSNE coordinates.
@@ -117,7 +117,7 @@ Tsne <- setClass(
 #' 
 #'     In the following snippets, x is a Dbscan object.
 #' 
-#'     getDbscanName(x): Get the name of the Dbscan.
+#'     getName(x): Get the name of the Dbscan.
 #'     getEpsilon(x):    Get the epsilon used. 
 #'     getMinPoints(x):  Get the MinPoint used.
 #'     getClustering(x): Get the matrix of DBSCAN clustering.
