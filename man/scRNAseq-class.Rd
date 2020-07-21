@@ -43,8 +43,6 @@
 \alias{getMarkerGenesList,scRNAseq-method}
 \alias{getClustersMarkers,scRNAseq-method}
 \alias{getGenesInfos,scRNAseq-method}
-\alias{setExperimentName<-,scRNAseq-method}
-\alias{setCountMatrix<-,scRNAseq-method}
 \alias{setSceNorm<-,scRNAseq-method}
 \alias{setSpecies<-,scRNAseq-method}
 \alias{setOutputDirectory<-,scRNAseq-method}
@@ -83,10 +81,6 @@
 \S4method{getClustersMarkers}{scRNAseq}(theObject)
 
 \S4method{getGenesInfos}{scRNAseq}(theObject)
-
-\S4method{setExperimentName}{scRNAseq}(theObject) <- value
-
-\S4method{setCountMatrix}{scRNAseq}(theObject) <- value
 
 \S4method{setSceNorm}{scRNAseq}(theObject) <- value
 
@@ -146,10 +140,6 @@ different steps to analyse rare cell populations.
 \item \code{getClustersMarkers,scRNAseq-method}: Get the most significant markers by clusters.
 
 \item \code{getGenesInfos,scRNAseq-method}: Get informations about marker genes.
-
-\item \code{setExperimentName<-,scRNAseq-method}: Set the name of the experiment.
-
-\item \code{setCountMatrix<-,scRNAseq-method}: Set the count matrix.
 
 \item \code{setSceNorm<-,scRNAseq-method}: Set the SingleCellExperiment object used.
 
