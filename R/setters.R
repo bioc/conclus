@@ -136,8 +136,7 @@ setReplaceMethod(
 #' 
 #' @rdname setters-scRNAseq
 #' @aliases setDbscanList<- setDbscanList
-#' @exportMethod setDbscanList<-
-#' @describeIn scRNAseq-class Set the list of Dbscan objects. 
+#' @exportMethod setDbscanList<- 
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
