@@ -87,6 +87,8 @@ setReplaceMethod(
 
 
 #' @exportMethod setCellsSimilarityMatrix<-
+#' @param theObject An object of class scRNAseq.
+#' @param value A numeric matrix. 
 #' @describeIn scRNAseq-class Set the cell similarity matrix.
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
