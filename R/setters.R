@@ -165,8 +165,7 @@ setReplaceMethod(
 ################################################################################
 
 #' @exportMethod setName<-
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Set the name of the tSNE. 
 setReplaceMethod(
     f = "setName",
     signature = "Tsne",
@@ -178,8 +177,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setPC<-
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Set the PC parameter.
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -191,8 +189,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setPerplexity<-
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Set the perplexity parameter.
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -204,8 +201,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setCoordinates<-
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Set the matrix of tSNE coordinates.
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -216,13 +212,13 @@ setReplaceMethod(
     })
 
 
+
 ################################################################################
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
 #' @exportMethod setName<-
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Set the name of the Dbscan. 
 setReplaceMethod(
     f = "setName",
     signature = "Dbscan",
@@ -234,8 +230,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setEpsilon<-
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Set the epsilon used.
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -247,8 +242,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setMinPoints<-
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Set the minPoints used.
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -260,8 +254,7 @@ setReplaceMethod(
 
 
 #' @exportMethod setClustering<-
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Set the matrix of Dbscan clustering. 
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
@@ -270,5 +263,4 @@ setReplaceMethod(
         validObject(theObject)
         return(theObject)
     })
-
 

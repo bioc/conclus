@@ -136,8 +136,7 @@ setMethod(
 ################################################################################
 
 #' @exportMethod getName
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Get the name of the tSNE. 
 setMethod(
     f = "getName",
     signature = "Tsne",
@@ -147,8 +146,7 @@ setMethod(
 
 
 #' @exportMethod getPerplexity
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Get the perplexity used.
 setMethod(
     f = "getPerplexity",
     signature = "Tsne",
@@ -158,8 +156,7 @@ setMethod(
 
 
 #' @exportMethod getPC
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Get the PC used.
 setMethod(
     f = "getPC",
     signature = "Tsne",
@@ -169,8 +166,7 @@ setMethod(
 
 
 #' @exportMethod getCoordinates
-#' @noRd
-## Described in Tsne-class
+#' @describeIn Tsne-class Get the matrix of tSNE coordinates. 
 setMethod(
     f = "getCoordinates",
     signature = "Tsne",
@@ -185,8 +181,7 @@ setMethod(
 ################################################################################
 
 #' @exportMethod getName
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Get the name of the Dbscan.
 setMethod(
     f = "getName",
     signature = "Dbscan",
@@ -196,8 +191,7 @@ setMethod(
 
 
 #' @exportMethod getEpsilon
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Get the epsilon used.
 setMethod(
     f = "getEpsilon",
     signature = "Dbscan",
@@ -207,8 +201,7 @@ setMethod(
 
 
 #' @exportMethod getMinPoints
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Get the MinPoint used.
 setMethod(
     f = "getMinPoints",
     signature = "Dbscan",
@@ -218,8 +211,7 @@ setMethod(
 
 
 #' @exportMethod getClustering
-#' @noRd
-## Described in Dbscan-class
+#' @describeIn Dbscan-class Get the matrix of DBSCAN clustering.
 setMethod(
     f = "getClustering",
     signature = "Dbscan",
