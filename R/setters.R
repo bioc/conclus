@@ -2,15 +2,19 @@
 ########################  Setters for scRNAseq class  ##########################
 ################################################################################
 
-#' setExperimentName
 #' @usage
 #' setExperimentName(theObject) <- value
+#' 
+#' @description
+#' Update the experiment name slot with value.
 #' 
 #' @param theObject A scRNA-seq object to update.
 #' @param value The value to update the slot with.
 #' 
 #' @rdname setters
-#' @aliases setExperimentName
+#' @aliases setExperimentName<-
+#' @title setters
+#' @name setters
 #' 
 #' @exportMethod setExperimentName<-
 setReplaceMethod(
@@ -22,11 +26,15 @@ setReplaceMethod(
         return(theObject)
     })
 
-#' setCountMatrix
 #' @usage
 #' setCountMatrix(theObject) <- value
+#' 
+#' @description
+#' Update the countMatrix slot with value.
+#' 
+#' @rdname setters
+#' @aliases setCountMatrix<-
 #' @exportMethod setCountMatrix<-
-#' @describeIn setters Set the count matrix.
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
