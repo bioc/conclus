@@ -578,7 +578,7 @@ setMethod(
 			if(clusterNumber == 0){
 				message(paste0("Assigning cells to clusters. DeepSplit = ",
 								deepSplit))
-				clusters <- unname(cutreeDynamic(clusteringTree,
+				clusters <- unname(dynamicTreeCut::cutreeDynamic(clusteringTree,
 								distM=as.matrix(distanceMatrix),
 								verbose=0,
 								deepSplit=deepSplit))
