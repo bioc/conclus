@@ -83,6 +83,8 @@ createDirectory <- function(dataDirectory, directory){
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
 	
+	utils::globalVariables(c(PCA, perp), conclus, add=TRUE)
+	
     tSNECoordinates <- foreach::foreach(PCA=rep(PCs, length(perplexities)),
 					perp=rep(perplexities, each=length(PCs)), .combine='cbind',
 					.packages="SingleCellExperiment") %dopar% {
