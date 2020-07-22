@@ -74,6 +74,7 @@ createDirectory <- function(dataDirectory, directory){
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom stats prcomp
 #' @importFrom doParallel registerDoParallel
+#' @importFrom utils globalVariables
 #' @return Returns the combinations of tSNES
 #' @noRd
 .getTSNEresults <- function(theObject, expressionMatrix, cores, PCs, 
@@ -82,6 +83,8 @@ createDirectory <- function(dataDirectory, directory){
     PCAData <- prcomp(t(expressionMatrix))$x
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
+	
+	utils::globalVariables(c("PCA", "perp"))
 	
     tSNECoordinates <- foreach::foreach(PCA=rep(PCs, length(perplexities)),
 					perp=rep(perplexities, each=length(PCs)), .combine='cbind',
