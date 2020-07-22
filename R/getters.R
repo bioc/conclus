@@ -270,7 +270,7 @@ NULL
 #' getName: Get the name of the tSNE.
 #'  
 #' @rdname gettersTsne
-#' @aliases getName
+#' @aliases getName,Tsne-method
 #' 
 #' @exportMethod getName 
 setMethod(
@@ -359,7 +359,7 @@ NULL
 #' getName: Get the name of the Dbscan.
 #' 
 #' @rdname gettersDbscan
-#' @aliases getName
+#' @aliases getName,Dbscan-method
 #' 
 #' @exportMethod getName
 setMethod(
