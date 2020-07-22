@@ -13,7 +13,7 @@
 #' 
 #' @description
 #' setExperimentName: Update the experiment name slot with a character string.
-
+#' 
 #' @rdname setters-scRNAseq
 #' @aliases setExperimentName<- setExperimentName
 #' @title setters-scRNAseq
@@ -381,7 +381,7 @@ setReplaceMethod(
 #' setName: Update the Dbscan name slot with a character string.
 #' 
 #' @rdname setters-Dbscan
-#' @aliases setName<- setName
+#' @aliases setNameDbscan<- setNameDbscan
 #' @title setters-Dbscan
 #' @name setters-Dbscan
 #' 
