@@ -3,15 +3,6 @@
 ################################################################################
 
 
-#' @description
-#' Retrieve data of a slot of a scRNA-seq object.
-#' 
-#' @param theObject A scRNA-seq object. See description or ?scRNAseq.
-#' @rdname getters-scRNAseq
-#' @title getters-scRNAseq
-#' @name getters-scRNAseq
-
-
 #' @usage
 #' getExperimentName(theObject)
 #' 
