@@ -10,10 +10,7 @@
 #' Retrieve data of a slot of a scRNA-seq object.
 #' 
 #' @param theObject A scRNA-seq object. See description or ?scRNAseq.
-#' 
-#' @description
 #'  
-#' 
 #' @rdname gettersscRNAseq
 #' @aliases gettersscRNAseq
 #' @name gettersscRNAseq
