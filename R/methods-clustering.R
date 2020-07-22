@@ -234,7 +234,8 @@
 #' testClustering(theObject, dbscanEpsilon=1.4, minPts=5, 
 #' 				perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
 #' 				cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf", 
-#' 				fileDist="distance_graph.pdf", fileClust="test_clustering.pdf")
+#' 				fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
+#'              ...)
 #' 
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
