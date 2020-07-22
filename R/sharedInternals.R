@@ -87,12 +87,12 @@ createDirectory <- function(dataDirectory, directory){
 					perp=rep(perplexities, each=length(PCs)), .combine='cbind',
 					.packages="SingleCellExperiment") %dopar% {
 				
-				listsce <- list(logcounts=t(PCAData[, 1:.data$PCA]))
+				listsce <- list(logcounts=t(PCAData[, 1:PCA]))
 				sce <- SingleCellExperiment::SingleCellExperiment(
 						assays=listsce)
 				
 				tsneCoord <- scater::runTSNE(sce, scale_features=FALSE,
-                perplexity=.data$perp, rand_seed=randomSeed, theme_size=13,
+                perplexity=perp, rand_seed=randomSeed, theme_size=13,
                 return_SCESet=FALSE)
             scater::plotTSNE(tsneCoord)
         }
