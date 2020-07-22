@@ -574,7 +574,7 @@ setMethod(
 			
 			## Group the GO id and the uniprot Id
 			options(dplyr.summarise.inform = FALSE)
-			database <- database %>% group_by(.data$uniprot_gn_symbol, 
+			database <- database %>% group_by(uniprot_gn_symbol, 
 							chromosome_name, entrezgene_description) %>% 
 					summarise(go_id = paste(unique(go_id), collapse=', '),
 							uniprot_gn_id = paste(unique(uniprot_gn_id), 
