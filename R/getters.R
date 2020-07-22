@@ -264,23 +264,6 @@ NULL
 
 
 #' @usage
-#' getName(theObject)
-#'
-#' @description
-#' getName: Get the name of the tSNE.
-#'  
-#' @rdname gettersTsne
-#' 
-#' @exportMethod getName 
-setMethod(
-    f = "getName",
-    signature = "Tsne",
-    definition = function(theObject){
-        return(theObject@name)
-    })
-
-
-#' @usage
 #' getPerplexity(theObject)
 #' 
 #' @description
@@ -352,23 +335,6 @@ NULL
 
 
 #' @usage
-#' getName(theObject)
-#' 
-#' @description
-#' getName: Get the name of the Dbscan.
-#' 
-#' @rdname gettersDbscan
-#' 
-#' @exportMethod getName
-setMethod(
-    f = "getName",
-    signature = "Dbscan",
-    definition = function(theObject){
-        return(theObject@name)
-    })
-
-
-#' @usage
 #' getEpsilon(theObject)
 #' 
 #' @description
@@ -419,3 +385,22 @@ setMethod(
     definition = function(theObject){
         return(theObject@clustering)
     })
+
+
+
+
+#' @usage
+#' getName(theObject)
+#'
+#' @description
+#' getName: Get the name of the tSNE or Dbscan.
+#'  
+#' @rdname gettersTsne
+#' 
+#' @exportMethod getName 
+setMethod(
+		f = "getName",
+		signature = c("Tsne", "Dbscan"),
+		definition = function(theObject){
+			return(theObject@name)
+		})
