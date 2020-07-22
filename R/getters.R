@@ -245,8 +245,23 @@ setMethod(
 ############################  Getter of Tsne Class  ############################
 ################################################################################
 
-#' @exportMethod getName
-#' @describeIn Tsne-class Get the name of the tSNE. 
+#' @usage
+#' getName(theObject)
+#' 
+#' @description
+#' Retrieve the data of a slot of a Tsne-class object.
+#' 
+#' @param theObject A Tsne object. See description or ?Tsne.
+#' 
+#' @description
+#' getName: Get the name of the tSNE.
+#' 
+#' @rdname getters-Tsne
+#' @aliases getName
+#' @title getters-Tsne
+#' @name getters-Tsne
+#' 
+#' @exportMethod getName 
 setMethod(
     f = "getName",
     signature = "Tsne",
@@ -255,8 +270,16 @@ setMethod(
     })
 
 
+#' @usage
+#' getPerplexity(theObject)
+#' 
+#' @description
+#' getPerplexity: Get the perplexity used.
+#' 
+#' @rdname getters-Tsne
+#' @aliases getPerplexity
+#' 
 #' @exportMethod getPerplexity
-#' @describeIn Tsne-class Get the perplexity used.
 setMethod(
     f = "getPerplexity",
     signature = "Tsne",
@@ -265,8 +288,16 @@ setMethod(
     })
 
 
+#' @usage
+#' getPC(theObject)
+#' 
+#' @description
+#' getPC: Get the PC used.
+#' 
+#' @rdname getters-Tsne
+#' @aliases getPC
+#' 
 #' @exportMethod getPC
-#' @describeIn Tsne-class Get the PC used.
 setMethod(
     f = "getPC",
     signature = "Tsne",
@@ -275,8 +306,16 @@ setMethod(
     })
 
 
-#' @exportMethod getCoordinates
-#' @describeIn Tsne-class Get the matrix of tSNE coordinates. 
+#' @usage
+#' getCoordinates(theObject)
+#' 
+#' @description
+#' getCoordinates: Get the matrix of tSNE coordinates.
+#' 
+#' @rdname getters-Tsne
+#' @aliases getCoordinates
+#' 
+#' @exportMethod getCoordinates 
 setMethod(
     f = "getCoordinates",
     signature = "Tsne",
