@@ -4,7 +4,7 @@
 
 
 #' @usage
-#' gettersscRNAseq(theObject)
+#'  
 #' 
 #' @description
 #' Retrieve data of a slot of a scRNA-seq object.
@@ -12,7 +12,7 @@
 #' @param theObject A scRNA-seq object. See description or ?scRNAseq.
 #' 
 #' @description
-#' gettersscRNAseq: Get the data of a slot of a scRNA-seq object.
+#'  
 #' 
 #' @rdname gettersscRNAseq
 #' @aliases gettersscRNAseq
