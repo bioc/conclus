@@ -2,22 +2,27 @@
 ########################  Setters for scRNAseq class  ##########################
 ################################################################################
 
-#' @usage
-#' setExperimentName(theObject) <- value
-#' 
+
 #' @description
 #' Update a slot of a scRNA-seq object.
 #' 
 #' @param theObject A scRNA-seq object to update. See description or ?scRNAseq.
 #' @param value The value to update the slot with. See description or ?scRNAseq.
 #' 
+#' @rdname settersscRNAseq
+#' @title settersscRNAseq
+#' @name settersscRNAseq
+NULL
+
+
+#' @usage
+#' setExperimentName(theObject) <- value
+#' 
 #' @description
 #' setExperimentName: Update the experiment name slot with a character string.
-#' 
-#' @rdname setters-scRNAseq
+#'  
+#' @rdname settersscRNAseq
 #' @aliases setExperimentName<- setExperimentName
-#' @title setters-scRNAseq
-#' @name setters-scRNAseq
 #' 
 #' @exportMethod setExperimentName<-
 setReplaceMethod(
@@ -35,7 +40,7 @@ setReplaceMethod(
 #' @description
 #' setCountMatrix: Update the countMatrix slot with a matrix of numeric.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setCountMatrix<- setCountMatrix
 #' @exportMethod setCountMatrix<-
 setReplaceMethod(
@@ -54,7 +59,7 @@ setReplaceMethod(
 #' setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment 
 #' object.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setSceNorm<- setSceNorm
 #' @exportMethod setSceNorm<-
 setReplaceMethod(
@@ -74,7 +79,7 @@ setReplaceMethod(
 #' setSpecies: Update the species slot with a character string. Value should be
 #'  mouse or human.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setSpecies<- setSpecies
 #' @exportMethod setSpecies<- 
 setReplaceMethod(
@@ -94,7 +99,7 @@ setReplaceMethod(
 #' setOutputDirectory: Update the outputDirectory slot with a character string.
 #' Value should be a valid path.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setOutputDirectory<- setOutputDirectory
 #' @exportMethod setOutputDirectory<-
 setReplaceMethod(
@@ -114,7 +119,7 @@ setReplaceMethod(
 #' setTSNEList: Update the tSNEList slot with a list of tSNE objects. See 
 #' ?Tsne-class.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setTSNEList<- setTSNEList
 #' @exportMethod setTSNEList<-
 setReplaceMethod(
@@ -134,7 +139,7 @@ setReplaceMethod(
 #' setDbscanList: Update the dbscanList slot with a list of dbscan objects. See 
 #' ?Dbscan-class.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setDbscanList<- setDbscanList
 #' @exportMethod setDbscanList<- 
 setReplaceMethod(
@@ -154,7 +159,7 @@ setReplaceMethod(
 #' setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a 
 #' numeric matrix.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setCellsSimilarityMatrix<- setCellsSimilarityMatrix
 #' @exportMethod setCellsSimilarityMatrix<-
 setReplaceMethod(
@@ -174,7 +179,7 @@ setReplaceMethod(
 #' setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a 
 #' numeric matrix.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setClustersSimilarityMatrix<- setClustersSimilarityMatrix
 #' @exportMethod setClustersSimilarityMatrix<-
 setReplaceMethod(
@@ -194,7 +199,7 @@ setReplaceMethod(
 #' setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with 
 #' a numeric factor.
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setClustersSimiliratyOrdered<- setClustersSimiliratyOrdered
 #' @exportMethod setClustersSimiliratyOrdered<- 
 setReplaceMethod(
@@ -206,6 +211,7 @@ setReplaceMethod(
         return(theObject)
     })
 
+
 #' @usage
 #' setMarkerGenesList(theObject) <- value
 #' 
@@ -215,7 +221,7 @@ setReplaceMethod(
 #' data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA), 
 #' score = c(NA))
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setMarkerGenesList<- setMarkerGenesList
 #' @exportMethod setMarkerGenesList<- 
 setReplaceMethod(
@@ -227,6 +233,7 @@ setReplaceMethod(
         return(theObject)
     })
 
+
 #' @usage
 #' setClustersMarkers(theObject) <- value
 #' 
@@ -235,7 +242,7 @@ setReplaceMethod(
 #' The data frame structure should be: 
 #' data.frame(geneName="gene1", clusters=NA)
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setClustersMarkers<- setClustersMarkers
 #' @exportMethod setClustersMarkers<- 
 setReplaceMethod(
@@ -261,7 +268,7 @@ setReplaceMethod(
 #' 				ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
 #' 				uniprot_gn_id="ID")
 #' 
-#' @rdname setters-scRNAseq
+#' @rdname settersscRNAseq
 #' @aliases setGenesInfos<- setGenesInfos
 #' @exportMethod setGenesInfos<-
 setReplaceMethod(
@@ -279,22 +286,27 @@ setReplaceMethod(
 ############################  Setters for Tsne class  ##########################
 ################################################################################
 
-#' @usage
-#' setName(theObject) <- value
-#' 
+
 #' @description
 #' Update a slot of a Tsne-class object.
 #' 
 #' @param theObject A Tsne object to update. See description or ?Tsne.
 #' @param value The value to update the slot with. See description or ?Tsne.
 #' 
+#' @rdname settersTsne
+#' @title settersTsne
+#' @name settersTsne
+NULL
+
+
+#' @usage
+#' setName(theObject) <- value
+#'  
 #' @description
 #' setName: Update the Tsne name slot with a character string.
 #' 
-#' @rdname setters-Tsne
+#' @rdname settersTsne
 #' @aliases setName<- setName
-#' @title setters-Tsne
-#' @name setters-Tsne
 #' 
 #' @exportMethod setName<- 
 setReplaceMethod(
@@ -312,7 +324,7 @@ setReplaceMethod(
 #' @description
 #' setPC: Update the pc slot with a vector of numeric.
 #' 
-#' @rdname setters-Tsne
+#' @rdname settersTsne
 #' @aliases setPC<- setPC
 #' @exportMethod setPC<-
 setReplaceMethod(
@@ -331,7 +343,7 @@ setReplaceMethod(
 #' @description
 #' setPerplexity: Update the perplexity slot with a vector of numeric.
 #' 
-#' @rdname setters-Tsne
+#' @rdname settersTsne
 #' @aliases setPerplexity<- setPerplexity
 #' @exportMethod setPerplexity<-
 setReplaceMethod(
@@ -350,7 +362,7 @@ setReplaceMethod(
 #' @description
 #' setCoordinates: Update the coordinates slot with a matrix of numeric.
 #' 
-#' @rdname setters-Tsne
+#' @rdname settersTsne
 #' @aliases setCoordinates<- setCoordinates
 #' @exportMethod setCoordinates<-
 setReplaceMethod(
@@ -368,22 +380,26 @@ setReplaceMethod(
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
-#' @usage
-#' setName(theObject) <- value
-#' 
+
 #' @description
 #' Update a slot of a Dbscan-class object.
 #' 
 #' @param theObject A Dbscan object to update. See description or ?Dbscan.
 #' @param value The value to update the slot with. See description or ?Dbscan.
 #' 
+#' @rdname settersDbscan
+#' @title settersDbscan
+#' @name settersDbscan
+NULL
+
+#' @usage
+#' setName(theObject) <- value
+#' 
 #' @description
 #' setName: Update the Dbscan name slot with a character string.
 #' 
-#' @rdname setters-Dbscan
-#' @aliases setNameDbscan<- setNameDbscan
-#' @title setters-Dbscan
-#' @name setters-Dbscan
+#' @rdname settersDbscan
+#' @aliases setName<- setName
 #' 
 #' @exportMethod setName<- 
 setReplaceMethod(
@@ -402,7 +418,7 @@ setReplaceMethod(
 #' @description
 #' setEpsilon: Update the epsilon slot with a vector of numeric.
 #' 
-#' @rdname setters-Dbscan
+#' @rdname settersDbscan
 #' @aliases setEpsilon<- setEpsilon
 #' 
 #' @exportMethod setEpsilon<-
@@ -422,7 +438,7 @@ setReplaceMethod(
 #' @description
 #' setMinPoints: Update the minPoints slot with a vector of numeric.
 #' 
-#' @rdname setters-Dbscan
+#' @rdname settersDbscan
 #' @aliases setMinPoints<- setMinPoints
 #' 
 #' @exportMethod setMinPoints<-
@@ -442,7 +458,7 @@ setReplaceMethod(
 #' @description
 #' setClustering: Update the clustering slot with a matrix of numeric.
 #' 
-#' @rdname setters-Dbscan
+#' @rdname settersDbscan
 #' @aliases setClustering<- setClustering
 #' 
 #' @exportMethod setClustering<- 
