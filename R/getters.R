@@ -16,6 +16,8 @@
 #' 
 #' @rdname gettersscRNAseq
 #' @aliases gettersscRNAseq
+#' @name gettersscRNAseq
+#' @title gettersscRNAseq
 #'  
 #' @exportMethod gettersscRNAseq
 setMethod(
