@@ -396,6 +396,7 @@ setMethod(
 #' getName: Get the name of the tSNE or Dbscan.
 #'  
 #' @rdname gettersTsne
+#' @aliases getName
 #' 
 #' @exportMethod getName 
 setMethod(
