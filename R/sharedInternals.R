@@ -1,3 +1,5 @@
+utils::globalVariables(c("PCA", "perp"))
+
 #' initialisePath
 #'
 #' Create the output directory
