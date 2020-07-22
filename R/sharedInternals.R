@@ -74,7 +74,6 @@ createDirectory <- function(dataDirectory, directory){
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom stats prcomp
 #' @importFrom doParallel registerDoParallel
-#' @importFrom utils globalVariables
 #' @return Returns the combinations of tSNES
 #' @noRd
 .getTSNEresults <- function(theObject, expressionMatrix, cores, PCs, 
@@ -84,18 +83,16 @@ createDirectory <- function(dataDirectory, directory){
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
 	
-	utils::globalVariables(c("PCA", "perp"))
-	
     tSNECoordinates <- foreach::foreach(PCA=rep(PCs, length(perplexities)),
 					perp=rep(perplexities, each=length(PCs)), .combine='cbind',
 					.packages="SingleCellExperiment") %dopar% {
 				
-				listsce <- list(logcounts=t(PCAData[, 1:.data$PCA]))
+				listsce <- list(logcounts=t(PCAData[, 1:PCA]))
 				sce <- SingleCellExperiment::SingleCellExperiment(
 						assays=listsce)
 				
 				tsneCoord <- scater::runTSNE(sce, scale_features=FALSE,
-                perplexity=.data$perp, rand_seed=randomSeed, theme_size=13,
+                perplexity=perp, rand_seed=randomSeed, theme_size=13,
                 return_SCESet=FALSE)
             scater::plotTSNE(tsneCoord)
         }
