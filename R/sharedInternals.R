@@ -85,7 +85,7 @@ createDirectory <- function(dataDirectory, directory){
 	
     tSNECoordinates <- foreach::foreach(PCA=rep(PCs, length(perplexities)),
 					perp=rep(perplexities, each=length(PCs)), .combine='cbind',
-					.packages="SingleCellExperiment") foreach::%dopar% {
+					.packages="SingleCellExperiment") %dopar% {
 				
 				listsce <- list(logcounts=t(PCAData[, 1:PCA]))
 				sce <- SingleCellExperiment::SingleCellExperiment(
