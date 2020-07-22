@@ -70,7 +70,7 @@ createDirectory <- function(dataDirectory, directory){
 #' @keywords internal
 #' 
 #' @importFrom parallel makeCluster stopCluster
-#' @importFrom foreach foreach
+#' @importFrom foreach foreach %dopar%
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom stats prcomp
 #' @import doParallel
@@ -85,7 +85,7 @@ createDirectory <- function(dataDirectory, directory){
 	
     tSNECoordinates <- foreach::foreach(PCA=rep(PCs, length(perplexities)),
 					perp=rep(perplexities, each=length(PCs)), .combine='cbind',
-					.packages="SingleCellExperiment") %dopar% {
+					.packages="SingleCellExperiment") foreach::%dopar% {
 				
 				listsce <- list(logcounts=t(PCAData[, 1:PCA]))
 				sce <- SingleCellExperiment::SingleCellExperiment(
