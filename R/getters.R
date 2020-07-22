@@ -4,6 +4,29 @@
 
 
 #' @usage
+#' gettersscRNAseq(theObject)
+#' 
+#' @description
+#' Retrieve data of a slot of a scRNA-seq object.
+#' 
+#' @param theObject A scRNA-seq object. See description or ?scRNAseq.
+#' 
+#' @description
+#' gettersscRNAseq: Get the data of a slot of a scRNA-seq object.
+#' 
+#' @rdname gettersscRNAseq
+#' @aliases gettersscRNAseq
+#'  
+#' @exportMethod gettersscRNAseq
+setMethod(
+		f = "getterscRNAseq",
+		signature = "scRNAseq",
+		definition = function(theObject){
+			return(theObject)
+		})
+
+
+#' @usage
 #' getExperimentName(theObject)
 #' 
 #' @description
@@ -14,7 +37,7 @@
 #' @description
 #' getExperimentName: Get the name of the experiment.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getExperimentName
 #'  
 #' @exportMethod getExperimentName
@@ -32,7 +55,7 @@ setMethod(
 #' @description
 #' getCountMatrix: Get the count matrix.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getCountMatrix
 #' 
 #' @exportMethod getCountMatrix
@@ -49,7 +72,7 @@ setMethod(
 #' @description
 #' getSceNorm: Get the SingleCellExperiment object used.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getSceNorm
 #' 
 #' @exportMethod getSceNorm
@@ -67,7 +90,7 @@ setMethod(
 #' @description
 #' getSpecies: Get the species.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getSpecies
 #' 
 #' @exportMethod getSpecies
@@ -85,7 +108,7 @@ setMethod(
 #' @description
 #' getOutputDirectory: Get the path of the output directory.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getOutputDirectory
 #' 
 #' @exportMethod getOutputDirectory
@@ -103,7 +126,7 @@ setMethod(
 #' @description
 #' getTSNEList: Get the list of Tsne objects.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getTSNEList
 #' 
 #' @exportMethod getTSNEList
@@ -121,7 +144,7 @@ setMethod(
 #' @description
 #' getDbscanList: Get the list of Dbscan objects.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getDbscanList
 #' 
 #' @exportMethod getDbscanList
@@ -138,7 +161,7 @@ setMethod(
 #' @description
 #' getCellsSimilarityMatrix: Get the cell similarity matrix.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getCellsSimilarityMatrix
 #' 
 #' @exportMethod getCellsSimilarityMatrix
@@ -156,7 +179,7 @@ setMethod(
 #' @description
 #' getClustersSimilarityMatrix: Get the cluster similarity matrix.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getClustersSimilarityMatrix
 #' 
 #' @exportMethod getClustersSimilarityMatrix
@@ -174,7 +197,7 @@ setMethod(
 #' @description
 #' getClustersSimiliratyOrdered: Get the clusters ordered by similarity.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getClustersSimiliratyOrdered
 #' 
 #' @exportMethod getClustersSimiliratyOrdered
@@ -192,7 +215,7 @@ setMethod(
 #' @description
 #' getMarkerGenesList: Get the list of marker genes by clusters.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getMarkerGenesList
 #' 
 #' @exportMethod getMarkerGenesList
@@ -210,7 +233,7 @@ setMethod(
 #' @description
 #' getClustersMarkers: Get the most significant markers by clusters.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getClustersMarkers
 #' 
 #' @exportMethod getClustersMarkers
@@ -228,7 +251,7 @@ setMethod(
 #' @description
 #' getGenesInfos: Get informations about marker genes.
 #' 
-#' @rdname getters-scRNAseq
+#' @rdname gettersscRNAseq
 #' @aliases getGenesInfos
 #' 
 #' @exportMethod getGenesInfos
