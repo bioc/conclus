@@ -29,13 +29,10 @@ setMethod(
 #' getExperimentName(theObject)
 #' 
 #' @description
-#' Retrieve data of a slot of a scRNA-seq object.
-#' 
-#' @param theObject A scRNA-seq object. See description or ?scRNAseq.
-#' 
-#' @description
 #' getExperimentName: Get the name of the experiment.
 #' 
+#' @param theObject A scRNA-seq object. See description or ?scRNAseq.
+#'  
 #' @rdname gettersscRNAseq
 #' @aliases getExperimentName
 #'  
