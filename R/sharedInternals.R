@@ -73,7 +73,8 @@ createDirectory <- function(dataDirectory, directory){
 #' @importFrom foreach foreach %dopar%
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom stats prcomp
-#' @import doParallel
+#' @importFrom doParallel registerDoParallel
+#' @importFrom utils globalVariables
 #' @return Returns the combinations of tSNES
 #' @noRd
 .getTSNEresults <- function(theObject, expressionMatrix, cores, PCs, 
