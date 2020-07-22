@@ -2,21 +2,24 @@
 ########################  Getters of scRNAseq class ############################
 ################################################################################
 
-#' @usage
-#' getExperimentName(theObject)
-#' 
+
 #' @description
 #' Retrieve data of a slot of a scRNA-seq object.
 #' 
 #' @param theObject A scRNA-seq object. See description or ?scRNAseq.
+#' @rdname getters-scRNAseq
+#' @title getters-scRNAseq
+#' @name getters-scRNAseq
+
+
+#' @usage
+#' getExperimentName(theObject)
 #' 
 #' @description
 #' getExperimentName: Get the name of the experiment.
 #' 
 #' @rdname getters-scRNAseq
 #' @aliases getExperimentName
-#' @title getters-scRNAseq
-#' @name getters-scRNAseq
 #' 
 #' @exportMethod getExperimentName
 setMethod(
@@ -341,7 +344,7 @@ setMethod(
 #' getName: Get the name of the Dbscan.
 #' 
 #' @rdname getters-Dbscan
-#' @aliases getName
+#' @aliases getNameDbscan
 #' @title getters-Dbscan
 #' @name getters-Dbscan
 #' 
