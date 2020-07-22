@@ -7,11 +7,18 @@
 #' getExperimentName(theObject)
 #' 
 #' @description
+#' Retrieve data of a slot of a scRNA-seq object.
+#' 
+#' @param theObject A scRNA-seq object. See description or ?scRNAseq.
+#' 
+#' @description
 #' getExperimentName: Get the name of the experiment.
 #' 
 #' @rdname getters-scRNAseq
 #' @aliases getExperimentName
-#' 
+#' @title getters-scRNAseq
+#' @name getters-scRNAseq
+#'  
 #' @exportMethod getExperimentName
 setMethod(
     f = "getExperimentName",
