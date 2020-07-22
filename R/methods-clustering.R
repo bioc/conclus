@@ -379,6 +379,7 @@ setMethod(
 #' @importFrom parallel stopCluster
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach %dopar%
+#' @importFrom utils globalVariables
 #' @return A cell similarity matrix
 #' @noRd
 .mkSimMat <- function(dbscanList, cores){
