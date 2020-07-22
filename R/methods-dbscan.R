@@ -29,13 +29,16 @@
 	
 	myCluster <- parallel::makeCluster(cores, type="PSOCK")
 	doParallel::registerDoParallel(myCluster)
-	dbscanResults <- foreach::foreach(i=rep(rep(1:length(tSNEList),
+	dbscanResults <- foreach::foreach(iMkDbscan=rep(rep(1:length(tSNEList),
 									each=length(minPoints)), length(epsilon)),
-					eps=rep(epsilon, each=length(tSNEList)*length(minPoints)),
-					MinPts=rep(minPoints, length(tSNEList)*length(epsilon)),
+					epsMkDbscan=rep(epsilon, 
+							each=length(tSNEList)*length(minPoints)),
+					MinPtsMkDbscan=rep(minPoints, 
+							length(tSNEList)*length(epsilon)),
 					.combine='cbind', .export = 'getCoordinates') %dopar% {
-				fpc::dbscan(getCoordinates(tSNEList[[i]]), eps=eps, 
-						MinPts=MinPts)$cluster}
+				fpc::dbscan(getCoordinates(tSNEList[[iMkDbscan]]), 
+						eps=epsMkDbscan, 
+						MinPts=MinPtsMkDbscan)$cluster}
 	parallel::stopCluster(myCluster)
 	return(dbscanResults)
 }
