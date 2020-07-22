@@ -16,8 +16,6 @@
 #' 
 #' @rdname getters-scRNAseq
 #' @aliases getExperimentName
-#' @title getters-scRNAseq
-#' @name getters-scRNAseq
 #'  
 #' @exportMethod getExperimentName
 setMethod(
