@@ -3,25 +3,15 @@
 ################################################################################
 
 
-#' @usage
-#'  
 #' @description
 #' Retrieve data of a slot of a scRNA-seq object.
 #' 
 #' @param theObject A scRNA-seq object. See description or ?scRNAseq.
 #'  
 #' @rdname gettersscRNAseq
-#' @aliases gettersscRNAseq
 #' @name gettersscRNAseq
 #' @title gettersscRNAseq
-#'  
-#' @exportMethod gettersscRNAseq
-setMethod(
-		f = "gettersscRNAseq",
-		signature = "scRNAseq",
-		definition = function(theObject){
-			return(theObject)
-		})
+NULL
 
 
 #' @usage
