@@ -5,7 +5,6 @@
 
 #' @usage
 #'  
-#' 
 #' @description
 #' Retrieve data of a slot of a scRNA-seq object.
 #' 
@@ -18,7 +17,7 @@
 #'  
 #' @exportMethod gettersscRNAseq
 setMethod(
-		f = "getterscRNAseq",
+		f = "gettersscRNAseq",
 		signature = "scRNAseq",
 		definition = function(theObject){
 			return(theObject)
