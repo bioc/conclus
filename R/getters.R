@@ -4,13 +4,14 @@
 
 
 #' @description
-#' Retrieve data of a slot of a scRNA-seq object.
+#' Retrieve data of a slot of a scRNA-seq, Tsne or Dbscan object.
 #' 
-#' @param theObject A scRNA-seq object. See description or ?scRNAseq.
+#' @param theObject A scRNA-seq, Tsne or Dbscan object. See description or 
+#' ?scRNAseq, ?Tsne, ?Dbscan.
 #'  
-#' @rdname gettersscRNAseq
-#' @name gettersscRNAseq
-#' @title gettersscRNAseq
+#' @rdname getters
+#' @name getters
+#' @title getters
 NULL
 
 
@@ -22,7 +23,7 @@ NULL
 #' 
 #' @param theObject A scRNA-seq object. See description or ?scRNAseq.
 #'  
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getExperimentName
 #'  
 #' @exportMethod getExperimentName
@@ -40,7 +41,7 @@ setMethod(
 #' @description
 #' getCountMatrix: Get the count matrix.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getCountMatrix
 #' 
 #' @exportMethod getCountMatrix
@@ -57,7 +58,7 @@ setMethod(
 #' @description
 #' getSceNorm: Get the SingleCellExperiment object used.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getSceNorm
 #' 
 #' @exportMethod getSceNorm
@@ -75,7 +76,7 @@ setMethod(
 #' @description
 #' getSpecies: Get the species.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getSpecies
 #' 
 #' @exportMethod getSpecies
@@ -93,7 +94,7 @@ setMethod(
 #' @description
 #' getOutputDirectory: Get the path of the output directory.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getOutputDirectory
 #' 
 #' @exportMethod getOutputDirectory
@@ -111,7 +112,7 @@ setMethod(
 #' @description
 #' getTSNEList: Get the list of Tsne objects.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getTSNEList
 #' 
 #' @exportMethod getTSNEList
@@ -129,7 +130,7 @@ setMethod(
 #' @description
 #' getDbscanList: Get the list of Dbscan objects.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getDbscanList
 #' 
 #' @exportMethod getDbscanList
@@ -146,7 +147,7 @@ setMethod(
 #' @description
 #' getCellsSimilarityMatrix: Get the cell similarity matrix.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getCellsSimilarityMatrix
 #' 
 #' @exportMethod getCellsSimilarityMatrix
@@ -164,7 +165,7 @@ setMethod(
 #' @description
 #' getClustersSimilarityMatrix: Get the cluster similarity matrix.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getClustersSimilarityMatrix
 #' 
 #' @exportMethod getClustersSimilarityMatrix
@@ -182,7 +183,7 @@ setMethod(
 #' @description
 #' getClustersSimiliratyOrdered: Get the clusters ordered by similarity.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getClustersSimiliratyOrdered
 #' 
 #' @exportMethod getClustersSimiliratyOrdered
@@ -200,7 +201,7 @@ setMethod(
 #' @description
 #' getMarkerGenesList: Get the list of marker genes by clusters.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getMarkerGenesList
 #' 
 #' @exportMethod getMarkerGenesList
@@ -218,7 +219,7 @@ setMethod(
 #' @description
 #' getClustersMarkers: Get the most significant markers by clusters.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getClustersMarkers
 #' 
 #' @exportMethod getClustersMarkers
@@ -236,7 +237,7 @@ setMethod(
 #' @description
 #' getGenesInfos: Get informations about marker genes.
 #' 
-#' @rdname gettersscRNAseq
+#' @rdname getters
 #' @aliases getGenesInfos
 #' 
 #' @exportMethod getGenesInfos
@@ -252,24 +253,13 @@ setMethod(
 ############################  Getter of Tsne Class  ############################
 ################################################################################
 
-#' @description
-#' Retrieve data of a slot of a Tsne object.
-#' 
-#' @param theObject A Tsne object. See description or ?Tsne.
-#'  
-#' @rdname gettersTsne
-#' @name gettersTsne
-#' @title gettersTsne
-NULL
-
-
 #' @usage
 #' getPerplexity(theObject)
 #' 
 #' @description
 #' getPerplexity: Get the perplexity used.
 #' 
-#' @rdname gettersTsne
+#' @rdname getters
 #' @aliases getPerplexity
 #' 
 #' @exportMethod getPerplexity
@@ -287,7 +277,7 @@ setMethod(
 #' @description
 #' getPC: Get the PC used.
 #' 
-#' @rdname gettersTsne
+#' @rdname getters
 #' @aliases getPC
 #' 
 #' @exportMethod getPC
@@ -305,7 +295,7 @@ setMethod(
 #' @description
 #' getCoordinates: Get the matrix of tSNE coordinates.
 #' 
-#' @rdname gettersTsne
+#' @rdname getters
 #' @aliases getCoordinates
 #' 
 #' @exportMethod getCoordinates 
@@ -322,25 +312,13 @@ setMethod(
 ###########################  Getter of Dbscan Class  ###########################
 ################################################################################
 
-
-#' @description
-#' Retrieve data of a slot of a Dbscan-class object.
-#' 
-#' @param theObject A Dbscan object. See description or ?Dbscan.
-#'  
-#' @rdname gettersDbscan
-#' @name gettersDbscan
-#' @title gettersDbscan
-NULL
-
-
 #' @usage
 #' getEpsilon(theObject)
 #' 
 #' @description
 #' getEpsilon: Get the epsilon used.
 #' 
-#' @rdname gettersDbscan
+#' @rdname getters
 #' @aliases getEpsilon
 #' 
 #' @exportMethod getEpsilon
@@ -357,7 +335,7 @@ setMethod(
 #' @description
 #' getMinPoints: Get the MinPoint used.
 #' 
-#' @rdname gettersDbscan
+#' @rdname getters
 #' @aliases getMinPoints
 #' 
 #' @exportMethod getMinPoints
@@ -375,7 +353,7 @@ setMethod(
 #' @description
 #' getClustering: Get the matrix of DBSCAN clustering.
 #' 
-#' @rdname gettersDbscan
+#' @rdname getters
 #' @aliases getClustering
 #' 
 #' @exportMethod getClustering
@@ -388,6 +366,9 @@ setMethod(
 
 
 
+################################################################################
+#######################  Getter of Tsne and Dbscan Class  ######################
+################################################################################
 
 #' @usage
 #' getName(theObject)
@@ -395,7 +376,7 @@ setMethod(
 #' @description
 #' getName: Get the name of the tSNE or Dbscan.
 #'  
-#' @rdname gettersTsne
+#' @rdname getters
 #' @aliases getName
 #' 
 #' @exportMethod getName 
