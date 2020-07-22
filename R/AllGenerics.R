@@ -28,7 +28,6 @@ setGeneric(
     signature="theObject")
 
 
-
 setGeneric(
 		
 	name = "generateTSNECoordinates",
@@ -217,6 +216,17 @@ setGeneric(
 ################################################################################
 ############################### Getter methods #################################
 ################################################################################
+
+
+setGeneric(
+		
+		name = "getterscRNAseq",
+		
+		def = function(theObject){
+			standardGeneric("getterscRNAseq")    
+		},
+		signature="theObject")
+
 
 setGeneric(
 		
