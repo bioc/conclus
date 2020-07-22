@@ -329,8 +329,23 @@ setMethod(
 ###########################  Getter of Dbscan Class  ###########################
 ################################################################################
 
+#' @usage
+#' getName(theObject)
+#' 
+#' @description
+#' Retrieve data of a slot of a Dbscan-class object.
+#' 
+#' @param theObject A Dbscan object. See description or ?Dbscan.
+#' 
+#' @description
+#' getName: Get the name of the Dbscan.
+#' 
+#' @rdname getters-Dbscan
+#' @aliases getName
+#' @title getters-Dbscan
+#' @name getters-Dbscan
+#' 
 #' @exportMethod getName
-#' @describeIn Dbscan-class Get the name of the Dbscan.
 setMethod(
     f = "getName",
     signature = "Dbscan",
@@ -339,8 +354,16 @@ setMethod(
     })
 
 
+#' @usage
+#' getEpsilon(theObject)
+#' 
+#' @description
+#' getEpsilon: Get the epsilon used.
+#' 
+#' @rdname getters-Dbscan
+#' @aliases getEpsilon
+#' 
 #' @exportMethod getEpsilon
-#' @describeIn Dbscan-class Get the epsilon used.
 setMethod(
     f = "getEpsilon",
     signature = "Dbscan",
@@ -348,9 +371,16 @@ setMethod(
         return(theObject@epsilon)
     })
 
-
+#' @usage
+#' getMinPoints(theObject)
+#' 
+#' @description
+#' getMinPoints: Get the MinPoint used.
+#' 
+#' @rdname getters-Dbscan
+#' @aliases getMinPoints
+#' 
 #' @exportMethod getMinPoints
-#' @describeIn Dbscan-class Get the MinPoint used.
 setMethod(
     f = "getMinPoints",
     signature = "Dbscan",
@@ -359,8 +389,16 @@ setMethod(
     })
 
 
+#' @usage
+#' getClustering(theObject)
+#' 
+#' @description
+#' getClustering: Get the matrix of DBSCAN clustering.
+#' 
+#' @rdname getters-Dbscan
+#' @aliases getClustering
+#' 
 #' @exportMethod getClustering
-#' @describeIn Dbscan-class Get the matrix of DBSCAN clustering.
 setMethod(
     f = "getClustering",
     signature = "Dbscan",
