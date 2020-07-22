@@ -378,7 +378,7 @@ setMethod(
 #' @importFrom parallel makeCluster
 #' @importFrom parallel stopCluster
 #' @importFrom doParallel registerDoParallel
-#' @importFrom foreach foreach
+#' @importFrom foreach foreach %dopar%
 #' @return A cell similarity matrix
 #' @noRd
 .mkSimMat <- function(dbscanList, cores){
@@ -389,11 +389,11 @@ setMethod(
 	
 	myCluster <- parallel::makeCluster(cores, type="PSOCK")
 	doParallel::registerDoParallel(myCluster)
-	simMatsList <- foreach::foreach(i=seq_len(length(dbscanList)), .export=
-							c("getClustering")) %dopar% {
+	simMatsList <- foreach::foreach(iMkSimMat=seq_len(length(dbscanList)), 
+					.export=c("getClustering")) %dopar% {
 				
 				## Get the clustering
-				clustering <- getClustering(dbscanList[[i]])
+				clustering <- getClustering(dbscanList[[iMkSimMat]])
 				
 				## Get the number of cells in the current clustering 
 				nrow <- ncol(clustering)
