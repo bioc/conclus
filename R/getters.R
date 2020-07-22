@@ -252,21 +252,25 @@ setMethod(
 ############################  Getter of Tsne Class  ############################
 ################################################################################
 
-#' @usage
-#' getName(theObject)
-#' 
 #' @description
-#' Retrieve the data of a slot of a Tsne-class object.
+#' Retrieve data of a slot of a Tsne object.
 #' 
 #' @param theObject A Tsne object. See description or ?Tsne.
-#' 
+#'  
+#' @rdname gettersTsne
+#' @name gettersTsne
+#' @title gettersTsne
+NULL
+
+
+#' @usage
+#' getName(theObject)
+#'
 #' @description
 #' getName: Get the name of the tSNE.
-#' 
-#' @rdname getters-Tsne
+#'  
+#' @rdname gettersTsne
 #' @aliases getName
-#' @title getters-Tsne
-#' @name getters-Tsne
 #' 
 #' @exportMethod getName 
 setMethod(
@@ -283,7 +287,7 @@ setMethod(
 #' @description
 #' getPerplexity: Get the perplexity used.
 #' 
-#' @rdname getters-Tsne
+#' @rdname gettersTsne
 #' @aliases getPerplexity
 #' 
 #' @exportMethod getPerplexity
@@ -301,7 +305,7 @@ setMethod(
 #' @description
 #' getPC: Get the PC used.
 #' 
-#' @rdname getters-Tsne
+#' @rdname gettersTsne
 #' @aliases getPC
 #' 
 #' @exportMethod getPC
@@ -319,7 +323,7 @@ setMethod(
 #' @description
 #' getCoordinates: Get the matrix of tSNE coordinates.
 #' 
-#' @rdname getters-Tsne
+#' @rdname gettersTsne
 #' @aliases getCoordinates
 #' 
 #' @exportMethod getCoordinates 
@@ -336,21 +340,26 @@ setMethod(
 ###########################  Getter of Dbscan Class  ###########################
 ################################################################################
 
-#' @usage
-#' getName(theObject)
-#' 
+
 #' @description
 #' Retrieve data of a slot of a Dbscan-class object.
 #' 
 #' @param theObject A Dbscan object. See description or ?Dbscan.
+#'  
+#' @rdname gettersDbscan
+#' @name gettersDbscan
+#' @title gettersDbscan
+NULL
+
+
+#' @usage
+#' getName(theObject)
 #' 
 #' @description
 #' getName: Get the name of the Dbscan.
 #' 
-#' @rdname getters-Dbscan
-#' @aliases getNameDbscan
-#' @title getters-Dbscan
-#' @name getters-Dbscan
+#' @rdname gettersDbscan
+#' @aliases getName
 #' 
 #' @exportMethod getName
 setMethod(
@@ -367,7 +376,7 @@ setMethod(
 #' @description
 #' getEpsilon: Get the epsilon used.
 #' 
-#' @rdname getters-Dbscan
+#' @rdname gettersDbscan
 #' @aliases getEpsilon
 #' 
 #' @exportMethod getEpsilon
@@ -384,7 +393,7 @@ setMethod(
 #' @description
 #' getMinPoints: Get the MinPoint used.
 #' 
-#' @rdname getters-Dbscan
+#' @rdname gettersDbscan
 #' @aliases getMinPoints
 #' 
 #' @exportMethod getMinPoints
@@ -402,7 +411,7 @@ setMethod(
 #' @description
 #' getClustering: Get the matrix of DBSCAN clustering.
 #' 
-#' @rdname getters-Dbscan
+#' @rdname gettersDbscan
 #' @aliases getClustering
 #' 
 #' @exportMethod getClustering
