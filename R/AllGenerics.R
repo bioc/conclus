@@ -220,16 +220,6 @@ setGeneric(
 
 setGeneric(
 		
-		name = "gettersscRNAseq",
-		
-		def = function(theObject){
-			standardGeneric("gettersscRNAseq")    
-		},
-		signature="theObject")
-
-
-setGeneric(
-		
 	name = "getExperimentName",
 	
     def = function(theObject){
