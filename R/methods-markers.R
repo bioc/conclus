@@ -527,10 +527,8 @@ setMethod(
 #' rankGenes retrieveTopClustersMarkers 
 #' 
 #' @exportMethod retrieveGenesInfo
-#' @importFrom biomaRt useEnsembl
-#' @importFrom dplyr group_by
-#' @importFrom dplyr summarise
-#' @importFrom biomaRt biomartCacheClear
+#' @importFrom biomaRt useEnsembl biomartCacheClear
+#' @importFrom dplyr group_by %>% summarise
 #' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
