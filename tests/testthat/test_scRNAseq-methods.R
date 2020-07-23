@@ -121,7 +121,7 @@ markers <- getMarkerGenesList(scrS4MG)
 
 ## Getting marker genes
 
-scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = F)
+scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates=FALSE)
 scrFinalWrong <- scrFinal
 setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
