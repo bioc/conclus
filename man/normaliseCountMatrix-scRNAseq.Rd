@@ -55,7 +55,7 @@ outputDirectory <- "./"
 columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
-scr <- scRNAseq(experimentName = experimentName, 
+scr <- singlecellRNAseq(experimentName = experimentName, 
                 countMatrix     = countMatrix, 
                 species         = "mouse",
                 outputDirectory = outputDirectory)

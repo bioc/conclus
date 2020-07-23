@@ -2,10 +2,10 @@
 % Please edit documentation in R/constructors.R
 \name{constructors}
 \alias{constructors}
-\alias{scRNAseq}
+\alias{singlecellRNAseq}
 \title{constructors}
 \usage{
-scRNAseq(experimentName, countMatrix, species, outputDirectory)
+singlecellRNAseq(experimentName, countMatrix, species, outputDirectory)
 }
 \arguments{
 \item{experimentName}{character string representing the name of the 
