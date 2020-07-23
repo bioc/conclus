@@ -254,7 +254,6 @@ setMethod(
 ################################################################################
 
 #' @rdname getters
-#' @exportMethod getName,Tsne-method
 setMethod(
 		f = "getName",
 		signature = c("Tsne"),
@@ -331,7 +330,7 @@ setMethod(
 #' @rdname getters
 #' @aliases getName
 #' 
-#' @exportMethod getName,Dbscan-method 
+#' @exportMethod getName
 setMethod(
 		f = "getName",
 		signature = c("Dbscan"),
