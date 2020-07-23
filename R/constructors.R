@@ -6,10 +6,10 @@
 #' @title constructors
 NULL
 
-#' scRNAseq
+#' singlecellRNAseq
 #' 
 #' @usage
-#' scRNAseq(experimentName, countMatrix, species, outputDirectory)
+#' singlecellRNAseq(experimentName, countMatrix, species, outputDirectory)
 #'  
 #' @param experimentName character string representing the name of the 
 #' experiment. Many output of scRNAseq will use this name.
@@ -21,10 +21,11 @@ NULL
 #' folder.
 #' 
 #' @rdname constructors
-#' @aliases scRNAseq
+#' @aliases singlecellRNAseq
 #' @seealso scRNAseq-class
-#' @export scRNAseq
-scRNAseq <- function(experimentName, countMatrix, species, outputDirectory){
+#' @export singlecellRNAseq
+singlecellRNAseq <- function(experimentName, countMatrix, species, 
+		outputDirectory){
 	
 	new("scRNAseq",
 			experimentName=experimentName, 
