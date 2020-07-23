@@ -35,7 +35,7 @@ outputDirectory <- "YourOutputDirectory"
 columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 clustAddTab <- read.delim(
-system.file("inst/extdata/Bergiers_clusters_table.tsv", package="conclus"))
+system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
 		
 ## Create the initial object
 scr <- scRNAseq(experimentName = experimentName, 
