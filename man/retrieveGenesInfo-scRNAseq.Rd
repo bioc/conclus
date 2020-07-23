@@ -61,7 +61,7 @@ non-coding RNA gene, or pseudogene.
 \examples{
 experimentName <- "Bergiers"
 countMatrix <- as.matrix(read.delim(system.file(
-"tests/testthat/test_data/test_countMatrix.tsv", package="conclus")))
+"extdata/test_countMatrix.tsv", package="conclus")))
 outputDirectory <- "./"
 columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
