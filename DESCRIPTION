@@ -43,6 +43,10 @@ Imports:
     stats,
     utils,
     scales
+biocViews:
+    Software,
+    Technology,
+    SingleCell
 Collate: 
     'AllClasses.R'
     'AllGenerics.R'
