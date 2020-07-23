@@ -301,7 +301,7 @@
 .createFolder <- function(outputDir){
 	
 	if(!file.exists(outputDir))
-		dir.create(outputDir,  showWarnings=FALSE)
+		dir.create(outputDir,  recursive=TRUE, showWarnings=FALSE)
 }
 
 
