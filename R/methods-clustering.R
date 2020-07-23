@@ -286,11 +286,12 @@
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(file.path(
-#' "tests/testthat/test_data/test_countMatrix.tsv")))
-#' outputDirectory <- "./"
+#' countMatrix <- as.matrix(read.delim(
+#' system.file("tests/testthat/test_data/test_countMatrix.tsv", 
+#' package="conclus")))
+#' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 #' 
 #' ## Create the initial object
 #' scr <- scRNAseq(experimentName = experimentName, 
@@ -306,6 +307,9 @@
 #' 
 #' ## Test the clustering writing pdfs to test_clustering folder
 #' testClustering(scrNorm, writeOutput=TRUE)
+#' 
+#' ## Removing the written results
+#' unlink("YourOutputDirectory/", recursive = TRUE)
 #' 
 #' @seealso
 #' normaliseCountMatrix runDBSCAN pdf
@@ -521,7 +525,7 @@ setMethod(
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(file.path(
+#' countMatrix <- as.matrix(read.delim(system.file(
 #' "tests/testthat/test_data/test_countMatrix.tsv")))
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
