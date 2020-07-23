@@ -470,7 +470,7 @@
 #' nrow=20, ncol=200)
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
-#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 #' 
 #' scr <- scRNAseq(experimentName = experimentName, 
 #'                 countMatrix     = countMatrix, 
