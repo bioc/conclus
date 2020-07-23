@@ -370,7 +370,7 @@
 #' @examples
 #' experimentName <- "Bergiers"
 #' countMatrix <- as.matrix(read.delim(system.file(
-#' "tests/testthat/test_data/test_countMatrix.tsv", package="conclus")))
+#' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
 #' systen.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))

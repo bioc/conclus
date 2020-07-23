@@ -49,7 +49,7 @@ columnsMetaData <- read.delim(
 ## Creation of the count Matrix
 
 countMatrix <- as.matrix(read.delim(
-    system.file("tests/testthat/test_data/test_countMatrix.tsv", 
+    system.file("extdata/test_countMatrix.tsv", 
 			package="conclus")))
 
 smallMatrix <- countMatrix[,1:50]
