@@ -28,20 +28,21 @@
 \alias{getClustersMarkers}
 \alias{getGenesInfos,scRNAseq-method}
 \alias{getGenesInfos}
+\alias{getName,Tsne-method}
 \alias{getPerplexity,Tsne-method}
 \alias{getPerplexity}
 \alias{getPC,Tsne-method}
 \alias{getPC}
 \alias{getCoordinates,Tsne-method}
 \alias{getCoordinates}
+\alias{getName,Dbscan-method}
+\alias{getName}
 \alias{getEpsilon,Dbscan-method}
 \alias{getEpsilon}
 \alias{getMinPoints,Dbscan-method}
 \alias{getMinPoints}
 \alias{getClustering,Dbscan-method}
 \alias{getClustering}
-\alias{getName,Tsne,Dbscan-method}
-\alias{getName}
 \title{getters}
 \usage{
 getExperimentName(theObject)
@@ -70,19 +71,21 @@ getClustersMarkers(theObject)
 
 getGenesInfos(theObject)
 
+\S4method{getName}{Tsne}(theObject)
+
 getPerplexity(theObject)
 
 getPC(theObject)
 
 getCoordinates(theObject)
 
+getName(theObject)
+
 getEpsilon(theObject)
 
 getMinPoints(theObject)
 
 getClustering(theObject)
-
-getName(theObject)
 }
 \arguments{
 \item{theObject}{A scRNA-seq object. See description or ?scRNAseq.}
@@ -122,11 +125,11 @@ getPC: Get the PC used.
 
 getCoordinates: Get the matrix of tSNE coordinates.
 
+getName: Get the name of the tSNE or Dbscan object.
+
 getEpsilon: Get the epsilon used.
 
 getMinPoints: Get the MinPoint used.
 
 getClustering: Get the matrix of DBSCAN clustering.
-
-getName: Get the name of the tSNE or Dbscan.
 }
