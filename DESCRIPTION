@@ -41,21 +41,5 @@ Imports:
     gridExtra,
     SingleCellExperiment,
     stats,
-    utils
-Collate: 
-    'AllClasses.R'
-    'AllGenerics.R'
-    'checkFunctions.R'
-    'constructors.R'
-    'getters.R'
-    'globalVar.R'
-    'methods-clustering.R'
-    'methods-dbscan.R'
-    'methods-export.R'
-    'methods-markers.R'
-    'methods-normalization.R'
-    'sharedInternals.R'
-    'methods-plot.R'
-    'methods-tsne.R'
-    'runCONCLUS.R'
-    'setters.R'
+    utils,
+    scales
