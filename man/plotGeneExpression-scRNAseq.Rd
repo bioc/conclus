@@ -57,11 +57,11 @@ limits -- This option allows generating t-SNE plots with equal color scale to
 }
 \examples{
 experimentName <- "Bergiers"
-countMatrix <- as.matrix(read.delim(file.path(
-"tests/testthat/test_data/test_countMatrix.tsv")))
-outputDirectory <- "./"
+countMatrix <- as.matrix(read.delim(system.file(
+"tests/testthat/test_data/test_countMatrix.tsv", package="conclus")))
+outputDirectory <- "YourOutputDirectory"
 columnsMetaData <- read.delim(
-file.path("extdata/Bergiers_colData_filtered.tsv"))
+system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
 scr <- scRNAseq(experimentName = experimentName, 

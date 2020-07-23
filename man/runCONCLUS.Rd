@@ -274,15 +274,18 @@ See ?exportAllResults.
 \examples{
 
 experimentName <- "Bergiers"
-countMatrix <- as.matrix(read.delim(file.path(
-"tests/testthat/test_data/test_countMatrix.tsv")))
-outputDirectory <- "./"
+countMatrix <- as.matrix(read.delim(system.file(
+"tests/testthat/test_data/test_countMatrix.tsv", package="conclus")))
+outputDirectory <- "YourOutputDirectory"
 columnsMetaData <- read.delim(
-file.path("extdata/Bergiers_colData_filtered.tsv"))
+system.file("extdata/Bergiers_colData_filtered.tsv"))
 species <- "mouse"
 
 runCONCLUS(outputDirectory, experimentName, countMatrix, species, 
 		columnsMetaData=columnsMetaData, tSNENb=1)
+
+## Remove the results
+unlink(outputDirectory, recursive=TRUE)
 
 }
 \author{

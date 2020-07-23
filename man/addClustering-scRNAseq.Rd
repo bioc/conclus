@@ -29,14 +29,13 @@ change the coloration of the t-sne. It is particularly useful to compare the
 }
 \examples{
 experimentName <- "Bergiers"
-countMatrix <- as.matrix(read.delim(file.path(
-"tests/testthat/test_data/test_countMatrix.tsv")))
-outputDirectory <- "./"
+countMatrix <- as.matrix(read.delim(system.file(
+"tests/testthat/test_data/test_countMatrix.tsv", package="conclus")))
+outputDirectory <- "YourOutputDirectory"
 columnsMetaData <- read.delim(
-file.path("extdata/Bergiers_colData_filtered.tsv"))
-
+system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 clustAddTab <- read.delim(
-file.path("inst/extdata/Bergiers_clusters_table.tsv"))
+system.file("inst/extdata/Bergiers_clusters_table.tsv", package="conclus"))
 		
 ## Create the initial object
 scr <- scRNAseq(experimentName = experimentName, 
@@ -60,7 +59,7 @@ scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
 scrCSM <- calculateClustersSimilarity(scrCCI)
 
 ## Update clustering information
-addClustering(scrCSM, clusToAdd=clustAddTab)
+scrFinal <- addClustering(scrCSM, clusToAdd=clustAddTab)
 
 }
 \author{

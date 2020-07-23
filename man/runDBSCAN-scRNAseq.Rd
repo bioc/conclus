@@ -48,9 +48,9 @@ function as shown in the "test_clustering/distance_graph.pdf" (**!! Might need t
 experimentName <- "Bergiers"
 countMatrix <- matrix(sample(seq_len(40), size=4000, replace = TRUE), 
 nrow=20, ncol=200)
-outputDirectory <- "./"
+outputDirectory <- "YourOutputDirectory"
 columnsMetaData <- read.delim(
-file.path("extdata/Bergiers_colData_filtered.tsv"))
+system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
 scr <- scRNAseq(experimentName = experimentName, 
