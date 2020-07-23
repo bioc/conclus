@@ -1485,8 +1485,14 @@ setMethod(
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
 #' 
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#' ## Retrieve top clusters markers
+#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates=FALSE)
+#' 
 #' ## t-SNE plot colored by expression of a  given gene.
-#' plotGeneExpression(scrCSM, getClustersMarkers(scrCSM)[1,1])
+#' plotGeneExpression(scrFinal, getClustersMarkers(scrFinal)[1,1])
 #' 
 #' @seealso retrieveTopClustersMarkers plotCellSimilarity plotCellHeatmap
 #' plotClusteredTSNE plotClustersSimilarity
@@ -1501,6 +1507,7 @@ setMethod(
 #' @importFrom ggplot2 ggsave
 #' @importFrom grDevices colorRampPalette
 #' @importFrom methods validObject
+#' @importFrom scales alpha
 #' 
 #' @author 
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
