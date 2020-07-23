@@ -288,7 +288,6 @@ setReplaceMethod(
 
 
 #' @rdname setters
-#' @exportMethod setName<-,Tsne-method 
 setReplaceMethod(
 		f = "setName",
 		signature = c("Tsne"),
@@ -367,9 +366,9 @@ setReplaceMethod(
 #' setName: Update the Tsne or Dbscan name slot with a character string.
 #' 
 #' @rdname setters
-#' @aliases setName<-,Dbscan-method setName<- setName
+#' @aliases setName<-
 #' 
-#' @exportMethod setName<-,Dbscan-method 
+#' @exportMethod setName<- 
 setReplaceMethod(
 		f = "setName",
 		signature = c("Dbscan"),
