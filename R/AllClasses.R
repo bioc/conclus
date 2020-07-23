@@ -188,45 +188,17 @@ Dbscan <- setClass(
 #'
 #' @section Constructor:
 #' 
-#' scRNAseq(experimentName = "character", countMatrix = "matrix", 
-#' sceNorm = "SingleCellExperiment", species = "character", 
-#' outputDirectory = "character", tSNEList = "list", dbscanList = "list",
-#' cellsSimilarityMatrix = "matrix", clustersSimilarityMatrix = "matrix",
-#' clustersSimiliratyOrdered = "factor", markerGenesList = "list", 
-#' clustersMarkers = "data.frame", genesInfos = "data.frame")
+#' singlecellRNAseq(experimentName = "character", countMatrix = "matrix", 
+#' species = "character", outputDirectory = "character")
 #' 
-#' experimentName:            String of the name of the experiment.
+#' experimentName:  String of the name of the experiment.
 #'  
-#' countMatrix:               Matrix containing the raw counts.
+#' countMatrix:     Matrix containing the raw counts.
 #' 
-#' sceNorm:                   Empty or SingleCellExperiment object containing 
-#'                            the normalized count matrix, the colData and the 
-#'                            rowData.
-#' species:                   'character' representing the species of interest. 
-#'                            Shoud be mouse or human.
+#' species:         'character' representing the species of interest. Shoud be 
+#'                  mouse or human.
 #' 
-#' outputDirectory:           'character' representing the path to the output 
-#'                            directory.
-#' 
-#' tSNEList:                  Empty or list of Tsne objects.
-#' 
-#' dbscanList:                Empty or list of Dbscan objects.
-#' 
-#' cellsSimilarityMatrix:     Empty or cells matrix with similarity scores.
-#' 
-#' clustersSimilarityMatrix:  Empty or clusters matrix with similarity scores.
-#' 
-#' clustersSimiliratyOrdered: Empty or factor representing the clusters ordered 
-#'                            by similarity.
-#' 
-#' markerGenesList:           Empty or list of data frames. Each data frame 
-#'                            contains the ranked genes of one cluster.
-#' 
-#' clustersMarkers:           Empty or data frame containing the top 10 (by 
-#'                            default) marker genes of each clusters.
-#' 
-#' genesInfos:                Empty or dataframe containing informations about 
-#'                            the markers genes each clusters.
+#' outputDirectory: 'character' representing the path to the output directory.
 #'    
 #'    
 #' @section Accessors:
@@ -272,7 +244,7 @@ Dbscan <- setClass(
 #' @exportClass scRNAseq
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom methods new
-#' @seealso scRNAseq
+#' @seealso singlecellRNAseq
 #' @author Ilyess Rachedi and Nicolas Descostes
 
 scRNAseq <- setClass(
