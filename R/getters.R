@@ -253,6 +253,15 @@ setMethod(
 ############################  Getter of Tsne Class  ############################
 ################################################################################
 
+#' @rdname getters
+#' @exportMethod getName,Tsne-method
+setMethod(
+		f = "getName",
+		signature = c("Tsne"),
+		definition = function(theObject){
+			return(theObject@name)
+		})
+
 #' @usage
 #' getPerplexity(theObject)
 #' 
@@ -312,6 +321,25 @@ setMethod(
 ###########################  Getter of Dbscan Class  ###########################
 ################################################################################
 
+
+#' @usage
+#' getName(theObject)
+#'
+#' @description
+#' getName: Get the name of the tSNE or Dbscan object.
+#'  
+#' @rdname getters
+#' @aliases getName
+#' 
+#' @exportMethod getName,Dbscan-method 
+setMethod(
+		f = "getName",
+		signature = c("Dbscan"),
+		definition = function(theObject){
+			return(theObject@name)
+		})
+
+
 #' @usage
 #' getEpsilon(theObject)
 #' 
@@ -366,23 +394,3 @@ setMethod(
 
 
 
-################################################################################
-#######################  Getter of Tsne and Dbscan Class  ######################
-################################################################################
-
-#' @usage
-#' getName(theObject)
-#'
-#' @description
-#' getName: Get the name of the tSNE or Dbscan.
-#'  
-#' @rdname getters
-#' @aliases getName
-#' 
-#' @exportMethod getName 
-setMethod(
-		f = "getName",
-		signature = c("Tsne", "Dbscan"),
-		definition = function(theObject){
-			return(theObject@name)
-		})
