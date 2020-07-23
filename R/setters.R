@@ -287,6 +287,17 @@ setReplaceMethod(
 ################################################################################
 
 
+#' @rdname setters
+#' @exportMethod setName<-,Tsne-method 
+setReplaceMethod(
+		f = "setName",
+		signature = c("Tsne"),
+		definition = function(theObject, value){
+			theObject@name <- value
+			validObject(theObject)
+			return(theObject)
+		})
+
 #' @usage
 #' setPC(theObject) <- value
 #' 
@@ -349,6 +360,24 @@ setReplaceMethod(
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
+#' @usage
+#' setName(theObject) <- value
+#'  
+#' @description
+#' setName: Update the Tsne or Dbscan name slot with a character string.
+#' 
+#' @rdname setters
+#' @aliases setName<-,Dbscan-method setName,Dbscan-method
+#' 
+#' @exportMethod setName<-,Dbscan-method 
+setReplaceMethod(
+		f = "setName",
+		signature = c("Dbscan"),
+		definition = function(theObject, value){
+			theObject@name <- value
+			validObject(theObject)
+			return(theObject)
+		})
 
 #' @usage
 #' setEpsilon(theObject) <- value
@@ -408,31 +437,3 @@ setReplaceMethod(
         validObject(theObject)
         return(theObject)
     })
-
-
-
-
-################################################################################
-######################  Setters for Tsne and Dbscan class  #####################
-################################################################################
-
-
-
-#' @usage
-#' setName(theObject) <- value
-#'  
-#' @description
-#' setName: Update the Tsne or Dbscan name slot with a character string.
-#' 
-#' @rdname setters
-#' @aliases setName<- setName
-#' 
-#' @exportMethod setName<- 
-setReplaceMethod(
-		f = "setName",
-		signature = c("Tsne","Dbscan"),
-		definition = function(theObject, value){
-			theObject@name <- value
-			validObject(theObject)
-			return(theObject)
-		})
