@@ -84,8 +84,14 @@ scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)
 
+## Ranking genes
+scrS4MG <- rankGenes(scrCSM)
+
+## Retrieve top clusters markers
+scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates=FALSE)
+
 ## t-SNE plot colored by expression of a  given gene.
-plotGeneExpression(scrCSM, getClustersMarkers(scrCSM)[1,1])
+plotGeneExpression(scrFinal, getClustersMarkers(scrFinal)[1,1])
 
 }
 \seealso{
