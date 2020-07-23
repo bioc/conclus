@@ -67,8 +67,7 @@ clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 ## !!! Move to a data folder
 load(file = system.file("tests/testthat/test_data/scrLight.Rdat", 
 				package="conclus"))
-load(file = system.file(
-				"tests/testthat/test_data/expected_normalizedMatrix.Rdat", 
+load(file = system.file("extdata/expected_normalizedMatrix.Rdat", 
 				package="conclus"))
 
 
