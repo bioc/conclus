@@ -46,6 +46,7 @@ Collate:
     'AllClasses.R'
     'AllGenerics.R'
     'checkFunctions.R'
+    'constructors.R'
     'getters.R'
     'globalVar.R'
     'methods-clustering.R'
