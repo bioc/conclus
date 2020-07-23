@@ -3,10 +3,23 @@ Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONC
 Version: 0.99.0
 Author: Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, Christophe Lancrin
 Maintainer: Toto <monsieur.toto@embl.it>
-Description: CONCLUS is a tool for robust clustering, positive marker features selection 
-    and collecting info about marker genes using web scraping from MGI, UniProt and NCBI 
-    websites. The tool was developed to distinguish not only cell types from different tissues 
-    but also characterize heterogeneity within a tissue or characterize stages of a differentiation process.
+Description: 
+    CONCLUS is a tool for robust clustering and positive marker features 
+    selection of single-cell RNA-seq (sc-RNA-seq) datasets. It takes advantage 
+    of a consensus clustering approach that greatly simplify sc-RNA-seq data 
+    analysis for the user. Of note, CONCLUS does not cover the preprocessing 
+    steps of sequencing files obtained following next-generation sequencing.
+    
+    CONCLUS is organized into the following steps:
+    
+    Generation of multiple t-SNE plots with a range of parameters including 
+    different selection of genes extracted from PCA. Use the Density-based 
+    spatial clustering of applications with noise (DBSCAN) algorithm for 
+    idenfication of clusters in each generated t-SNE plot. All DBSCAN results 
+    are combined into a cell similarity matrix. The cell similarity matrix is 
+    used to define "CONSENSUS" clusters conserved accross the previously 
+    defined clustering solutions. Identify marker genes for each concensus 
+    cluster.
 Depends: R (>= 4.1)
 License: GPL-3
 Encoding: UTF-8
@@ -47,20 +60,3 @@ biocViews:
     Software,
     Technology,
     SingleCell
-Collate: 
-    'AllClasses.R'
-    'AllGenerics.R'
-    'checkFunctions.R'
-    'constructors.R'
-    'getters.R'
-    'globalVar.R'
-    'methods-clustering.R'
-    'methods-dbscan.R'
-    'methods-export.R'
-    'methods-markers.R'
-    'methods-normalization.R'
-    'sharedInternals.R'
-    'methods-plot.R'
-    'methods-tsne.R'
-    'runCONCLUS.R'
-    'setters.R'
