@@ -373,7 +373,7 @@
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' systen.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 #' 
 #' ## Create the initial object
 #' scr <- scRNAseq(experimentName = experimentName, 
