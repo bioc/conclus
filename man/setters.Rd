@@ -41,6 +41,7 @@
 \alias{setGenesInfos<-,scRNAseq-method}
 \alias{setGenesInfos<-}
 \alias{setGenesInfos}
+\alias{setName<-,Tsne-method}
 \alias{setPC<-,Tsne-method}
 \alias{setPC<-}
 \alias{setPC}
@@ -50,6 +51,8 @@
 \alias{setCoordinates<-,Tsne-method}
 \alias{setCoordinates<-}
 \alias{setCoordinates}
+\alias{setName<-,Dbscan-method}
+\alias{setName,Dbscan-method}
 \alias{setEpsilon<-,Dbscan-method}
 \alias{setEpsilon<-}
 \alias{setEpsilon}
@@ -59,9 +62,6 @@
 \alias{setClustering<-,Dbscan-method}
 \alias{setClustering<-}
 \alias{setClustering}
-\alias{setName<-,Tsne,Dbscan-method}
-\alias{setName<-}
-\alias{setName}
 \title{setters}
 \usage{
 setExperimentName(theObject) <- value
@@ -90,19 +90,21 @@ setClustersMarkers(theObject) <- value
 
 setGenesInfos(theObject) <- value
 
+\S4method{setName}{Tsne}(theObject) <- value
+
 setPC(theObject) <- value
 
 setPerplexity(theObject) <- value
 
 setCoordinates(theObject) <- value
 
+setName(theObject) <- value
+
 setEpsilon(theObject) <- value
 
 setMinPoints(theObject) <- value
 
 setClustering(theObject) <- value
-
-setName(theObject) <- value
 }
 \arguments{
 \item{theObject}{A scRNA-seq object to update. See description or ?scRNAseq.}
@@ -164,11 +166,11 @@ setPerplexity: Update the perplexity slot with a vector of numeric.
 
 setCoordinates: Update the coordinates slot with a matrix of numeric.
 
+setName: Update the Tsne or Dbscan name slot with a character string.
+
 setEpsilon: Update the epsilon slot with a vector of numeric.
 
 setMinPoints: Update the minPoints slot with a vector of numeric.
 
 setClustering: Update the clustering slot with a matrix of numeric.
-
-setName: Update the Tsne or Dbscan name slot with a character string.
 }
