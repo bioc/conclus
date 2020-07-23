@@ -53,7 +53,6 @@
 \alias{setCoordinates}
 \alias{setName<-,Dbscan-method}
 \alias{setName<-}
-\alias{setName}
 \alias{setEpsilon<-,Dbscan-method}
 \alias{setEpsilon<-}
 \alias{setEpsilon}
