@@ -9,9 +9,7 @@ Description:
     of a consensus clustering approach that greatly simplify sc-RNA-seq data 
     analysis for the user. Of note, CONCLUS does not cover the preprocessing 
     steps of sequencing files obtained following next-generation sequencing.
-    
     CONCLUS is organized into the following steps:
-    
     Generation of multiple t-SNE plots with a range of parameters including 
     different selection of genes extracted from PCA. Use the Density-based 
     spatial clustering of applications with noise (DBSCAN) algorithm for 
