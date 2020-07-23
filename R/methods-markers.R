@@ -801,7 +801,7 @@ setMethod(
 		
 		signature = "scRNAseq",
 		
-		definition = function(theObject, nTop=10, removeDuplicates = TRUE,
+		definition = function(theObject, nTop=10, removeDuplicates=TRUE,
 				writeMarkerGenes = FALSE){
 			
 			markerGenesList <-  getMarkerGenesList(theObject)
@@ -819,9 +819,24 @@ setMethod(
 			clusters <- rep(clusterIndexes, each=nTop)
 			markersClusters <- data.frame(geneName, clusters)
 			
-			if(removeDuplicates)
-				markersClusters <- 
-						markersClusters[!duplicated(markersClusters$geneName), ] 
+			## Checking if duplicates should be removed. Set to FALSE if the 
+			## number of clusters after duplicate removal is not the same than
+			## the number of clusters found.		
+			if(removeDuplicates){
+				
+				clustSimOrdered <- getClustersSimiliratyOrdered(theObject)
+				nbClustMark <- length(unique(markersClusters$clusters))
+				nbClust <- length(clustSimOrdered)
+				
+				if(nrow(markersClusters) > 1 && 
+						!isTRUE(all.equal(nbClust, nbClustMark)))
+					message("Duplicates are not removed to conserve the number",
+							" of clusters.")
+				else
+					markersClusters <- 
+						markersClusters[!duplicated(markersClusters$geneName), ]
+			}
+				 
 			
 			if(writeMarkerGenes)
 				.writeMarkersList(theObject, markersClusters, nTop)
