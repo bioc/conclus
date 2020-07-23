@@ -1,25 +1,25 @@
 ### Test the methods of scRNAseq class.
 
 
-if (!requireNamespace("BiocManager", quietly=TRUE))
-    install.packages("BiocManager")
-BiocManager::install(version = "devel")
-BiocManager::valid()  
-BiocManager::install("biomaRt")
-# BiocManager::install("grimbough/biomaRt")
-
-if (!require("pacman")) {
-    install.packages("pacman",  repos = "https://cran.biotools.fr/")
-}
-
-pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
-               dynamicTreeCut, factoextra,
-               digest, RColorBrewer,devtools, BiocParallel, scran, scater,
-               monocle, SingleCellExperiment , KEGGREST, AnnotationDbi,
-               Cairo, rvest, curl,  Matrix, dbscan, fpc, matrixStats,
-               dplyr, org.Mm.eg.db, grDevices, S4Vectors, Biobase,
-               DataCombine, zoo, rvest, DataCombine, doParallel,
-               testthat, tidyr, biomaRt)
+#if (!requireNamespace("BiocManager", quietly=TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install(version = "devel")
+#BiocManager::valid()  
+#BiocManager::install("biomaRt")
+## BiocManager::install("grimbough/biomaRt")
+#
+#if (!require("pacman")) {
+#    install.packages("pacman",  repos = "https://cran.biotools.fr/")
+#}
+#
+#pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
+#               dynamicTreeCut, factoextra,
+#               digest, RColorBrewer,devtools, BiocParallel, scran, scater,
+#               monocle, SingleCellExperiment , KEGGREST, AnnotationDbi,
+#               Cairo, rvest, curl,  Matrix, dbscan, fpc, matrixStats,
+#               dplyr, org.Mm.eg.db, grDevices, S4Vectors, Biobase,
+#               DataCombine, zoo, rvest, DataCombine, doParallel,
+#               testthat, tidyr, biomaRt)
 
 # source("R/AllGenerics.R")
 # source("R/AllClasses.R")
@@ -43,18 +43,20 @@ pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
 outputDirectory <- "YourOutputDirectory"
 experimentName <- "Bergiers"
 columnsMetaData <- read.delim(
-    file.path("inst/extdata/Bergiers_colData_filtered.tsv"))
+    system.file("extdata/Bergiers_colData_filtered.tsv", 
+			package="conclus"))
 
 ## Creation of the count Matrix
 
 countMatrix <- as.matrix(read.delim(
-    file.path("tests/testthat/test_data/test_countMatrix.tsv")))
+    system.file("tests/testthat/test_data/test_countMatrix.tsv", 
+			package="conclus")))
 
 smallMatrix <- countMatrix[,1:50]
 
 ## Retrieve the clustering to add
 clustAddTab <- read.delim(
-		file.path("inst/extdata/Bergiers_clusters_table.tsv"))
+		system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
 clustAddTabColThree <- cbind(clustAddTab, mock=rep(1, nrow(clustAddTab)))
 clustWrongName <- clustAddTab
 colnames(clustWrongName) <- c("test", "test")
@@ -62,9 +64,12 @@ clustWrongcells <- clustAddTab
 clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 
 ## Load expected results
-
-load(file = "tests/testthat/test_data/scrLight.Rdat")
-load(file = "tests/testthat/test_data/expected_normalizedMatrix.Rdat")
+## !!! Move to a data folder
+load(file = system.file("tests/testthat/test_data/scrLight.Rdat", 
+				package="conclus"))
+load(file = system.file(
+				"tests/testthat/test_data/expected_normalizedMatrix.Rdat", 
+				package="conclus"))
 
 
 ## Construction of the object
