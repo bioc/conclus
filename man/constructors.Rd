@@ -5,7 +5,7 @@
 \alias{scRNAseq}
 \title{constructors}
 \usage{
-getExperimentName(theObject)
+scRNAseq(experimentName, countMatrix, species, outputDirectory)
 }
 \arguments{
 \item{experimentName}{'character' string representing the name of the 
@@ -22,8 +22,6 @@ folder.}
 }
 \description{
 Constructor of the class scRNAseq (might be extended in the future).
-
-getExperimentName: Get the name of the experiment.
 }
 \seealso{
 scRNAseq-class
