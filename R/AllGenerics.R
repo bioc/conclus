@@ -381,7 +381,7 @@ setGeneric(
     def = function(theObject){
         standardGeneric("getName")    
     },
-    signature = c("theObject", "theObject"))
+    signature = c("theObject"))
 
 
 setGeneric(
