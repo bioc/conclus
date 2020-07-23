@@ -8,11 +8,8 @@ NULL
 
 
 #' @usage
-#' getExperimentName(theObject)
-#' 
-#' @description
-#' getExperimentName: Get the name of the experiment.
-#' 
+#' scRNAseq(experimentName, countMatrix, species, outputDirectory)
+#'  
 #' @param experimentName 'character' string representing the name of the 
 #' experiment. Many output of scRNAseq will use this name.
 #' @param countMatrix An 'integer matrix' representing the raw count matrix with 
