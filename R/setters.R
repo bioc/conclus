@@ -367,7 +367,7 @@ setReplaceMethod(
 #' setName: Update the Tsne or Dbscan name slot with a character string.
 #' 
 #' @rdname setters
-#' @aliases setName<-,Dbscan-method setName,Dbscan-method
+#' @aliases setName<-,Dbscan-method setName<- setName
 #' 
 #' @exportMethod setName<-,Dbscan-method 
 setReplaceMethod(
