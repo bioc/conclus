@@ -61,7 +61,7 @@ marker genes list file.
 
 For a cluster k and a gene G, a scoreG was defined in the following way:
  
-scoreG= ∑i(−log10(fdrk,i + ϵ)∗weightk,i) / nClusters−1, 
+scoreG= $\sum_{i}(−log10(fdrk,i + \epsilon E)∗weightk,i) / nClusters-1, 
 
 Where 
 
@@ -70,8 +70,8 @@ cluster k versus expression of G in cluster i.
 2. weightk,i is a similarity between these two groups taken from the element 
 in the clustersSimilarityMatrix 
 3. nClusters is a number of consensus clusters given to the rankGenes() 
-4. ϵ = 10−300 is a small number which does not influence the ranking and 
-added to avoid an error when fdr is equal to zero 
+4. \epsilon E = 10−300 is a small number which does not influence the ranking
+ and added to avoid an error when fdr is equal to zero 
 5. k = [1,…,nClusters] 
 6. I = ([1,…,nClusters]exceptfor[k])
 }
