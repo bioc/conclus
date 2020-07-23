@@ -46,8 +46,8 @@ function as shown in the "test_clustering/distance_graph.pdf" (**!! Might need t
 }
 \examples{
 experimentName <- "Bergiers"
-countMatrix <- matrix(sample(seq_len(40), size=4000, replace = TRUE), 
-nrow=20, ncol=200)
+countMatrix <- as.matrix(read.delim(system.file(
+"extdata/test_countMatrix.tsv", package="conclus")))
 outputDirectory <- "YourOutputDirectory"
 columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
