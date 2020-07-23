@@ -303,7 +303,7 @@ runCONCLUS <- function(
 	}		
 			
 	message("## Building the single-cell RNA-Seq object (step 1/13) ##")
-    scr <- scRNAseq(experimentName = experimentName,
+    scr <- singlecellRNAseq(experimentName = experimentName,
                     countMatrix     = countMatrix,
                     species         = species,
                     outputDirectory = outputDirectory)

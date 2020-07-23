@@ -181,7 +181,7 @@
 #' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 #' 
 #' ## Create the initial object
-#' scr <- scRNAseq(experimentName = experimentName, 
+#' scr <- singlecellRNAseq(experimentName = experimentName, 
 #'                 countMatrix     = countMatrix, 
 #'                 species         = "mouse",
 #'                 outputDirectory = outputDirectory)

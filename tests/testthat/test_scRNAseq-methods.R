@@ -72,7 +72,7 @@ load(file = system.file("extdata/expected_normalizedMatrix.Rdat",
 
 ## Construction of the object
 
-scr <- scRNAseq(experimentName = experimentName, 
+scr <- singlecellRNAseq(experimentName = experimentName, 
                   countMatrix     = countMatrix, 
                   species         = "mouse",
                   outputDirectory = outputDirectory)
@@ -158,7 +158,7 @@ test_that("scr is created properly", {
 test_that("Errors are thrown when creating scr", {
 			
 			expM <- "'experimentName' slot is empty. Please fill it."
-			expect_error(scRNAseq(experimentName = "", 
+			expect_error(singlecellRNAseq(experimentName = "", 
                   countMatrix     = countMatrix, 
                   species         = "mouse",
                   outputDirectory = outputDirectory), regexp = expM)
@@ -166,14 +166,14 @@ test_that("Errors are thrown when creating scr", {
 			expM <- paste0("Experiment name should contain a single string ",
 					"describing the experiment, 'My experiment' is not ",
 					"correct.")
-			expect_error(scRNAseq(experimentName  = "My experiment", 
+			expect_error(singlecellRNAseq(experimentName  = "My experiment", 
 							countMatrix     = countMatrix, 
 							species         = "mouse",
 							outputDirectory = outputDirectory), regexp = expM)
 			
 			expM <- paste0("'countMatrix' slot is empty. It should be a matrix",
 					" containing at leat 100 cells.")
-			expect_error(scRNAseq(experimentName  = experimentName, 
+			expect_error(singlecellRNAseq(experimentName  = experimentName, 
 							countMatrix     = matrix(), 
 							species         = "mouse",
 							outputDirectory = outputDirectory), regexp = expM)
@@ -181,33 +181,33 @@ test_that("Errors are thrown when creating scr", {
 			expM <- paste0("Not enough cells in the count matrix. There Should",
 					" be at leat 100 cells. The current count matrix contains",
 					" 50 cells.")
-			expect_error(scRNAseq(experimentName  = experimentName, 
+			expect_error(singlecellRNAseq(experimentName  = experimentName, 
 							countMatrix     = smallMatrix, 
 							species         = "mouse",
 							outputDirectory = outputDirectory), regexp = expM)
 						
 			expM <- paste0("species should be 'mouse' or 'human'. '' is ",
 					"currently not supported.")
-			expect_error(scRNAseq(experimentName  = experimentName, 
+			expect_error(singlecellRNAseq(experimentName  = experimentName, 
 							countMatrix     = countMatrix, 
 							species         = "",
 							outputDirectory = outputDirectory), regexp = expM)
 			
 			expM <- "'outputDirectory' slot is empty. Please fill it."
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = ""), regexp = expM)
 			
 			expM <- paste0("'outputDirectory' should be a conform folder path:",
 					"'toto tata' is not.")
-			expect_error(scRNAseq(experimentName  = experimentName, 
+			expect_error(singlecellRNAseq(experimentName  = experimentName, 
 							countMatrix     = countMatrix, 
 							species         = "human",
 							outputDirectory = "toto tata"), regexp = expM)
 			
 			expM <- "tSNEList is empty. This should be a list of tSNE objects."
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = outputDirectory,
@@ -215,14 +215,14 @@ test_that("Errors are thrown when creating scr", {
 			
 			expM <- paste0("The elements in TsneList slot don't have the same ",
 					"number of cells or the same class")
-			expect_error(scRNAseq(experimentName = experimentName,
+			expect_error(singlecellRNAseq(experimentName = experimentName,
 							countMatrix     = countMatrix,
 							species         = "mouse",
 							outputDirectory = outputDirectory,
 							tSNEList = tsneListWrong), regexp = expM)
 		
 			expM <- "Coordinates should be a matrix with two columns X and Y."
-			expect_error(scRNAseq(experimentName = experimentName,
+			expect_error(singlecellRNAseq(experimentName = experimentName,
 							countMatrix     = countMatrix,
 							species         = "mouse",
 							outputDirectory = outputDirectory,
@@ -233,7 +233,7 @@ test_that("Errors are thrown when creating scr", {
 			
 			expM <- paste0("dbscanList is empty. This should be a list of ",
 					"dbScan objects.")
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = outputDirectory,
@@ -241,7 +241,7 @@ test_that("Errors are thrown when creating scr", {
 			
 			expM <- paste0("The elements in DbscanList slot don't have the ",
 					"same number of cells or the same class")
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = outputDirectory,
@@ -249,7 +249,7 @@ test_that("Errors are thrown when creating scr", {
 	
 			expM <- paste0("'cellsSimilarityMatrix' slot should contain a ",
 					"square matrix.")
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 			countMatrix     = countMatrix, 
 			species         = "mouse",
 			outputDirectory = outputDirectory,
@@ -257,7 +257,7 @@ test_that("Errors are thrown when creating scr", {
 
 			expM <- paste0("'clustersSimilarityMatrix' slot should contain a ",
 					"square matrix.")
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 				countMatrix     = countMatrix, 
 				species         = "mouse",
 				outputDirectory = outputDirectory,
@@ -265,7 +265,7 @@ test_that("Errors are thrown when creating scr", {
 
 			expM <- paste0("'clustersSimiliratyOrdered' slot should contain ",
 					"the same clusters as 'clustersSimilarityMatrix'.")
-			expect_error(scRNAseq(experimentName = experimentName,
+			expect_error(singlecellRNAseq(experimentName = experimentName,
 							countMatrix     = countMatrix,
 							species         = "mouse",
 							outputDirectory = outputDirectory,
@@ -275,7 +275,7 @@ test_that("Errors are thrown when creating scr", {
 			
 			expM <- paste0("markerGenesList is empty. This should be a list ",
 					"of dataframe")
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = outputDirectory,
@@ -284,7 +284,7 @@ test_that("Errors are thrown when creating scr", {
 			expM <- paste0("'markerGenesList' should contain as many ",
 					"dataframes as clusters found. Number of dataframes :9 ",
 					"and the number of cluters found is :10.") 
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = outputDirectory,
@@ -305,14 +305,14 @@ test_that("Errors are thrown when creating scr", {
 									clust=seq_len(10)), expM)
 			
 			expM <- "clusterMarkers is empty. This should be a dataframe"
-			expect_error(scRNAseq(experimentName = experimentName, 
+			expect_error(singlecellRNAseq(experimentName = experimentName, 
 					countMatrix     = countMatrix, 
 					species         = "mouse",
 					outputDirectory = outputDirectory,
 					clustersMarkers = data.frame()), expM)
 	
 			expM <- "genesInfos is empty. This should be a dataframe"
-			expect_error(scRNAseq(experimentName = experimentName,
+			expect_error(singlecellRNAseq(experimentName = experimentName,
 							countMatrix     = countMatrix,
 							species         = "mouse",
 							outputDirectory = outputDirectory,
@@ -323,7 +323,7 @@ test_that("Errors are thrown when creating scr", {
 					"entrezgene_description;gene_biotype;chromosome_name;",
 					"Symbol;ensembl_gene_id;entrezgene_id;uniprot_gn_id;",
 					"mgi_description;mgi_id")
-			expect_error(scRNAseq(experimentName = experimentName,
+			expect_error(singlecellRNAseq(experimentName = experimentName,
 							countMatrix     = countMatrix,
 							species         = "mouse",
 							outputDirectory = outputDirectory,
@@ -367,7 +367,7 @@ test_that("Normalization works properly", {
 			
 			expM <- paste0("species should be 'mouse' or 'human'. ",
 					"'melanogaster' is currently not supported.")
-			expect_error(normaliseCountMatrix(scRNAseq(
+			expect_error(normaliseCountMatrix(singlecellRNAseq(
 									experimentName = experimentName, 
 									countMatrix     = countMatrix, 
 									species         = "melanogaster")), 
