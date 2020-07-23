@@ -8,16 +8,16 @@
 scRNAseq(experimentName, countMatrix, species, outputDirectory)
 }
 \arguments{
-\item{experimentName}{'character' string representing the name of the 
+\item{experimentName}{character string representing the name of the 
 experiment. Many output of scRNAseq will use this name.}
 
-\item{countMatrix}{An 'integer matrix' representing the raw count matrix with 
+\item{countMatrix}{An integer matrix representing the raw count matrix with 
 reads or unique molecular identifiers (UMIs).}
 
-\item{species}{'character' string representing the species of interest. 
+\item{species}{character string representing the species of interest. 
 Currently limited to "mouse" and "human".}
 
-\item{outputDirectory}{A 'character' string of the path to the root output 
+\item{outputDirectory}{A character string of the path to the root output 
 folder.}
 }
 \description{
