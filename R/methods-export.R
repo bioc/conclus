@@ -369,11 +369,11 @@
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(file.path(
-#' "tests/testthat/test_data/test_countMatrix.tsv")))
-#' outputDirectory <- "./"
+#' countMatrix <- as.matrix(read.delim(system.file(
+#' "tests/testthat/test_data/test_countMatrix.tsv", package="conclus")))
+#' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' file.path("extdata/Bergiers_colData_filtered.tsv"))
+#' systen.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 #' 
 #' ## Create the initial object
 #' scr <- scRNAseq(experimentName = experimentName, 
@@ -407,6 +407,10 @@
 #' 
 #' ## Saving all results
 #' exportResults(scrInfos, saveAll=TRUE)
+#' 
+#' ## Removing output directory
+#' unlink(outputDirectory, recursive=TRUE)
+#' 
 #' @exportMethod exportResults
 #' @importFrom SummarizedExperiment rowData
 #' @importFrom SummarizedExperiment colData
