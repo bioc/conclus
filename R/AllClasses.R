@@ -184,7 +184,7 @@ Dbscan <- setClass(
 #' for each clusters.
 #' 
 #' @rdname scRNAseq-class
-#' @aliases scRNAseq scRNAseq-class
+#' @aliases scRNAseq-class
 #'
 #' @section Constructor:
 #' 
@@ -272,6 +272,7 @@ Dbscan <- setClass(
 #' @exportClass scRNAseq
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom methods new
+#' @seealso scRNAseq
 #' @author Ilyess Rachedi and Nicolas Descostes
 
 scRNAseq <- setClass(
