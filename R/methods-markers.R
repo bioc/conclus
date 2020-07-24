@@ -824,17 +824,17 @@ setMethod(
 			## the number of clusters found.		
 			if(removeDuplicates){
 				
+				test <- markersClusters[!duplicated(markersClusters$geneName), ]
 				clustSimOrdered <- getClustersSimiliratyOrdered(theObject)
-				nbClustMark <- length(unique(markersClusters$clusters))
+				nbClustMark <- length(unique(test$clusters))
 				nbClust <- length(clustSimOrdered)
 				
-				if(nrow(markersClusters) > 1 && 
+				if(nrow(test) > 1 && 
 						!isTRUE(all.equal(nbClust, nbClustMark)))
 					message("Duplicates are not removed to conserve the number",
 							" of clusters.")
 				else
-					markersClusters <- 
-						markersClusters[!duplicated(markersClusters$geneName), ]
+					markersClusters <- test
 			}
 				 
 			
