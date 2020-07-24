@@ -94,7 +94,7 @@ scrS4MG <- rankGenes(scrCSM)
 scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
 
 ## Getting genes info
-scrInfos <- retrieveGenesInfo(scrFinal, species = "mouse", cores=5)
+scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
 
 }
 \seealso{
