@@ -61,7 +61,7 @@ scrCSM <- calculateClustersSimilarity(scrCCI)
 scrS4MG <- rankGenes(scrCSM)
 
 ## Retrieve the top 10 markers per cluster
-scrFinal <- retrieveTopClustersMarkers(theObject)
+scrFinal <- retrieveTopClustersMarkers(scrS4MG)
 
 }
 \seealso{
