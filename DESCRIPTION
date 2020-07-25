@@ -56,7 +56,9 @@ Imports:
     SingleCellExperiment,
     stats,
     utils,
-    scales
+    scales,
+    grDevices,
+    graphics
 biocViews:
     Software,
     Technology,
