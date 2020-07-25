@@ -17,22 +17,22 @@ initialisePath <- function(dataDirectory){
     
     
     if(!file.exists(dataDirectory))
-        dir.create(dataDirectory, showWarnings=F)
+        dir.create(dataDirectory, showWarnings=FALSE)
     
     if(!file.exists(graphsDirectory))
-        dir.create(graphsDirectory, showWarnings=F)
+        dir.create(graphsDirectory, showWarnings=FALSE)
     
     if(!file.exists(tSNEPicturesDirectory))
-        dir.create(tSNEPicturesDirectory, showWarnings=F)
+        dir.create(tSNEPicturesDirectory, showWarnings=FALSE)
     
     if(!file.exists(markerGenesDirectory))
-        dir.create(markerGenesDirectory, showWarnings=F)
+        dir.create(markerGenesDirectory, showWarnings=FALSE)
     
     if(!file.exists(tSNEDirectory))
-        dir.create(tSNEDirectory, showWarnings=F)
+        dir.create(tSNEDirectory, showWarnings=FALSE)
     
     if(!file.exists(outputDataDirectory))
-        dir.create(outputDataDirectory, showWarnings=F)
+        dir.create(outputDataDirectory, showWarnings=FALSE)
 }
 
 
