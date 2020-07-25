@@ -57,7 +57,9 @@ Imports:
 biocViews:
     Software,
     Technology,
-    SingleCell
+    SingleCell,
+    Sequencing,
+    Clustering
 Collate: 
     'AllClasses.R'
     'AllGenerics.R'
