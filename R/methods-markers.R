@@ -706,7 +706,7 @@ setMethod(
 	outputDir <- file.path(dataDirectory, paste0("marker_genes/markers_lists"))
 	
 	if(!file.exists(outputDir))
-		dir.create(outputDir, showWarnings=F)
+		dir.create(outputDir, showWarnings=FALSE)
 	
 	message("Writing lists of markers to ", outputDir)
 	
