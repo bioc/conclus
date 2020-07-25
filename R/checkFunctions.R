@@ -42,7 +42,7 @@ checkMarkerGenesList <- function(markerGeneobjectlist,
 	
 	expecteColumn <- c("Gene", "mean_log10_fdr", "n_05", "score")
 	
-	vec <- sapply(markerGeneobjectlist, function(df, expcol){
+	vec <- vapply(markerGeneobjectlist, function(df, expcol){
 				
 				nameColumn <- colnames(df)
 				
@@ -50,7 +50,7 @@ checkMarkerGenesList <- function(markerGeneobjectlist,
 					return(TRUE)
 				else
 					return(FALSE)
-			}, expecteColumn)	
+			}, expecteColumn, FUN.VALUE=logical(1))	
 	
 	if(!all(vec))
 		stop("'markerGenesList' slot should contain a list of ",
