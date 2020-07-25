@@ -29,7 +29,7 @@ checkList <- function(theobjectList, getFunction, className){
 	
 	if(!all(vec)){
 		theobjectList[!vec]
-		names <- sapply(theobjectList , getName)
+		names <- vapply(theobjectList , getName, FUN.VALUE=character(1))
 		names <- paste(names , collapse="; ")
 		stop("The elements in ", className, "List slot don't have the same ",
 				"number of cells or the same class")
