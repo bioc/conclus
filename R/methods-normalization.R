@@ -332,10 +332,10 @@
     ### add info about all genes in a cell
     coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
     coldata$genesSum <- colSums(countMatrix)
-    coldata$genesNum <- sapply(colnames(countMatrix), .fillGenesNumColumn, 
-			coldata, countMatrix)
-    coldata$oneUMI <- sapply(colnames(countMatrix), .fillOneUmmiColumn, 
-			coldata, countMatrix)
+    coldata$genesNum <- vapply(colnames(countMatrix), .fillGenesNumColumn, 
+			coldata, countMatrix, FUN.VALUE=integer(1))
+    coldata$oneUMI <- vapply(colnames(countMatrix), .fillOneUmmiColumn, coldata,
+			countMatrix, FUN.VALUE=integer(1))
     coldata <- dplyr::mutate(coldata,
                              oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
     
