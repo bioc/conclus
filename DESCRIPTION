@@ -1,8 +1,11 @@
 Package: conclus
 Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONCLUSion
 Version: 0.99.0
-Author: Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, Christophe Lancrin
-Maintainer: Toto <monsieur.toto@embl.it>
+Authors@R: c(
+    person("Nicolas", "Descostes", email = "nicolas.descostes@embl.it", role = "cre"),
+    person("Ilyess", "Rachedi", email = "ilyessr@hotmail.fr", role = "aut"),
+    person("Polina", " Pavlovich", email = "pavlovich@ie-freiburg.mpg.de", role = "aut"),
+    person("Christophe", "Lancrin", email = "christophe.lancrin@embl.it", role = "aut"))
 Description: 
     CONCLUS is a tool for robust clustering and positive marker features 
     selection of single-cell RNA-seq (sc-RNA-seq) datasets. It takes advantage 
