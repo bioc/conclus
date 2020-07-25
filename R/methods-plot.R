@@ -900,7 +900,7 @@ setMethod(
 	
 	subdir <- file.path(getOutputDirectory(theObject), "pictures")
 	if(!file.exists(subdir))
-		dir.create(subdir, showWarnings=F, recursive = TRUE)
+		dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
 	
 	if(plotPDF)
 		pdf(file=file.path(subdir, paste0(fileName, ".pdf")), 
