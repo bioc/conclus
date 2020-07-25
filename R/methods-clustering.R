@@ -796,7 +796,7 @@ setMethod(
 			clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
 			
 			clustersSimOrdered <- data.frame(clusterNames=clustersNames,
-					clusterIndexes=1:clustersNumber)
+					clusterIndexes=seq_len(clustersNumber))
 			rownames(clustersSimOrdered) <- clustersSimOrdered$clusterIndexes
 			clustersSimOrdered <- clustersSimOrdered[clusteringTree$order, ]
 			
