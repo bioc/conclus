@@ -317,7 +317,7 @@ scRNAseq <- setClass(
 		## Test sceNorm slot
 		sceNorm <- getSceNorm(object)
 			
-		if(class(sceNorm) != "SingleCellExperiment")
+		if(!is(sceNorm, "SingleCellExperiment"))
 			stop("Normalized count matrix should be a SingleCellExperiment ",
 					"object and not a '", is(sceNorm), "'.")
 			
