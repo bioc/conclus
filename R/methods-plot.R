@@ -693,7 +693,7 @@ setMethod(
 								   columnName, sep="_"))
     
     if(!file.exists(outputDir))
-        dir.create(outputDir, showWarnings=F, recursive = TRUE)
+        dir.create(outputDir, showWarnings=FALSE, recursive = TRUE)
     
     return(list(outputDir, colorPalette))
 }			
