@@ -49,7 +49,7 @@
 					sep="_"))
 	
 	if(!file.exists(subdir))
-		dir.create(subdir, showWarnings=F, recursive = TRUE)
+		dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
 	
 	if(plotPDF)
 		pdf(file=paste0(filePath, ".pdf"), width=width, height=height, 
