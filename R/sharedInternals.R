@@ -89,7 +89,8 @@ createDirectory <- function(dataDirectory, directory){
 					.combine='cbind',
 					.packages="SingleCellExperiment") %dopar% {
 				
-				listsce <- list(logcounts=t(PCAData[, 1:PCAGetTSNEresults]))
+				listsce <- list(logcounts=t(PCAData[, 
+										seq_len(PCAGetTSNEresults)]))
 				sce <- SingleCellExperiment::SingleCellExperiment(
 						assays=listsce)
 				
@@ -122,7 +123,8 @@ createDirectory <- function(dataDirectory, directory){
 	if(clustersNumber < 13)
 		return(c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", 
 						"#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", 
-						"#6A3D9A", "#FFFF99", "#B15928")[1:clustersNumber])
+						"#6A3D9A", "#FFFF99", "#B15928")[
+						seq_len(clustersNumber)])
 	else
 		return(colorPalette26[seq_len(length(clustersNumber))]) 
 }
