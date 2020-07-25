@@ -50,10 +50,10 @@ createDirectory <- function(dataDirectory, directory){
     newDir <- file.path(dataDirectory, directory)
     
     if(!file.exists(dataDirectory))
-        dir.create(dataDirectory, showWarnings=F)
+        dir.create(dataDirectory, showWarnings=FALSE)
     
     if(!file.exists(newDir))
-        dir.create(newDir, showWarnings=F)
+        dir.create(newDir, showWarnings=FALSE)
 }
 
 #' .getTSNEresults
