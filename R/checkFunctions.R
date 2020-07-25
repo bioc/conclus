@@ -24,8 +24,8 @@ checkList <- function(theobjectList, getFunction, className){
 	else
 		val <- nrow(getFunction(theobjectList[[1]]))
 	
-	vec <- sapply(theobjectList, .checkObject, val, getFunction, 
-			className)
+	vec <- vapply(theobjectList, .checkObject, val, getFunction, 
+			className, FUN.VALUE=logical(1))
 	
 	if(!all(vec)){
 		theobjectList[!vec]
