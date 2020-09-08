@@ -6,11 +6,11 @@
 \title{clusterCellsInternal}
 \usage{
 clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=1,
-				clusteringMethod="ward.D2")
+                clusteringMethod="ward.D2")
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
-normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 ?generateTSNECoordinates), and dbScan was run (see ?runDBSCAN),}
 
 \item{clusterNumber}{Exact number of cluster. Default = 0 that will determine
@@ -19,19 +19,19 @@ the number of clusters automatically.}
 \item{deepSplit}{Intuitive level of clustering depth. Options are 1, 2, 3, 4.
 Default = 4}
 
-\item{cores}{Maximum number of jobs that CONCLUS can run in parallel. 
+\item{cores}{Maximum number of jobs that CONCLUS can run in parallel.
 Default is 1.}
 
-\item{clusteringMethod}{Clustering method passed to hclust() function. See 
+\item{clusteringMethod}{Clustering method passed to hclust() function. See
 ?hclust for a list of method. Default = "ward.D2".}
 }
 \value{
-An object of class scRNASeq with its cellsSimilarityMatrix and sceNorm slots 
+An object of class scRNASeq with its cellsSimilarityMatrix and sceNorm slots
 updated.
 }
 \description{
 Returns consensus clusters by using hierarchical clustering on the similarity
- matrix of cells.
+matrix of cells.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -42,8 +42,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -51,13 +51,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 }
 \seealso{

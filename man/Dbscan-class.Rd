@@ -12,29 +12,29 @@ and is used by the method runDBSCAN.
 \section{Slots}{
 
 \describe{
-\item{\code{name}}{A 'character' string representing the name of the Dbscan 
+\item{\code{name}}{A 'character' string representing the name of the Dbscan
 clustering.}
 
-\item{\code{epsilon}}{A 'numeric' value. The epsilon is the distance to consider two 
-points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)}
+\item{\code{epsilon}}{A 'numeric' value. The epsilon is the distance to consider
+two points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)}
 
-\item{\code{minPoints}}{A 'numeric' value. The minPoints is the minimum number of 
-points to construct a cluster.}
+\item{\code{minPoints}}{A 'numeric' value. The minPoints is the minimum number
+of points to construct a cluster.}
 
-\item{\code{clustering}}{A 'matrix' that contains the result of one DBSCAN clustering
-solution.}
+\item{\code{clustering}}{A 'matrix' that contains the result of one DBSCAN
+clustering solution.}
 }}
 
 \section{Constructor}{
 
 
-   Dbscan(name = "character", epsilon = "numeric", minPoints = "numeric", 
+    Dbscan(name = "character", epsilon = "numeric", minPoints = "numeric",
         clustering = "matrix")
 
-   name:       Empty character string or the name of the tSNE.
-   epsilon:    Empty 'numeric' representing the epsilon.
-   minPoints:  Empty 'numeric' representing the minPoints value.
-   clustering: Empty 'numeric' "matrix" or matrix of clustering.
+    name:       Empty character string or the name of the tSNE.
+    epsilon:    Empty 'numeric' representing the epsilon.
+    minPoints:  Empty 'numeric' representing the minPoints value.
+    clustering: Empty 'numeric' "matrix" or matrix of clustering.
 }
 
 \section{Accessors}{
@@ -43,7 +43,7 @@ solution.}
     In the following snippets, x is a Dbscan object.
 
     getName(x): Get the name of the Dbscan.
-    getEpsilon(x):    Get the epsilon used. 
+    getEpsilon(x):    Get the epsilon used.
     getMinPoints(x):  Get the MinPoint used.
     getClustering(x): Get the matrix of DBSCAN clustering.
 }
@@ -54,7 +54,7 @@ solution.}
     In the following snippets, x is a Dbscan object.
 
     setName(x) <- value: Set the name of the Dbscan.
-    setEpsilon(x) <- value:    Set the epsilon used. 
+    setEpsilon(x) <- value:    Set the epsilon used.
     setMinPoints(x) <- value:  Set the minPoints used.
     setClustering(x) <- value: Set the matrix of Dbscan clustering.
 }

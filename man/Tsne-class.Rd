@@ -10,35 +10,36 @@ S4 class containing the features to plot tSNEs. This constructor is internal
 and is used by the method generateTSNECoordinates.
 }
 \details{
-Tsne is a vector of principal commponents (PC) and perplexity that are the 
-parameters necessary to reduce the dimensionality of the data in the the form
- of a t-distributed stochastic neighbor embedding (t-SNE). For details about 
-perplexities parameter see ‘?Rtsne’.
+Tsne is a vector of principal commponents (PC) and perplexity that are
+the parameters necessary to reduce the dimensionality of the data in the 
+the form of a t-distributed stochastic neighbor embedding (t-SNE).
+For details about perplexities parameter see ‘?Rtsne’.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{name}}{A 'character' string representing the name of the tSNE 
+\item{\code{name}}{A 'character' string representing the name of the tSNE
 coordinates.}
 
-\item{\code{pc}}{A 'numeric' value representing the number of principal components 
-used by CONCLUS to perfom a PCA before calculating the tSNE.}
+\item{\code{pc}}{A 'numeric' value representing the number of principal 
+components used by CONCLUS to perfom a PCA before 
+calculating the tSNE.}
 
 \item{\code{perplexity}}{A 'numeric'. Default: c(30, 40)}
 
-\item{\code{coordinates}}{A 'numeric' matrix that contains the coordinates of one 
-tSNE solution.}
+\item{\code{coordinates}}{A 'numeric' matrix that contains the coordinates
+of one tSNE solution.}
 }}
 
 \section{Constructor}{
 
-   Tsne(name = "character", pc = "numeric", perplexity = "numeric", 
+    Tsne(name = "character", pc = "numeric", perplexity = "numeric",
         coordinates = "matrix")
 
-   name:        Empty character string or the name of the tSNE.
-   pc:          Empty 'numeric' number of PCs.
-   perplexity:  Empty 'numeric' perplexity values.
-   coordinates: Empty 'numeric' "matrix" or matrix of coordinates.
+    name:        Empty character string or the name of the tSNE.
+    pc:          Empty 'numeric' number of PCs.
+    perplexity:  Empty 'numeric' perplexity values.
+    coordinates: Empty 'numeric' "matrix" or matrix of coordinates.
 }
 
 \section{Accessors}{
@@ -47,7 +48,7 @@ tSNE solution.}
 In the following snippets, x is a Tsne object.
 
 getName(x):    Get the name of the tSNE.
-getPC(x):          Get the PC used. 
+getPC(x):          Get the PC used.
 getPerplexity(x):  Get the perplexity used.
 getCoordinates(x): Get the matrix of tSNE coordinates.
 }
@@ -58,7 +59,7 @@ getCoordinates(x): Get the matrix of tSNE coordinates.
     In the following snippets, x is a Tsne object.
 
     setName(x) <- value:    Set the name of the tSNE.
-    setPC(x) <- value:          Set the PC parameter. 
+    setPC(x) <- value:          Set the PC parameter.
     setPerplexity(x) <- value:  Set the perplexity parameter.
     setCoordinates(x) <- value: Set the matrix of tSNE coordinates.
 }

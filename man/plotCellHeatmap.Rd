@@ -5,22 +5,22 @@
 \alias{plotCellHeatmap}
 \title{plotCellHeatmap}
 \usage{
-plotCellHeatmap(theObject, fileName = NA, meanCentered=TRUE, 
-			colorPalette="default", statePalette="default", 
-			clusteringMethod="ward.D2", orderClusters=FALSE, orderGenes=FALSE, 
-			returnPlot=FALSE, savePlot=FALSE, width=10, height=8.5, 
-			onefile=FALSE, clusterCols=FALSE, showColnames=FALSE, fontsize=7.5, 
-			fontsizeRow=8, plotPDF=TRUE, widthPNG=800, heightPNG=750, 
-         silentPlot)
+plotCellHeatmap(theObject, fileName = NA, meanCentered=TRUE,
+                colorPalette="default", statePalette="default",
+                clusteringMethod="ward.D2", orderClusters=FALSE,
+                orderGenes=FALSE, returnPlot=FALSE, savePlot=FALSE, width=10,
+                height=8.5, onefile=FALSE, clusterCols=FALSE,
+                showColnames=FALSE, fontsize=7.5,  fontsizeRow=8,
+                plotPDF=TRUE, widthPNG=800, heightPNG=750, silentPlot)
 }
 \arguments{
-\item{theObject}{A scRNAseq object with the cluster similarity matrix 
-obtained with ?calculateClustersSimilarity method and the top markers 
+\item{theObject}{A scRNAseq object with the cluster similarity matrix
+obtained with ?calculateClustersSimilarity method and the top markers
 obtained with ?retrieveTopClustersMarkers.}
 
 \item{fileName}{Name of the output file to which the heatmap is saved.}
 
-\item{meanCentered}{Boolean indicating if mean centering should be applied 
+\item{meanCentered}{Boolean indicating if mean centering should be applied
 to the expression matrix. Default = TRUE.}
 
 \item{colorPalette}{A vector of colors for clusters. Default = "default",
@@ -28,7 +28,7 @@ See details.}
 
 \item{statePalette}{A vector of colors for states or conditions. See details.}
 
-\item{clusteringMethod}{Clustering method passed to hclust() function. 
+\item{clusteringMethod}{Clustering method passed to hclust() function.
 See ?hclust for a list of method. Default = "ward.D2".}
 
 \item{orderClusters}{If True, clusters in the similarity matrix of cells will
@@ -40,7 +40,7 @@ Default = FALSE.}
 \item{returnPlot}{If TRUE returns a pheatmap object. Default=FALSE.}
 
 \item{savePlot}{If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
-The heatmap is saved in the output directory defined in theObject 
+The heatmap is saved in the output directory defined in theObject
 (?getOutputDirectory) and in the sub-directory 'pictures'.}
 
 \item{width}{Width of the plot in the pdf file. See ?pdf for more details.
@@ -63,7 +63,7 @@ the heatmap. Default = FALSE.}
 
 \item{fontsizeRow}{fontsize for rownames. Default = 8.}
 
-\item{plotPDF}{If TRUE, the heatmap is saved in pdf format and in png 
+\item{plotPDF}{If TRUE, the heatmap is saved in pdf format and in png
 otherwise. Default = TRUE.}
 
 \item{widthPNG}{Width of the png. See ?png for details. Default=800.}
@@ -77,13 +77,13 @@ A pheatmap object of the heatmap if returnPlot is TRUE.
 }
 \description{
 This function plots heatmap with marker genes on rows and
- clustered cells on columns.
+clustered cells on columns.
 }
 \details{
-colorPalette/statePalette -- A vector of colors for clusters/states or 
-'default' value. If 'default' is selected, the number of clusters is limited 
+colorPalette/statePalette -- A vector of colors for clusters/states or
+'default' value. If 'default' is selected, the number of clusters is limited
 to 16. If an error message is thrown, re-run the function with your own color
- vector.
+vector.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -94,8 +94,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -103,13 +103,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)

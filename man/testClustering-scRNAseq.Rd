@@ -5,26 +5,26 @@
 \alias{testClustering}
 \title{testClustering}
 \usage{
-testClustering(theObject, dbscanEpsilon=1.4, minPts=5, 
-				perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
-				cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf", 
-				fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
-             ...)
+testClustering(theObject, dbscanEpsilon=1.4, minPts=5,
+                perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
+                cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
+                fileDist="distance_graph.pdf",
+                fileClust="test_clustering.pdf", ...)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
 normalized. See ?normaliseCountMatrix.}
 
-\item{dbscanEpsilon}{Single value for the distance parameter of dbscan. 
+\item{dbscanEpsilon}{Single value for the distance parameter of dbscan.
 Default = 1.4. See ?runDBSCAN for more details.}
 
-\item{minPts}{Single value for the minimum no. of points parameter of 
+\item{minPts}{Single value for the minimum no. of points parameter of
 dbscan. Default = 5. See ?runDBSCAN for more details.}
 
-\item{perplexities}{A single value of perplexity (t-SNE parameter). 
+\item{perplexities}{A single value of perplexity (t-SNE parameter).
 Default = 30. See ?generateTSNECoordinates for details.}
 
-\item{PCs}{Single value of first principal components. Default=4. See 
+\item{PCs}{Single value of first principal components. Default=4. See
 ?generateTSNECoordinates for details.}
 
 \item{randomSeed}{Default is 42. Seeds used to generate the tSNE.}
@@ -33,39 +33,42 @@ Default = 30. See ?generateTSNECoordinates for details.}
 
 \item{height}{Height of the pdf file. Default=7. See ?pdf for details.}
 
-\item{cores}{Maximum number of jobs that CONCLUS can run in parallel. 
+\item{cores}{Maximum number of jobs that CONCLUS can run in parallel.
 Default is 1.}
 
-\item{writeOutput}{If TRUE, write the results of the test to the output 
-directory defined in theObject in the sub-directory 'test_clustering'. 
+\item{writeOutput}{If TRUE, write the results of the test to the output
+directory defined in theObject in the sub-directory 'test_clustering'.
 Default = FALSE.}
 
 \item{fileTSNE}{Name of the pdf file for tSNE. Default="test_tSNE.pdf".}
 
-\item{fileDist}{Name of the pdf file for NN distance. 
+\item{fileDist}{Name of the pdf file for NN distance.
 Default="distance_graph.pdf"}
 
-\item{fileClust}{Name of the pdf file for dbscan. 
+\item{fileClust}{Name of the pdf file for dbscan.
 Default="test_clustering.pdf"}
 
 \item{...}{Options for generating the pdf files. See ?pdf for a list.}
 }
+\value{
+A single clustering iteration of CONCLUS.
+}
 \description{
-This function generates a single clustering iteration of CONCLUS to check 
+This function generates a single clustering iteration of CONCLUS to check
 whether the chosen parameters of tSNE and dbscan are suitable for your data.
 }
 \details{
 The TestClustering function runs one clustering round out of the 84 (default)
- rounds that CONCLUS normally performs. This step can be useful to determine 
-if the default DBSCAN parameters are suitable for your dataset. By default, 
-they are dbscanEpsilon = c(1.3, 1.4, 1.5) and minPts = c(3,4). If the dashed 
-horizontal line in the k-NN distance plot lays on the “knee” of the curve, 
+rounds that CONCLUS normally performs. This step can be useful to determine
+if the default DBSCAN parameters are suitable for your dataset. By default,
+they are dbscanEpsilon = c(1.3, 1.4, 1.5) and minPts = c(3,4). If the dashed
+horizontal line in the k-NN distance plot lays on the “knee” of the curve,
 it means that optimal epsilon is equal to the intersection of the line to the
- y-axis. In our example, optimal epsilon is 1.4 for 5-NN distance where 5 
+y-axis. In our example, optimal epsilon is 1.4 for 5-NN distance where 5
 corresponds to MinPts.
 
-In the "test_clustering" folder under outputDirectory, the three plots will 
-be saved where one corresponds to the “distance_graph.pdf”, another one to 
+In the "test_clustering" folder under outputDirectory, the three plots will
+be saved where one corresponds to the “distance_graph.pdf”, another one to
 “test_tSNE.pdf”, and the last one will be saved as “test_clustering.pdf”.
 }
 \examples{
@@ -77,8 +80,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 

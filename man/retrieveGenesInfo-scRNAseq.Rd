@@ -5,58 +5,58 @@
 \alias{retrieveGenesInfo}
 \title{retrieveGenesInfo}
 \usage{
-retrieveGenesInfo(theObject, groupBy="clusters", 
-				orderGenes="initial", getUniprot=TRUE, cores=1, 
-				saveInfos=FALSE)
+retrieveGenesInfo(theObject, groupBy="clusters",
+                orderGenes="initial", getUniprot=TRUE, cores=1,
+                saveInfos=FALSE)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
-normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
-clustered (see ?clusterCellsInternal), as clusters themselves (see 
+clustered (see ?clusterCellsInternal), as clusters themselves (see
 ?calculateClustersSimilarity).}
 
-\item{groupBy}{A column in the input table used for grouping the genes in 
-the output tables. This option is useful if a table contains genes from 
+\item{groupBy}{A column in the input table used for grouping the genes in
+the output tables. This option is useful if a table contains genes from
 different clusters. Default = "clusters".}
 
-\item{orderGenes}{If "initial" then the order of genes will not be changed. 
+\item{orderGenes}{If "initial" then the order of genes will not be changed.
 The other option is "alphabetical". Default = "initial".}
 
-\item{getUniprot}{Boolean, whether to get information from UniProt or not. 
+\item{getUniprot}{Boolean, whether to get information from UniProt or not.
 Default = TRUE.}
 
-\item{cores}{Maximum number of jobs that CONCLUS can run in parallel. 
+\item{cores}{Maximum number of jobs that CONCLUS can run in parallel.
 Default is 1.}
 
-\item{saveInfos}{If TRUE, save the genes infos table in the directory 
-defined in theObject (?getOutputDirectory) and in the sub-directory 
+\item{saveInfos}{If TRUE, save the genes infos table in the directory
+defined in theObject (?getOutputDirectory) and in the sub-directory
 'marker_genes/saveGenesInfo'.}
 }
 \value{
 An object of class scRNASeq with its genesInfos slot updated.
 }
 \description{
-This method retrieve information about the marker genes of each cluster 
+This method retrieve information about the marker genes of each cluster
 querying the Ensembl database with biomaRt.
 }
 \details{
 The output dataframe is composed of the following columns:
-  
- - uniprot_gn_symbol: Uniprot gene symbol.
- - clusters: The cluster to which the gene is associated.
- - external_gene_name: The complete gene name.
- - go_id: Gene Ontology (GO) identification number.
- - mgi_description: If the species is mouse, description of the gene on MGI.
- - entrezgene_description: Description of the gene by Entrez database.
- - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified 
+
+- uniprot_gn_symbol: Uniprot gene symbol.
+- clusters: The cluster to which the gene is associated.
+- external_gene_name: The complete gene name.
+- go_id: Gene Ontology (GO) identification number.
+- mgi_description: If the species is mouse, description of the gene on MGI.
+- entrezgene_description: Description of the gene by Entrez database.
+- gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified
 non-coding RNA gene, or pseudogene.
- - chromosome_name: The chromosome on which the gene is located.
- - Symbol: Official gene symbol.
- - ensembl_gene_id: ID of the gene on the ensembl database.
- - mgi_id: If the species is mouse, ID of the gene on the MGI database.
- - entrezgene_id: ID of the gene on the entrez database.
- - uniprot_gn_id: ID of the gene on the uniprot database.
+- chromosome_name: The chromosome on which the gene is located.
+- Symbol: Official gene symbol.
+- ensembl_gene_id: ID of the gene on the ensembl database.
+- mgi_id: If the species is mouse, ID of the gene on the MGI database.
+- entrezgene_id: ID of the gene on the entrez database.
+- uniprot_gn_id: ID of the gene on the uniprot database.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -67,8 +67,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -76,13 +76,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)
@@ -94,7 +94,7 @@ scrS4MG <- rankGenes(scrCSM)
 scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
 
 ## Getting genes info
-scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
+scrInfos <- retrieveGenesInfo(scrFinal, cores=1)
 
 }
 \seealso{

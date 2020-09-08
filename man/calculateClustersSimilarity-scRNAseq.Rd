@@ -9,11 +9,11 @@ calculateClustersSimilarity(theObject, clusteringMethod = "ward.D2")
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
-normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), and cells were
 clustered (see ?clusterCellsInternal).}
 
-\item{clusteringMethod}{Clustering method passed to hclust() function. See 
+\item{clusteringMethod}{Clustering method passed to hclust() function. See
 ?hclust for a list of method. Default = "ward.D2".}
 }
 \value{
@@ -32,8 +32,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -41,13 +41,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)

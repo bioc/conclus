@@ -5,66 +5,70 @@
 \alias{exportResults}
 \title{exportResults}
 \usage{
-exportResults(theObject, saveClusteringResults=TRUE, saveAll=FALSE, 
-saveNormalizedMatrix=FALSE, saveColData=FALSE, saveRowData=FALSE, 
+exportResults(theObject, saveClusteringResults=TRUE, saveAll=FALSE,
+saveNormalizedMatrix=FALSE, saveColData=FALSE, saveRowData=FALSE,
 saveTsne=FALSE, saveDBScan=FALSE, saveCellsSimilarityMatrix=FALSE,
 saveClustersSimilarityMatrix=FALSE, saveFullMarkers=FALSE,
 saveTopMarkers=FALSE, saveGenesInfos=FALSE)
 }
 \arguments{
-\item{theObject}{An Object of class scRNASeq for which different steps of 
-CONCLUS was applied to. The number of steps to run depends on what is 
+\item{theObject}{An Object of class scRNASeq for which different steps of
+CONCLUS was applied to. The number of steps to run depends on what is
 wanted to be saved.}
 
 \item{saveClusteringResults}{Default=TRUE. Save the final clustering results
-giving the corresponding cluster number to each cell. The method 
+giving the corresponding cluster number to each cell. The method
 ?calculateClustersSimilarity should have been run on the object. It is saved
- in the sub-directory 6_ConclusResult.}
+in the sub-directory 6_ConclusResult.}
 
 \item{saveAll}{Default=FALSE. Save all results of CONCLUS (see details). The
 last step run on the scRNASeq object should be ?retrieveGenesInfo.}
 
 \item{saveNormalizedMatrix}{Default=FALSE. Save the normalized count matrix
 as a csv file. It is obtained with ?normaliseCountMatrix. The matrix is saved
- to the sub-directory '1_MatrixInfo'.}
+to the sub-directory '1_MatrixInfo'.}
 
 \item{saveColData}{Default=FALSE. Save the columns metadata of the normalized
- count matrix as a tsv file. These data are obtained with 
-?normaliseCountMatrix or were given as input of the method. These data are 
+count matrix as a tsv file. These data are obtained with
+?normaliseCountMatrix or were given as input of the method. These data are
 saved in the sub-directory '1_MatrixInfo'.}
 
-\item{saveRowData}{Default=FALSE. Save the raw metadata of the normalized 
-count matrix as a tsv file. These data are obtained with 
+\item{saveRowData}{Default=FALSE. Save the raw metadata of the normalized
+count matrix as a tsv file. These data are obtained with
 ?normaliseCountMatrix. They are saved in the sub-directory '1_MatrixInfo'.}
 
 \item{saveTsne}{Default=FALSE. Save the tsne coordinates for each combination
- of PCs and perplexities as tsv files. These coordinates were obtained with
- ?generateTSNECoordinates. They are saved in the sub-directory 
+of PCs and perplexities as tsv files. These coordinates were obtained with
+?generateTSNECoordinates. They are saved in the sub-directory
 '2_TSNECoordinates'.}
 
 \item{saveDBScan}{Default=FALSE. Save the clustering results of dbscan as tsv
- files. The number of clustering solutions is 
-PCs*perplexity*epsilon*minPoints (see ?runDBSCAN, 84 solutions by default). 
+files. The number of clustering solutions is
+PCs*perplexity*epsilon*minPoints (see ?runDBSCAN, 84 solutions by default).
 These are saved in the sub-directory '3_dbScan'.}
 
-\item{saveCellsSimilarityMatrix}{Default=FALSE. Save the cells similarity 
+\item{saveCellsSimilarityMatrix}{Default=FALSE. Save the cells similarity
 matrix that was obtained with ?clusterCellsInternal. This matrix is saved in
- the sub-directory '4_CellSimilarityMatrix'.}
+the sub-directory '4_CellSimilarityMatrix'.}
 
-\item{saveClustersSimilarityMatrix}{Default=FALSE. Save the cluster 
+\item{saveClustersSimilarityMatrix}{Default=FALSE. Save the cluster
 similarity matrix that was obtained with ?calculateClustersSimilarity. It is
- saved in the sub-directory '5_ClusterSimilarityMatrix'.}
+saved in the sub-directory '5_ClusterSimilarityMatrix'.}
 
-\item{saveFullMarkers}{Default=FALSE. Save the lists of markers that were 
+\item{saveFullMarkers}{Default=FALSE. Save the lists of markers that were
 obtained with ?rankGenes to the sub-directory 7_fullMarkers.}
 
 \item{saveTopMarkers}{Default=FALSE. Save the top markers per clusters as csv
- files in the sub-directory '8_TopMarkers'. See ?retrieveTopClustersMarkers 
+files in the sub-directory '8_TopMarkers'. See ?retrieveTopClustersMarkers
 for more details.}
 
-\item{saveGenesInfos}{Default=FALSE. Save the genes information for each 
-cluster as csv files in the sub-directory '9_genesInfos'. See 
+\item{saveGenesInfos}{Default=FALSE. Save the genes information for each
+cluster as csv files in the sub-directory '9_genesInfos'. See
 ?retrieveGenesInfo for more details.}
+}
+\value{
+Sub-directory '1_MatrixInfo' containing the normalized matrix,
+the columns, and the rows metadata.
 }
 \description{
 Export all the results of Conclus to a Results sub-directory.
@@ -78,8 +82,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -87,13 +91,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)
@@ -105,7 +109,7 @@ scrS4MG <- rankGenes(scrCSM)
 scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
 
 ## Getting genes info
-scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
+scrInfos <- retrieveGenesInfo(scrFinal, cores=1)
 
 ## Saving all results
 exportResults(scrInfos, saveAll=TRUE)

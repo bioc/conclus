@@ -8,24 +8,24 @@
 addClustering(theObject, filePathAdd=NA, clusToAdd=NA)
 }
 \arguments{
-\item{theObject}{An Object of class scRNASeq for which 
+\item{theObject}{An Object of class scRNASeq for which
 ?calculateClustersSimilarity was used.}
 
-\item{filePathAdd}{Default=NA. Path to the file containing the clustering to 
-replace in the object. It should be made of two columns 'clusters' and 
+\item{filePathAdd}{Default=NA. Path to the file containing the clustering to
+replace in the object. It should be made of two columns 'clusters' and
 'cells'. This should be left to NA if clusToAdd is used. Default=NA.}
 
-\item{clusToAdd}{Data frame having two columns 'clusters' and 'cells' 
-containing the clustering to be used in theObject. Should be left to NA if 
+\item{clusToAdd}{Data frame having two columns 'clusters' and 'cells'
+containing the clustering to be used in theObject. Should be left to NA if
 filePathAdd is used. Default=NA.}
 }
 \value{
 An object of class scRNASeq with its column name metadata updated.
 }
 \description{
-This method enables to add a clustering to the existing object in order to 
+This method enables to add a clustering to the existing object in order to
 change the coloration of the t-sne. It is particularly useful to compare the
- performance of different tools.
+performance of different tools.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -36,10 +36,10 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 clustAddTab <- read.delim(
 system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
-		
+
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -47,13 +47,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)

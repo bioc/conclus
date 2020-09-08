@@ -5,13 +5,13 @@
 \alias{plotClustersSimilarity}
 \title{plotClustersSimilarity}
 \usage{
-plotClustersSimilarity(theObject, colorPalette="default", 
-statePalette="default", clusteringMethod="ward.D2", returnPlot=FALSE, 
-savePlot=FALSE, plotPDF=TRUE, width=7, height=5.5, onefile=FALSE, 
+plotClustersSimilarity(theObject, colorPalette="default",
+statePalette="default", clusteringMethod="ward.D2", returnPlot=FALSE,
+savePlot=FALSE, plotPDF=TRUE, width=7, height=5.5, onefile=FALSE,
 fontsize=7.5, widthPNG=800, heightPNG=750, silentPlot=FALSE)
 }
 \arguments{
-\item{theObject}{A scRNAseq object with the cluster similarity matrix 
+\item{theObject}{A scRNAseq object with the cluster similarity matrix
 obtained with ?calculateClustersSimilarity.}
 
 \item{colorPalette}{A vector of colors for clusters. Default = "default",
@@ -19,17 +19,17 @@ see details.}
 
 \item{statePalette}{A vector of colors for states or conditions. See details.}
 
-\item{clusteringMethod}{Clustering method passed to hclust() function. 
+\item{clusteringMethod}{Clustering method passed to hclust() function.
 See ?hclust for a list of method. Default = "ward.D2"}
 
 \item{returnPlot}{Boolean indicating if the pHeatmap object should  be
 returned by the function. Default = FALSE.}
 
 \item{savePlot}{If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
-The heatmap is saved in the output directory defined in theObject 
+The heatmap is saved in the output directory defined in theObject
 (?getOutputDirectory) and in the sub-directory 'pictures'.}
 
-\item{plotPDF}{If TRUE, the heatmap is saved in pdf format and in png 
+\item{plotPDF}{If TRUE, the heatmap is saved in pdf format and in png
 otherwise. Default = TRUE.}
 
 \item{width}{Width of the plot in the pdf file. See ?pdf for more details.
@@ -57,10 +57,10 @@ A pheatmap object of the clusters similarity matrix.
 This function plots the clusters similarity matrix as a heatmap.
 }
 \details{
-colorPalette/statePalette -- A vector of colors for clusters/states or 
-'default' value. If 'default' is selected, the number of clusters is limited 
+colorPalette/statePalette -- A vector of colors for clusters/states or
+'default' value. If 'default' is selected, the number of clusters is limited
 to 16. If an error message is thrown, re-run the function with your own color
- vector.
+vector.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -71,8 +71,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -80,13 +80,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)

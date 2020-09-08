@@ -6,36 +6,36 @@
 \title{plotClusteredTSNE}
 \usage{
 plotClusteredTSNE(theObject, colorPalette="default",
-			PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40), 
-			columnName="clusters", savePlot=FALSE, plotPDF=TRUE, 
-			returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800, 
-			heightPNG=750, silentPlot=FALSE, tSNENb=NA)
+            PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40),
+            columnName="clusters", savePlot=FALSE, plotPDF=TRUE,
+            returnPlot=FALSE, width=6, height=5, onefile=FALSE, widthPNG=800,
+            heightPNG=750, silentPlot=FALSE, tSNENb=NA)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
-normalized (see ?normaliseCountMatrix), tSNE were calculated (see 
+normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
-clustered (see ?clusterCellsInternal), as clusters themselves (see 
+clustered (see ?clusterCellsInternal), as clusters themselves (see
 ?calculateClustersSimilarity).}
 
 \item{colorPalette}{A vector of colors for clusters. Default = "default",
 see details.}
 
-\item{PCs}{A vector of first principal components. For example, to take 
+\item{PCs}{A vector of first principal components. For example, to take
 ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50).
 See ?generateTSNECoordinates for details.}
 
-\item{perplexities}{Numeric scalar defining the perplexity parameter, 
+\item{perplexities}{Numeric scalar defining the perplexity parameter,
 see ?Rtsne and ?generateTSNECoordinates for more details. Default = c(30, 40)}
 
 \item{columnName}{Name of the column to color the t-SNE with.
 Possible values are clusters, noColor, or state.}
 
-\item{savePlot}{If TRUE, the heatmap is saved in the directory defined in 
-theObject (?getOutputDirectory) and in the sub-directory 
+\item{savePlot}{If TRUE, the heatmap is saved in the directory defined in
+theObject (?getOutputDirectory) and in the sub-directory
 "pictures/tSNE_pictures".}
 
-\item{plotPDF}{If TRUE export heatmap in pdf format, if FALSE export it in 
+\item{plotPDF}{If TRUE export heatmap in pdf format, if FALSE export it in
 png format. Default=TRUE.}
 
 \item{returnPlot}{Boolean indicating if the pHeatmap object should  be
@@ -58,7 +58,7 @@ Defaults to FALSE.}
 \item{silentPlot}{If TRUE, the plots are not displayed on the current device.
 Default=FALSE.}
 
-\item{tSNENb}{Give the number of the tSNE to plot. If NA, all tSNE solutions 
+\item{tSNENb}{Give the number of the tSNE to plot. If NA, all tSNE solutions
 are plotted (14 tSNE by default). Default=NA.}
 }
 \value{
@@ -69,10 +69,10 @@ Plot t-SNE generated with different PCs and perplexities.
 It can also use a coloring scheme by clusters or states.
 }
 \details{
-colorPalette -- A vector of colors for clusters/states or 
-'default' value. If 'default' is selected, the number of clusters is limited 
+colorPalette -- A vector of colors for clusters/states or
+'default' value. If 'default' is selected, the number of clusters is limited
 to 16. If an error message is thrown, re-run the function with your own color
- vector.
+vector.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -83,8 +83,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -92,13 +92,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)

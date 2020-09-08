@@ -6,19 +6,19 @@
 \title{retrieveTopClustersMarkers}
 \usage{
 retrieveTopClustersMarkers(theObject, nTop=10, removeDuplicates = TRUE,
-				writeMarkerGenes = FALSE)
+                writeMarkerGenes = FALSE)
 }
 \arguments{
-\item{theObject}{An Object of class scRNASeq for which rankGenes was 
+\item{theObject}{An Object of class scRNASeq for which rankGenes was
 run. See ?rankGenes.}
 
 \item{nTop}{Number of marker genes to retrieve per cluster. Default=10.}
 
-\item{removeDuplicates}{If TRUE, duplicated markers are removed from the 
+\item{removeDuplicates}{If TRUE, duplicated markers are removed from the
 lists. Default=TRUE.}
 
 \item{writeMarkerGenes}{If TRUE, writes one list per cluster in the output
-folder defined in theObject, and in the sub-directory 
+folder defined in theObject, and in the sub-directory
 marker_genes/markers_lists. Default=FALSE.}
 }
 \value{
@@ -37,8 +37,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -46,13 +46,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=4)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
 
 ## Calculate clusters similarity
 scrCSM <- calculateClustersSimilarity(scrCCI)

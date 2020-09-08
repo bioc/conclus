@@ -5,44 +5,44 @@
 \alias{runDBSCAN}
 \title{runDBSCAN}
 \usage{
-runDBSCAN(theObject, cores=1, epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4), 
+runDBSCAN(theObject, cores=1, epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4),
 writeOutput=FALSE)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
-normalized and the tSNE coordinates were calculated. 
+normalized and the tSNE coordinates were calculated.
 See ?normaliseCountMatrix and ?generateTSNECoordinates.}
 
-\item{cores}{Maximum number of jobs that CONCLUS can run in parallel. 
+\item{cores}{Maximum number of jobs that CONCLUS can run in parallel.
 Default is 1.}
 
-\item{epsilon}{Reachability distance parameter of fpc::dbscan() function. 
+\item{epsilon}{Reachability distance parameter of fpc::dbscan() function.
 See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)}
 
-\item{minPoints}{Reachability minimum no. of points parameter of 
-fpc::dbscan() function. See Ester et al. (1996) for more details. 
+\item{minPoints}{Reachability minimum no. of points parameter of
+fpc::dbscan() function. See Ester et al. (1996) for more details.
 Default = c(3, 4)}
 
-\item{writeOutput}{If TRUE, write the results of the dbScan clustering to 
-the output directory defined in theObject, in the sub-directory 
+\item{writeOutput}{If TRUE, write the results of the dbScan clustering to
+the output directory defined in theObject, in the sub-directory
 output_tables. Default = FALSE.}
 }
 \value{
-An object of class scRNASeq with its dbscanList slot updated. Also writes 
-the clustering results in "dataDirectory/output_tables" subfolder if the 
+An object of class scRNASeq with its dbscanList slot updated. Also writes
+the clustering results in "dataDirectory/output_tables" subfolder if the
 parameter writeOutput is TRUE.
 }
 \description{
 Run clustering iterations with selected parameters using DBSCAN.
 }
 \details{
-Following the calculation of t-SNE coordinates, DBSCAN is run with a range 
-of epsilon and MinPoints values which will yield a total of 84 clustering 
-solutions (PCs x perplexities x MinPoints x epsilon). *minPoints* is the 
-minimum cluster size which you assume to be meaningful for your experiment 
-and *epsilon* is the radius around the cell where the algorithm will try to 
-find *minPoints* dots. Optimal *epsilon* must lay one the knee of the k-NN 
-function as shown in the "test_clustering/distance_graph.pdf" (**!! Might need to be changed**).
+Following the calculation of t-SNE coordinates, DBSCAN is run with a range
+of epsilon and MinPoints values which will yield a total of 84 clustering
+solutions (PCs x perplexities x MinPoints x epsilon). *minPoints* is the
+minimum cluster size which you assume to be meaningful for your experiment
+and *epsilon* is the radius around the cell where the algorithm will try to
+find *minPoints* dots. Optimal *epsilon* must lay one the knee of the k-NN
+function as shown in the "test_clustering/distance_graph.pdf".
 }
 \examples{
 experimentName <- "Bergiers"
@@ -53,8 +53,8 @@ columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -62,10 +62,10 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=1)
 
 }
 \seealso{

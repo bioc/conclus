@@ -90,9 +90,7 @@ getClustering(theObject)
 \arguments{
 \item{theObject}{A scRNA-seq object. See description or ?scRNAseq.}
 }
-\description{
-Retrieve data of a slot of a scRNA-seq, Tsne or Dbscan object.
-
+\value{
 getExperimentName: Get the name of the experiment.
 
 getCountMatrix: Get the count matrix.
@@ -132,4 +130,27 @@ getEpsilon: Get the epsilon used.
 getMinPoints: Get the MinPoint used.
 
 getClustering: Get the matrix of DBSCAN clustering.
+}
+\description{
+Retrieve data of a slot of a scRNA-seq, Tsne or Dbscan object.
+}
+\examples{
+experimentName <- "Bergiers"
+countMatrix <- as.matrix(read.delim(system.file(
+"extdata/test_countMatrix.tsv", package="conclus")))
+outputDirectory <- "YourOutputDirectory"
+columnsMetaData <- read.delim(
+system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+
+## Create the initial object
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
+                species         = "mouse",
+                outputDirectory = outputDirectory)
+                
+experimentName <- getExperimentName(scr)
+countMatrix <- getCountMatrix(scr)
+species <- getSpecies(scr)
+outputDirectory <- getOutputDirectory(scr)
+
 }

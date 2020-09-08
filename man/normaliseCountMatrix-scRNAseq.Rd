@@ -5,19 +5,15 @@
 \alias{normaliseCountMatrix}
 \title{normaliseCountMatrix}
 \usage{
-\S4method{normaliseCountMatrix}{scRNAseq}(
-  theObject,
-  sizes = c(20, 40, 60, 80, 100),
-  rowdata = NULL,
-  coldata = NULL,
-  alreadyCellFiltered = FALSE,
-  runQuickCluster = TRUE
-)
+normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
+                    coldata=NULL, alreadyCellFiltered=FALSE,
+                    runQuickCluster=TRUE)
 }
 \arguments{
 \item{theObject}{A scRNAseq object}
 
-\item{sizes}{Vector of size factors from scran::computeSumFactors() function.}
+\item{sizes}{Vector of size factors from scran::computeSumFactors()
+function.}
 
 \item{rowdata}{Data frame containing genes informations. Default is NULL.}
 
@@ -38,14 +34,14 @@ the colData (table with cells informations), and the rowData (table with the
 genes informations). See ?SingleCellExperiment for more details.
 }
 \description{
-This function uses coldata (cells informations) and rowdata (genes 
-informations) to filter the count matrix. It also normalizes by using 
+This function uses coldata (cells informations) and rowdata (genes
+informations) to filter the count matrix. It also normalizes by using
 deconvolution with size factors.
 }
 \details{
 This function uses the normalization method of the scater package. For more
 details about the normalization used see ?scater::normalize. The size factors
- used in the normalization are calculated with scran::computeSumFactors.
+used in the normalization are calculated with scran::computeSumFactors.
 }
 \examples{
 experimentName <- "Bergiers"
@@ -55,8 +51,8 @@ outputDirectory <- "./"
 columnsMetaData <- read.delim(
 system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
 
-scr <- singlecellRNAseq(experimentName = experimentName, 
-                countMatrix     = countMatrix, 
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
 
@@ -64,6 +60,6 @@ scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 }
 \author{
-Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas 
+Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas
 DESCOSTES.
 }

@@ -111,54 +111,53 @@ setClustering(theObject) <- value
 
 \item{value}{The value to update the slot with. See description or ?scRNAseq.}
 }
-\description{
-Update a slot of a scRNA-seq object.
-
+\value{
 setExperimentName: Update the experiment name slot with a character string.
 
 setCountMatrix: Update the countMatrix slot with a matrix of numeric.
 
-setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment 
+setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment
 object.
 
 setSpecies: Update the species slot with a character string. Value should be
- mouse or human.
+mouse or human.
 
 setOutputDirectory: Update the outputDirectory slot with a character string.
 Value should be a valid path.
 
-setTSNEList: Update the tSNEList slot with a list of tSNE objects. See 
+setTSNEList: Update the tSNEList slot with a list of tSNE objects. See
 ?Tsne-class.
 
-setDbscanList: Update the dbscanList slot with a list of dbscan objects. See 
+setDbscanList: Update the dbscanList slot with a list of dbscan objects. See
 ?Dbscan-class.
 
-setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a 
+setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a
 numeric matrix.
 
-setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a 
+setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a
 numeric matrix.
 
-setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with 
+setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with
 a numeric factor.
 
-setMarkerGenesList: Update the markerGenesList slot with a list of data 
-frame. The data frame structure should be: 
-data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA), 
+setMarkerGenesList: Update the markerGenesList slot with a list of data
+frame. The data frame structure should be:
+data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA),
 score = c(NA))
 
-setClustersMarkers: Update the clustersMarkers slot with a data frame. 
-The data frame structure should be: 
+setClustersMarkers: Update the clustersMarkers slot with a data frame.
+The data frame structure should be:
 data.frame(geneName="gene1", clusters=NA)
 
-setGenesInfos: Update the genesInfos slot with a data frame. 
-The data frame structure should be: 
+setGenesInfos: Update the genesInfos slot with a data frame.
+The data frame structure should be:
 data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
-				external_gene_name="gene", go_id="GO1,GO2", 
-				mgi_description="description", entrezgene_description="descr",
-				gene_biotype="gene", chromosome_name="1", Symbol="symbol",
-				ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
-				uniprot_gn_id="ID")
+                external_gene_name="gene", go_id="GO1,GO2",
+                mgi_description="description",
+                entrezgene_description="descr",
+                gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+                ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+                uniprot_gn_id="ID")
 
 setPC: Update the pc slot with a vector of numeric.
 
@@ -173,4 +172,27 @@ setEpsilon: Update the epsilon slot with a vector of numeric.
 setMinPoints: Update the minPoints slot with a vector of numeric.
 
 setClustering: Update the clustering slot with a matrix of numeric.
+}
+\description{
+Update a slot of a scRNA-seq object.
+}
+\examples{
+experimentName <- "Bergiers"
+countMatrix <- as.matrix(read.delim(system.file(
+"extdata/test_countMatrix.tsv", package="conclus")))
+outputDirectory <- "YourOutputDirectory"
+columnsMetaData <- read.delim(
+system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+
+## Create the initial object
+scr <- singlecellRNAseq(experimentName = experimentName,
+                countMatrix     = countMatrix,
+                species         = "mouse",
+                outputDirectory = outputDirectory)
+                
+setExperimentName(scr) <- "newName"
+setCountMatrix(scr) <- countMatrix[1:10,1:10]
+setSpecies(scr) <- "human"
+setOutputDirectory(scr) <- "newPath"
+
 }
