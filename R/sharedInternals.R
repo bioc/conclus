@@ -7,30 +7,30 @@
 #' @keywords internal
 #' @noRd
 initialisePath <- function(dataDirectory){
-    
+
     graphsDirectory <- file.path(dataDirectory, "pictures")
     markerGenesDirectory <- file.path(dataDirectory, "marker_genes")
     tSNEDirectory <- file.path(dataDirectory, "tsnes")
     outputDataDirectory <- file.path(dataDirectory, "output_tables")
-    tSNEPicturesDirectory <- file.path(dataDirectory, "pictures", 
-                                       "tSNE_pictures")
-    
-    
+    tSNEPicturesDirectory <- file.path(dataDirectory, "pictures",
+                                        "tSNE_pictures")
+
+
     if(!file.exists(dataDirectory))
         dir.create(dataDirectory, showWarnings=FALSE)
-    
+
     if(!file.exists(graphsDirectory))
         dir.create(graphsDirectory, showWarnings=FALSE)
-    
+
     if(!file.exists(tSNEPicturesDirectory))
         dir.create(tSNEPicturesDirectory, showWarnings=FALSE)
-    
+
     if(!file.exists(markerGenesDirectory))
         dir.create(markerGenesDirectory, showWarnings=FALSE)
-    
+
     if(!file.exists(tSNEDirectory))
         dir.create(tSNEDirectory, showWarnings=FALSE)
-    
+
     if(!file.exists(outputDataDirectory))
         dir.create(outputDataDirectory, showWarnings=FALSE)
 }
@@ -46,12 +46,12 @@ initialisePath <- function(dataDirectory){
 #' @keywords internal
 #' @noRd
 createDirectory <- function(dataDirectory, directory){
-    
+
     newDir <- file.path(dataDirectory, directory)
-    
+
     if(!file.exists(dataDirectory))
         dir.create(dataDirectory, showWarnings=FALSE)
-    
+
     if(!file.exists(newDir))
         dir.create(newDir, showWarnings=FALSE)
 }
@@ -66,36 +66,38 @@ createDirectory <- function(dataDirectory, directory){
 #' @param PCs Vector of principal components to create combinations of tSNE
 #' @param perplexities Vector of perplexities to create combinations of tSNE
 #' @param randomSeed Seeds used to create the tSNE
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom foreach foreach %dopar%
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom stats prcomp
 #' @importFrom doParallel registerDoParallel
+#' @import Rtsne
 #' @return Returns the combinations of tSNES
 #' @noRd
-.getTSNEresults <- function(theObject, expressionMatrix, cores, PCs, 
-		perplexities, randomSeed){
-	
+.getTSNEresults <- function(theObject, expressionMatrix, cores, PCs,
+        perplexities, randomSeed){
+
     PCAData <- prcomp(t(expressionMatrix))$x
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
-	
+
     tSNECoordinates <- foreach::foreach(
-					PCAGetTSNEresults=rep(PCs, length(perplexities)),
-					perpGetTSNEresults=rep(perplexities, each=length(PCs)), 
-					.combine='cbind',
-					.packages="SingleCellExperiment") %dopar% {
-				
-				listsce <- list(logcounts=t(PCAData[, 
-										seq_len(PCAGetTSNEresults)]))
-				sce <- SingleCellExperiment::SingleCellExperiment(
-						assays=listsce)
-				
-				tsneCoord <- scater::runTSNE(sce, scale_features=FALSE,
-                perplexity=perpGetTSNEresults, rand_seed=randomSeed, theme_size=13,
+                    PCAGetTSNEresults=rep(PCs, length(perplexities)),
+                    perpGetTSNEresults=rep(perplexities, each=length(PCs)),
+                    .combine='cbind',
+                    .packages="SingleCellExperiment") %dopar% {
+
+                listsce <- list(logcounts=t(PCAData[,
+                                        seq_len(PCAGetTSNEresults)]))
+                sce <- SingleCellExperiment::SingleCellExperiment(
+                        assays=listsce)
+
+                tsneCoord <- scater::runTSNE(sce, scale_features=FALSE,
+                perplexity=perpGetTSNEresults, rand_seed=randomSeed,
+                theme_size=13,
                 return_SCESet=FALSE)
             scater::plotTSNE(tsneCoord)
         }
@@ -112,21 +114,21 @@ createDirectory <- function(dataDirectory, directory){
 #'
 #' @param clustersNumber The number of clusters
 #' @param colorPalette26 A palette of 26 colors
-#' 
+#'
 #' @keywords internal
-#' 
-#' @return Returns a palette with a number of colors corresponding to the 
+#'
+#' @return Returns a palette with a number of colors corresponding to the
 #' number of clusters
 #' @noRd
 .pickDefaultPalette <- function(clustersNumber, colorPalette26){
-	
-	if(clustersNumber < 13)
-		return(c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", 
-						"#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", 
-						"#6A3D9A", "#FFFF99", "#B15928")[
-						seq_len(clustersNumber)])
-	else
-		return(colorPalette26[seq_len(length(clustersNumber))]) 
+
+    if(clustersNumber < 13)
+        return(c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99",
+                        "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6",
+                        "#6A3D9A", "#FFFF99", "#B15928")[
+                        seq_len(clustersNumber)])
+    else
+        return(colorPalette26[seq_len(length(clustersNumber))])
 }
 
 
@@ -136,35 +138,35 @@ createDirectory <- function(dataDirectory, directory){
 #'
 #' @param clustersNumber The number of clusters
 #' @param colorPalette Either a palette of colors or the "default" value
-#' 
+#'
 #' @keywords internal
-#' 
-#' @return If colorPalette is not equal to 'default', returns the exact same 
-#' colorPalette, otherwise returns a default color palette with a number of 
+#'
+#' @return If colorPalette is not equal to 'default', returns the exact same
+#' colorPalette, otherwise returns a default color palette with a number of
 #' colors equal to the number of clusters.
 #' @noRd
 .choosePalette <- function(colorPalette, clustersNumber){
-    
+
     colorPalette26 <- c("yellow", "darkgoldenrod1", "coral1", "deeppink",
-                         "indianred", "coral4", "darkblue", "darkmagenta",
-                         "darkcyan", "mediumorchid", "plum2", "gray73", 
-						 "cadetblue3", "khaki", "darkolivegreen1", "lightgreen",
-						 "limegreen", "darkolivegreen4", "green", "#CC79A7", 
-						 "violetred3", "brown3", "darkslategray1", "gray51", 
-						 "slateblue2", "blue")
-	
+                        "indianred", "coral4", "darkblue", "darkmagenta",
+                        "darkcyan", "mediumorchid", "plum2", "gray73",
+                        "cadetblue3", "khaki", "darkolivegreen1", "lightgreen",
+                        "limegreen", "darkolivegreen4", "green", "#CC79A7",
+                        "violetred3", "brown3", "darkslategray1", "gray51",
+                        "slateblue2", "blue")
+
     if(isTRUE(all.equal(colorPalette, "default")) && clustersNumber > 26)
         stop("The default option is limited to 26 colors, please provide your ",
-				"own color vector.")
-    
-    if(!isTRUE(all.equal(colorPalette,"default"))  && 
-			clustersNumber > length(colorPalette))
+                "own color vector.")
+
+    if(!isTRUE(all.equal(colorPalette,"default"))  &&
+            clustersNumber > length(colorPalette))
         stop("The number of clusters is greater than the number of given ",
-				"colors.")
-    
+                "colors.")
+
     if(isTRUE(all.equal(colorPalette, "default")))
         return(.pickDefaultPalette(clustersNumber))
-    
+
     return(colorPalette)
 }
 

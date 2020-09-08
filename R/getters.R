@@ -5,11 +5,31 @@
 
 #' @description
 #' Retrieve data of a slot of a scRNA-seq, Tsne or Dbscan object.
-#' 
-#' @param theObject A scRNA-seq, Tsne or Dbscan object. See description or 
+#'
+#' @param theObject A scRNA-seq, Tsne or Dbscan object. See description or
 #' ?scRNAseq, ?Tsne, ?Dbscan.
-#'  
+#'
 #' @rdname getters
+#' 
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(system.file(
+#' "extdata/test_countMatrix.tsv", package="conclus")))
+#' outputDirectory <- "YourOutputDirectory"
+#' columnsMetaData <- read.delim(
+#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#'
+#' ## Create the initial object
+#' scr <- singlecellRNAseq(experimentName = experimentName,
+#'                 countMatrix     = countMatrix,
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#'                 
+#' experimentName <- getExperimentName(scr)
+#' countMatrix <- getCountMatrix(scr)
+#' species <- getSpecies(scr)
+#' outputDirectory <- getOutputDirectory(scr)
+#' 
 #' @name getters
 #' @title getters
 NULL
@@ -17,15 +37,15 @@ NULL
 
 #' @usage
 #' getExperimentName(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getExperimentName: Get the name of the experiment.
-#' 
+#'
 #' @param theObject A scRNA-seq object. See description or ?scRNAseq.
-#'  
+#'
 #' @rdname getters
 #' @aliases getExperimentName
-#'  
+#'
 #' @exportMethod getExperimentName
 setMethod(
     f = "getExperimentName",
@@ -37,13 +57,13 @@ setMethod(
 
 #' @usage
 #' getCountMatrix(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getCountMatrix: Get the count matrix.
-#' 
+#'
 #' @rdname getters
 #' @aliases getCountMatrix
-#' 
+#'
 #' @exportMethod getCountMatrix
 setMethod(
     f = "getCountMatrix",
@@ -54,13 +74,13 @@ setMethod(
 
 #' @usage
 #' getSceNorm(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getSceNorm: Get the SingleCellExperiment object used.
-#' 
+#'
 #' @rdname getters
 #' @aliases getSceNorm
-#' 
+#'
 #' @exportMethod getSceNorm
 setMethod(
     f = "getSceNorm",
@@ -72,13 +92,13 @@ setMethod(
 
 #' @usage
 #' getSpecies(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getSpecies: Get the species.
-#' 
+#'
 #' @rdname getters
 #' @aliases getSpecies
-#' 
+#'
 #' @exportMethod getSpecies
 setMethod(
     f = "getSpecies",
@@ -90,13 +110,13 @@ setMethod(
 
 #' @usage
 #' getOutputDirectory(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getOutputDirectory: Get the path of the output directory.
-#' 
+#'
 #' @rdname getters
 #' @aliases getOutputDirectory
-#' 
+#'
 #' @exportMethod getOutputDirectory
 setMethod(
     f = "getOutputDirectory",
@@ -108,13 +128,13 @@ setMethod(
 
 #' @usage
 #' getTSNEList(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getTSNEList: Get the list of Tsne objects.
-#' 
+#'
 #' @rdname getters
 #' @aliases getTSNEList
-#' 
+#'
 #' @exportMethod getTSNEList
 setMethod(
     f = "getTSNEList",
@@ -126,13 +146,13 @@ setMethod(
 
 #' @usage
 #' getDbscanList(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getDbscanList: Get the list of Dbscan objects.
-#' 
+#'
 #' @rdname getters
 #' @aliases getDbscanList
-#' 
+#'
 #' @exportMethod getDbscanList
 setMethod(
     f = "getDbscanList",
@@ -143,13 +163,13 @@ setMethod(
 
 #' @usage
 #' getCellsSimilarityMatrix(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getCellsSimilarityMatrix: Get the cell similarity matrix.
-#' 
+#'
 #' @rdname getters
 #' @aliases getCellsSimilarityMatrix
-#' 
+#'
 #' @exportMethod getCellsSimilarityMatrix
 setMethod(
     f = "getCellsSimilarityMatrix",
@@ -161,13 +181,13 @@ setMethod(
 
 #' @usage
 #' getClustersSimilarityMatrix(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getClustersSimilarityMatrix: Get the cluster similarity matrix.
-#' 
+#'
 #' @rdname getters
 #' @aliases getClustersSimilarityMatrix
-#' 
+#'
 #' @exportMethod getClustersSimilarityMatrix
 setMethod(
     f = "getClustersSimilarityMatrix",
@@ -179,31 +199,31 @@ setMethod(
 
 #' @usage
 #' getClustersSimiliratyOrdered(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getClustersSimiliratyOrdered: Get the clusters ordered by similarity.
-#' 
+#'
 #' @rdname getters
 #' @aliases getClustersSimiliratyOrdered
-#' 
+#'
 #' @exportMethod getClustersSimiliratyOrdered
 setMethod(
-		f = "getClustersSimiliratyOrdered",
-		signature = "scRNAseq",
-		definition = function(theObject){
-			return(theObject@clustersSimiliratyOrdered)
-		})
+        f = "getClustersSimiliratyOrdered",
+        signature = "scRNAseq",
+        definition = function(theObject){
+            return(theObject@clustersSimiliratyOrdered)
+        })
 
 
 #' @usage
 #' getMarkerGenesList(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getMarkerGenesList: Get the list of marker genes by clusters.
-#' 
+#'
 #' @rdname getters
 #' @aliases getMarkerGenesList
-#' 
+#'
 #' @exportMethod getMarkerGenesList
 setMethod(
     f = "getMarkerGenesList",
@@ -215,13 +235,13 @@ setMethod(
 
 #' @usage
 #' getClustersMarkers(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getClustersMarkers: Get the most significant markers by clusters.
-#' 
+#'
 #' @rdname getters
 #' @aliases getClustersMarkers
-#' 
+#'
 #' @exportMethod getClustersMarkers
 setMethod(
     f="getClustersMarkers",
@@ -233,13 +253,13 @@ setMethod(
 
 #' @usage
 #' getGenesInfos(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getGenesInfos: Get informations about marker genes.
-#' 
+#'
 #' @rdname getters
 #' @aliases getGenesInfos
-#' 
+#'
 #' @exportMethod getGenesInfos
 setMethod(
     f="getGenesInfos",
@@ -255,21 +275,21 @@ setMethod(
 
 #' @rdname getters
 setMethod(
-		f = "getName",
-		signature = c("Tsne"),
-		definition = function(theObject){
-			return(theObject@name)
-		})
+        f = "getName",
+        signature = c("Tsne"),
+        definition = function(theObject){
+            return(theObject@name)
+        })
 
 #' @usage
 #' getPerplexity(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getPerplexity: Get the perplexity used.
-#' 
+#'
 #' @rdname getters
 #' @aliases getPerplexity
-#' 
+#'
 #' @exportMethod getPerplexity
 setMethod(
     f = "getPerplexity",
@@ -281,13 +301,13 @@ setMethod(
 
 #' @usage
 #' getPC(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getPC: Get the PC used.
-#' 
+#'
 #' @rdname getters
 #' @aliases getPC
-#' 
+#'
 #' @exportMethod getPC
 setMethod(
     f = "getPC",
@@ -299,14 +319,14 @@ setMethod(
 
 #' @usage
 #' getCoordinates(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getCoordinates: Get the matrix of tSNE coordinates.
-#' 
+#'
 #' @rdname getters
 #' @aliases getCoordinates
-#' 
-#' @exportMethod getCoordinates 
+#'
+#' @exportMethod getCoordinates
 setMethod(
     f = "getCoordinates",
     signature = "Tsne",
@@ -324,30 +344,30 @@ setMethod(
 #' @usage
 #' getName(theObject)
 #'
-#' @description
+#' @return
 #' getName: Get the name of the tSNE or Dbscan object.
-#'  
+#'
 #' @rdname getters
 #' @aliases getName
-#' 
+#'
 #' @exportMethod getName
 setMethod(
-		f = "getName",
-		signature = c("Dbscan"),
-		definition = function(theObject){
-			return(theObject@name)
-		})
+        f = "getName",
+        signature = c("Dbscan"),
+        definition = function(theObject){
+            return(theObject@name)
+        })
 
 
 #' @usage
 #' getEpsilon(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getEpsilon: Get the epsilon used.
-#' 
+#'
 #' @rdname getters
 #' @aliases getEpsilon
-#' 
+#'
 #' @exportMethod getEpsilon
 setMethod(
     f = "getEpsilon",
@@ -358,13 +378,13 @@ setMethod(
 
 #' @usage
 #' getMinPoints(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getMinPoints: Get the MinPoint used.
-#' 
+#'
 #' @rdname getters
 #' @aliases getMinPoints
-#' 
+#'
 #' @exportMethod getMinPoints
 setMethod(
     f = "getMinPoints",
@@ -376,13 +396,13 @@ setMethod(
 
 #' @usage
 #' getClustering(theObject)
-#' 
-#' @description
+#'
+#' @return
 #' getClustering: Get the matrix of DBSCAN clustering.
-#' 
+#'
 #' @rdname getters
 #' @aliases getClustering
-#' 
+#'
 #' @exportMethod getClustering
 setMethod(
     f = "getClustering",
