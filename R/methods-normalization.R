@@ -1,6 +1,176 @@
-#' .annotateGenes
-#' Filling the rowData
+#' @importFrom biomaRt useMart getBM
+.defineMartVar <- function(species){
+	
+	if(isTRUE(all.equal(species, "human"))){
+		
+		# suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
+		genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
+		ensemblPattern <- "ENSG"
+		ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+		
+	}else if(isTRUE(all.equal(species, "mouse"))){
+		
+		# suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
+		genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
+		ensemblPattern <- "ENSMUSG"
+		ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
+		
+	}else
+		stop("Species should be human or mouse: ", species, "is not ",
+				"currently supported.")
+	
+	return(list(genomeAnnot, ensemblPattern, ensembl))
+}
+
+
+.testMattrixNames <- function(countMatrix, ensemblPattern, genomeAnnot){
+	
+	allnames <- rownames(countMatrix)
+	lengthEnsemblGenes <- length(grep(ensemblPattern, allnames))
+	lengthSymbols <- length(intersect(AnnotationDbi::keys(genomeAnnot,
+							keytype = "SYMBOL"), allnames))
+	
+	if(isTRUE(all.equal(lengthEnsemblGenes, 0)) &&
+			isTRUE(all.equal(lengthSymbols, 0)))
+		stop("The row names of the matrix neither contain ensembl genes or",
+				"official gene symbols.")
+	
+	return(lengthSymbols)
+}
+
+
+.annotateEnsembl <- function(ensemblGenes, ensemblPattern, genomeAnnot){
+	
+	message("Annotating ",length(ensemblGenes), " genes containing ",
+			ensemblPattern, " pattern.")
+	
+	## If none of ENSEMBL genes are in database, set to NA
+	lengthEnsInDb <- length(intersect(AnnotationDbi::keys(genomeAnnot,
+							keytype="ENSEMBL"), ensemblGenes))
+	
+	if(!isTRUE(all.equal(lengthEnsInDb, 0))){
+		
+		rowdataEnsembl <- AnnotationDbi::select(genomeAnnot,
+				keys = ensemblGenes, keytype = "ENSEMBL",
+				columns = c("SYMBOL", "GENENAME"), multiVals="first")
+		rowdataEnsembl <-
+				rowdataEnsembl[!duplicated(rowdataEnsembl$ENSEMBL),]
+	}else
+		rowdataEnsembl <- data.frame(ENSEMBL=ensemblGenes, SYMBOL = NA,
+				GENENAME=NA)
+	
+	rowdataEnsembl$nameInCountMatrix <- ensemblGenes
+	
+	return(rowdataEnsembl)
+}
+
+
+.annotateSymbols <- function(symbolGenes, genomeAnnot){
+	
+	message("Annotating ", length(symbolGenes),
+			" genes considering them as SYMBOLs.")
+	
+	rowdataSymbol <- AnnotationDbi::select(genomeAnnot,
+			keys=symbolGenes,
+			keytype="SYMBOL",
+			columns=c("ENSEMBL",
+					"GENENAME"),
+			multiVals="first")
+	rowdataSymbol <- rowdataSymbol[!duplicated(rowdataSymbol$SYMBOL),]
+	rowdataSymbol$nameInCountMatrix <- symbolGenes
+	
+	return(rowdataSymbol)
+}
+
+.annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
+		lengthSymbols, symbolGenes){
+	
+	if(!isTRUE(all.equal(length(ensemblGenes), 0)))
+		rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
+				genomeAnnot)
+	
+	if(!isTRUE(all.equal(lengthSymbols, 0)))
+		rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot) 
+	
+	rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
+	return(rowdata)
+}
+
+
+#' .retrieveGenesInfoBiomart
 #'
+#' @description
+#' This function retrieves the ensembl_gene_id, go_id, name_1006, 
+#' chromosome_name, and gene_biotype for each gene retrieved from the count
+#' matrix.
+#'
+#' @param ensembl Value returned by the method UseMart called in the function
+#' .defineMartVar.
+#' @param rowdata rowData of class data.frame, it contains gene names of the
+#' count matrix.
+#' 
+#' @keywords internal
+#' @importFrom biomaRt getBM
+#' @return Returns the rowData filled with the bioMart annotations.
+#' @noRd
+.retrieveGenesInfoBiomart <- function(ensembl, rowdata){
+	
+	message("Retrieving information about genes from biomaRt.")
+	
+	res <- getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
+					"chromosome_name", "gene_biotype"), mart=ensembl)
+	tmp <- res[!duplicated(res$ensembl_gene_id),]
+	
+	rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
+							"gene_biotype")], by.x = "ENSEMBL",
+			by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE,
+			sort = FALSE)
+	
+	rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
+							"go_id", "name_1006")], by.x = "ENSEMBL",
+			by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
+	rowdataGO <- rowdataGO[!is.na(rowdataGO$name_1006) &
+					((rowdataGO$name_1006 == "cell surface") |
+						(rowdataGO$name_1006 == strwrap("cell surface
+											receptor signaling
+											pathway"))), ]
+	rowdataGO$name_1006[duplicated(rowdataGO$ENSEMBL)] <-
+			"cell surface receptor signaling pathway"
+	rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
+	rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
+							"name_1006")], by.x = "nameInCountMatrix",
+			by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
+			sort = FALSE)
+	
+	return(rowdata)
+}
+
+
+#' .mergeRowDataDf
+#'
+#' @description
+#' This function merges the rowdataDF to the rowData if not null.
+#'
+#' @param rowdataDF rowData of class data.frame, it contains gene names of the
+#' count matrix.
+#' @param Data frame containing annotations retrieved from biomaRt.
+#' 
+#' @keywords internal
+#'
+#' @return Returns the rowData filled with the rowdataDF annotations.
+#' @noRd
+.mergeRowDataDf <- function(rowdataDF, rowdata){
+	rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
+	rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
+			by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
+			sort = FALSE)
+	return(rowdata)
+}
+
+
+#' .annotateGenes
+#'
+#' @description
 #' This function returns a rowData with the same rownames as in countMatrix
 #' with annotations. Only genes having an ENSEMBL IDs or SYMBOL ID
 #' will receive the annotation. This function use \code{\link{bioMart}} and
@@ -13,138 +183,38 @@
 #'
 #' @keywords internal
 #'
-#' @importFrom biomaRt useMart getBM
 #' @importFrom AnnotationDbi keys select
 #' @return Returns the rowData filled with annotations
 #' @noRd
 .annotateGenes <- function(countMatrix, species, rowdataDF){
 
-
-    if(isTRUE(all.equal(species, "human"))){
-
-        # suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
-        genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
-        ensemblPattern <- "ENSG"
-        ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
-
-    }else if(isTRUE(all.equal(species, "mouse"))){
-
-        # suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
-        genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
-        ensemblPattern <- "ENSMUSG"
-        ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
-
-    }else
-        stop("Species should be human or mouse: ", species, "is not ",
-                "currently supported.")
-
-
-
-    allnames <- rownames(countMatrix)
-    lengthEnsemblGenes <- length(grep(ensemblPattern, allnames))
-    lengthSymbols <- length(intersect(AnnotationDbi::keys(genomeAnnot,
-                            keytype = "SYMBOL"), allnames))
-
-    if(isTRUE(all.equal(lengthEnsemblGenes, 0)) &&
-            isTRUE(all.equal(lengthSymbols, 0)))
-        stop("The row names of the matrix neither contain ensembl genes or",
-                "official gene symbols.")
-
-
-
+	martResult <- .defineMartVar(species)
+	genomeAnnot <- martResult[[1]]
+	ensemblPattern <- martResult[[2]]
+	ensembl <- martResult[[3]]
+	lengthSymbols <- .testMattrixNames(countMatrix, ensemblPattern, genomeAnnot)
+	
     ensemblGenes <- rownames(countMatrix)[grep(ensemblPattern,
                     rownames(countMatrix))]
     symbolGenes <- rownames(countMatrix)[!grepl(ensemblPattern,
                     rownames(countMatrix))]
 
-    if(!isTRUE(all.equal(length(ensemblGenes), 0))){
-
-        message("Annotating ",length(ensemblGenes), " genes containing ",
-                ensemblPattern, " pattern.")
-
-        ## If none of ENSEMBL genes are in database, set to NA
-        lengthEnsInDb <- length(intersect(AnnotationDbi::keys(genomeAnnot,
-                                keytype="ENSEMBL"), ensemblGenes))
-
-        if(!isTRUE(all.equal(lengthEnsInDb, 0))){
-
-            rowdataEnsembl <- AnnotationDbi::select(genomeAnnot,
-                    keys = ensemblGenes, keytype = "ENSEMBL",
-                    columns = c("SYMBOL", "GENENAME"), multiVals="first")
-            rowdataEnsembl <-
-                    rowdataEnsembl[!duplicated(rowdataEnsembl$ENSEMBL),]
-        }else
-            rowdataEnsembl <- data.frame(ENSEMBL=ensemblGenes, SYMBOL = NA,
-                    GENENAME=NA)
-
-        rowdataEnsembl$nameInCountMatrix <- ensemblGenes
-    }
-
-    if(!isTRUE(all.equal(lengthSymbols, 0))){
-
-        message("Annotating ", length(symbolGenes),
-                " genes considering them as SYMBOLs.")
-
-        rowdataSymbol <- AnnotationDbi::select(genomeAnnot,
-                keys=symbolGenes,
-                keytype="SYMBOL",
-                columns=c("ENSEMBL",
-                        "GENENAME"),
-                multiVals="first")
-        rowdataSymbol <- rowdataSymbol[!duplicated(rowdataSymbol$SYMBOL),]
-        rowdataSymbol$nameInCountMatrix <- symbolGenes
-    }
-
-
-    rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
+	rowdata <- .annotateRowData(ensemblGenes, ensemblPattern, genomeAnnot, 
+			lengthSymbols, symbolGenes)
+		
     ## Filtering duplicated symbols
     (multSym <- rowdata$SYMBOL[!is.na(rowdata$SYMBOL) &
                                 duplicated(rowdata$SYMBOL)])
-
     ## We don't combine such ensembls, but leave them unique with
     ## "symbol_ensembl"
     (rowdata$SYMBOL[rowdata$SYMBOL %in% multSym] <-
                 paste0(rowdata$SYMBOL[rowdata$SYMBOL %in% multSym],
                         rowdata$ENSEMBL[rowdata$SYMBOL %in% multSym]))
-
-
-
-    message("Retrieving information about genes from biomaRt.")
-
-    res <- getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
-                    "chromosome_name", "gene_biotype"), mart=ensembl)
-    tmp <- res[!duplicated(res$ensembl_gene_id),]
-
-    rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
-                            "gene_biotype")], by.x = "ENSEMBL",
-            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE,
-            sort = FALSE)
-
-    rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
-                            "go_id", "name_1006")], by.x = "ENSEMBL",
-            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
-    rowdataGO <- rowdataGO[!is.na(rowdataGO$name_1006) &
-                    ((rowdataGO$name_1006 == "cell surface") |
-                        (rowdataGO$name_1006 == strwrap("cell surface
-                                                            receptor signaling
-                                                            pathway"))), ]
-    rowdataGO$name_1006[duplicated(rowdataGO$ENSEMBL)] <-
-            "cell surface receptor signaling pathway"
-    rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
-    rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
-                            "name_1006")], by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-            sort = FALSE)
-
-
-    if (!is.null(rowdataDF)){
-
-        rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
-        rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
-                by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-                sort = FALSE)
-    }
-
+	rowdata <- .retrieveGenesInfoBiomart(ensembl, rowdata)
+	
+	if(!is.null(rowdataDF))
+		rowdata <- .mergeRowDataDf(rowdataDF, rowdata)
+        
     rownames(rowdata) <- rowdata$nameInCountMatrix
     rowdata <- rowdata[rownames(countMatrix),]
     rowdata$SYMBOL[(S4Vectors::isEmpty(rowdata$SYMBOL)) |
