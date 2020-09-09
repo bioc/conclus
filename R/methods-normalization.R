@@ -1,4 +1,18 @@
-#' @importFrom biomaRt useMart getBM
+#' .testMattrixNames
+#'
+#' @description
+#' This function retrieves the correct biomaRt parameters according to the
+#' species.
+#'
+#' @param species The studied species.
+#' ' 
+#' @keywords internal
+#' @importFrom biomaRt useMart
+#' @importFrom org.Hs.eg.db org.Hs.eg.db
+#' @importFrom org.Mm.eg.db org.Mm.eg.db
+#' @return Returns the genome annotation name, the pattern to use to retrieve
+#' ensembl IDs and the biomaRt database.
+#' @noRd
 .defineMartVar <- function(species){
 	
 	if(isTRUE(all.equal(species, "human"))){
@@ -23,6 +37,20 @@
 }
 
 
+#' .testMattrixNames
+#'
+#' @description
+#' This function tests that the count matrix has at least ensembl IDs or gene
+#' symbols.
+#'
+#' @param countMatrix The raw count matrix
+#' @param ensemblPattern Expression used to retrieve the ensembl IDs.
+#' @param genomeAnnot Bioconductor package name to be used with biomaRt.
+#' 
+#' @keywords internal
+#' @importFrom AnnotationDbi keys
+#' @return Returns the number of lines of count matrix having a gene symbol.
+#' @noRd
 .testMattrixNames <- function(countMatrix, ensemblPattern, genomeAnnot){
 	
 	allnames <- rownames(countMatrix)
@@ -39,6 +67,20 @@
 }
 
 
+#' .annotateEnsembl
+#'
+#' @description
+#' This function selects the symbol and the gene name from the ensembl IDs.
+#'
+#' @param ensemblGenes Row names of the counts matrix having an ensembl ID.
+#' @param ensemblPattern Expression used to retrieve the ensembl IDs.
+#' @param genomeAnnot Bioconductor package name to be used with biomaRt.
+#' 
+#' @keywords internal
+#' @importFrom AnnotationDbi keys select
+#' @return Returns the rowData with ensembl IDs completed with symbols and gene
+#' name.
+#' @noRd
 .annotateEnsembl <- function(ensemblGenes, ensemblPattern, genomeAnnot){
 	
 	message("Annotating ",length(ensemblGenes), " genes containing ",
@@ -65,6 +107,20 @@
 }
 
 
+#' .annotateSymbols
+#'
+#' @description
+#' This function selects the ensembl ID and the gene name from the symbol.
+#'
+#' @param genomeAnnot Bioconductor package name to be used with biomaRt.
+#' @param symbolGenes Names of the rows of the count matrix having a gene symbol
+#' as name instead of an ensembl ID.
+#' 
+#' @keywords internal
+#' @importFrom AnnotationDbi select
+#' @return Returns the rowData with symbols completed with ensembl IDs and gene
+#' name.
+#' @noRd
 .annotateSymbols <- function(symbolGenes, genomeAnnot){
 	
 	message("Annotating ", length(symbolGenes),
@@ -82,6 +138,24 @@
 	return(rowdataSymbol)
 }
 
+
+#' .annotateRowData
+#'
+#' @description
+#' This function calls the annotation methods on ensembl IDs and gene symbols.
+#'
+#' @param ensemblGenes Row names of the counts matrix having an ensembl ID.
+#' @param ensemblPattern Expression used to retrieve the ensembl IDs.
+#' @param genomeAnnot Bioconductor package name to be used with biomaRt.
+#' @param lengthSymbols Number of rows in the count matrix having a gene symbol
+#' instead of an ensembl ID.
+#' @param symbolGenes Names of the rows of the count matrix having a gene symbol
+#' as name instead of an ensembl ID.
+#' 
+#' @keywords internal
+#' @return Returns the rowData annotated with the sub-functions considering
+#' ensembl IDs or symbols.
+#' @noRd
 .annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
 		lengthSymbols, symbolGenes){
 	
@@ -183,7 +257,6 @@
 #'
 #' @keywords internal
 #'
-#' @importFrom AnnotationDbi keys select
 #' @return Returns the rowData filled with annotations
 #' @noRd
 .annotateGenes <- function(countMatrix, species, rowdataDF){
