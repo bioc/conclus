@@ -1121,9 +1121,31 @@ setMethod(
 
 
 
-
+#' .orderClustersForHeatmap
+#'
+#' @description 
+#' Centers the values of the matrix according to the mean if meanCentered is
+#' TRUE and orders the cells using a hierarchical clustering.
+#'
+#' @param sceObject SingleCellExperiment object retrieved with ?getSceNorm. See
+#'?SingleCellExperiment::SingleCellExperiment for more details.
+#' @param markersClusters Data frame containing two columns geneName and
+#' clusters.
+#' @param meanCentered If TRUE, centers the values according to the mean.
+#' @param orderClusters If True, clusters in the similarity matrix of cells will
+#' be ordered by name. Default = FALSE.
+#' @param colDF Data frame of Metadata of the scRNA-Seq object.
+#' @param clusteringMethod Clustering method passed to hclust() function.
+#' See ?hclust for a list of method. Default = "ward.D2".
+#' @param orderGenes Boolean, should the heatmap be structured by gene.
+#' Default = FALSE.
+#' 
+#' @importFrom Biobase exprs
+#' @importFrom stats hclust
+#' @keywords internal
+#' @noRd
 .orderClustersForHeatmap <- function(sceObject, markersClusters, 
-		meanCentered, orderClusters, colDf, clusteringMethod){
+		meanCentered, orderClusters, colDf, clusteringMethod, orderGenes){
 	
 	exprsTmp <- Biobase::exprs(sceObject)
 	rowTmp <- rownames(exprsTmp)
@@ -1164,6 +1186,30 @@ setMethod(
 }
 
 
+#' .plotCellH
+#'
+#' @description 
+#' This function plots heatmap with marker genes on rows and clustered cells
+#' on columns.
+#'
+#' @param colDF Data frame of Metadata of the scRNA-Seq object.
+#' @param colorPalette A vector of colors for clusters. Default = "default",
+#' See details.
+#' @param statePalette A vector of colors for states or conditions. See details.
+#' @param expressionMatrix 
+#' @param showColnames Shoud the names of the columns (clusters) be indicated on
+#' the heatmap. Default = FALSE.
+#' @param fontsizeRow fontsize for rownames. Default = 8.
+#' @param clusterCols If TRUE, the columns representing the clusters are also
+#' taken into account in the hierarchical clustering. Default=FALSE.
+#' @param clusterRows If TRUE, the rows are ordered in the hierarchical
+#' clustering.
+#' @param fontsize base fontsize for the plot. Default = 7.5.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
+
+#' @keywords internal
+#' @noRd
+#' @return The pheatmap object of the clustering.
 .plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
 		showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
 		silentPlot){
@@ -1354,7 +1400,8 @@ setMethod(
 
         # plots correlation between clusters
 		results <- .orderClustersForHeatmap(sceObject, markersClusters, 
-				meanCentered, orderClusters, colDf, clusteringMethod)
+				meanCentered, orderClusters, colDf, clusteringMethod, 
+				orderGenes)
 		expressionMatrix <- results[[1]]
 		clusterCols <- results[[2]]
 		clusterRows <- results[[3]]
