@@ -534,6 +534,65 @@ setMethod(
 
 
 
+
+#' .checkParamPlotTSNESub
+#'
+#' @description Check parameters of plotClusteredTSNE
+#'
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in
+#' png format. Default=TRUE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' "pictures/tSNE_pictures".
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
+#' @param returnPlot Boolean indicating if the pHeatmap object should  be
+#' returned by the function. Default = FALSE.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in
+#' theObject (?getOutputDirectory) and in the sub-directory
+#' @param tSNENb Give the number of the tSNE to plot. If NA, all tSNE solutions
+#' are plotted (14 tSNE by default). Default=NA.
+#' @param PCs A vector of first principal components. For example, to take
+#' ranges 1:5 and 1:10 write c(5, 10). Default = c(4, 6, 8, 10, 20, 40, 50).
+#' See ?generateTSNECoordinates for details.
+#' @param perplexities Numeric scalar defining the perplexity parameter,
+#' see ?Rtsne and ?generateTSNECoordinates for more details. Default = c(30, 40)
+#'
+#' @keywords internal
+#' @noRd
+.checkParamPlotTSNESub <- function(plotPDF, widthPNG, heightPNG, silentPlot, 
+		returnPlot, savePlot, tSNENb, PCs, perplexities){
+	
+	## Verify plotPDF
+	if(!is.logical(plotPDF))
+		stop("plotPDF should be a boolean.")
+	
+	## Verify widthPNG
+	if (!is.numeric(widthPNG))
+		stop("widthPNG should be a numeric.")
+	
+	## Verify heightPNG
+	if (!is.numeric(heightPNG))
+		stop("heightPNG should be a numeric.")
+	
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")
+	
+	
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
+	
+	if(!is.na(tSNENb) && !is.numeric(tSNENb))
+		stop("tSNENb should be a numeric.")
+	
+	if(!is.na(tSNENb) && (tSNENb > (length(PCs)*length(perplexities))))
+		stop("The chosen tSNENb should be smaller than PCs x perplexities.")
+}
+
+
+
 #' .checkParamPlotTSNE
 #'
 #' @description Check parameters of plotClusteredTSNE
@@ -619,33 +678,8 @@ setMethod(
     if (!is.logical(savePlot))
         stop("savePlot should be a boolean.")
 
-    ## Verify plotPDF
-    if(!is.logical(plotPDF))
-        stop("plotPDF should be a boolean.")
-
-    ## Verify widthPNG
-    if (!is.numeric(widthPNG))
-        stop("widthPNG should be a numeric.")
-
-    ## Verify heightPNG
-    if (!is.numeric(heightPNG))
-        stop("heightPNG should be a numeric.")
-
-    ## Verify silentPlot
-    if (!is.logical(silentPlot))
-        stop("silentPlot should be a boolean.")
-
-
-    if(silentPlot && !returnPlot && !savePlot)
-        stop("You do not plot, neither save the heatmap or return the object.",
-                " Nothing will happen. You should either plot the results, ",
-                "return the object or save the heatmap.")
-
-    if(!is.na(tSNENb) && !is.numeric(tSNENb))
-        stop("tSNENb should be a numeric.")
-
-    if(!is.na(tSNENb) && (tSNENb > (length(PCs)*length(perplexities))))
-        stop("The chosen tSNENb should be smaller than PCs x perplexities.")
+	.checkParamPlotTSNESub(plotPDF, widthPNG, heightPNG, silentPlot, 
+			returnPlot, savePlot, tSNENb, PCs, perplexities)
 }
 
 
