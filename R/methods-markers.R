@@ -27,6 +27,63 @@
 }
 
 
+#' .buildTTestFDR
+#'
+#' @description
+#' Adjust p-values according to the FDR method.
+#'
+#' @param mat Normalized expression matrix.
+#' @param allGroups Character vector of the different clusters names.
+#' @param currentGroup cluster name currently processed in the mapply.
+#' @param tTestPval A list of p-values of a cluster comparing it to all the 
+#' other clusters.
+#' @param currentSimMed Current column name of the cluster similarity matrix
+#' processed in the mapply.
+#' @param simMedNames Column names of the cluster similarity matrix.
+#' @keywords internal
+#' @return A list containing for each cluster the adjustted p-value of the 
+#' t-test, the mean log 10 FDR, and the score.
+#' @noRd
+.buildTTestFDR <- function(mat, allGroups, currentGroup, tTestPval, 
+		currentSimMed, simMedNames){
+	
+	tTestFDR <- data.frame(row.names=rownames(mat))
+	otherGroups <- allGroups[allGroups!=currentGroup]
+	
+	tTestFDR <- lapply(otherGroups, function(currentOther){
+				
+				tTestFDR[, paste0("vs_", currentOther)] <-
+						p.adjust(tTestPval[, paste0("vs_",
+												currentOther)],
+								method="fdr")
+				return(tTestFDR)
+			})
+	
+	tTestFDR <- dplyr::bind_cols(tTestFDR)
+	tTestFDR <- cbind(Gene=as.factor(rownames(mat)), tTestFDR)
+	
+	submat <- as.matrix(tTestFDR[, 2:(length(otherGroups) + 1 )])
+	
+	## Add column mean_log10_fdr
+	tTestFDR$mean_log10_fdr <- rowMeans(log10(submat + 1e-300))
+	
+	## Add column n_05
+	tTestFDR$n_05 <- apply(submat, 1, function(x)
+				length(x[!is.na(x) & x < 0.05]))
+	
+	##Add column score
+	weights <- currentSimMed[match(otherGroups, simMedNames)]
+	tTestFDR$score <- apply(submat, 1, function(x)
+				sum(-log10(x+1e-300) * weights) / ncol(submat))
+	
+	tTestFDR <- tTestFDR[order(tTestFDR$score, decreasing=TRUE), ]
+	row.names(tTestFDR) <- NULL
+	
+	return(tTestFDR)
+	
+}
+
+
 #' .buildTTestPval
 #'
 #' @description
@@ -34,7 +91,7 @@
 #' clusters.
 #'
 #' @param otherGroups List of marker genes for the other groups.
-#'@param tTestPval An empty data frame to retrieve the results.
+#' @param tTestPval An empty data frame to retrieve the results.
 #' @param colDF Data frame of Metadata of the scRNA-Seq object.
 #' @param mat Normalized expression matrix.
 #' @param colLabel Name of the column with a clustering result.
@@ -45,9 +102,10 @@
 #' @keywords internal
 #' @return A list containing for each cluster the p-value of the t-test.
 #' @noRd
-
 .buildTTestPval <- function(otherGroups, tTestPval, colDF, mat, colLabel,
         currentGroup){
+
+	tTestPval <- data.frame(row.names=rownames(mat))
 
     tTestPval <- lapply(otherGroups, function(currentOther){
 
@@ -61,6 +119,9 @@
                         df, lower.tail=FALSE)
                 return(tTestPval)
             })
+
+	tTestPval <- dplyr::bind_cols(tTestPval)
+	tTestPval <- cbind(Gene=rownames(mat), tTestPval)
 
     return(tTestPval)
 }
@@ -101,46 +162,16 @@
                     allGroups, colLabel, simMedNames){
 
                 message(paste("Working on cluster", currentGroup))
-                tTestPval <- data.frame(row.names=rownames(mat))
-                tTestFDR <- data.frame(row.names=rownames(mat))
-                otherGroups <- allGroups[allGroups!=currentGroup]
-
+                
                 ## Create a dataframe clustering vs clustering
                 tTestPval <- .buildTTestPval(otherGroups, tTestPval, colDF, mat,
                         colLabel, currentGroup)
-                tTestPval <- dplyr::bind_cols(tTestPval)
-                tTestPval <- cbind(Gene=rownames(mat), tTestPval)
-
+                
                 ## Apply the FDR
-                tTestFDR <- lapply(otherGroups, function(currentOther){
-
-                            tTestFDR[, paste0("vs_", currentOther)] <-
-                                    p.adjust(tTestPval[, paste0("vs_",
-                                                            currentOther)],
-                                            method="fdr")
-                            return(tTestFDR)
-                        })
-                tTestFDR <- dplyr::bind_cols(tTestFDR)
-                tTestFDR <- cbind(Gene=as.factor(rownames(mat)), tTestFDR)
-
-                submat <- as.matrix(tTestFDR[, 2:(length(otherGroups) + 1 )])
-
-                ## Add column mean_log10_fdr
-                tTestFDR$mean_log10_fdr <- rowMeans(log10(submat + 1e-300))
-
-                ## Add column n_05
-                tTestFDR$n_05 <- apply(submat, 1, function(x)
-                            length(x[!is.na(x) & x < 0.05]))
-
-                ##Add column score
-                weights <- currentSimMed[match(otherGroups, simMedNames)]
-                tTestFDR$score <- apply(submat, 1, function(x)
-                            sum(-log10(x+1e-300) * weights) / ncol(submat))
-
-                tTestFDR <- tTestFDR[order(tTestFDR$score, decreasing=TRUE), ]
-                row.names(tTestFDR) <- NULL
-
-                ## Write list if option = TRUE
+				tTestFDR <- .buildTTestFDR(mat, allGroups, currentGroup, 
+						tTestPval, currentSimMed, simMedNames)
+				
+				## Write list if option = TRUE
                 if(writeMarkerGenes){
 
                     outputDir <- file.path(getOutputDirectory(theObject),
