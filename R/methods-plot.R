@@ -261,6 +261,136 @@
 }
 
 
+
+
+#' .plotCellSimilarityOrderClusters
+#'
+#' @description
+#' Orders the clusters to generate a cell similarity pheatmap.
+#' 
+#' @param orderClusters If TRUE, clusters in the similarity matrix of cells will
+#' be ordered by name. Default = FALSE.
+#' @param colDf A data frame with information about cells.
+#' @param expressionMatrix The count matrix retrieved with ?Biobase::exprs.
+#' @param clusteringMethod Clustering method passed to hclust() function.
+#' See ?hclust for a list of method. Default = "ward.D2"
+#' @param cellsSimilarityMatrix Matrix retrieved with ?getCellsSimilarityMatrix.
+#' @param clusterCols Boolean indicating if the clustering should be performed
+#' on columns.
+#' @param clusterRows Boolean indicating if the clustering should be performed
+#' on rows.
+#'
+#' @keywords internal
+#' @importFrom stats as.dist
+#' @importFrom stats hclust
+#' @noRd
+#' @return The update cellsSimilarityMatrix (if orderClusters is TRUE) and the
+#' booleans clusterCols and clusterRows.
+.plotCellSimilarityOrderClusters <- function(orderClusters, colDf, 
+		expressionMatrix, clusteringMethod, cellsSimilarityMatrix, clusterCols,
+		clusterRows){
+	
+	if(orderClusters){
+		# Ordering expressionMatrixrix
+		newOrder <- lapply(levels(colDf$clusters), function(cluster){
+					.orderCellsInCluster(cluster, colDf, expressionMatrix,
+							clusteringMethod)})
+		newOrder <- unname(unlist(newOrder))
+		cellsSimilarityMatrix <- cellsSimilarityMatrix[newOrder, newOrder]
+		clusterCols <- FALSE
+		clusterRows <- FALSE
+		
+	} else {
+		distanceMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
+		clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
+		clusterCols <- clusteringTree
+		clusterRows <- clusteringTree
+	}
+	
+	return(list(cellsSimilarityMatrix, clusterCols, clusterRows))
+}
+
+
+#' .plotCellSimilarityHeatmap
+#'
+#' @description
+#' Generate a cell similarity pheatmap.
+#' 
+#' @param colDf A data frame with information about cells.
+#' @param colorPalette A vector of colors for clusters. Default = "default",
+#' see details.
+#' @param statePalette A vector of colors for states or conditions. See details.
+#' @param cellsSimilarityMatrix Matrix retrieved with ?getCellsSimilarityMatrix.
+#' @param showColnames pheatmap parameter. Boolean specifying if column names
+#' are displayed. Default=FALSE.
+#' @param showRowNames pheatmap parameter. Boolean specifying if row names
+#' are displayed. Default=FALSE.
+#' @param fontsizeRow pheatmap parameter. Fontsize for rownames. Default=0.03.
+#' @param clusterCols Boolean indicating if the clustering should be performed
+#' on columns.
+#' @param clusterRows Boolean indicating if the clustering should be performed
+#' on rows.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param silentPlot If TRUE, does not plot the heatmap. Default=FALSE.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in
+#' theObject (?getOutputDirectory) and in the sub-directory "pictures".
+#' @param theObject An Object of class scRNASeq for which the count matrix was
+#' normalized (see ?normaliseCountMatrix), tSNE were calculated (see
+#' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
+#' clustered (see ?clusterCellsInternal), as clusters themselves (see
+#' ?calculateClustersSimilarity).
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to FALSE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#' Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 6.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in
+#' png format. Default=TRUE.
+#'
+#' @importFrom pheatmap pheatmap
+#' @keywords internal
+#' @noRd
+#' @return A pheatmap object.
+.plotCellSimilarityHeatmap <- function(colDf, colorPalette, statePalette, 
+		cellsSimilarityMatrix, showColnames, showRowNames, fontsizeRow, 
+		clusterCols, clusterRows, fontsize, silentPlot, savePlot, theObject, 
+		onefile, width, height, widthPNG, heightPNG, plotPDF){
+	
+	annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+			statePalette)
+	
+	columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
+					"state"), c("clusters"))
+	annotationCol <- as.data.frame(colDf[columnsToPlot])
+	nbCol <- ncol(cellsSimilarityMatrix)
+	nbRow <- nrow(cellsSimilarityMatrix)
+	mainTitle <- paste0("Cells similarity matrix ", nbCol, " columns, ",
+			nbRow, " rows.")
+	
+	pheatmapObject <- pheatmap::pheatmap(cellsSimilarityMatrix,
+			show_colnames=showColnames,
+			show_rownames=showRowNames,
+			annotation_col=annotationCol,
+			annotation_colors=annotationColors,
+			fontsize_row=fontsizeRow,
+			cluster_cols=clusterCols,
+			cluster_rows=clusterRows,
+			fontsize=fontsize,
+			main=mainTitle,
+			silent=silentPlot)
+	
+	if(savePlot)
+		.saveCellSim(theObject, onefile, colDf, width, height, widthPNG,
+				heightPNG, plotPDF, pheatmapObject)
+	
+	return(pheatmapObject)
+}
+
+
 #' plotCellSimilarity
 #'
 #' @description This function plots similarity matrix as a heatmap, so one can
@@ -389,48 +519,21 @@ setMethod(
         cellsSimilarityMatrix <- getCellsSimilarityMatrix(theObject)
         colDf <- SummarizedExperiment::colData(sceObject)
 
-        if(orderClusters){
-            # Ordering expressionMatrixrix
-            newOrder <- lapply(levels(colDf$clusters), function(cluster){
-                .orderCellsInCluster(cluster, colDf, expressionMatrix,
-                                    clusteringMethod)})
-            newOrder <- unname(unlist(newOrder))
-            cellsSimilarityMatrix <- cellsSimilarityMatrix[newOrder, newOrder]
-            clusterCols <- FALSE
-            clusterRows <- FALSE
-
-        } else {
-            distanceMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
-            clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
-            clusterCols <- clusteringTree
-            clusterRows <- clusteringTree
-        }
-
-        annotationColors <- .generateAnnotationColors(colDf, colorPalette,
-                                                        statePalette)
-        columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
-                        "state"), c("clusters"))
-        annotationCol <- as.data.frame(colDf[columnsToPlot])
-        nbCol <- ncol(cellsSimilarityMatrix)
-        nbRow <- nrow(cellsSimilarityMatrix)
-        mainTitle <- paste0("Cells similarity matrix ", nbCol, " columns, ",
-                            nbRow, " rows.")
-        pheatmapObject <- pheatmap::pheatmap(cellsSimilarityMatrix,
-                                            show_colnames=showColnames,
-                                            show_rownames=showRowNames,
-                                            annotation_col=annotationCol,
-                                            annotation_colors=annotationColors,
-                                            fontsize_row=fontsizeRow,
-                                            cluster_cols=clusterCols,
-                                            cluster_rows=clusterRows,
-                                            fontsize=fontsize,
-                                            main=mainTitle,
-                                            silent=silentPlot)
-
-        if(savePlot)
-            .saveCellSim(theObject, onefile, colDf, width, height, widthPNG,
-                    heightPNG, plotPDF, pheatmapObject)
-
+		## Ordering clusters
+		result <- .plotCellSimilarityOrderClusters(orderClusters, colDf, 
+				expressionMatrix, clusteringMethod, cellsSimilarityMatrix, 
+				clusterCols, clusterRows)
+		cellsSimilarityMatrix <- result[[1]]
+		clusterCols <- result[[2]]
+		clusterRows <- result[[3]]
+		
+        ## Plotting the cell similarity heatmap
+		pheatmapObject <- .plotCellSimilarityHeatmap(colDf, colorPalette, 
+				statePalette, cellsSimilarityMatrix, showColnames, showRowNames,
+				fontsizeRow, clusterCols, clusterRows, fontsize, silentPlot, 
+				savePlot, theObject, onefile, width, height, widthPNG, 
+				heightPNG, plotPDF)
+		
         if(returnPlot)
             return(pheatmapObject)
     })
