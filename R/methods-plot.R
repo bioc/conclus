@@ -867,7 +867,7 @@ setMethod(
 #################
 
 
-#' .callOrderGenes
+#' .saveHeatmap
 #'
 #' @description Save the heatmap in pdf or png format in the directory defined
 #' in theObject (?getOutputDirectory) and in the sub-directory 'pictures'.
@@ -1121,6 +1121,89 @@ setMethod(
 
 
 
+
+.orderClustersForHeatmap <- function(sceObject, markersClusters, 
+		meanCentered, orderClusters, colDf, clusteringMethod){
+	
+	exprsTmp <- Biobase::exprs(sceObject)
+	rowTmp <- rownames(exprsTmp)
+	expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
+	
+	if(meanCentered){
+		meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
+		expressionMatrix <- expressionMatrix - meanRows
+	}
+	
+	
+	if(orderClusters){
+		
+		# Ordering expressionMatrixrix
+		newOrder <- .callOrderCells(colDf, expressionMatrix,
+				clusteringMethod)
+		expressionMatrix <- expressionMatrix[, newOrder]
+		clusterCols <- FALSE
+		
+		if(orderGenes){
+			
+			newOrder <- .callOrderGenes(colDf, markersClusters,
+					expressionMatrix, clusteringMethod)
+			expressionMatrix <- expressionMatrix[newOrder, ]
+			clusterRows <- FALSE
+		}
+		
+	}else{
+		
+		distanceMatrix <- dist(t(expressionMatrix))
+		clusterCols <- hclust(distanceMatrix, method="ward.D2")
+	}
+	
+	if(!orderGenes)
+		clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
+	
+	return(list(expressionMatrix, clusterCols, clusterRows))
+}
+
+
+.plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
+		showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
+		silentPlot){
+	
+	annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+			statePalette)
+	
+	columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
+					"state"), c("clusters"))
+	
+	if(is.null(colDf$clusters)){
+		
+		annCol <- switch(is.null(colDf$state) + 1,
+				as.data.frame(colDf["state"]), NA)
+		annColors <- switch(is.null(colDf$state) + 1,
+				annotationColors[names(annotationColors) == "state"], NA)
+	}else{
+		annCol <- as.data.frame(colDf[columnsToPlot])
+		annColors <- annotationColors
+	}
+	
+	color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
+					"#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
+	
+	pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
+			show_colnames=showColnames, annotation_col=annCol,
+			annotation_colors=annColors, fontsize_row=fontsizeRow,
+			cluster_cols=clusterCols, cluster_rows=clusterRows,
+			color=color, fontsize=fontsize, silent=silentPlot)
+	
+	
+	if(savePlot)
+		.saveHeatmap(theObject, plotPDF, fileName, width, height, onefile,
+				widthPNG, heightPNG, pheatmapObject)
+	
+	return(pheatmapObject)
+	
+}
+
+
 #' plotCellHeatmap
 #'
 #' @description This function plots heatmap with marker genes on rows and
@@ -1257,7 +1340,7 @@ setMethod(
         colDf <- SummarizedExperiment::colData(sceObject)
         markersClusters <- getClustersMarkers(theObject)
 
-        if(is.na(fileName))
+		if(is.na(fileName))
             fileName <- paste0(getExperimentName(theObject), "_", "clusters",
                     length(levels(colDf$clusters)), "_meanCentered",
                     meanCentered, "_orderClusters", orderClusters,
@@ -1270,71 +1353,15 @@ setMethod(
 
 
         # plots correlation between clusters
-        exprsTmp <- Biobase::exprs(sceObject)
-        rowTmp <- rownames(exprsTmp)
-        expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
-
-        if(meanCentered){
-            meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
-            expressionMatrix <- expressionMatrix - meanRows
-        }
-
-
-        if(orderClusters){
-
-            # Ordering expressionMatrixrix
-            newOrder <- .callOrderCells(colDf, expressionMatrix,
-                    clusteringMethod)
-            expressionMatrix <- expressionMatrix[, newOrder]
-            clusterCols <- FALSE
-
-            if(orderGenes){
-
-                newOrder <- .callOrderGenes(colDf, markersClusters,
-                        expressionMatrix, clusteringMethod)
-                expressionMatrix <- expressionMatrix[newOrder, ]
-                clusterRows <- FALSE
-                }
-
-        }else{
-
-            distanceMatrix <- dist(t(expressionMatrix))
-            clusterCols <- hclust(distanceMatrix, method="ward.D2")
-        }
-
-        if(!orderGenes)
-            clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
-
-        annotationColors <- .generateAnnotationColors(colDf, colorPalette,
-                statePalette)
-
-        columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
-                        "state"), c("clusters"))
-
-        if(is.null(colDf$clusters)){
-
-            annCol <- switch(is.null(colDf$state) + 1,
-                    as.data.frame(colDf["state"]), NA)
-            annColors <- switch(is.null(colDf$state) + 1,
-                    annotationColors[names(annotationColors) == "state"], NA)
-        }else{
-            annCol <- as.data.frame(colDf[columnsToPlot])
-            annColors <- annotationColors
-        }
-
-        color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
-                        "#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
-
-        pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
-                show_colnames=showColnames, annotation_col=annCol,
-                annotation_colors=annColors, fontsize_row=fontsizeRow,
-                cluster_cols=clusterCols, cluster_rows=clusterRows,
-                color=color, fontsize=fontsize, silent=silentPlot)
-
-
-        if(savePlot)
-            .saveHeatmap(theObject, plotPDF, fileName, width, height, onefile,
-                    widthPNG, heightPNG, pheatmapObject)
+		results <- .orderClustersForHeatmap(sceObject, markersClusters, 
+				meanCentered, orderClusters, colDf, clusteringMethod)
+		expressionMatrix <- results[[1]]
+		clusterCols <- results[[2]]
+		clusterRows <- results[[3]]
+		
+		pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
+				expressionMatrix, showColnames, fontsizeRow, clusterCols, 
+				clusterRows, fontsize, silentPlot)
 
         if(returnPlot)
             return(pheatmapObject)
