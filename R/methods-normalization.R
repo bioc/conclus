@@ -574,6 +574,33 @@
 }
 
 
+
+.filterSCE <- function(alreadyCellFiltered, countMatrix, coldata, rowdata){
+	
+	if(!alreadyCellFiltered){
+		
+		filterCellsResult <- .filterCells(countMatrix, coldata)
+		countMatrix <- filterCellsResult[[1]]
+		coldata <- filterCellsResult[[2]]
+	}
+	
+	filterGenesResult <- .filterGenes(countMatrix, rowdata)
+	countMatrix <- filterGenesResult[[1]]
+	rowdata <- filterGenesResult[[2]]
+	
+	stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
+	stopifnot(all(colnames(countMatrix) == rownames(coldata)))
+	
+	sce <- SingleCellExperiment::SingleCellExperiment(assays=list(
+					counts=as.matrix(countMatrix)),
+			colData=coldata,
+			rowData=rowdata)
+	
+	return(sce)
+	
+}
+
+
 #' normaliseCountMatrix
 #'
 #' @description
@@ -661,27 +688,8 @@ setMethod(
         coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
                 coldataDF = coldata)
 
-
-        if (!alreadyCellFiltered){
-
-            filterCellsResult <- .filterCells(countMatrix, coldata)
-            countMatrix <- filterCellsResult[[1]]
-            coldata <- filterCellsResult[[2]]
-        }
-
-        filterGenesResult <- .filterGenes(countMatrix, rowdata)
-        countMatrix <- filterGenesResult[[1]]
-        rowdata <- filterGenesResult[[2]]
-
-        stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
-        stopifnot(all(colnames(countMatrix) == rownames(coldata)))
-
-        sce <-
-            SingleCellExperiment::SingleCellExperiment(assays=list(
-                                                counts=as.matrix(countMatrix)),
-                                                colData=coldata,
-                                                rowData=rowdata)
-
+		sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
+								
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
