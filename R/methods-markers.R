@@ -430,6 +430,109 @@ setMethod(
 
 
 
+.queryBiomart <- function(genes, ensembl){
+	
+	database <- merge(x = .returnDB1(genes, ensembl),
+			y = .returnDB2(genes, ensembl),
+			by = c("uniprot_gn_symbol", "external_gene_name"),
+			all.x = TRUE)
+	
+	## Group the GO id and the uniprot Id
+	options(dplyr.summarise.inform = FALSE)
+	database <- database %>% group_by(uniprot_gn_symbol,
+					chromosome_name, entrezgene_description) %>%
+			summarise(go_id = paste(unique(go_id), collapse=', '),
+					uniprot_gn_id = paste(unique(uniprot_gn_id),
+							collapse=', '),
+					description = paste(unique(description),
+							collapse=', '),
+					external_gene_name = paste(
+							unique(external_gene_name), collapse=', '),
+					gene_biotype = paste(unique(gene_biotype),
+							collapse=', '),
+					ensembl_gene_id = paste(unique(ensembl_gene_id),
+							collapse=', '),
+					entrezgene_id = paste(unique(entrezgene_id),
+							collapse=', '),
+			)
+	
+	return(database)
+}
+
+
+.groupGOandUniprotID <- function(speDbID, speDBdescription, genes, ensembl){
+	
+	if(!(is.null(speDbID) & is.null(speDBdescription)))
+		## Query biomart for specific db according to species
+		## external_gene_name is also searched because one gene can have
+		## several external_gene_name and so several speDbID and
+		## speDBdescription
+		spDB <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
+						"external_gene_name", speDbID,
+						speDBdescription),
+				values=genes$geneName,
+				filters = "uniprot_gn_symbol",
+				mart=ensembl)
+	return(spDB)
+}
+
+
+.defineDatabase <- function(species, genes, speDbID, speDBdescription){
+	
+	## Selecting the BioMart database to use
+	databaseDict <- c(mouse = "mmusculus_gene_ensembl",
+			human = "hsapiens_gene_ensembl")
+	dataset <- databaseDict[species]
+	ensembl <- useEnsembl(biomart="genes", dataset=dataset)
+	
+	## Query biomart
+	database <- .queryBiomart(genes, ensembl)
+	
+	## Group the GO id and the uniprot Id
+	spDB <- .groupGOandUniprotID(speDbID, speDBdescription, genes, 
+			ensembl)
+	
+	## Merge the second column, the first already existing in the first
+	## table
+	if(!is.null(spDB))
+		database <- merge(x = database, y = spDB, by =
+						c("uniprot_gn_symbol", "external_gene_name"),
+				all.x = TRUE)
+	
+	## Add cluster column
+	database <- merge(x = database, y = genes,
+			by.x = "uniprot_gn_symbol",  by.y = "geneName",
+			all.x = TRUE)
+	
+	## Add Symbol column
+	database <- cbind(database, Symbol = database$uniprot_gn_symbol)
+	
+	return(database)
+	
+}
+
+.orderCol <- function(speDBdescription, speDbID, database, orderGenes, genes){
+	
+	colnamesOrder <- c("uniprot_gn_symbol", "clusters",
+			"external_gene_name", "go_id", speDBdescription,
+			"entrezgene_description", "gene_biotype", "chromosome_name",
+			"Symbol", "ensembl_gene_id", speDbID, "entrezgene_id",
+			"uniprot_gn_id")
+	
+	result  <- database[, colnamesOrder]
+	
+	if(isTRUE(all.equal(orderGenes, "initial"))){
+		desiredOrder <- genes$geneName
+		result <- merge(list(uniprot_gn_symbol = unique(desiredOrder)),
+				result, sort = FALSE)
+		rownames(result) <- seq_len(nrow(result))
+	}
+	
+	return(result)
+	
+}
+
+
 #' retrieveGenesInfo
 #'
 #' @description
@@ -532,8 +635,6 @@ setMethod(
 #'
 #' @author
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
-
-
 setMethod(
 
         f = "retrieveGenesInfo",
@@ -546,8 +647,6 @@ setMethod(
 
             species <- getSpecies(theObject)
             genes <- getClustersMarkers(theObject)
-            databaseDict <- c(mouse = "mmusculus_gene_ensembl",
-                    human = "hsapiens_gene_ensembl")
             .checkParamsretrieveGenesInfo(theObject, orderGenes, genes, species,
                     databaseDict, saveInfos)
 
@@ -555,91 +654,18 @@ setMethod(
             if(isTRUE(all.equal(species, "mouse"))){
                 speDbID <- "mgi_id"
                 speDBdescription <- "mgi_description"
-            }else{
-                speDbID <- NULL
-                speDBdescription <- NULL
-                spDB <- NULL
-            }
-
-            ## Selecting the BioMart database to use
-            dataset <- databaseDict[species]
-            ensembl <- useEnsembl(biomart="genes", dataset=dataset)
-
-            ## Query biomart
-            database <- merge(x = .returnDB1(genes, ensembl),
-                    y = .returnDB2(genes, ensembl),
-                    by = c("uniprot_gn_symbol", "external_gene_name"),
-                    all.x = TRUE)
-
-
-            ## Group the GO id and the uniprot Id
-            options(dplyr.summarise.inform = FALSE)
-            database <- database %>% group_by(uniprot_gn_symbol,
-                            chromosome_name, entrezgene_description) %>%
-                    summarise(go_id = paste(unique(go_id), collapse=', '),
-                            uniprot_gn_id = paste(unique(uniprot_gn_id),
-                                    collapse=', '),
-                            description = paste(unique(description),
-                                    collapse=', '),
-                            external_gene_name = paste(
-                                    unique(external_gene_name), collapse=', '),
-                            gene_biotype = paste(unique(gene_biotype),
-                                    collapse=', '),
-                            ensembl_gene_id = paste(unique(ensembl_gene_id),
-                                    collapse=', '),
-                            entrezgene_id = paste(unique(entrezgene_id),
-                                    collapse=', '),
-                    )
-
-
-            ## Group the GO id and the uniprot Id
-            if(!(is.null(speDbID) & is.null(speDBdescription)))
-                ## Query biomart for specific db according to species
-                ## external_gene_name is also searched because one gene can have
-                ## several external_gene_name and so several speDbID and
-                ## speDBdescription
-                spDB <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
-                                "external_gene_name", speDbID,
-                                speDBdescription),
-                        values=genes$geneName,
-                        filters = "uniprot_gn_symbol",
-                        mart=ensembl)
-
-
-
-            ## Merge the second column, the first already existing in the first
-            ## table
-            if(!is.null(spDB))
-                database <- merge(x = database, y = spDB, by =
-                                c("uniprot_gn_symbol", "external_gene_name"),
-                        all.x = TRUE)
-
-            ## Add cluster column
-            database <- merge(x = database, y = genes,
-                    by.x = "uniprot_gn_symbol",  by.y = "geneName",
-                    all.x = TRUE)
-
-            ## Add Symbol column
-            database <- cbind(database, Symbol = database$uniprot_gn_symbol)
-
-
+            }else
+                speDbID <- speDBdescription <- spDB <- NULL
+                
+            
+			database <- .defineDatabase(species, genes, speDbID, 
+					speDBdescription)
+						
             ## Order the data frames colums to be abe to bind them
-            colnamesOrder <- c("uniprot_gn_symbol", "clusters",
-                    "external_gene_name", "go_id", speDBdescription,
-                    "entrezgene_description", "gene_biotype", "chromosome_name",
-                    "Symbol", "ensembl_gene_id", speDbID, "entrezgene_id",
-                    "uniprot_gn_id")
-
-            result  <- database[, colnamesOrder]
-
-            if(isTRUE(all.equal(orderGenes, "initial"))){
-                desiredOrder <- genes$geneName
-                result <- merge(list(uniprot_gn_symbol = unique(desiredOrder)),
-                        result, sort = FALSE)
-                rownames(result) <- seq_len(nrow(result))
-            }
-
-            rm(database, colnamesOrder)
+			result <- .orderCol(speDBdescription, speDbID, database, orderGenes,
+					genes)
+			
+            rm(database)
             biomartCacheClear()
 
             setGenesInfos(theObject) <- result
