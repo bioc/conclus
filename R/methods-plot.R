@@ -998,6 +998,70 @@ setMethod(
 
 
 
+#' .checkParamSubFunction
+#'
+#' @description checks parameters of plotCellHeatmap.
+#'
+#' @param clusterCols If TRUE, the columns representing the clusters are also
+#' taken into account in the hierarchical clustering. Default=FALSE.
+#' @param showColnames Shoud the names of the columns (clusters) be indicated on
+#' the heatmap. Default = FALSE.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png
+#' otherwise. Default = TRUE.
+#' @param fontsize base fontsize for the plot. Default = 7.5.
+#' @param fontsizeRow fontsize for rownames. Default = 8.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
+#' @param returnPlot If TRUE returns a pheatmap object. Default=FALSE.
+#' @param savePlot If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject
+#' (?getOutputDirectory) and in the sub-directory 'pictures'.
+#'
+#' @keywords internal
+#' @noRd
+.checkParamSubFunction <- function(clusterCols, showColnames, plotPDF, 
+		fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, 
+		savePlot){
+	
+	## Verify clusterCols
+	if(!is.logical(clusterCols))
+		stop("clusterCols should be a boolean.")
+	
+	## Verify showColnames
+	if(!is.logical(showColnames))
+		stop("showColnames should be a boolean.")
+	
+	## Verify plotPDF
+	if(!is.logical(plotPDF))
+		stop("plotPDF should be a boolean.")
+	
+	## Verify fontsize
+	if(!is.numeric(fontsize))
+		stop("fontsize should be a numeric.")
+	
+	## Verify fontsizeRow
+	if(!is.numeric(fontsizeRow))
+		stop("fontsizeRow should be a numeric.")
+	
+	## Verify widthPNG
+	if(!is.numeric(widthPNG))
+		stop("widthPNG should be a numeric.")
+	
+	## Verify heightPNG
+	if(!is.numeric(heightPNG))
+		stop("heightPNG should be a numeric.")
+	
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")
+	
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
+}
+
 #' .checkParamCellHeatmap
 #'
 #' @description checks parameters of plotCellHeatmap
@@ -1081,42 +1145,8 @@ setMethod(
     if(!is.logical(onefile))
         stop("onefile should be a boolean.")
 
-    ## Verify clusterCols
-    if(!is.logical(clusterCols))
-        stop("clusterCols should be a boolean.")
-
-    ## Verify showColnames
-    if(!is.logical(showColnames))
-        stop("showColnames should be a boolean.")
-
-    ## Verify plotPDF
-    if(!is.logical(plotPDF))
-        stop("plotPDF should be a boolean.")
-
-    ## Verify fontsize
-    if(!is.numeric(fontsize))
-        stop("fontsize should be a numeric.")
-
-    ## Verify fontsizeRow
-    if(!is.numeric(fontsizeRow))
-        stop("fontsizeRow should be a numeric.")
-
-    ## Verify widthPNG
-    if(!is.numeric(widthPNG))
-        stop("widthPNG should be a numeric.")
-
-    ## Verify heightPNG
-    if(!is.numeric(heightPNG))
-        stop("heightPNG should be a numeric.")
-
-    ## Verify silentPlot
-    if (!is.logical(silentPlot))
-        stop("silentPlot should be a boolean.")
-
-    if(silentPlot && !returnPlot && !savePlot)
-        stop("You do not plot, neither save the heatmap or return the object.",
-                " Nothing will happen. You should either plot the results, ",
-                "return the object or save the heatmap.")
+    .checkParamSubFunction(clusterCols, showColnames, plotPDF, fontsize, 
+			fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, savePlot)
 }
 
 
