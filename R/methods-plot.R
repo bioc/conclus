@@ -125,6 +125,57 @@
 }
 
 
+#' .checkParamCellSimilaritySub
+#'
+#' @description Check parameters of plotCellSimilarity
+#' 
+#' @param showColnames pheatmap parameter. Boolean specifying if column names
+#' are displayed. Default=FALSE.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param fontsizeRow pheatmap parameter. Fontsize for rownames. Default=0.03.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
+#' @param returnPlot Boolean indicating if the pHeatmap object should  be
+#' returned by the function. Default = TRUE.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in
+#' theObject (?getOutputDirectory) and in the sub-directory "pictures".
+#'
+#' @keywords internal
+#' @noRd
+.checkParamCellSimilaritySub <- function(showColnames, fontsize, fontsizeRow,
+		widthPNG, heightPNG, silentPlot, returnPlot, savePlot){
+	
+	## Verify showColnames
+	if (!is.logical(showColnames))
+		stop("showColnames should be a boolean.")
+	
+	## Verify fontsize
+	if (!is.numeric(fontsize))
+		stop("fontsize should be a numeric.")
+	
+	## Verify fontsizeRow
+	if (!is.numeric(fontsizeRow))
+		stop("fontsizeRow should be a numeric.")
+	
+	## Verify widthPNG
+	if (!is.numeric(widthPNG))
+		stop("widthPNG should be a numeric.")
+	
+	## Verify heightPNG
+	if (!is.numeric(heightPNG))
+		stop("heightPNG should be a numeric.")
+	
+	## Verify silentPlot
+	if (!is.logical(silentPlot))
+		stop("silentPlot should be a boolean.")
+	
+	if(silentPlot && !returnPlot && !savePlot)
+		stop("You do not plot, neither save the heatmap or return the object.",
+				" Nothing will happen. You should either plot the results, ",
+				"return the object or save the heatmap.")
+}
+
 #' .checkParamCellSimilarity
 #'
 #' @description Check parameters of plotCellSimilarity
@@ -160,7 +211,6 @@
 #'
 #' @keywords internal
 #' @noRd
-
 .checkParamCellSimilarity <-function(theObject, orderClusters, savePlot,
         plotPDF, returnPlot, width, height, onefile, showRowNames, showColnames,
         fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot){
@@ -206,34 +256,8 @@
     if (!is.logical(showRowNames))
         stop("showRowNames should be a boolean.")
 
-    ## Verify showColnames
-    if (!is.logical(showColnames))
-        stop("showColnames should be a boolean.")
-
-    ## Verify fontsize
-    if (!is.numeric(fontsize))
-        stop("fontsize should be a numeric.")
-
-    ## Verify fontsizeRow
-    if (!is.numeric(fontsizeRow))
-        stop("fontsizeRow should be a numeric.")
-
-    ## Verify widthPNG
-    if (!is.numeric(widthPNG))
-        stop("widthPNG should be a numeric.")
-
-    ## Verify heightPNG
-    if (!is.numeric(heightPNG))
-        stop("heightPNG should be a numeric.")
-
-    ## Verify silentPlot
-    if (!is.logical(silentPlot))
-        stop("silentPlot should be a boolean.")
-
-    if(silentPlot && !returnPlot && !savePlot)
-        stop("You do not plot, neither save the heatmap or return the object.",
-                " Nothing will happen. You should either plot the results, ",
-                "return the object or save the heatmap.")
+	.checkParamCellSimilaritySub(showColnames, fontsize, fontsizeRow, widthPNG,
+			heightPNG, silentPlot, returnPlot, savePlot)
 }
 
 
