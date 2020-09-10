@@ -429,7 +429,22 @@ setMethod(
 }
 
 
-
+#' .queryBiomart
+#' 
+#' @description
+#' Main sub-function that retrieves the uniprot gene symbol, the chromosome
+#' name, the entrez gene description, the go id, the uniprot id, the external
+#' gene name, the gene biotype, the ensembl id, and the entrez gene id from 
+#' biomaRt.
+#'
+#' @param genes Markers genes retrieved from the submitted object with
+#' ?getClustersMarkers.
+#' @param ensembl An instance of biomaRt obtained with ?useEnsembl.
+#' 
+#' @keywords internal
+#' @noRd
+#' @importFrom biomaRt getBM
+#' @return Return the information described above..
 .queryBiomart <- function(genes, ensembl){
 	
 	database <- merge(x = .returnDB1(genes, ensembl),
@@ -460,6 +475,25 @@ setMethod(
 }
 
 
+#' .groupGOandUniprotID
+#' 
+#' @description
+#' Retrieves the uniprot symbol, the external gene name, and the mgi information
+#' from biomaRt.
+#'
+#' @param species Name of the species defined in the submitted object and
+#' retrieved with ?getSpecies. Current values allowed are mouse and human.
+#' @param genes Markers genes retrieved from the submitted object with
+#' ?getClustersMarkers.
+#' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
+#' @param speDBdescription NULL if species is human and 'mgi_description' if
+#' species is mouse.  
+#' @param ensembl An instance of biomaRt obtained with ?useEnsembl.
+#' @keywords internal
+#' @noRd
+#' @importFrom biomaRt getBM
+#' @return Return the uniprot gene symbol, the external gene name, and the
+#' mgi information if the species is mouse.
 .groupGOandUniprotID <- function(speDbID, speDBdescription, genes, ensembl){
 	
 	if(!(is.null(speDbID) & is.null(speDBdescription)))
@@ -477,6 +511,25 @@ setMethod(
 }
 
 
+#' .defineDatabase
+#' 
+#' @description
+#' Core functions that aims at building a database with all information about
+#' the markers. It first selects the biomaRt instance to use according to the
+#' defined species; It then queries biomaRt and formats the results.
+#'
+#' @param species Name of the species defined in the submitted object and
+#' retrieved with ?getSpecies. Current values allowed are mouse and human.
+#' @param genes Markers genes retrieved from the submitted object with
+#' ?getClustersMarkers.
+#' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
+#' @param speDBdescription NULL if species is human and 'mgi_description' if
+#' species is mouse.  
+#'
+#' @keywords internal
+#' @noRd
+#' @importFrom biomaRt useEnsembl
+#' @return A database with biomaRt information.
 .defineDatabase <- function(species, genes, speDbID, speDBdescription){
 	
 	## Selecting the BioMart database to use
@@ -511,6 +564,25 @@ setMethod(
 	
 }
 
+#' .orderCol
+#' 
+#' @description
+#' Re-organize the columns of the table (database) containing the biomaRt 
+#' retrieved information.
+#'
+#' @param speDBdescription NULL if species is human and 'mgi_description' if
+#' species is mouse.  
+#' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
+#' @param database Table containing the biomaRt retrieved information.
+#' @param orderGenes If "initial" then the order of genes will not be changed.
+#' The other option is "alphabetical". Default = "initial".
+#' @param genes Markers genes retrieved from the submitted object with
+#' ?getClustersMarkers.
+#' 
+#' @keywords internal
+#' @noRd
+#'
+#' @return The re-ordered database if orderGenes is set to 'initial'.
 .orderCol <- function(speDBdescription, speDbID, database, orderGenes, genes){
 	
 	colnamesOrder <- c("uniprot_gn_symbol", "clusters",
@@ -630,7 +702,6 @@ setMethod(
 #' rankGenes retrieveTopClustersMarkers
 #'
 #' @exportMethod retrieveGenesInfo
-#' @importFrom biomaRt useEnsembl biomartCacheClear
 #' @importFrom dplyr group_by %>% summarise
 #'
 #' @author
