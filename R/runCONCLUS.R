@@ -743,21 +743,18 @@ runCONCLUS <- function(
     ## plotClustersSimilarity parameters
     savePlotClustSM=FALSE, widthPlotClustSM=7, heightPlotClustSM=5.5){
     
-    scrInfos <- .runAllSteps(experimentName, countMatrix, species, sizes, 
-                             outputDirectory, rowMetaData, columnsMetaData,
-                             alreadyCellFiltered, runQuickCluster, randomSeed,
-                             cores, PCs, perplexities, writeOutputTSne, epsilon,
-                             minPoints, writeOutputDbScan, clusterNumber, 
-                             deepSplit, clusteringMethod, clusToAdd, 
-                             columnRankGenes, writeOutputRankGenes, nTopMarkers, 
-                             removeDuplicates, writeTopMarkers, groupBy, 
-                             orderGenes, getUniprot, saveInfos, colorPalette, 
-                             statePalette, orderClusters, writeCSM, widthCSM, 
-                             heightCSM, meanCentered, orderGenesCH, savePlotCH,
-                             widthCH, heightCH, clusterCols, savePlotClustSM, 
-                             widthPlotClustSM, heightPlotClustSM, savePlotCTSNE,
-                             widthPlotClustTSNE, heightPlotClustTSNE, tSNENb, 
-                             exportAllResults)
+    scrInfos <- .runAllSteps(experimentName, countMatrix, species, sizes,
+            outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
+            runQuickCluster, randomSeed, cores, PCs, perplexities, 
+            writeOutputTSne, epsilon, minPoints, writeOutputDbScan, 
+            clusterNumber, deepSplit, clusteringMethod, clusToAdd, 
+            columnRankGenes, writeOutputRankGenes, nTopMarkers, 
+            removeDuplicates, writeTopMarkers, groupBy, orderGenes, getUniprot,
+            saveInfos, colorPalette, statePalette, orderClusters, writeCSM,
+            widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
+            widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
+            heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
+            heightPlotClustTSNE, tSNENb, exportAllResults)
     return(scrInfos)
 }
 
