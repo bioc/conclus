@@ -1719,6 +1719,65 @@ setMethod(
 }
 
 
+#' .saveAndPlotGeneExpression
+#'
+#' @description
+#' Saves and/or plots the tSNE colored by expression.
+#'
+#' @param tSNECoords Coordinates of the tSNE.
+#' @param pointSize Size of the points on the tSNE. Default = 1.
+#' @param alpha Opacity of the points of the plot. Default = 1.
+#' @param palette Color palette for the expression levels.
+#' @param limits Range of the gene expression shown in the legend. Default = NA.
+#' See details.
+#' @param geneName Name of the gene to highlight on the t-SNE plot.
+#' @param savePlot If TRUE, save the tSNE in pdf or png format. Default=FALSE.
+#' @param List of unique cluster numbers.
+#' @param tSNEpicture Number of the tSNE picture that you want to use for
+#' plotting the gene expression. Default = 1.
+#' @param plotPDF If TRUE export tSNE in pdf format, if FALSE export it in
+#' png format. Default=TRUE.
+#' @param width Width of the plot. Default = 6.
+#' @param height Height of the plot. Default = 5.
+#' @param silentPlot If TRUE, the plots are not displayed on the current device.
+#' Default=FALSE.
+#'
+#' @keywords internal
+#' @noRd
+.saveAndPlotGeneExpression <- function(tSNECoords, pointSize, alpha, palette,
+        limits, geneName, savePlot, clustersNumber, tSNEpicture, plotPDF, 
+        width, height, silentPlot){
+    
+    ggres <- ggplot2::ggplot(tSNECoords, aes(x=tSNECoords[,1],
+                            y=tSNECoords[,2], color=expression)) +
+            geom_point(size=I(pointSize), alpha=alpha) + theme_bw() +
+            scale_colour_gradientn(
+                    colours=alpha(colorRampPalette(palette)(100), 0.8),
+                    limits=limits) + ggtitle(geneName)
+    
+    if(savePlot){
+        
+        dataDirectory  <- getOutputDirectory(theObject)
+        experimentName <- getExperimentName(theObject)
+        subdir <- file.path(dataDirectory, "pictures")
+        fileName <- paste(experimentName, "tSNE", clustersNumber,
+                "clusters", geneName, "tSNEpicture",
+                tSNEpicture, "_alpha", alpha,sep="_")
+        
+        if(!file.exists(subdir))
+            dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
+        
+        ggsave(filename= paste0(fileName, if(plotPDF) ".pdf" else ".png"),
+                plot=ggres, device= if(plotPDF) "pdf" else "png",
+                path=subdir, width= width, height = height)
+    }
+    
+    if(!silentPlot)
+        print(ggres)
+    
+    return(ggres)
+}
+
 #' plotGeneExpression
 #'
 #' @description The function saves a t-SNE plot colored by expression of a
@@ -1846,34 +1905,10 @@ setMethod(
         if(isTRUE(all.equal(length(limits), 1)))
             limits <- c(min(tSNECoords$expression), max(tSNECoords$expression))
 
-        ggres <- ggplot2::ggplot(tSNECoords, aes(x=tSNECoords[,1],
-                                y=tSNECoords[,2], color=expression)) +
-                geom_point(size=I(pointSize), alpha=alpha) + theme_bw() +
-                scale_colour_gradientn(
-                        colours=alpha(colorRampPalette(palette)(100), 0.8),
-                        limits=limits) + ggtitle(geneName)
-
-
-        if(savePlot){
-
-            dataDirectory  <- getOutputDirectory(theObject)
-            experimentName <- getExperimentName(theObject)
-            subdir <- file.path(dataDirectory, "pictures")
-            fileName <- paste(experimentName, "tSNE", clustersNumber,
-                    "clusters", geneName, "tSNEpicture",
-                    tSNEpicture, "_alpha", alpha,sep="_")
-
-            if(!file.exists(subdir))
-                dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
-
-            ggsave(filename= paste0(fileName, if(plotPDF) ".pdf" else ".png"),
-                    plot=ggres, device= if(plotPDF) "pdf" else "png",
-                    path=subdir, width= width, height = height)
-        }
-
-        if(!silentPlot)
-            print(ggres)
-
+        ggres <- .saveAndPlotGeneExpression(tSNECoords, pointSize, alpha, 
+                palette, limits, geneName, savePlot, clustersNumber, 
+                tSNEpicture, plotPDF, width, height, silentPlot)
+        
         if(returnPlot)
             return(ggres)
     })
