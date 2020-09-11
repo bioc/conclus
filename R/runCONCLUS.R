@@ -736,8 +736,7 @@ runCONCLUS <- function(
     ## Retrieving top markers parameters
     nTopMarkers=10, removeDuplicates = TRUE, writeTopMarkers=FALSE,
     ## Retrieving genes infos parameters
-    groupBy="clusters", orderGenes="initial", getUniprot=TRUE, 
-    saveInfos=FALSE,
+    groupBy="clusters", orderGenes="initial", getUniprot=TRUE, saveInfos=FALSE,
     ## plotCellSimilarity parameters
     colorPalette="default", statePalette="default", writeCSM=FALSE,
     widthCSM=7, heightCSM=6,
