@@ -62,14 +62,14 @@ The TestClustering function runs one clustering round out of the 84 (default)
 rounds that CONCLUS normally performs. This step can be useful to determine
 if the default DBSCAN parameters are suitable for your dataset. By default,
 they are dbscanEpsilon = c(1.3, 1.4, 1.5) and minPts = c(3,4). If the dashed
-horizontal line in the k-NN distance plot lays on the “knee” of the curve,
+horizontal line in the k-NN distance plot lays on the "knee" of the curve,
 it means that optimal epsilon is equal to the intersection of the line to the
 y-axis. In our example, optimal epsilon is 1.4 for 5-NN distance where 5
 corresponds to MinPts.
 
 In the "test_clustering" folder under outputDirectory, the three plots will
-be saved where one corresponds to the “distance_graph.pdf”, another one to
-“test_tSNE.pdf”, and the last one will be saved as “test_clustering.pdf”.
+be saved where one corresponds to the "distance_graph.pdf", another one to
+"test_tSNE.pdf", and the last one will be saved as "test_clustering.pdf".
 }
 \examples{
 experimentName <- "Bergiers"
