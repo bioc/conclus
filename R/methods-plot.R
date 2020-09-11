@@ -860,6 +860,55 @@ setMethod(
 }
 
 
+#' .plotAndSaveTSNE
+#'
+#' @description 
+#' Plots and/or save the tSNE.
+#'
+#' @param silentPlot If TRUE, the plots are not displayed on the current device.
+#' Default=FALSE.
+#' @param tSNENb Give the number of the tSNE to plot. If NA, all tSNE solutions
+#' are plotted (14 tSNE by default). Default=NA.
+#' @param tSNEplots Result of the .computePlotList function.
+#' @param savePlot If TRUE, the heatmap is saved in the directory defined in
+#' theObject (?getOutputDirectory) and in the sub-directory
+#' "pictures/tSNE_pictures".
+#' @param tSNEList List of tSNE objects obtained with ?getTSNEList.
+#' @param plotPDF If TRUE export heatmap in pdf format, if FALSE export it in
+#' png format. Default=TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#' Default = 6.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to FALSE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param outputdir Directory to write the tSNE to and retrieved from 
+#' .createTSNEDir.
+#' 
+#' @importFrom grDevices dev.new
+#' @noRd
+.plotAndSaveTSNE <- function(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList, 
+        plotPDF, width, height, onefile, widthPNG, heightPNG, outputdir){
+    
+    ## Plotting tSNE
+    if(!silentPlot){
+        if(is.na(tSNENb))
+            invisible(lapply(tSNEplots, function(currentTSNE){
+                                print(currentTSNE)
+                                dev.new()}))
+        else
+            print(tSNEplots[[tSNENb]])
+    }
+    
+    ## Saving tSNEs
+    if(savePlot)
+        .saveTSNEPlot(tSNEList, tSNEplots, plotPDF, width, height, onefile,
+                widthPNG, heightPNG, outputdir)
+}
+
 #' plotClusteredTSNE
 #'
 #' @description Plot t-SNE generated with different PCs and perplexities.
@@ -1002,21 +1051,9 @@ setMethod(
         tSNEplots <- .computePlotList(tSNEList, sceObject, columnName,
                 colorPalette)
 
-        ## Plotting tSNE
-        if(!silentPlot){
-            if(is.na(tSNENb))
-                invisible(lapply(tSNEplots, function(currentTSNE){
-                                    print(currentTSNE)
-                                    dev.new()}))
-            else
-                print(tSNEplots[[tSNENb]])
-        }
-
-        ## Saving tSNEs
-        if(savePlot)
-            .saveTSNEPlot(tSNEList, tSNEplots, plotPDF, width, height, onefile,
-                    widthPNG, heightPNG, outputdir)
-
+        .plotAndSaveTSNE(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList, 
+                plotPDF, width, height, onefile, widthPNG, heightPNG, outputdir)
+        
         if(returnPlot)
             return(tSNEplots)
 
