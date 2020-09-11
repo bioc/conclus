@@ -1882,49 +1882,39 @@ setMethod(
     clusters <- colData(getSceNorm(theObject))$clusters
     nbrClusters <- length(unique(clusters))
 
-    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
+    if(!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
         stop(paste("You have to calculate the cluster similarity matrix",
             "before plotting."))
 
     ## Verify returnPlot
-    if (!is.logical(returnPlot))
-        stop("returnPlot should be a boolean.")
+    if(!is.logical(returnPlot)) stop("returnPlot should be a boolean.")
 
     ## Verify savePlot
-    if (!is.logical(savePlot))
-        stop("savePlot should be a boolean.")
+    if(!is.logical(savePlot)) stop("savePlot should be a boolean.")
 
     ## Verify plotPDF
-    if (!is.logical(plotPDF))
-        stop("plotPDF should be a boolean.")
+    if(!is.logical(plotPDF)) stop("plotPDF should be a boolean.")
 
     ## Verify width
-    if (!is.numeric(width))
-        stop("width should be a numeric.")
+    if(!is.numeric(width)) stop("width should be a numeric.")
 
     ## Verify height
-    if (!is.numeric(height))
-        stop("height should be a numeric.")
+    if(!is.numeric(height)) stop("height should be a numeric.")
 
     ## Verify onefile
-    if (!is.logical(onefile))
-        stop("onefile should be a boolean.")
+    if(!is.logical(onefile)) stop("onefile should be a boolean.")
 
     ## Verify fontsize
-    if (!is.numeric(fontsize))
-        stop("fontsize should be a numeric.")
+    if(!is.numeric(fontsize)) stop("fontsize should be a numeric.")
 
     ## Verify widthPNG
-    if (!is.numeric(widthPNG))
-        stop("widthPNG should be a numeric.")
+    if(!is.numeric(widthPNG)) stop("widthPNG should be a numeric.")
 
     ## Verify heightPNG
-    if (!is.numeric(heightPNG))
-        stop("heightPNG should be a numeric.")
+    if(!is.numeric(heightPNG)) stop("heightPNG should be a numeric.")
 
     ## Verify silentPlot
-    if (!is.logical(silentPlot))
-        stop("silentPlot should be a boolean.")
+    if(!is.logical(silentPlot)) stop("silentPlot should be a boolean.")
 
     if(silentPlot && !returnPlot && !savePlot)
         stop("You do not plot, neither save the heatmap or return the object.",
