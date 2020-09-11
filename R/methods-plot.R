@@ -1933,6 +1933,109 @@ setMethod(
 }
 
 
+#' .checkParamClustersSimilarity
+#'
+#' @description checks parameters of plotCellSimilarity
+#'
+#' @param theObject A scRNAseq object with the cluster similarity matrix
+#' obtained with ?calculateClustersSimilarity.
+#' @param clusteringMethod Clustering method passed to hclust() function.
+#' See ?hclust for a list of method. Default = "ward.D2"
+#' @param colorPalette A vector of colors for clusters. Default = "default",
+#' see details.
+#' @param statePalette A vector of colors for states or conditions. See details.
+#' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
+#'
+#' @keywords internal
+#' @importFrom SummarizedExperiment colData
+#' @importFrom pheatmap pheatmap
+#' @importFrom stats as.dist
+#' @importFrom stats hclust
+#' @noRd
+.pheatmapClusterSim  <- function(theObject, clusteringMethod, colorPalette, 
+		statePalette, fontsize, silentPlot){
+	
+	clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+	colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
+	clusters <- colDf$clusters
+	clustersNames <- levels(clusters)
+	distanceMatrix <- as.dist(sqrt((1-clustersSimilarityMatrix)/2))
+	clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
+	colDataSimilarity <- data.frame(clusters=clustersNames)
+	rownames(colDataSimilarity) <- colDataSimilarity$clusters
+	
+	annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+			statePalette)
+	
+	pheatmapObject <- pheatmap::pheatmap(clustersSimilarityMatrix,
+			annotation_col=colDataSimilarity,
+			annotation_colors=annotationColors,
+			cluster_cols=clusteringTree,
+			cluster_rows=clusteringTree,
+			fontsize=fontsize,
+			main="Clusters similarity matrix",
+			silent=silentPlot)
+	
+	return(list(clusters, pheatmapObject))
+}
+
+
+#' .checkParamClustersSimilarity
+#'
+#' @description checks parameters of plotCellSimilarity
+#'
+#' @param theObject A scRNAseq object with the cluster similarity matrix
+#' obtained with ?calculateClustersSimilarity.
+#' @param savePlot If TRUE and plotPDF=TRUE, save the heatmap in pdf format.
+#' The heatmap is saved in the output directory defined in theObject
+#' @param clusters Cluster numbers contained in the columns meta-data.
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png
+#' otherwise. Default = TRUE.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#' Default = 7.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 5.5.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to FALSE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#'
+#' @importFrom grDevices pdf
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
+#' @keywords internal
+#' @noRd
+.savePlotClustersSim <- function(savePlot, theObject, clusters, plotPDF, width,
+		height, onefile, widthPNG, heightPNG){
+	
+	if(savePlot){
+		
+		dataDirectory   <- getOutputDirectory(theObject)
+		experimentName  <- getExperimentName(theObject)
+		clustersNumber <- length(unique(clusters))
+		subdir <- file.path(dataDirectory, "pictures")
+		
+		if(!file.exists(subdir))
+			dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
+		
+		fileName <- paste(experimentName,"clusters_similarity",
+				clustersNumber, "clusters", sep="_")
+		filePath <- file.path(subdir, fileName)
+		
+		if(plotPDF)
+			pdf(file=paste0(filePath, ".pdf"), width=width, height=height,
+					onefile=onefile)
+		else
+			png(filename=paste0(filePath, ".png"), width=widthPNG,
+					height=heightPNG, type="cairo")
+		grid::grid.newpage()
+		grid::grid.draw(pheatmapObject$gtable)
+		dev.off()
+	}
+}
+
 #' plotClustersSimilarity
 #'
 #' @description This function plots the clusters similarity matrix as a heatmap.
@@ -2045,53 +2148,16 @@ setMethod(
                 width, height, onefile, fontsize, widthPNG, heightPNG,
                 silentPlot)
 
-        clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
-        colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
-        clusters <- colDf$clusters
-        clustersNames <- levels(clusters)
-        distanceMatrix <- as.dist(sqrt((1-clustersSimilarityMatrix)/2))
-        clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
-        colDataSimilarity <- data.frame(clusters=clustersNames)
-        rownames(colDataSimilarity) <- colDataSimilarity$clusters
-
-        annotationColors <- .generateAnnotationColors(colDf, colorPalette,
-                                                        statePalette)
-
-        pheatmapObject <- pheatmap::pheatmap(clustersSimilarityMatrix,
-                                            annotation_col=colDataSimilarity,
-                                            annotation_colors=annotationColors,
-                                            cluster_cols=clusteringTree,
-                                            cluster_rows=clusteringTree,
-                                            fontsize=fontsize,
-                                            main="Clusters similarity matrix",
-                                            silent=silentPlot)
-
-        if(savePlot){
-
-            dataDirectory   <- getOutputDirectory(theObject)
-            experimentName  <- getExperimentName(theObject)
-            clustersNumber <- length(unique(clusters))
-            subdir <- file.path(dataDirectory, "pictures")
-
-            if(!file.exists(subdir))
-                dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
-
-            fileName <- paste(experimentName,"clusters_similarity",
-                    clustersNumber, "clusters", sep="_")
-            filePath <- file.path(subdir, fileName)
-
-            if(plotPDF)
-                pdf(file=paste0(filePath, ".pdf"), width=width, height=height,
-                        onefile=onefile)
-            else
-                png(filename=paste0(filePath, ".png"), width=widthPNG,
-                        height=heightPNG, type="cairo")
-            grid::grid.newpage()
-            grid::grid.draw(pheatmapObject$gtable)
-            dev.off()
-        }
-
-
+		## Generate heatmap
+		result <- .pheatmapClusterSim(theObject, clusteringMethod, colorPalette,
+				statePalette, fontsize, silentPlot)
+		clusters <- result[[1]]
+		pheatmapObject <- result[[2]]						
+		
+		## Save plot
+		.savePlotClustersSim(savePlot, theObject, clusters, plotPDF, width, 
+				height, onefile, widthPNG, heightPNG)
+		
         if(returnPlot)
             return(pheatmapObject)
     })
