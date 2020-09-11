@@ -139,18 +139,16 @@
     
     message("## Ranking genes (step 7/13) ##")
     scrS4MG <- rankGenes(scrCSM, column=columnRankGenes,
-                         writeMarkerGenes=writeOutputRankGenes)
+            writeMarkerGenes=writeOutputRankGenes)
     
     message("## Getting marker genes (step 8/13) ##")
     scrFinal <- retrieveTopClustersMarkers(scrS4MG, nTop=nTopMarkers,
-                                           removeDuplicates=removeDuplicates, 
-                                           writeMarkerGenes=writeTopMarkers)
+            removeDuplicates=removeDuplicates, writeMarkerGenes=writeTopMarkers)
     
     message("## Getting genes info (step 9/13) ##")
     message("\t Note: The connection to biomaRt can take a while sometimes.")
     scrInfos <- retrieveGenesInfo(scrFinal, cores=cores, groupBy=groupBy,
-                                  orderGenes=orderGenes, getUniprot=getUniprot,
-                                  saveInfos=saveInfos)
+            orderGenes=orderGenes, getUniprot=getUniprot, saveInfos=saveInfos)
     
     return(scrInfos)
 }
