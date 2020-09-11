@@ -45,6 +45,26 @@
 }
 
 
+#' .checkParamDbScan
+#'
+#' @description
+#' Check the parameters of the method runDBSCAN.
+#'
+#' @param sceObject Normalized count matrix retrieved with ?getSceNorm.
+#' @param tSNEList List of tSNE retrieved with getTSNEList.
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel.
+#' Default is 1.
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function.
+#' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
+#' @param minPoints Reachability minimum no. of points parameter of
+#' fpc::dbscan() function. See Ester et al. (1996) for more details.
+#' Default = c(3, 4)
+#' @param writeOutput If TRUE, write the results of the dbScan clustering to
+#' the output directory defined in theObject, in the sub-directory
+#' output_tables. Default = FALSE.
+#' 
+#' @keywords internal
+#' @noRd
 .checkParamDbScan <- function(sceObject, tSNEList, cores, epsilon, minPoints,
         writeOutput){
 
@@ -107,6 +127,81 @@
     write.table(dbscanResults, outputfile, quote=FALSE, sep="\t")
 }
 
+
+#' .dbscanComb
+#'
+#' @description
+#' Compute the clustering combinations using dbscan.
+#'
+#' @param tSNEList List of tSNE retrieved with getTSNEList.
+#' @param cores Maximum number of jobs that CONCLUS can run in parallel.
+#' Default is 1.
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function.
+#' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
+#' @param minPoints Reachability minimum no. of points parameter of
+#' fpc::dbscan() function. See Ester et al. (1996) for more details.
+#' Default = c(3, 4)
+#' @param sceObject Normalized count matrix retrieved with ?getSceNorm.
+#' 
+#' @keywords internal
+#' @importFrom SummarizedExperiment colData
+#' @return The results of the dbscan clustering.
+#' @noRd
+.dbscanComb <- function(tSNEList, cores, epsilon, minPoints, sceObject){
+	
+	dbscanResults <- .mkDbscan(tSNEList=tSNEList, cores=cores,
+			epsilon=epsilon, minPoints=minPoints)
+	dbscanResults <- t(dbscanResults)
+	colnames(dbscanResults) <-
+			SummarizedExperiment::colData(sceObject)$cellName
+	
+	return(dbscanResults)
+	
+}
+
+
+#' .createDbscanList
+#'
+#' @description
+#' Create a list of dbscan object to pass to the main object.
+#'
+#' @param tSNEList List of tSNE retrieved with getTSNEList.
+#' @param minPoints Reachability minimum no. of points parameter of
+#' fpc::dbscan() function. See Ester et al. (1996) for more details.
+#' Default = c(3, 4)
+#' @param epsilon Reachability distance parameter of fpc::dbscan() function.
+#' See Ester et al. (1996) for more details. Default = c(1.3, 1.4, 1.5)
+#' @param dbscanResults The result of the function .dbscanComb.
+#' 
+#' @keywords internal
+#' @return The results of the dbscan clustering.
+#' @noRd
+.createDbscanList <- function(tSNEList, minPoints, epsilon, dbscanResults){
+	
+	totalLength <- length(tSNEList) * length(minPoints)
+	epsilonCombinaison <- rep(epsilon, each=totalLength)
+	minPtsCombinaison  <- rep(minPoints,
+			length(tSNEList)*length(epsilon))
+	rowDbscanList <- split(dbscanResults, seq_len(nrow(dbscanResults)))
+	rowNamesVec <- paste0("clust.", seq_len(nrow(dbscanResults)))
+	dbscanObjNameVec <- paste0("Clustering_", seq_len(nrow(dbscanResults)))
+	
+	dbscanList <- mapply(function(rowName, dbscanObjName, epsComb,
+					minPts, rowDbscan){
+				
+				clustering <- t(rowDbscan)
+				colnames(clustering) <- colnames(dbscanResults)
+				rownames(clustering) <- rowName
+				dbscanObj<- Dbscan(name= dbscanObjName, epsilon=epsComb,
+						minPoints=minPts, clustering=clustering)
+				return(dbscanObj)
+				
+			}, rowNamesVec, dbscanObjNameVec, epsilonCombinaison,
+			minPtsCombinaison, rowDbscanList, SIMPLIFY = FALSE,
+			USE.NAMES = FALSE)
+	
+	return(dbscanList)
+}
 
 
 #' runDBSCAN
@@ -184,7 +279,6 @@
 #' @seealso
 #' normaliseCountMatrix generateTSNECoordinates
 #'
-
 setMethod(
 
         f = "runDBSCAN",
@@ -213,40 +307,17 @@ setMethod(
                     }, sceObject)
 
             ## Calculating dbscan combinaisons
-            dbscanResults <- .mkDbscan(tSNEList=tSNEList, cores=cores,
-                    epsilon=epsilon, minPoints=minPoints)
-            dbscanResults <- t(dbscanResults)
-            colnames(dbscanResults) <-
-                    SummarizedExperiment::colData(sceObject)$cellName
-
+			dbscanResults <- .dbscanComb(tSNEList, cores, epsilon, minPoints,
+					sceObject)
+			           
             ## Output file
             if(writeOutput)
                 .writeDBScanResults(theObject, dbscanResults)
 
             ## Creation of a list of Dbscan objects
-            totalLength <- length(tSNEList) * length(minPoints)
-            epsilonCombinaison <- rep(epsilon, each=totalLength)
-            minPtsCombinaison  <- rep(minPoints,
-                    length(tSNEList)*length(epsilon))
-            rowDbscanList <- split(dbscanResults, seq_len(nrow(dbscanResults)))
-            rowNamesVec <- paste0("clust.", seq_len(nrow(dbscanResults)))
-            dbscanObjNameVec <- paste0("Clustering_",
-                    seq_len(nrow(dbscanResults)))
-
-            dbscanList <- mapply(function(rowName, dbscanObjName, epsComb,
-                            minPts, rowDbscan){
-
-                        clustering <- t(rowDbscan)
-                        colnames(clustering) <- colnames(dbscanResults)
-                        rownames(clustering) <- rowName
-                        dbscanObj<- Dbscan(name= dbscanObjName, epsilon=epsComb,
-                                minPoints=minPts, clustering=clustering)
-                        return(dbscanObj)
-
-                    }, rowNamesVec, dbscanObjNameVec, epsilonCombinaison,
-                    minPtsCombinaison, rowDbscanList, SIMPLIFY = FALSE,
-                    USE.NAMES = FALSE)
-
+			dbscanList <- .createDbscanList(tSNEList, minPoints, epsilon, 
+					dbscanResults)
+			
             setDbscanList(theObject) <- dbscanList
 
             return(theObject)
