@@ -144,36 +144,36 @@
 #' @keywords internal
 #' @noRd
 .checkParamCellSimilaritySub <- function(showColnames, fontsize, fontsizeRow,
-		widthPNG, heightPNG, silentPlot, returnPlot, savePlot){
-	
-	## Verify showColnames
-	if (!is.logical(showColnames))
-		stop("showColnames should be a boolean.")
-	
-	## Verify fontsize
-	if (!is.numeric(fontsize))
-		stop("fontsize should be a numeric.")
-	
-	## Verify fontsizeRow
-	if (!is.numeric(fontsizeRow))
-		stop("fontsizeRow should be a numeric.")
-	
-	## Verify widthPNG
-	if (!is.numeric(widthPNG))
-		stop("widthPNG should be a numeric.")
-	
-	## Verify heightPNG
-	if (!is.numeric(heightPNG))
-		stop("heightPNG should be a numeric.")
-	
-	## Verify silentPlot
-	if (!is.logical(silentPlot))
-		stop("silentPlot should be a boolean.")
-	
-	if(silentPlot && !returnPlot && !savePlot)
-		stop("You do not plot, neither save the heatmap or return the object.",
-				" Nothing will happen. You should either plot the results, ",
-				"return the object or save the heatmap.")
+        widthPNG, heightPNG, silentPlot, returnPlot, savePlot){
+    
+    ## Verify showColnames
+    if (!is.logical(showColnames))
+        stop("showColnames should be a boolean.")
+    
+    ## Verify fontsize
+    if (!is.numeric(fontsize))
+        stop("fontsize should be a numeric.")
+    
+    ## Verify fontsizeRow
+    if (!is.numeric(fontsizeRow))
+        stop("fontsizeRow should be a numeric.")
+    
+    ## Verify widthPNG
+    if (!is.numeric(widthPNG))
+        stop("widthPNG should be a numeric.")
+    
+    ## Verify heightPNG
+    if (!is.numeric(heightPNG))
+        stop("heightPNG should be a numeric.")
+    
+    ## Verify silentPlot
+    if (!is.logical(silentPlot))
+        stop("silentPlot should be a boolean.")
+    
+    if(silentPlot && !returnPlot && !savePlot)
+        stop("You do not plot, neither save the heatmap or return the object.",
+                " Nothing will happen. You should either plot the results, ",
+                "return the object or save the heatmap.")
 }
 
 #' .checkParamCellSimilarity
@@ -256,8 +256,8 @@
     if (!is.logical(showRowNames))
         stop("showRowNames should be a boolean.")
 
-	.checkParamCellSimilaritySub(showColnames, fontsize, fontsizeRow, widthPNG,
-			heightPNG, silentPlot, returnPlot, savePlot)
+    .checkParamCellSimilaritySub(showColnames, fontsize, fontsizeRow, widthPNG,
+            heightPNG, silentPlot, returnPlot, savePlot)
 }
 
 
@@ -287,27 +287,27 @@
 #' @return The update cellsSimilarityMatrix (if orderClusters is TRUE) and the
 #' booleans clusterCols and clusterRows.
 .plotCellSimilarityOrderClusters <- function(orderClusters, colDf, 
-		expressionMatrix, clusteringMethod, cellsSimilarityMatrix, clusterCols,
-		clusterRows){
-	
-	if(orderClusters){
-		# Ordering expressionMatrixrix
-		newOrder <- lapply(levels(colDf$clusters), function(cluster){
-					.orderCellsInCluster(cluster, colDf, expressionMatrix,
-							clusteringMethod)})
-		newOrder <- unname(unlist(newOrder))
-		cellsSimilarityMatrix <- cellsSimilarityMatrix[newOrder, newOrder]
-		clusterCols <- FALSE
-		clusterRows <- FALSE
-		
-	} else {
-		distanceMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
-		clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
-		clusterCols <- clusteringTree
-		clusterRows <- clusteringTree
-	}
-	
-	return(list(cellsSimilarityMatrix, clusterCols, clusterRows))
+        expressionMatrix, clusteringMethod, cellsSimilarityMatrix, clusterCols,
+        clusterRows){
+    
+    if(orderClusters){
+        # Ordering expressionMatrixrix
+        newOrder <- lapply(levels(colDf$clusters), function(cluster){
+                    .orderCellsInCluster(cluster, colDf, expressionMatrix,
+                            clusteringMethod)})
+        newOrder <- unname(unlist(newOrder))
+        cellsSimilarityMatrix <- cellsSimilarityMatrix[newOrder, newOrder]
+        clusterCols <- FALSE
+        clusterRows <- FALSE
+        
+    } else {
+        distanceMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
+        clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
+        clusterCols <- clusteringTree
+        clusterRows <- clusteringTree
+    }
+    
+    return(list(cellsSimilarityMatrix, clusterCols, clusterRows))
 }
 
 
@@ -356,38 +356,38 @@
 #' @noRd
 #' @return A pheatmap object.
 .plotCellSimilarityHeatmap <- function(colDf, colorPalette, statePalette, 
-		cellsSimilarityMatrix, showColnames, showRowNames, fontsizeRow, 
-		clusterCols, clusterRows, fontsize, silentPlot, savePlot, theObject, 
-		onefile, width, height, widthPNG, heightPNG, plotPDF){
-	
-	annotationColors <- .generateAnnotationColors(colDf, colorPalette,
-			statePalette)
-	
-	columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
-					"state"), c("clusters"))
-	annotationCol <- as.data.frame(colDf[columnsToPlot])
-	nbCol <- ncol(cellsSimilarityMatrix)
-	nbRow <- nrow(cellsSimilarityMatrix)
-	mainTitle <- paste0("Cells similarity matrix ", nbCol, " columns, ",
-			nbRow, " rows.")
-	
-	pheatmapObject <- pheatmap::pheatmap(cellsSimilarityMatrix,
-			show_colnames=showColnames,
-			show_rownames=showRowNames,
-			annotation_col=annotationCol,
-			annotation_colors=annotationColors,
-			fontsize_row=fontsizeRow,
-			cluster_cols=clusterCols,
-			cluster_rows=clusterRows,
-			fontsize=fontsize,
-			main=mainTitle,
-			silent=silentPlot)
-	
-	if(savePlot)
-		.saveCellSim(theObject, onefile, colDf, width, height, widthPNG,
-				heightPNG, plotPDF, pheatmapObject)
-	
-	return(pheatmapObject)
+        cellsSimilarityMatrix, showColnames, showRowNames, fontsizeRow, 
+        clusterCols, clusterRows, fontsize, silentPlot, savePlot, theObject, 
+        onefile, width, height, widthPNG, heightPNG, plotPDF){
+    
+    annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+            statePalette)
+    
+    columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
+                    "state"), c("clusters"))
+    annotationCol <- as.data.frame(colDf[columnsToPlot])
+    nbCol <- ncol(cellsSimilarityMatrix)
+    nbRow <- nrow(cellsSimilarityMatrix)
+    mainTitle <- paste0("Cells similarity matrix ", nbCol, " columns, ",
+            nbRow, " rows.")
+    
+    pheatmapObject <- pheatmap::pheatmap(cellsSimilarityMatrix,
+            show_colnames=showColnames,
+            show_rownames=showRowNames,
+            annotation_col=annotationCol,
+            annotation_colors=annotationColors,
+            fontsize_row=fontsizeRow,
+            cluster_cols=clusterCols,
+            cluster_rows=clusterRows,
+            fontsize=fontsize,
+            main=mainTitle,
+            silent=silentPlot)
+    
+    if(savePlot)
+        .saveCellSim(theObject, onefile, colDf, width, height, widthPNG,
+                heightPNG, plotPDF, pheatmapObject)
+    
+    return(pheatmapObject)
 }
 
 
@@ -519,21 +519,21 @@ setMethod(
         cellsSimilarityMatrix <- getCellsSimilarityMatrix(theObject)
         colDf <- SummarizedExperiment::colData(sceObject)
 
-		## Ordering clusters
-		result <- .plotCellSimilarityOrderClusters(orderClusters, colDf, 
-				expressionMatrix, clusteringMethod, cellsSimilarityMatrix, 
-				clusterCols, clusterRows)
-		cellsSimilarityMatrix <- result[[1]]
-		clusterCols <- result[[2]]
-		clusterRows <- result[[3]]
-		
+        ## Ordering clusters
+        result <- .plotCellSimilarityOrderClusters(orderClusters, colDf, 
+                expressionMatrix, clusteringMethod, cellsSimilarityMatrix, 
+                clusterCols, clusterRows)
+        cellsSimilarityMatrix <- result[[1]]
+        clusterCols <- result[[2]]
+        clusterRows <- result[[3]]
+        
         ## Plotting the cell similarity heatmap
-		pheatmapObject <- .plotCellSimilarityHeatmap(colDf, colorPalette, 
-				statePalette, cellsSimilarityMatrix, showColnames, showRowNames,
-				fontsizeRow, clusterCols, clusterRows, fontsize, silentPlot, 
-				savePlot, theObject, onefile, width, height, widthPNG, 
-				heightPNG, plotPDF)
-		
+        pheatmapObject <- .plotCellSimilarityHeatmap(colDf, colorPalette, 
+                statePalette, cellsSimilarityMatrix, showColnames, showRowNames,
+                fontsizeRow, clusterCols, clusterRows, fontsize, silentPlot, 
+                savePlot, theObject, onefile, width, height, widthPNG, 
+                heightPNG, plotPDF)
+        
         if(returnPlot)
             return(pheatmapObject)
     })
@@ -687,35 +687,35 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .checkParamPlotTSNESub <- function(plotPDF, widthPNG, heightPNG, silentPlot, 
-		returnPlot, savePlot, tSNENb, PCs, perplexities){
-	
-	## Verify plotPDF
-	if(!is.logical(plotPDF))
-		stop("plotPDF should be a boolean.")
-	
-	## Verify widthPNG
-	if (!is.numeric(widthPNG))
-		stop("widthPNG should be a numeric.")
-	
-	## Verify heightPNG
-	if (!is.numeric(heightPNG))
-		stop("heightPNG should be a numeric.")
-	
-	## Verify silentPlot
-	if (!is.logical(silentPlot))
-		stop("silentPlot should be a boolean.")
-	
-	
-	if(silentPlot && !returnPlot && !savePlot)
-		stop("You do not plot, neither save the heatmap or return the object.",
-				" Nothing will happen. You should either plot the results, ",
-				"return the object or save the heatmap.")
-	
-	if(!is.na(tSNENb) && !is.numeric(tSNENb))
-		stop("tSNENb should be a numeric.")
-	
-	if(!is.na(tSNENb) && (tSNENb > (length(PCs)*length(perplexities))))
-		stop("The chosen tSNENb should be smaller than PCs x perplexities.")
+        returnPlot, savePlot, tSNENb, PCs, perplexities){
+    
+    ## Verify plotPDF
+    if(!is.logical(plotPDF))
+        stop("plotPDF should be a boolean.")
+    
+    ## Verify widthPNG
+    if (!is.numeric(widthPNG))
+        stop("widthPNG should be a numeric.")
+    
+    ## Verify heightPNG
+    if (!is.numeric(heightPNG))
+        stop("heightPNG should be a numeric.")
+    
+    ## Verify silentPlot
+    if (!is.logical(silentPlot))
+        stop("silentPlot should be a boolean.")
+    
+    
+    if(silentPlot && !returnPlot && !savePlot)
+        stop("You do not plot, neither save the heatmap or return the object.",
+                " Nothing will happen. You should either plot the results, ",
+                "return the object or save the heatmap.")
+    
+    if(!is.na(tSNENb) && !is.numeric(tSNENb))
+        stop("tSNENb should be a numeric.")
+    
+    if(!is.na(tSNENb) && (tSNENb > (length(PCs)*length(perplexities))))
+        stop("The chosen tSNENb should be smaller than PCs x perplexities.")
 }
 
 
@@ -805,8 +805,8 @@ setMethod(
     if (!is.logical(savePlot))
         stop("savePlot should be a boolean.")
 
-	.checkParamPlotTSNESub(plotPDF, widthPNG, heightPNG, silentPlot, 
-			returnPlot, savePlot, tSNENb, PCs, perplexities)
+    .checkParamPlotTSNESub(plotPDF, widthPNG, heightPNG, silentPlot, 
+            returnPlot, savePlot, tSNENb, PCs, perplexities)
 }
 
 
@@ -1219,45 +1219,45 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .checkParamSubFunction <- function(clusterCols, showColnames, plotPDF, 
-		fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, 
-		savePlot){
-	
-	## Verify clusterCols
-	if(!is.logical(clusterCols))
-		stop("clusterCols should be a boolean.")
-	
-	## Verify showColnames
-	if(!is.logical(showColnames))
-		stop("showColnames should be a boolean.")
-	
-	## Verify plotPDF
-	if(!is.logical(plotPDF))
-		stop("plotPDF should be a boolean.")
-	
-	## Verify fontsize
-	if(!is.numeric(fontsize))
-		stop("fontsize should be a numeric.")
-	
-	## Verify fontsizeRow
-	if(!is.numeric(fontsizeRow))
-		stop("fontsizeRow should be a numeric.")
-	
-	## Verify widthPNG
-	if(!is.numeric(widthPNG))
-		stop("widthPNG should be a numeric.")
-	
-	## Verify heightPNG
-	if(!is.numeric(heightPNG))
-		stop("heightPNG should be a numeric.")
-	
-	## Verify silentPlot
-	if (!is.logical(silentPlot))
-		stop("silentPlot should be a boolean.")
-	
-	if(silentPlot && !returnPlot && !savePlot)
-		stop("You do not plot, neither save the heatmap or return the object.",
-				" Nothing will happen. You should either plot the results, ",
-				"return the object or save the heatmap.")
+        fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, 
+        savePlot){
+    
+    ## Verify clusterCols
+    if(!is.logical(clusterCols))
+        stop("clusterCols should be a boolean.")
+    
+    ## Verify showColnames
+    if(!is.logical(showColnames))
+        stop("showColnames should be a boolean.")
+    
+    ## Verify plotPDF
+    if(!is.logical(plotPDF))
+        stop("plotPDF should be a boolean.")
+    
+    ## Verify fontsize
+    if(!is.numeric(fontsize))
+        stop("fontsize should be a numeric.")
+    
+    ## Verify fontsizeRow
+    if(!is.numeric(fontsizeRow))
+        stop("fontsizeRow should be a numeric.")
+    
+    ## Verify widthPNG
+    if(!is.numeric(widthPNG))
+        stop("widthPNG should be a numeric.")
+    
+    ## Verify heightPNG
+    if(!is.numeric(heightPNG))
+        stop("heightPNG should be a numeric.")
+    
+    ## Verify silentPlot
+    if (!is.logical(silentPlot))
+        stop("silentPlot should be a boolean.")
+    
+    if(silentPlot && !returnPlot && !savePlot)
+        stop("You do not plot, neither save the heatmap or return the object.",
+                " Nothing will happen. You should either plot the results, ",
+                "return the object or save the heatmap.")
 }
 
 #' .checkParamCellHeatmap
@@ -1344,7 +1344,7 @@ setMethod(
         stop("onefile should be a boolean.")
 
     .checkParamSubFunction(clusterCols, showColnames, plotPDF, fontsize, 
-			fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, savePlot)
+            fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, savePlot)
 }
 
 
@@ -1373,44 +1373,44 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .orderClustersForHeatmap <- function(sceObject, markersClusters, 
-		meanCentered, orderClusters, colDf, clusteringMethod, orderGenes){
-	
-	exprsTmp <- Biobase::exprs(sceObject)
-	rowTmp <- rownames(exprsTmp)
-	expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
-	
-	if(meanCentered){
-		meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
-		expressionMatrix <- expressionMatrix - meanRows
-	}
-	
-	
-	if(orderClusters){
-		
-		# Ordering expressionMatrixrix
-		newOrder <- .callOrderCells(colDf, expressionMatrix,
-				clusteringMethod)
-		expressionMatrix <- expressionMatrix[, newOrder]
-		clusterCols <- FALSE
-		
-		if(orderGenes){
-			
-			newOrder <- .callOrderGenes(colDf, markersClusters,
-					expressionMatrix, clusteringMethod)
-			expressionMatrix <- expressionMatrix[newOrder, ]
-			clusterRows <- FALSE
-		}
-		
-	}else{
-		
-		distanceMatrix <- dist(t(expressionMatrix))
-		clusterCols <- hclust(distanceMatrix, method="ward.D2")
-	}
-	
-	if(!orderGenes)
-		clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
-	
-	return(list(expressionMatrix, clusterCols, clusterRows))
+        meanCentered, orderClusters, colDf, clusteringMethod, orderGenes){
+    
+    exprsTmp <- Biobase::exprs(sceObject)
+    rowTmp <- rownames(exprsTmp)
+    expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
+    
+    if(meanCentered){
+        meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
+        expressionMatrix <- expressionMatrix - meanRows
+    }
+    
+    
+    if(orderClusters){
+        
+        # Ordering expressionMatrixrix
+        newOrder <- .callOrderCells(colDf, expressionMatrix,
+                clusteringMethod)
+        expressionMatrix <- expressionMatrix[, newOrder]
+        clusterCols <- FALSE
+        
+        if(orderGenes){
+            
+            newOrder <- .callOrderGenes(colDf, markersClusters,
+                    expressionMatrix, clusteringMethod)
+            expressionMatrix <- expressionMatrix[newOrder, ]
+            clusterRows <- FALSE
+        }
+        
+    }else{
+        
+        distanceMatrix <- dist(t(expressionMatrix))
+        clusterCols <- hclust(distanceMatrix, method="ward.D2")
+    }
+    
+    if(!orderGenes)
+        clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
+    
+    return(list(expressionMatrix, clusterCols, clusterRows))
 }
 
 
@@ -1439,42 +1439,42 @@ setMethod(
 #' @noRd
 #' @return The pheatmap object of the clustering.
 .plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
-		showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
-		silentPlot){
-	
-	annotationColors <- .generateAnnotationColors(colDf, colorPalette,
-			statePalette)
-	
-	columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
-					"state"), c("clusters"))
-	
-	if(is.null(colDf$clusters)){
-		
-		annCol <- switch(is.null(colDf$state) + 1,
-				as.data.frame(colDf["state"]), NA)
-		annColors <- switch(is.null(colDf$state) + 1,
-				annotationColors[names(annotationColors) == "state"], NA)
-	}else{
-		annCol <- as.data.frame(colDf[columnsToPlot])
-		annColors <- annotationColors
-	}
-	
-	color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
-					"#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
-	
-	pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
-			show_colnames=showColnames, annotation_col=annCol,
-			annotation_colors=annColors, fontsize_row=fontsizeRow,
-			cluster_cols=clusterCols, cluster_rows=clusterRows,
-			color=color, fontsize=fontsize, silent=silentPlot)
-	
-	
-	if(savePlot)
-		.saveHeatmap(theObject, plotPDF, fileName, width, height, onefile,
-				widthPNG, heightPNG, pheatmapObject)
-	
-	return(pheatmapObject)
-	
+        showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
+        silentPlot){
+    
+    annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+            statePalette)
+    
+    columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
+                    "state"), c("clusters"))
+    
+    if(is.null(colDf$clusters)){
+        
+        annCol <- switch(is.null(colDf$state) + 1,
+                as.data.frame(colDf["state"]), NA)
+        annColors <- switch(is.null(colDf$state) + 1,
+                annotationColors[names(annotationColors) == "state"], NA)
+    }else{
+        annCol <- as.data.frame(colDf[columnsToPlot])
+        annColors <- annotationColors
+    }
+    
+    color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
+                    "#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
+    
+    pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
+            show_colnames=showColnames, annotation_col=annCol,
+            annotation_colors=annColors, fontsize_row=fontsizeRow,
+            cluster_cols=clusterCols, cluster_rows=clusterRows,
+            color=color, fontsize=fontsize, silent=silentPlot)
+    
+    
+    if(savePlot)
+        .saveHeatmap(theObject, plotPDF, fileName, width, height, onefile,
+                widthPNG, heightPNG, pheatmapObject)
+    
+    return(pheatmapObject)
+    
 }
 
 
@@ -1614,7 +1614,7 @@ setMethod(
         colDf <- SummarizedExperiment::colData(sceObject)
         markersClusters <- getClustersMarkers(theObject)
 
-		if(is.na(fileName))
+        if(is.na(fileName))
             fileName <- paste0(getExperimentName(theObject), "_", "clusters",
                     length(levels(colDf$clusters)), "_meanCentered",
                     meanCentered, "_orderClusters", orderClusters,
@@ -1627,16 +1627,16 @@ setMethod(
 
 
         # plots correlation between clusters
-		results <- .orderClustersForHeatmap(sceObject, markersClusters, 
-				meanCentered, orderClusters, colDf, clusteringMethod, 
-				orderGenes)
-		expressionMatrix <- results[[1]]
-		clusterCols <- results[[2]]
-		clusterRows <- results[[3]]
-		
-		pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
-				expressionMatrix, showColnames, fontsizeRow, clusterCols, 
-				clusterRows, fontsize, silentPlot)
+        results <- .orderClustersForHeatmap(sceObject, markersClusters, 
+                meanCentered, orderClusters, colDf, clusteringMethod, 
+                orderGenes)
+        expressionMatrix <- results[[1]]
+        clusterCols <- results[[2]]
+        clusterRows <- results[[3]]
+        
+        pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
+                expressionMatrix, showColnames, fontsizeRow, clusterCols, 
+                clusterRows, fontsize, silentPlot)
 
         if(returnPlot)
             return(pheatmapObject)
@@ -2017,30 +2017,30 @@ setMethod(
 #' @noRd
 #' @return The clusters numbers and the pheatmap object.
 .pheatmapClusterSim  <- function(theObject, clusteringMethod, colorPalette, 
-		statePalette, fontsize, silentPlot){
-	
-	clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
-	colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
-	clusters <- colDf$clusters
-	clustersNames <- levels(clusters)
-	distanceMatrix <- as.dist(sqrt((1-clustersSimilarityMatrix)/2))
-	clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
-	colDataSimilarity <- data.frame(clusters=clustersNames)
-	rownames(colDataSimilarity) <- colDataSimilarity$clusters
-	
-	annotationColors <- .generateAnnotationColors(colDf, colorPalette,
-			statePalette)
-	
-	pheatmapObject <- pheatmap::pheatmap(clustersSimilarityMatrix,
-			annotation_col=colDataSimilarity,
-			annotation_colors=annotationColors,
-			cluster_cols=clusteringTree,
-			cluster_rows=clusteringTree,
-			fontsize=fontsize,
-			main="Clusters similarity matrix",
-			silent=silentPlot)
-	
-	return(list(clusters, pheatmapObject))
+        statePalette, fontsize, silentPlot){
+    
+    clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
+    colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
+    clusters <- colDf$clusters
+    clustersNames <- levels(clusters)
+    distanceMatrix <- as.dist(sqrt((1-clustersSimilarityMatrix)/2))
+    clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
+    colDataSimilarity <- data.frame(clusters=clustersNames)
+    rownames(colDataSimilarity) <- colDataSimilarity$clusters
+    
+    annotationColors <- .generateAnnotationColors(colDf, colorPalette,
+            statePalette)
+    
+    pheatmapObject <- pheatmap::pheatmap(clustersSimilarityMatrix,
+            annotation_col=colDataSimilarity,
+            annotation_colors=annotationColors,
+            cluster_cols=clusteringTree,
+            cluster_rows=clusteringTree,
+            fontsize=fontsize,
+            main="Clusters similarity matrix",
+            silent=silentPlot)
+    
+    return(list(clusters, pheatmapObject))
 }
 
 
@@ -2071,32 +2071,32 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .savePlotClustersSim <- function(savePlot, theObject, clusters, plotPDF, width,
-		height, onefile, widthPNG, heightPNG){
-	
-	if(savePlot){
-		
-		dataDirectory   <- getOutputDirectory(theObject)
-		experimentName  <- getExperimentName(theObject)
-		clustersNumber <- length(unique(clusters))
-		subdir <- file.path(dataDirectory, "pictures")
-		
-		if(!file.exists(subdir))
-			dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
-		
-		fileName <- paste(experimentName,"clusters_similarity",
-				clustersNumber, "clusters", sep="_")
-		filePath <- file.path(subdir, fileName)
-		
-		if(plotPDF)
-			pdf(file=paste0(filePath, ".pdf"), width=width, height=height,
-					onefile=onefile)
-		else
-			png(filename=paste0(filePath, ".png"), width=widthPNG,
-					height=heightPNG, type="cairo")
-		grid::grid.newpage()
-		grid::grid.draw(pheatmapObject$gtable)
-		dev.off()
-	}
+        height, onefile, widthPNG, heightPNG){
+    
+    if(savePlot){
+        
+        dataDirectory   <- getOutputDirectory(theObject)
+        experimentName  <- getExperimentName(theObject)
+        clustersNumber <- length(unique(clusters))
+        subdir <- file.path(dataDirectory, "pictures")
+        
+        if(!file.exists(subdir))
+            dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
+        
+        fileName <- paste(experimentName,"clusters_similarity",
+                clustersNumber, "clusters", sep="_")
+        filePath <- file.path(subdir, fileName)
+        
+        if(plotPDF)
+            pdf(file=paste0(filePath, ".pdf"), width=width, height=height,
+                    onefile=onefile)
+        else
+            png(filename=paste0(filePath, ".png"), width=widthPNG,
+                    height=heightPNG, type="cairo")
+        grid::grid.newpage()
+        grid::grid.draw(pheatmapObject$gtable)
+        dev.off()
+    }
 }
 
 #' plotClustersSimilarity
@@ -2211,16 +2211,16 @@ setMethod(
                 width, height, onefile, fontsize, widthPNG, heightPNG,
                 silentPlot)
 
-		## Generate heatmap
-		result <- .pheatmapClusterSim(theObject, clusteringMethod, colorPalette,
-				statePalette, fontsize, silentPlot)
-		clusters <- result[[1]]
-		pheatmapObject <- result[[2]]						
-		
-		## Save plot
-		.savePlotClustersSim(savePlot, theObject, clusters, plotPDF, width, 
-				height, onefile, widthPNG, heightPNG)
-		
+        ## Generate heatmap
+        result <- .pheatmapClusterSim(theObject, clusteringMethod, colorPalette,
+                statePalette, fontsize, silentPlot)
+        clusters <- result[[1]]
+        pheatmapObject <- result[[2]]                        
+        
+        ## Save plot
+        .savePlotClustersSim(savePlot, theObject, clusters, plotPDF, width, 
+                height, onefile, widthPNG, heightPNG)
+        
         if(returnPlot)
             return(pheatmapObject)
     })
