@@ -148,15 +148,15 @@
 #' @return The results of the dbscan clustering.
 #' @noRd
 .dbscanComb <- function(tSNEList, cores, epsilon, minPoints, sceObject){
-	
-	dbscanResults <- .mkDbscan(tSNEList=tSNEList, cores=cores,
-			epsilon=epsilon, minPoints=minPoints)
-	dbscanResults <- t(dbscanResults)
-	colnames(dbscanResults) <-
-			SummarizedExperiment::colData(sceObject)$cellName
-	
-	return(dbscanResults)
-	
+    
+    dbscanResults <- .mkDbscan(tSNEList=tSNEList, cores=cores,
+            epsilon=epsilon, minPoints=minPoints)
+    dbscanResults <- t(dbscanResults)
+    colnames(dbscanResults) <-
+            SummarizedExperiment::colData(sceObject)$cellName
+    
+    return(dbscanResults)
+    
 }
 
 
@@ -177,30 +177,30 @@
 #' @return The results of the dbscan clustering.
 #' @noRd
 .createDbscanList <- function(tSNEList, minPoints, epsilon, dbscanResults){
-	
-	totalLength <- length(tSNEList) * length(minPoints)
-	epsilonCombinaison <- rep(epsilon, each=totalLength)
-	minPtsCombinaison  <- rep(minPoints,
-			length(tSNEList)*length(epsilon))
-	rowDbscanList <- split(dbscanResults, seq_len(nrow(dbscanResults)))
-	rowNamesVec <- paste0("clust.", seq_len(nrow(dbscanResults)))
-	dbscanObjNameVec <- paste0("Clustering_", seq_len(nrow(dbscanResults)))
-	
-	dbscanList <- mapply(function(rowName, dbscanObjName, epsComb,
-					minPts, rowDbscan){
-				
-				clustering <- t(rowDbscan)
-				colnames(clustering) <- colnames(dbscanResults)
-				rownames(clustering) <- rowName
-				dbscanObj<- Dbscan(name= dbscanObjName, epsilon=epsComb,
-						minPoints=minPts, clustering=clustering)
-				return(dbscanObj)
-				
-			}, rowNamesVec, dbscanObjNameVec, epsilonCombinaison,
-			minPtsCombinaison, rowDbscanList, SIMPLIFY = FALSE,
-			USE.NAMES = FALSE)
-	
-	return(dbscanList)
+    
+    totalLength <- length(tSNEList) * length(minPoints)
+    epsilonCombinaison <- rep(epsilon, each=totalLength)
+    minPtsCombinaison  <- rep(minPoints,
+            length(tSNEList)*length(epsilon))
+    rowDbscanList <- split(dbscanResults, seq_len(nrow(dbscanResults)))
+    rowNamesVec <- paste0("clust.", seq_len(nrow(dbscanResults)))
+    dbscanObjNameVec <- paste0("Clustering_", seq_len(nrow(dbscanResults)))
+    
+    dbscanList <- mapply(function(rowName, dbscanObjName, epsComb,
+                    minPts, rowDbscan){
+                
+                clustering <- t(rowDbscan)
+                colnames(clustering) <- colnames(dbscanResults)
+                rownames(clustering) <- rowName
+                dbscanObj<- Dbscan(name= dbscanObjName, epsilon=epsComb,
+                        minPoints=minPts, clustering=clustering)
+                return(dbscanObj)
+                
+            }, rowNamesVec, dbscanObjNameVec, epsilonCombinaison,
+            minPtsCombinaison, rowDbscanList, SIMPLIFY = FALSE,
+            USE.NAMES = FALSE)
+    
+    return(dbscanList)
 }
 
 
@@ -307,17 +307,17 @@ setMethod(
                     }, sceObject)
 
             ## Calculating dbscan combinaisons
-			dbscanResults <- .dbscanComb(tSNEList, cores, epsilon, minPoints,
-					sceObject)
-			           
+            dbscanResults <- .dbscanComb(tSNEList, cores, epsilon, minPoints,
+                    sceObject)
+                       
             ## Output file
             if(writeOutput)
                 .writeDBScanResults(theObject, dbscanResults)
 
             ## Creation of a list of Dbscan objects
-			dbscanList <- .createDbscanList(tSNEList, minPoints, epsilon, 
-					dbscanResults)
-			
+            dbscanList <- .createDbscanList(tSNEList, minPoints, epsilon, 
+                    dbscanResults)
+            
             setDbscanList(theObject) <- dbscanList
 
             return(theObject)
