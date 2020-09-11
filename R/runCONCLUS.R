@@ -223,43 +223,32 @@
 #'
 #' @return Writes plots to the corresponding output folder. 
 #' @noRd
-.runPlottingStep <- function(scrInfos, colorPalette, statePalette, 
-                             clusteringMethod, orderClusters, writeCSM,
-                             widthCSM, heightCSM, meanCentered, orderGenesCH,
-                             savePlotCH, widthCH, heightCH, clusterCols,
-                             savePlotClustSM, widthPlotClustSM, 
-                             heightPlotClustSM, PCs, perplexities,
-                             columnRankGenes, savePlotCTSNE,
-                             widthPlotClustTSNE, heightPlotClustTSNE, tSNENb){
+.runPlottingStep <- function(scrInfos, colorPalette, statePalette,
+        clusteringMethod, orderClusters, writeCSM, widthCSM, heightCSM,
+        meanCentered, orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols,
+        savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs, perplexities,
+        columnRankGenes, savePlotCTSNE, widthPlotClustTSNE, heightPlotClustTSNE,
+        tSNENb){
     
     message("## Plot the cell similarity matrix (step 10/13) ##")
     pCSM <- plotCellSimilarity(scrInfos, colorPalette=colorPalette,
-                               statePalette=statePalette, 
-                               clusteringMethod=clusteringMethod,
-                               orderClusters=orderClusters,
-                               savePlot=writeCSM, width=widthCSM,
-                               height=heightCSM, returnPlot=TRUE,
-                               silentPlot=TRUE)
+            statePalette=statePalette, clusteringMethod=clusteringMethod,
+            orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM,
+            height=heightCSM, returnPlot=TRUE, silentPlot=TRUE)
     
     message("## Plot the cell heatmap (step 11/13) ##")
-    pCH <- plotCellHeatmap(scrInfos, meanCentered=meanCentered,
-                           colorPalette=colorPalette,
-                           statePalette=statePalette,
-                           clusteringMethod=clusteringMethod, 
-                           orderClusters=orderClusters, 
-                           orderGenes=orderGenesCH,
-                           savePlot=savePlotCH, width=widthCH, height=heightCH,
-                           clusterCols=clusterCols, returnPlot=TRUE,
-                           silentPlot=TRUE)
+    pCH <- plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
+            colorPalette=colorPalette, statePalette=statePalette, 
+            clusteringMethod=clusteringMethod, orderClusters=orderClusters,
+            orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH,
+            height=heightCH, clusterCols=clusterCols, returnPlot=TRUE, 
+            silentPlot=TRUE)
     
     message("## Plot the clusters similarity heatmap (step 12/13) ##")
     pClustSM <- plotClustersSimilarity(scrInfos, colorPalette=colorPalette,
-                                       statePalette=statePalette, 
-                                       clusteringMethod=clusteringMethod,
-                                       savePlot=savePlotClustSM, 
-                                       width=widthPlotClustSM, 
-                                       height=heightPlotClustSM,
-                                       returnPlot=TRUE, silentPlot=TRUE)
+            statePalette=statePalette, clusteringMethod=clusteringMethod,
+            savePlot=savePlotClustSM, width=widthPlotClustSM, 
+            height=heightPlotClustSM, returnPlot=TRUE, silentPlot=TRUE)
     
     gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], pClustSM[[4]]))
     
@@ -267,9 +256,9 @@
     message("## Plot clustered tSNE (step 13/13) ##")
     dev.new()
     plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs,
-                      perplexities=perplexities, columnName=columnRankGenes,
-                      savePlot=savePlotCTSNE, width=widthPlotClustTSNE,
-                      height=heightPlotClustTSNE, tSNENb=tSNENb)
+            perplexities=perplexities, columnName=columnRankGenes, 
+            savePlot=savePlotCTSNE, width=widthPlotClustTSNE, 
+            height=heightPlotClustTSNE, tSNENb=tSNENb)
 }
 
 
