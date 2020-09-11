@@ -67,28 +67,26 @@
     message("## Performing the normalization (step 2/13) ##")
     message("\t Note: The connection to biomaRt can take a while sometimes.")
     scrNorm <- normaliseCountMatrix(scr, sizes=sizes, rowdata=rowMetaData,
-                                    coldata=columnsMetaData, 
-                                    alreadyCellFiltered=alreadyCellFiltered,
-                                    runQuickCluster=runQuickCluster)
+            coldata=columnsMetaData, alreadyCellFiltered=alreadyCellFiltered,
+            runQuickCluster=runQuickCluster)
     
     message("## Calculating all tSNEs (step 3/13) ##")
     scrTsne <- generateTSNECoordinates(scrNorm, randomSeed=randomSeed,
-                                       cores=cores, PCs=PCs, 
-                                       perplexities=perplexities,
-                                       writeOutput=writeOutputTSne)
+            cores=cores, PCs=PCs, perplexities=perplexities,
+            writeOutput=writeOutputTSne)
     
     message("## Clustering with DbScan (step 4/13) ##")
     scrDbscan <- runDBSCAN(scrTsne, cores=cores, epsilon=epsilon,
-                           minPoints=minPoints, writeOutput=writeOutputDbScan)
+            minPoints=minPoints, writeOutput=writeOutputDbScan)
     
     message("## Computing the cells similarity matrix (step 5/13) ##")
     scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=clusterNumber,
-                                   deepSplit=deepSplit, cores=cores,
-                                   clusteringMethod=clusteringMethod)
+            deepSplit=deepSplit, cores=cores, 
+            clusteringMethod=clusteringMethod)
     
     message("## Computing the clusters similarity matrix (step 6/13) ##")
-    scrCSM <- calculateClustersSimilarity(scrCCI,
-                                          clusteringMethod=clusteringMethod)
+    scrCSM <- calculateClustersSimilarity(scrCCI, 
+            clusteringMethod=clusteringMethod)
     
     if(!is.na(clusToAdd)){
         message("Adding the provided clustering.")

@@ -309,7 +309,7 @@ setMethod(
             ## Calculating dbscan combinaisons
             dbscanResults <- .dbscanComb(tSNEList, cores, epsilon, minPoints,
                     sceObject)
-                       
+
             ## Output file
             if(writeOutput)
                 .writeDBScanResults(theObject, dbscanResults)
