@@ -419,21 +419,17 @@
 #'
 #' @return Writes results of each step to the corresponding output folders.
 #' @noRd
-.runAllSteps <- function(experimentName, countMatrix, species, sizes, 
-                         outputDirectory, rowMetaData, columnsMetaData,
-                         alreadyCellFiltered, runQuickCluster, randomSeed, cores,
-                         PCs, perplexities, writeOutputTSne, epsilon, minPoints, 
-                         writeOutputDbScan, clusterNumber, deepSplit, 
-                         clusteringMethod,clusToAdd, columnRankGenes,
-                         writeOutputRankGenes, nTopMarkers, removeDuplicates,
-                         writeTopMarkers, groupBy, orderGenes, getUniprot,
-                         saveInfos, colorPalette, statePalette,
-                         orderClusters, writeCSM, widthCSM, heightCSM, 
-                         meanCentered, orderGenesCH, savePlotCH, widthCH, 
-                         heightCH, clusterCols, savePlotClustSM, 
-                         widthPlotClustSM, heightPlotClustSM, savePlotCTSNE, 
-                         widthPlotClustTSNE, heightPlotClustTSNE, tSNENb, 
-                         exportAllResults){
+.runAllSteps <- function(experimentName, countMatrix, species, sizes,
+        outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
+        runQuickCluster, randomSeed, cores, PCs, perplexities, writeOutputTSne,
+        epsilon, minPoints, writeOutputDbScan, clusterNumber, deepSplit,
+        clusteringMethod,clusToAdd, columnRankGenes, writeOutputRankGenes,
+        nTopMarkers, removeDuplicates, writeTopMarkers, groupBy, orderGenes, 
+        getUniprot, saveInfos, colorPalette, statePalette, orderClusters,
+        writeCSM, widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
+        widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
+        heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
+        heightPlotClustTSNE, tSNENb, exportAllResults){
     
     if(exportAllResults)
         writeOutputTSne <- writeOutputDbScan <- writeOutputRankGenes <- 
