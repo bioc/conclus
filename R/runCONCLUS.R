@@ -18,7 +18,7 @@
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
-#' Default=TRUE. See ?normaliseCountMatrix.	
+#' Default=TRUE. See ?normaliseCountMatrix.
 #' @param randomSeed Default is 42. Seeds used to generate the tSNE. See
 #' ?generateTSNECoordinates.
 #' @param cores  Maximum number of jobs that CONCLUS can run in parallel. This
@@ -291,7 +291,7 @@
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
-#' Default=TRUE. See ?normaliseCountMatrix.	
+#' Default=TRUE. See ?normaliseCountMatrix.
 #' @param randomSeed Default is 42. Seeds used to generate the tSNE. See
 #' ?generateTSNECoordinates.
 #' @param cores  Maximum number of jobs that CONCLUS can run in parallel. This
@@ -426,11 +426,10 @@
                             outputDirectory = outputDirectory)
     
     scrCSM <- .runProcessingStep(scr, sizes, rowMetaData, columnsMetaData,
-                                 alreadyCellFiltered, runQuickCluster, 
-                                 randomSeed, cores, PCs, perplexities, 
-                                 writeOutputTSne, epsilon, minPoints, 
-                                 writeOutputDbScan,clusterNumber, deepSplit,
-                                 clusteringMethod, clusToAdd)
+            alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
+            perplexities, writeOutputTSne, epsilon, minPoints, 
+            writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
+            clusToAdd)
     
     scrInfos <- .runMarkersStep(scrCSM, columnRankGenes, writeOutputRankGenes,
             nTopMarkers, removeDuplicates, writeTopMarkers, cores, groupBy,
