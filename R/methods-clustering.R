@@ -384,19 +384,19 @@ setMethod(
 #' @noRd
 #' @return A list of similarity matrix.
 .computeSimMat <- function(clusters, simMat, clustering){
-	
-	l <- lapply(clusters[clusters!=0],
-			function(cluster, simMat, clustering){
-				
-				## Get the cells in the same cluster
-				selCol <- colnames(clustering)[
-						clustering == cluster]
-				## Add +1 for each cell seen in the same cluster
-				simMat[rownames(simMat) %in% selCol,
-						colnames(simMat) %in% selCol] <- 1
-				return(simMat)
-			}, simMat, clustering)
-	return(l)
+    
+    l <- lapply(clusters[clusters!=0],
+            function(cluster, simMat, clustering){
+                
+                ## Get the cells in the same cluster
+                selCol <- colnames(clustering)[
+                        clustering == cluster]
+                ## Add +1 for each cell seen in the same cluster
+                simMat[rownames(simMat) %in% selCol,
+                        colnames(simMat) %in% selCol] <- 1
+                return(simMat)
+            }, simMat, clustering)
+    return(l)
 }
 
 
@@ -444,7 +444,7 @@ setMethod(
 
                 ## Get cluster assignments
                 clusters <- unique(as.vector(clustering))
-				l <- .computeSimMat(clusters, simMat, clustering)
+                l <- .computeSimMat(clusters, simMat, clustering)
 
                 ## Sum all the matrix to have a single one showing cells
                 ## that were allocated to one cluster (1) and cells that were
