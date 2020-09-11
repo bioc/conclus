@@ -1933,9 +1933,9 @@ setMethod(
 }
 
 
-#' .checkParamClustersSimilarity
+#' .pheatmapClusterSim
 #'
-#' @description checks parameters of plotCellSimilarity
+#' @description Generates the heatmap of the clusters similarities.
 #'
 #' @param theObject A scRNAseq object with the cluster similarity matrix
 #' obtained with ?calculateClustersSimilarity.
@@ -1953,6 +1953,7 @@ setMethod(
 #' @importFrom stats as.dist
 #' @importFrom stats hclust
 #' @noRd
+#' @return The clusters numbers and the pheatmap object.
 .pheatmapClusterSim  <- function(theObject, clusteringMethod, colorPalette, 
 		statePalette, fontsize, silentPlot){
 	
@@ -1981,9 +1982,9 @@ setMethod(
 }
 
 
-#' .checkParamClustersSimilarity
+#' .savePlotClustersSim
 #'
-#' @description checks parameters of plotCellSimilarity
+#' @description Write the heatmap to a specified output.
 #'
 #' @param theObject A scRNAseq object with the cluster similarity matrix
 #' obtained with ?calculateClustersSimilarity.
