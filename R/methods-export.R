@@ -727,16 +727,10 @@ setMethod(
 
             if(saveAll){
                 message("Saving all results.")
-                saveNormalizedMatrix <- TRUE
-                saveColData <- TRUE
-                saveRowData <- TRUE
-                saveTsne <- TRUE
-                saveDBScan <- TRUE
-                saveCellsSimilarityMatrix <- TRUE
-                saveClustersSimilarityMatrix <- TRUE
-                saveFullMarkers <- TRUE
-                saveTopMarkers <- TRUE
-                saveGenesInfos <- TRUE
+                saveNormalizedMatrix <- saveColData <- saveRowData <- TRUE
+                saveTsne <- saveDBScan <- saveCellsSimilarityMatrix <- TRUE
+                saveClustersSimilarityMatrix <- saveFullMarkers <- TRUE
+                saveTopMarkers <- saveGenesInfos <- TRUE
             }
 
             dataDirectory  <- getOutputDirectory(theObject)
