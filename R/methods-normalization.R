@@ -454,7 +454,32 @@
             readsCell[readsCell == 1])
 }
 
-
+#' .addGenesInfoCell
+#'
+#' @description
+#' This function fills the genesNum, genesSum, and oneUMI that represents
+#' columns meta-data. This information will be used to filter out cells.
+#'
+#' @param coldata  Data frame containing informations about cells
+#' @param countMatrix The count matrix.
+#'
+#' @importFrom dplyr mutate
+#' @keywords internal
+#' @noRd
+#' @return The updated columns meta-data.
+.addGenesInfoCell <- function(coldata, countMatrix){
+	
+	coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
+	coldata$genesSum <- colSums(countMatrix)
+	coldata$genesNum <- vapply(colnames(countMatrix), .fillGenesNumColumn,
+			coldata, countMatrix, FUN.VALUE=integer(1))
+	coldata$oneUMI <- vapply(colnames(countMatrix), .fillOneUmmiColumn, coldata,
+			countMatrix, FUN.VALUE=integer(1))
+	coldata <- dplyr::mutate(coldata,
+			oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
+	return(coldata)
+}
+		
 #' .addCellsInfo
 #'
 #' @description
@@ -477,15 +502,8 @@
             stringsAsFactors = FALSE)
 
     ### add info about all genes in a cell
-    coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
-    coldata$genesSum <- colSums(countMatrix)
-    coldata$genesNum <- vapply(colnames(countMatrix), .fillGenesNumColumn,
-            coldata, countMatrix, FUN.VALUE=integer(1))
-    coldata$oneUMI <- vapply(colnames(countMatrix), .fillOneUmmiColumn, coldata,
-            countMatrix, FUN.VALUE=integer(1))
-    coldata <- dplyr::mutate(coldata,
-                            oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
-
+	coldata <- .addGenesInfoCell(coldata, countMatrix)
+    
     ### add info about mitochondrial and protein-coding genes
     coldata <- dplyr::mutate(coldata, mtGenes = NA, mtSum = NA, codGenes = NA,
             codSum=NA)
@@ -554,6 +572,25 @@
     return(list(countMatrix, rowData))
 }
 
+
+#' .checkParamNorm
+#'
+#' @description
+#' This function checks the parameters of the method normaliseCountMatrix.
+#'
+#' @param sizes  Vector of size factors from scran::computeSumFactors()
+#' function.
+#' @param rowdata Data frame containing genes informations. Default is NULL.
+#' @param coldata Data frame containing cells informations. Default is NULL.
+#' @param alreadyCellFiltered Logical. If TRUE, quality check and
+#' filtering will not be applied.
+#' @param runQuickCluster Logical. If TRUE scran::quickCluster() function will
+#' be applied. It usually improves the normalization for medium-size count
+#' matrices. However, it is not recommended for datasets with less than 200
+#' cells and may take too long for datasets with more than 10000 cells.
+#'
+#' @keywords internal
+#' @noRd
 .checkParamNorm <- function(sizes, rowdata, coldata, alreadyCellFiltered,
         runQuickCluster){
 
@@ -574,7 +611,22 @@
 }
 
 
-
+#' .filterSCE
+#'
+#' @description
+#' This function calls sub-functions that filters non informative cells and
+#' genes.
+#'
+#' @param alreadyCellFiltered Logical. If TRUE, quality check and
+#' filtering will not be applied.
+#' @param countMatrix Class matrix representing the genes expression.
+#' @param rowdata Data frame containing genes informations. Default is NULL.
+#' @param coldata Data frame containing cells informations. Default is NULL.
+#'
+#' @keywords internal
+#' @noRd
+#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @return A single cell experiment object
 .filterSCE <- function(alreadyCellFiltered, countMatrix, coldata, rowdata){
 	
 	if(!alreadyCellFiltered){
