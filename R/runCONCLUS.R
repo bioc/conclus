@@ -58,11 +58,9 @@
 #' @return Writes results of each step to the corresponding output folders.
 #' @noRd
 .runProcessingStep <- function(scr, sizes, rowMetaData, columnsMetaData,
-                               alreadyCellFiltered, runQuickCluster, randomSeed, 
-                               cores, PCs, perplexities, writeOutputTSne, 
-                               epsilon, minPoints, writeOutputDbScan,
-                               clusterNumber, deepSplit, clusteringMethod,
-                               clusToAdd){
+        alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
+        perplexities, writeOutputTSne, epsilon, minPoints, writeOutputDbScan,
+        clusterNumber, deepSplit, clusteringMethod, clusToAdd){
     
     ## Processing
     
@@ -450,15 +448,15 @@
                                  clusteringMethod, clusToAdd)
     
     scrInfos <- .runMarkersStep(scrCSM, columnRankGenes, writeOutputRankGenes,
-                                nTopMarkers, removeDuplicates, writeTopMarkers,
-                                cores, groupBy, orderGenes, getUniprot, saveInfos)
+            nTopMarkers, removeDuplicates, writeTopMarkers, cores, groupBy,
+            orderGenes, getUniprot, saveInfos)
     
-    .runPlottingStep(scrInfos, colorPalette, statePalette, clusteringMethod, 
-                     orderClusters, writeCSM, widthCSM, heightCSM, meanCentered, 
-                     orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols,
-                     savePlotClustSM, widthPlotClustSM, heightPlotClustSM, 
-                     PCs, perplexities, columnRankGenes, savePlotCTSNE,
-                     widthPlotClustTSNE, heightPlotClustTSNE, tSNENb)
+    .runPlottingStep(scrInfos, colorPalette, statePalette, clusteringMethod,
+            orderClusters, writeCSM, widthCSM, heightCSM, meanCentered,
+            orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols,
+            savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs, 
+            perplexities, columnRankGenes, savePlotCTSNE, widthPlotClustTSNE,
+            heightPlotClustTSNE, tSNENb)
     
     if(exportAllResults){
         message("Exporting all results to ", outputDirectory)
