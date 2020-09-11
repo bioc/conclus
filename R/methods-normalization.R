@@ -14,26 +14,26 @@
 #' ensembl IDs and the biomaRt database.
 #' @noRd
 .defineMartVar <- function(species){
-	
-	if(isTRUE(all.equal(species, "human"))){
-		
-		# suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
-		genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
-		ensemblPattern <- "ENSG"
-		ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
-		
-	}else if(isTRUE(all.equal(species, "mouse"))){
-		
-		# suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
-		genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
-		ensemblPattern <- "ENSMUSG"
-		ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
-		
-	}else
-		stop("Species should be human or mouse: ", species, "is not ",
-				"currently supported.")
-	
-	return(list(genomeAnnot, ensemblPattern, ensembl))
+    
+    if(isTRUE(all.equal(species, "human"))){
+        
+        # suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
+        genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
+        ensemblPattern <- "ENSG"
+        ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+        
+    }else if(isTRUE(all.equal(species, "mouse"))){
+        
+        # suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
+        genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
+        ensemblPattern <- "ENSMUSG"
+        ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
+        
+    }else
+        stop("Species should be human or mouse: ", species, "is not ",
+                "currently supported.")
+    
+    return(list(genomeAnnot, ensemblPattern, ensembl))
 }
 
 
@@ -52,18 +52,18 @@
 #' @return Returns the number of lines of count matrix having a gene symbol.
 #' @noRd
 .testMattrixNames <- function(countMatrix, ensemblPattern, genomeAnnot){
-	
-	allnames <- rownames(countMatrix)
-	lengthEnsemblGenes <- length(grep(ensemblPattern, allnames))
-	lengthSymbols <- length(intersect(AnnotationDbi::keys(genomeAnnot,
-							keytype = "SYMBOL"), allnames))
-	
-	if(isTRUE(all.equal(lengthEnsemblGenes, 0)) &&
-			isTRUE(all.equal(lengthSymbols, 0)))
-		stop("The row names of the matrix neither contain ensembl genes or",
-				"official gene symbols.")
-	
-	return(lengthSymbols)
+    
+    allnames <- rownames(countMatrix)
+    lengthEnsemblGenes <- length(grep(ensemblPattern, allnames))
+    lengthSymbols <- length(intersect(AnnotationDbi::keys(genomeAnnot,
+                            keytype = "SYMBOL"), allnames))
+    
+    if(isTRUE(all.equal(lengthEnsemblGenes, 0)) &&
+            isTRUE(all.equal(lengthSymbols, 0)))
+        stop("The row names of the matrix neither contain ensembl genes or",
+                "official gene symbols.")
+    
+    return(lengthSymbols)
 }
 
 
@@ -82,28 +82,28 @@
 #' name.
 #' @noRd
 .annotateEnsembl <- function(ensemblGenes, ensemblPattern, genomeAnnot){
-	
-	message("Annotating ",length(ensemblGenes), " genes containing ",
-			ensemblPattern, " pattern.")
-	
-	## If none of ENSEMBL genes are in database, set to NA
-	lengthEnsInDb <- length(intersect(AnnotationDbi::keys(genomeAnnot,
-							keytype="ENSEMBL"), ensemblGenes))
-	
-	if(!isTRUE(all.equal(lengthEnsInDb, 0))){
-		
-		rowdataEnsembl <- AnnotationDbi::select(genomeAnnot,
-				keys = ensemblGenes, keytype = "ENSEMBL",
-				columns = c("SYMBOL", "GENENAME"), multiVals="first")
-		rowdataEnsembl <-
-				rowdataEnsembl[!duplicated(rowdataEnsembl$ENSEMBL),]
-	}else
-		rowdataEnsembl <- data.frame(ENSEMBL=ensemblGenes, SYMBOL = NA,
-				GENENAME=NA)
-	
-	rowdataEnsembl$nameInCountMatrix <- ensemblGenes
-	
-	return(rowdataEnsembl)
+    
+    message("Annotating ",length(ensemblGenes), " genes containing ",
+            ensemblPattern, " pattern.")
+    
+    ## If none of ENSEMBL genes are in database, set to NA
+    lengthEnsInDb <- length(intersect(AnnotationDbi::keys(genomeAnnot,
+                            keytype="ENSEMBL"), ensemblGenes))
+    
+    if(!isTRUE(all.equal(lengthEnsInDb, 0))){
+        
+        rowdataEnsembl <- AnnotationDbi::select(genomeAnnot,
+                keys = ensemblGenes, keytype = "ENSEMBL",
+                columns = c("SYMBOL", "GENENAME"), multiVals="first")
+        rowdataEnsembl <-
+                rowdataEnsembl[!duplicated(rowdataEnsembl$ENSEMBL),]
+    }else
+        rowdataEnsembl <- data.frame(ENSEMBL=ensemblGenes, SYMBOL = NA,
+                GENENAME=NA)
+    
+    rowdataEnsembl$nameInCountMatrix <- ensemblGenes
+    
+    return(rowdataEnsembl)
 }
 
 
@@ -122,20 +122,20 @@
 #' name.
 #' @noRd
 .annotateSymbols <- function(symbolGenes, genomeAnnot){
-	
-	message("Annotating ", length(symbolGenes),
-			" genes considering them as SYMBOLs.")
-	
-	rowdataSymbol <- AnnotationDbi::select(genomeAnnot,
-			keys=symbolGenes,
-			keytype="SYMBOL",
-			columns=c("ENSEMBL",
-					"GENENAME"),
-			multiVals="first")
-	rowdataSymbol <- rowdataSymbol[!duplicated(rowdataSymbol$SYMBOL),]
-	rowdataSymbol$nameInCountMatrix <- symbolGenes
-	
-	return(rowdataSymbol)
+    
+    message("Annotating ", length(symbolGenes),
+            " genes considering them as SYMBOLs.")
+    
+    rowdataSymbol <- AnnotationDbi::select(genomeAnnot,
+            keys=symbolGenes,
+            keytype="SYMBOL",
+            columns=c("ENSEMBL",
+                    "GENENAME"),
+            multiVals="first")
+    rowdataSymbol <- rowdataSymbol[!duplicated(rowdataSymbol$SYMBOL),]
+    rowdataSymbol$nameInCountMatrix <- symbolGenes
+    
+    return(rowdataSymbol)
 }
 
 
@@ -157,17 +157,17 @@
 #' ensembl IDs or symbols.
 #' @noRd
 .annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
-		lengthSymbols, symbolGenes){
-	
-	if(!isTRUE(all.equal(length(ensemblGenes), 0)))
-		rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
-				genomeAnnot)
-	
-	if(!isTRUE(all.equal(lengthSymbols, 0)))
-		rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot) 
-	
-	rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
-	return(rowdata)
+        lengthSymbols, symbolGenes){
+    
+    if(!isTRUE(all.equal(length(ensemblGenes), 0)))
+        rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
+                genomeAnnot)
+    
+    if(!isTRUE(all.equal(lengthSymbols, 0)))
+        rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot) 
+    
+    rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
+    return(rowdata)
 }
 
 
@@ -188,35 +188,35 @@
 #' @return Returns the rowData filled with the bioMart annotations.
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
-	
-	message("Retrieving information about genes from biomaRt.")
-	
-	res <- getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
-					"chromosome_name", "gene_biotype"), mart=ensembl)
-	tmp <- res[!duplicated(res$ensembl_gene_id),]
-	
-	rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
-							"gene_biotype")], by.x = "ENSEMBL",
-			by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE,
-			sort = FALSE)
-	
-	rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
-							"go_id", "name_1006")], by.x = "ENSEMBL",
-			by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
-	rowdataGO <- rowdataGO[!is.na(rowdataGO$name_1006) &
-					((rowdataGO$name_1006 == "cell surface") |
-						(rowdataGO$name_1006 == strwrap("cell surface
-											receptor signaling
-											pathway"))), ]
-	rowdataGO$name_1006[duplicated(rowdataGO$ENSEMBL)] <-
-			"cell surface receptor signaling pathway"
-	rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
-	rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
-							"name_1006")], by.x = "nameInCountMatrix",
-			by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-			sort = FALSE)
-	
-	return(rowdata)
+    
+    message("Retrieving information about genes from biomaRt.")
+    
+    res <- getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
+                    "chromosome_name", "gene_biotype"), mart=ensembl)
+    tmp <- res[!duplicated(res$ensembl_gene_id),]
+    
+    rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
+                            "gene_biotype")], by.x = "ENSEMBL",
+            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE,
+            sort = FALSE)
+    
+    rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
+                            "go_id", "name_1006")], by.x = "ENSEMBL",
+            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
+    rowdataGO <- rowdataGO[!is.na(rowdataGO$name_1006) &
+                    ((rowdataGO$name_1006 == "cell surface") |
+                        (rowdataGO$name_1006 == strwrap("cell surface
+                                            receptor signaling
+                                            pathway"))), ]
+    rowdataGO$name_1006[duplicated(rowdataGO$ENSEMBL)] <-
+            "cell surface receptor signaling pathway"
+    rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
+    rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
+                            "name_1006")], by.x = "nameInCountMatrix",
+            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
+            sort = FALSE)
+    
+    return(rowdata)
 }
 
 
@@ -234,11 +234,11 @@
 #' @return Returns the rowData filled with the rowdataDF annotations.
 #' @noRd
 .mergeRowDataDf <- function(rowdataDF, rowdata){
-	rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
-	rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
-			by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-			sort = FALSE)
-	return(rowdata)
+    rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
+    rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
+            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
+            sort = FALSE)
+    return(rowdata)
 }
 
 
@@ -261,20 +261,20 @@
 #' @noRd
 .annotateGenes <- function(countMatrix, species, rowdataDF){
 
-	martResult <- .defineMartVar(species)
-	genomeAnnot <- martResult[[1]]
-	ensemblPattern <- martResult[[2]]
-	ensembl <- martResult[[3]]
-	lengthSymbols <- .testMattrixNames(countMatrix, ensemblPattern, genomeAnnot)
-	
+    martResult <- .defineMartVar(species)
+    genomeAnnot <- martResult[[1]]
+    ensemblPattern <- martResult[[2]]
+    ensembl <- martResult[[3]]
+    lengthSymbols <- .testMattrixNames(countMatrix, ensemblPattern, genomeAnnot)
+    
     ensemblGenes <- rownames(countMatrix)[grep(ensemblPattern,
                     rownames(countMatrix))]
     symbolGenes <- rownames(countMatrix)[!grepl(ensemblPattern,
                     rownames(countMatrix))]
 
-	rowdata <- .annotateRowData(ensemblGenes, ensemblPattern, genomeAnnot, 
-			lengthSymbols, symbolGenes)
-		
+    rowdata <- .annotateRowData(ensemblGenes, ensemblPattern, genomeAnnot, 
+            lengthSymbols, symbolGenes)
+        
     ## Filtering duplicated symbols
     (multSym <- rowdata$SYMBOL[!is.na(rowdata$SYMBOL) &
                                 duplicated(rowdata$SYMBOL)])
@@ -283,10 +283,10 @@
     (rowdata$SYMBOL[rowdata$SYMBOL %in% multSym] <-
                 paste0(rowdata$SYMBOL[rowdata$SYMBOL %in% multSym],
                         rowdata$ENSEMBL[rowdata$SYMBOL %in% multSym]))
-	rowdata <- .retrieveGenesInfoBiomart(ensembl, rowdata)
-	
-	if(!is.null(rowdataDF))
-		rowdata <- .mergeRowDataDf(rowdataDF, rowdata)
+    rowdata <- .retrieveGenesInfoBiomart(ensembl, rowdata)
+    
+    if(!is.null(rowdataDF))
+        rowdata <- .mergeRowDataDf(rowdataDF, rowdata)
         
     rownames(rowdata) <- rowdata$nameInCountMatrix
     rowdata <- rowdata[rownames(countMatrix),]
@@ -468,18 +468,18 @@
 #' @noRd
 #' @return The updated columns meta-data.
 .addGenesInfoCell <- function(coldata, countMatrix){
-	
-	coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
-	coldata$genesSum <- colSums(countMatrix)
-	coldata$genesNum <- vapply(colnames(countMatrix), .fillGenesNumColumn,
-			coldata, countMatrix, FUN.VALUE=integer(1))
-	coldata$oneUMI <- vapply(colnames(countMatrix), .fillOneUmmiColumn, coldata,
-			countMatrix, FUN.VALUE=integer(1))
-	coldata <- dplyr::mutate(coldata,
-			oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
-	return(coldata)
+    
+    coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
+    coldata$genesSum <- colSums(countMatrix)
+    coldata$genesNum <- vapply(colnames(countMatrix), .fillGenesNumColumn,
+            coldata, countMatrix, FUN.VALUE=integer(1))
+    coldata$oneUMI <- vapply(colnames(countMatrix), .fillOneUmmiColumn, coldata,
+            countMatrix, FUN.VALUE=integer(1))
+    coldata <- dplyr::mutate(coldata,
+            oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
+    return(coldata)
 }
-		
+        
 #' .addCellsInfo
 #'
 #' @description
@@ -502,7 +502,7 @@
             stringsAsFactors = FALSE)
 
     ### add info about all genes in a cell
-	coldata <- .addGenesInfoCell(coldata, countMatrix)
+    coldata <- .addGenesInfoCell(coldata, countMatrix)
     
     ### add info about mitochondrial and protein-coding genes
     coldata <- dplyr::mutate(coldata, mtGenes = NA, mtSum = NA, codGenes = NA,
@@ -628,28 +628,28 @@
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @return A single cell experiment object
 .filterSCE <- function(alreadyCellFiltered, countMatrix, coldata, rowdata){
-	
-	if(!alreadyCellFiltered){
-		
-		filterCellsResult <- .filterCells(countMatrix, coldata)
-		countMatrix <- filterCellsResult[[1]]
-		coldata <- filterCellsResult[[2]]
-	}
-	
-	filterGenesResult <- .filterGenes(countMatrix, rowdata)
-	countMatrix <- filterGenesResult[[1]]
-	rowdata <- filterGenesResult[[2]]
-	
-	stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
-	stopifnot(all(colnames(countMatrix) == rownames(coldata)))
-	
-	sce <- SingleCellExperiment::SingleCellExperiment(assays=list(
-					counts=as.matrix(countMatrix)),
-			colData=coldata,
-			rowData=rowdata)
-	
-	return(sce)
-	
+    
+    if(!alreadyCellFiltered){
+        
+        filterCellsResult <- .filterCells(countMatrix, coldata)
+        countMatrix <- filterCellsResult[[1]]
+        coldata <- filterCellsResult[[2]]
+    }
+    
+    filterGenesResult <- .filterGenes(countMatrix, rowdata)
+    countMatrix <- filterGenesResult[[1]]
+    rowdata <- filterGenesResult[[2]]
+    
+    stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
+    stopifnot(all(colnames(countMatrix) == rownames(coldata)))
+    
+    sce <- SingleCellExperiment::SingleCellExperiment(assays=list(
+                    counts=as.matrix(countMatrix)),
+            colData=coldata,
+            rowData=rowdata)
+    
+    return(sce)
+    
 }
 
 
@@ -740,8 +740,8 @@ setMethod(
         coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
                 coldataDF = coldata)
 
-		sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
-								
+        sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
+                                
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
