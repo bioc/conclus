@@ -32,8 +32,10 @@ NULL
 #' similarity.
 #' @param markgenlist list of data.frames. Each data frame contains the ranked
 #' genes of one cluster.
-#' @slot clustMark A data frame containing the top 10 (by default)
+#' @param clustMark A data frame containing the top 10 (by default)
 #' marker genes of each clusters.
+#' @param genesInfos A data frame containing informations of the markers
+#' genes for each clusters.
 #' 
 #' @return Object of class scRNAseq
 #'
@@ -63,7 +65,13 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
         clustSimOrdered=factor(1),
         markgenlist=list(data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA),
                         n_05 = c(NA), score = c(NA))),
-        clustMark=data.frame(geneName="gene1", clusters=NA)){
+        clustMark=data.frame(geneName="gene1", clusters=NA),
+        genesInf = data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
+                external_gene_name="gene", go_id="GO1,GO2",
+                mgi_description="description", entrezgene_description="descr",
+                gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+                ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+                uniprot_gn_id="ID")){
 
     new("scRNAseq",
             experimentName=experimentName,
@@ -76,7 +84,8 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
             clustersSimilarityMatrix=clustSimMat,
             clustersSimiliratyOrdered=clustSimOrdered,
             markerGenesList=markgenlist,
-            clustersMarkers=clustMark)
+            clustersMarkers=clustMark,
+            genesInfos=genesInf)
 }
 
 
