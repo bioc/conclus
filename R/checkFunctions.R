@@ -96,6 +96,7 @@ checkClusterMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
 
 checkGenesInfos <- function(genesInfos, species, clustersSimiliratyOrdered){
 
+    message("In checkGenesInfos the species is ", species)
     expectedColumn <- c("uniprot_gn_symbol", "clusters", "external_gene_name",
                         "go_id", "entrezgene_description", "gene_biotype",
                         "chromosome_name", "Symbol", "ensembl_gene_id",
