@@ -24,7 +24,7 @@
 #' @importFrom fpc dbscan
 #' @return Returns a matrix of the combinations of dbscan results
 #' @noRd
-.mkDbscan <- function(tSNEList, cores=1, epsilon=c(1.3, 1.4, 1.5),
+.mkDbscan <- function(tSNEList, cores=2, epsilon=c(1.3, 1.4, 1.5),
         minPoints=c(3, 4)){
 
     myCluster <- parallel::makeCluster(cores, type="PSOCK")
@@ -210,7 +210,7 @@
 #' Run clustering iterations with selected parameters using DBSCAN.
 #'
 #' @usage
-#' runDBSCAN(theObject, cores=1, epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4),
+#' runDBSCAN(theObject, cores=2, epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4),
 #' writeOutput=FALSE)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
@@ -267,10 +267,10 @@
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' @exportMethod runDBSCAN
 #'
@@ -285,7 +285,7 @@ setMethod(
 
         signature = "scRNAseq",
 
-        definition = function(theObject, cores=1, epsilon=c(1.3, 1.4, 1.5),
+        definition = function(theObject, cores=2, epsilon=c(1.3, 1.4, 1.5),
                 minPoints=c(3, 4), writeOutput=FALSE){
 
 

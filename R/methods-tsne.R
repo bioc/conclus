@@ -144,7 +144,7 @@
 #' length(PCs)*length(perplexities).
 #'
 #' @usage
-#' generateTSNECoordinates(theObject, randomSeed=42, cores=1,
+#' generateTSNECoordinates(theObject, randomSeed=42, cores=2,
 #'                 PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
 #'                 writeOutput = FALSE)
 #'
@@ -198,7 +198,7 @@
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' @seealso
 #' normaliseCountMatrix
@@ -215,7 +215,7 @@ setMethod(
 
         signature = "scRNAseq",
 
-        definition = function(theObject, randomSeed=42, cores=1,
+        definition = function(theObject, randomSeed=42, cores=2,
                 PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
                 writeOutput = FALSE){
 

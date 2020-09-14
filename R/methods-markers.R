@@ -290,13 +290,13 @@
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 #'
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
@@ -644,7 +644,7 @@ setMethod(
 #'
 #' @usage
 #' retrieveGenesInfo(theObject, groupBy="clusters",
-#'                 orderGenes="initial", getUniprot=TRUE, cores=1,
+#'                 orderGenes="initial", getUniprot=TRUE, cores=2,
 #'                 saveInfos=FALSE)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
@@ -709,13 +709,13 @@ setMethod(
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 #'
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
@@ -727,7 +727,7 @@ setMethod(
 #' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
 #'
 #' ## Getting genes info
-#' scrInfos <- retrieveGenesInfo(scrFinal, cores=1)
+#' scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
 #'
 #' @seealso
 #' rankGenes retrieveTopClustersMarkers
@@ -744,7 +744,7 @@ setMethod(
         signature = "scRNAseq",
 
         definition = function(theObject, groupBy="clusters",
-                orderGenes="initial", getUniprot=TRUE, cores=1,
+                orderGenes="initial", getUniprot=TRUE, cores=2,
                 saveInfos=FALSE){
 
             species <- getSpecies(theObject)
@@ -899,13 +899,13 @@ setMethod(
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 #'
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)

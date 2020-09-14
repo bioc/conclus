@@ -20,7 +20,7 @@ setGeneric(
 
     def = function(theObject, dbscanEpsilon=1.4, minPts=5,
             perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
-            cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
+            cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
             fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
             ...){
             standardGenericic("testClustering")
@@ -32,7 +32,7 @@ setGeneric(
 
     name = "generateTSNECoordinates",
 
-    def = function(theObject, randomSeed=42, cores=1,
+    def = function(theObject, randomSeed=42, cores=2,
             PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
             writeOutput=FALSE){
         standardGeneric("generateTSNECoordinates")
@@ -45,7 +45,7 @@ setGeneric(
 
     name = "runDBSCAN",
 
-    def = function(theObject, cores=1, epsilon=c(1.3, 1.4, 1.5),
+    def = function(theObject, cores=2, epsilon=c(1.3, 1.4, 1.5),
             minPoints=c(3, 4), writeOutput=FALSE){
         standardGeneric("runDBSCAN")
     },
@@ -57,7 +57,7 @@ setGeneric(
 
     name = "clusterCellsInternal",
 
-    def = function(theObject, clusterNumber=0, deepSplit=4, cores=1,
+    def = function(theObject, clusterNumber=0, deepSplit=4, cores=2,
                 clusteringMethod="ward.D2"){
         standardGeneric("clusterCellsInternal")
     },
@@ -206,7 +206,7 @@ setGeneric(
     name = "retrieveGenesInfo",
 
     def = function(theObject, groupBy="clusters", orderGenes="initial",
-            getUniprot=TRUE, cores=1, saveInfos=FALSE){
+            getUniprot=TRUE, cores=2, saveInfos=FALSE){
         standardGeneric("retrieveGenesInfo")
     },
     signature="theObject")

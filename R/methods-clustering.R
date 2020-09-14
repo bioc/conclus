@@ -233,7 +233,7 @@
 #' @usage
 #' testClustering(theObject, dbscanEpsilon=1.4, minPts=5,
 #'                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
-#'                 cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
+#'                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
 #'                 fileDist="distance_graph.pdf",
 #'                 fileClust="test_clustering.pdf", ...)
 #'
@@ -327,7 +327,7 @@ setMethod(
 
         definition=function(theObject, dbscanEpsilon=1.4, minPts=5,
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
-                cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
+                cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
                 ...){
 
@@ -515,7 +515,7 @@ setMethod(
 #' matrix of cells.
 #'
 #' @usage
-#' clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=1,
+#' clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=2,
 #'                 clusteringMethod="ward.D2")
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
@@ -560,13 +560,13 @@ setMethod(
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 #'
 #' @seealso plotCellSimilarity
 #'
@@ -583,7 +583,7 @@ setMethod(
 
         signature = "scRNAseq",
 
-        definition = function(theObject, clusterNumber=0, deepSplit=4, cores=1,
+        definition = function(theObject, clusterNumber=0, deepSplit=4, cores=2,
                 clusteringMethod="ward.D2"){
 
             ## Check if the Object is valid
@@ -766,13 +766,13 @@ setMethod(
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 #'
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
@@ -913,13 +913,13 @@ setMethod(
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 #'
 #' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=1)
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 #'
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
