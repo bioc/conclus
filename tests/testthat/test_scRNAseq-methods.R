@@ -91,7 +91,7 @@ setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
 
 ## Running DbScan
 
-scrDbscan <- runDBSCAN(scrTsne, cores=1)
+scrDbscan <- runDBSCAN(scrTsne, cores=2)
 dbscanList <- getDbscanList(scrDbscan)
 clusteringList <- lapply(dbscanList, getClustering)
 dbscanListWrong <- dbscanList
@@ -126,7 +126,7 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-scrInfos <- retrieveGenesInfo(scrFinal, cores=1)
+scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
 wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"), 
         clusters=c("1", "3"), external_gene_name=c("gene1", "gene2"), 
         go_id=c("GO1,GO2", "GO1,GO3"), 
@@ -421,7 +421,7 @@ test_that("Tsne works properly", {
                     "'generateTSNECoordinates' function doesn't have its ",
                     "'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
                     " on the object before.")
-            expect_error(generateTSNECoordinates(scr, cores=1),
+            expect_error(generateTSNECoordinates(scr, cores=2),
                          regexp=expM)
 })
 
@@ -469,14 +469,14 @@ test_that("Dbscan works properly", {
             "'runDBSCAN' function doesn't have its 'sceNorm'",
             "slot updated. Please use 'normaliseCountMatrix'",
             "on the object before.")
-            expect_error(runDBSCAN(scr, cores=1),
+            expect_error(runDBSCAN(scr, cores=2),
                          regexp=expM)
             
             expM <- paste("The 'scRNAseq' object that you're using with",
                           "'runDBSCAN' function doesn't have its 'tSNEList'",
                           "slot updated. Please use 'generateTSNECoordinates'",
                           "on the object before.")
-            expect_error(runDBSCAN(scrNorm, cores=1),
+            expect_error(runDBSCAN(scrNorm, cores=2),
                          regexp=expM)
 })
 
@@ -1153,6 +1153,6 @@ test_that("addClustering works properly",{
                             clusToAdd=clustWrongcells), expM)
         })
 
-runCONCLUS("YourOutputDirectory", "Bergiers", countMatrix, "mouse", cores=5)
+runCONCLUS("YourOutputDirectory", "Bergiers", countMatrix, "mouse", cores=2)
     
     
