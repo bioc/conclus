@@ -428,7 +428,7 @@ setMethod(
     myCluster <- parallel::makeCluster(cores, type="PSOCK")
     doParallel::registerDoParallel(myCluster)
     simMatsList <- foreach::foreach(iMkSimMat=seq_len(length(dbscanList)),
-                    .export=c("getClustering")) %dopar% {
+                    .export=c("getClustering", ".computeSimMat")) %dopar% {
 
                 ## Get the clustering
                 clustering <- getClustering(dbscanList[[iMkSimMat]])
