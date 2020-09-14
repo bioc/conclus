@@ -297,43 +297,43 @@ test_that("Errors are thrown when creating scr", {
                      clustSimOrdered = orderedCLusters,
                      markgenlist = markers[-1]), regexp = expM)
              
-            # expM <- paste0("clusterMarkers should have the same number of ",
-            #         "clusters than the number of clusters found. Nb clusters ",
-            #         "for markers: 2. Nb of clusters: 10")
-            # expect_error(setClustersMarkers(scrFinal) <- data.frame(
-            #                 geneName= c("gene1", "gene2"), clusters=c(1,2)), 
-            #         expM)
-            # 
-            # expM <- paste0("The clusterMarkers data frame should have the ",
-            #         "columns 'geneName' and 'clusters'")
-            # expect_error(setClustersMarkers(scrFinal) <- 
-            #                 data.frame(geneNam= rep("gene1", 10), 
-            #                         clust=seq_len(10)), expM)
-            # 
-            # expM <- "clusterMarkers is empty. This should be a dataframe"
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #         countMatrix     = countMatrix, 
-            #         species         = "mouse",
-            #         outputDirectory = outputDirectory,
-            #         clustersMarkers = data.frame()), expM)
-            # 
-            # expM <- "genesInfos is empty. This should be a dataframe"
-            # expect_error(singlecellRNAseq(experimentName = experimentName,
-            #                 countMatrix     = countMatrix,
-            #                 species         = "mouse",
-            #                 outputDirectory = outputDirectory,
-            #                 genesInfos=data.frame()), expM)
-            # 
-            # expM <- paste0("The genesInfos data frame should have the columns:", 
-            #         " uniprot_gn_symbol;clusters;external_gene_name;go_id;",
-            #         "entrezgene_description;gene_biotype;chromosome_name;",
-            #         "Symbol;ensembl_gene_id;entrezgene_id;uniprot_gn_id;",
-            #         "mgi_description;mgi_id")
-            # expect_error(singlecellRNAseq(experimentName = experimentName,
-            #                 countMatrix     = countMatrix,
-            #                 species         = "mouse",
-            #                 outputDirectory = outputDirectory,
-            #                 genesInfos=data.frame(test="test")), expM)
+             expM <- paste0("clusterMarkers should have the same number of ",
+                     "clusters than the number of clusters found. Nb clusters ",
+                     "for markers: 2. Nb of clusters: 10")
+             expect_error(setClustersMarkers(scrFinal) <- data.frame(
+                             geneName= c("gene1", "gene2"), clusters=c(1,2)), 
+                     expM)
+             
+             expM <- paste0("The clusterMarkers data frame should have the ",
+                     "columns 'geneName' and 'clusters'")
+             expect_error(setClustersMarkers(scrFinal) <- 
+                             data.frame(geneNam= rep("gene1", 10), 
+                                     clust=seq_len(10)), expM)
+             
+             expM <- "clusterMarkers is empty. This should be a dataframe"
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                     countMatrix     = countMatrix, 
+                     species         = "mouse",
+                     outputDirectory = outputDirectory,
+                     clustMark = data.frame()), expM)
+             
+             expM <- "genesInfos is empty. This should be a dataframe"
+             expect_error(singlecellRNAseq(experimentName = experimentName,
+                             countMatrix     = countMatrix,
+                             species         = "mouse",
+                             outputDirectory = outputDirectory,
+                             genesInf=data.frame()), expM)
+             
+             expM <- paste0("The genesInfos data frame should have the columns:", 
+                     " uniprot_gn_symbol;clusters;external_gene_name;go_id;",
+                     "entrezgene_description;gene_biotype;chromosome_name;",
+                     "Symbol;ensembl_gene_id;entrezgene_id;uniprot_gn_id;",
+                     "mgi_description;mgi_id")
+             expect_error(singlecellRNAseq(experimentName = experimentName,
+                             countMatrix     = countMatrix,
+                             species         = "mouse",
+                             outputDirectory = outputDirectory,
+                             genesInf=data.frame(test="test")), expM)
             
             expM <- paste0("genesInfos should have the same number of clusters",
                     " than the number of clusters found. Nb clusters for ",
