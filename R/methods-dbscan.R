@@ -192,7 +192,7 @@
                 clustering <- t(rowDbscan)
                 colnames(clustering) <- colnames(dbscanResults)
                 rownames(clustering) <- rowName
-                dbscanObj<- Dbscan(name= dbscanObjName, epsilon=epsComb,
+                dbscanObj<- DbscanCluster(name= dbscanObjName, epsilon=epsComb,
                         minPoints=minPts, clustering=clustering)
                 return(dbscanObj)
                 
