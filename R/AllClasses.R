@@ -305,6 +305,7 @@ Dbscan <- setClass(
     
     genesInfos <- getGenesInfos(object)
     clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(object)
+    species <- getSpecies(object)
     
     if(isTRUE(all.equal(length(genesInfos), 0)))
         stop("genesInfos is empty. This should be a dataframe")
