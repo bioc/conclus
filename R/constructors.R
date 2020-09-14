@@ -92,3 +92,53 @@ TsneCluster <- function(name, pc, perplexity, coordinates){
             coordinates=coordinates)
 }
 
+
+#' DbscanCluster
+#'
+#' @usage
+#' DbscanCluster(name, epsilon, minPoints, clustering)
+#'
+#' @param name A 'character' string representing the name of the Dbscan
+#' clustering.
+#' @param epsilon A 'numeric' value. The epsilon is the distance to consider
+#' two points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)
+#' @param minPoints A 'numeric' value. The minPoints is the minimum number
+#' of points to construct a cluster.
+#' @param clustering A 'matrix' that contains the result of one DBSCAN
+#' clustering solution.
+#' 
+#' @return Object of class Dbscan
+#'
+#' @rdname constructors
+#' 
+#' @examples
+#' DbscanCluster("test", 0.5, 2, matrix(1:10))
+#'                                          
+#' @aliases DbscanCluster
+#' @seealso Dbscan-class
+#' @export DbscanCluster
+DbscanCluster <- function(name, epsilon, minPoints, clustering){
+    
+    new("Dbscan",
+            name=name,
+            epsilon=epsilon,
+            minPoints=minPoints,
+            clustering=clustering)
+}
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
