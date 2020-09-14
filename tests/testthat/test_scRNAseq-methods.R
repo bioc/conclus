@@ -1153,6 +1153,6 @@ test_that("addClustering works properly",{
                             clusToAdd=clustWrongcells), expM)
         })
 
-runCONCLUS("YourOutputDirectory", "Bergiers", countMatrix, "mouse", cores=2)
+#runCONCLUS("YourOutputDirectory", "Bergiers", countMatrix, "mouse", cores=2)
     
     
