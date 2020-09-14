@@ -1440,7 +1440,7 @@ setMethod(
 #' @return The pheatmap object of the clustering.
 .plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
         showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
-        silentPlot){
+        silentPlot, savePlot){
     
     annotationColors <- .generateAnnotationColors(colDf, colorPalette,
             statePalette)
@@ -1636,7 +1636,7 @@ setMethod(
         
         pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
                 expressionMatrix, showColnames, fontsizeRow, clusterCols, 
-                clusterRows, fontsize, silentPlot)
+                clusterRows, fontsize, silentPlot, savePlot)
 
         if(returnPlot)
             return(pheatmapObject)
