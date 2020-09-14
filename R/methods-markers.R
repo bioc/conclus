@@ -164,6 +164,7 @@
                 message(paste("Working on cluster", currentGroup))
                 
                 ## Create a dataframe clustering vs clustering
+                otherGroups <- allGroups[allGroups!=currentGroup]
                 tTestPval <- .buildTTestPval(otherGroups, tTestPval, colDF, mat,
                         colLabel, currentGroup)
                 
