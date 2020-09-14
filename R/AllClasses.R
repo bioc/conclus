@@ -309,8 +309,7 @@ Dbscan <- setClass(
     
     if(isTRUE(all.equal(length(genesInfos), 0)))
         stop("genesInfos is empty. This should be a dataframe")
-    
-    message("The species is: ", species)
+
     invisible(checkGenesInfos(genesInfos, species,
                     clustersSimiliratyOrdered))
     
