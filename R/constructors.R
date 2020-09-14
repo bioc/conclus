@@ -45,25 +45,15 @@ NULL
 #' @seealso scRNAseq-class
 #' @export singlecellRNAseq
 singlecellRNAseq <- function(experimentName, countMatrix, species,
-        outputDirectory#, tSNElist=list(new("Tsne"))
-        ){
+        outputDirectory, tSNElist=list(new("Tsne"))){
 
     new("scRNAseq",
             experimentName=experimentName,
             countMatrix=countMatrix,
             species=species,
-            outputDirectory=outputDirectory#,
-            #tSNEList=tSNElist
-    )
+            outputDirectory=outputDirectory,
+            tSNEList=tSNElist)
 }
-
-
-
-
-
-
-
-
 
 
 #' TsneCluster
@@ -93,12 +83,12 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
 #' @aliases TsneCluster
 #' @seealso Tsne-class
 #' @export TsneCluster
-#TsneCluster <- function(name, pc, perplexity, coordinates){
-#    
-#    new("Tsne",
-#            name=name,
-#            pc=pc,
-#            perplexity=perplexity,
-#            coordinates=coordinates)
-#}
+TsneCluster <- function(name, pc, perplexity, coordinates){
+    
+    new("Tsne",
+            name=name,
+            pc=pc,
+            perplexity=perplexity,
+            coordinates=coordinates)
+}
 
