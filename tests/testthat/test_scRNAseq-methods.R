@@ -64,7 +64,6 @@ clustWrongcells <- clustAddTab
 clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 
 ## Load expected results
-## !!! Move to a data folder
 load(file = system.file("extdata/scrLight.Rdat", package="conclus"))
 load(file = system.file("extdata/expected_normalizedMatrix.Rdat", 
                 package="conclus"))
