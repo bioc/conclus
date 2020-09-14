@@ -35,7 +35,7 @@
 # source("R/methods-export.R")
 # source("R/methods-markers.R")
 # source("R/runCONCLUS.R")
-
+#source("R/constructors.R")
 
 library(conclus)
 ## Data
@@ -212,91 +212,91 @@ test_that("Errors are thrown when creating scr", {
                             species         = "human",
                             outputDirectory = "toto tata"), regexp = expM)
             
-            # expM <- "tSNEList is empty. This should be a list of tSNE objects."
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #         countMatrix     = countMatrix, 
-            #         species         = "mouse",
-            #         outputDirectory = outputDirectory,
-            #         tSNEList = list()), regexp = expM)
-            # 
-            # expM <- paste0("The elements in TsneList slot don't have the same ",
-            #         "number of cells or the same class")
-            # expect_error(singlecellRNAseq(experimentName = experimentName,
-            #                 countMatrix     = countMatrix,
-            #                 species         = "mouse",
-            #                 outputDirectory = outputDirectory,
-            #                 tSNEList = tsneListWrong), regexp = expM)
-            # 
-            # expM <- "Coordinates should be a matrix with two columns X and Y."
-            # expect_error(singlecellRNAseq(experimentName = experimentName,
-            #                 countMatrix     = countMatrix,
-            #                 species         = "mouse",
-            #                 outputDirectory = outputDirectory,
-            #                 tSNEList = list(Tsne(name = "test", pc = 30,
-            #                                 perplexity = 4,
-            #                                 coordinates = matrix(seq_len(9), 
-            #                                         ncol=3)))), regexp = expM)
-            # 
-            # expM <- paste0("dbscanList is empty. This should be a list of ",
-            #         "dbScan objects.")
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #         countMatrix     = countMatrix, 
-            #         species         = "mouse",
-            #         outputDirectory = outputDirectory,
-            #         dbscanList = list()), regexp = expM)
-            # 
-            # expM <- paste0("The elements in DbscanList slot don't have the ",
-            #         "same number of cells or the same class")
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #         countMatrix     = countMatrix, 
-            #         species         = "mouse",
-            #         outputDirectory = outputDirectory,
-            #         dbscanList = dbscanListWrong), regexp = expM)
-            # 
-            # expM <- paste0("'cellsSimilarityMatrix' slot should contain a ",
-            #         "square matrix.")
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            # countMatrix     = countMatrix, 
-            # species         = "mouse",
-            # outputDirectory = outputDirectory,
-            # cellsSimilarityMatrix = csm[1:2,]), regexp = expM)
-            # 
-            # expM <- paste0("'clustersSimilarityMatrix' slot should contain a ",
-            #         "square matrix.")
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #     countMatrix     = countMatrix, 
-            #     species         = "mouse",
-            #     outputDirectory = outputDirectory,
-            #     clustersSimilarityMatrix = csm[1:2,]), regexp = expM)
-            # 
-            # expM <- paste0("'clustersSimiliratyOrdered' slot should contain ",
-            #         "the same clusters as 'clustersSimilarityMatrix'.")
-            # expect_error(singlecellRNAseq(experimentName = experimentName,
-            #                 countMatrix     = countMatrix,
-            #                 species         = "mouse",
-            #                 outputDirectory = outputDirectory,
-            #                 clustersSimilarityMatrix = csm,
-            #                 clustersSimiliratyOrdered = factor(c(15,16,17))), 
-            #         regexp = expM)
-            # 
-            # expM <- paste0("markerGenesList is empty. This should be a list ",
-            #         "of dataframe")
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #         countMatrix     = countMatrix, 
-            #         species         = "mouse",
-            #         outputDirectory = outputDirectory,
-            #         markerGenesList = list()), regexp = expM)
-            # 
-            # expM <- paste0("'markerGenesList' should contain as many ",
-            #         "dataframes as clusters found. Number of dataframes :9 ",
-            #         "and the number of cluters found is :10.") 
-            # expect_error(singlecellRNAseq(experimentName = experimentName, 
-            #         countMatrix     = countMatrix, 
-            #         species         = "mouse",
-            #         outputDirectory = outputDirectory,
-            #         clustersSimiliratyOrdered = orderedCLusters,
-            #         markerGenesList = markers[-1]), regexp = expM)
-            # 
+             expM <- "tSNEList is empty. This should be a list of tSNE objects."
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                     countMatrix     = countMatrix, 
+                     species         = "mouse",
+                     outputDirectory = outputDirectory,
+                     tSNElist = list()), regexp = expM)
+             
+             expM <- paste0("The elements in TsneList slot don't have the same ",
+                     "number of cells or the same class")
+             expect_error(singlecellRNAseq(experimentName = experimentName,
+                             countMatrix     = countMatrix,
+                             species         = "mouse",
+                             outputDirectory = outputDirectory,
+                             tSNElist = tsneListWrong), regexp = expM)
+             
+             expM <- "Coordinates should be a matrix with two columns X and Y."
+             expect_error(singlecellRNAseq(experimentName = experimentName,
+                             countMatrix     = countMatrix,
+                             species         = "mouse",
+                             outputDirectory = outputDirectory,
+                             tSNElist = list(TsneCluster(name = "test", pc = 30,
+                                             perplexity = 4,
+                                             coordinates = matrix(seq_len(9), 
+                                                     ncol=3)))), regexp = expM)
+             
+             expM <- paste0("dbscanList is empty. This should be a list of ",
+                     "dbScan objects.")
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                     countMatrix     = countMatrix, 
+                     species         = "mouse",
+                     outputDirectory = outputDirectory,
+                     dbscanlist = list()), regexp = expM)
+             
+             expM <- paste0("The elements in DbscanList slot don't have the ",
+                     "same number of cells or the same class")
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                     countMatrix     = countMatrix, 
+                     species         = "mouse",
+                     outputDirectory = outputDirectory,
+                     dbscanlist = dbscanListWrong), regexp = expM)
+             
+             expM <- paste0("'cellsSimilarityMatrix' slot should contain a ",
+                     "square matrix.")
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+             countMatrix     = countMatrix, 
+             species         = "mouse",
+             outputDirectory = outputDirectory,
+             cellSimMat = csm[1:2,]), regexp = expM)
+             
+             expM <- paste0("'clustersSimilarityMatrix' slot should contain a ",
+                     "square matrix.")
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                 countMatrix     = countMatrix, 
+                 species         = "mouse",
+                 outputDirectory = outputDirectory,
+                 clustSimMat = csm[1:2,]), regexp = expM)
+             
+             expM <- paste0("'clustersSimiliratyOrdered' slot should contain ",
+                     "the same clusters as 'clustersSimilarityMatrix'.")
+             expect_error(singlecellRNAseq(experimentName = experimentName,
+                             countMatrix     = countMatrix,
+                             species         = "mouse",
+                             outputDirectory = outputDirectory,
+                             clustSimMat = csm,
+                             clustSimOrdered = factor(c(15,16,17))), 
+                     regexp = expM)
+             
+             expM <- paste0("markerGenesList is empty. This should be a list ",
+                     "of dataframe")
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                     countMatrix     = countMatrix, 
+                     species         = "mouse",
+                     outputDirectory = outputDirectory,
+                     markgenlist = list()), regexp = expM)
+             
+             expM <- paste0("'markerGenesList' should contain as many ",
+                     "dataframes as clusters found. Number of dataframes :9 ",
+                     "and the number of cluters found is :10.") 
+             expect_error(singlecellRNAseq(experimentName = experimentName, 
+                     countMatrix     = countMatrix, 
+                     species         = "mouse",
+                     outputDirectory = outputDirectory,
+                     clustSimOrdered = orderedCLusters,
+                     markgenlist = markers[-1]), regexp = expM)
+             
             # expM <- paste0("clusterMarkers should have the same number of ",
             #         "clusters than the number of clusters found. Nb clusters ",
             #         "for markers: 2. Nb of clusters: 10")
