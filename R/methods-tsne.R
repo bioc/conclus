@@ -62,7 +62,7 @@
         name <- paste0(experimentName, '_tsne_coordinates_', i,
                         "_" , PCA[i], "PCs_", perp[i], "perp")
 
-        tSNEObj <- Tsne(name = name,
+        tSNEObj <- TsneCluster(name = name,
                         coordinates = as.matrix(TSNEres[1, i][[1]]),
                         perplexity = perp[i],
                         pc  = PCA[i])
