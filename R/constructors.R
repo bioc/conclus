@@ -45,7 +45,7 @@ NULL
 #' @seealso scRNAseq-class
 #' @export singlecellRNAseq
 singlecellRNAseq <- function(experimentName, countMatrix, species,
-        outputDirectory, #tSNElist=list(new("Tsne"))
+        outputDirectory#, tSNElist=list(new("Tsne"))
         ){
 
     new("scRNAseq",
