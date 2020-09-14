@@ -49,6 +49,7 @@ NULL
 singlecellRNAseq <- function(experimentName, countMatrix, species,
         outputDirectory, tSNElist=list(new("Tsne")), 
         dbscanlist=list(new("Dbscan")),
+        cellSimMat="matrix",
         clustSimMat = as.matrix(data.frame(1, row.names=1))){
 
     new("scRNAseq",
@@ -58,6 +59,7 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
             outputDirectory=outputDirectory,
             tSNEList=tSNElist,
             dbscanList=dbscanlist,
+            cellsSimilarityMatrix=cellSimMat,
             clustersSimilarityMatrix=clustSimMat)
 }
 
