@@ -84,7 +84,7 @@ sceNorm <- getSceNorm(scrNorm)
 
 ## Performing tSNE
 
-scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 tsneList <- getTSNEList(scrTsne)
 tsneListWrong <- tsneList
 setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
