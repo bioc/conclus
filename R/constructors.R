@@ -53,3 +53,13 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
 
 
 
+singlecellRNAseq <- function(experimentName, countMatrix, species,
+        outputDirectory, tSNElist){
+    
+    new("scRNAseq",
+            experimentName=experimentName,
+            countMatrix=countMatrix,
+            species=species,
+            outputDirectory=outputDirectory,
+            tSNEList=tSNElist)
+}
