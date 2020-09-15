@@ -2066,14 +2066,16 @@ setMethod(
 #' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#'
+#' @param pheatmapObject Object returned by the pheatmap function in 
+#' .pheatmapClusterSim.
+#' 
 #' @importFrom grDevices pdf
 #' @importFrom grDevices png
 #' @importFrom grDevices dev.off
 #' @keywords internal
 #' @noRd
 .savePlotClustersSim <- function(savePlot, theObject, clusters, plotPDF, width,
-        height, onefile, widthPNG, heightPNG){
+        height, onefile, widthPNG, heightPNG, pheatmapObject){
     
     if(savePlot){
         
@@ -2221,7 +2223,7 @@ setMethod(
         
         ## Save plot
         .savePlotClustersSim(savePlot, theObject, clusters, plotPDF, width, 
-                height, onefile, widthPNG, heightPNG)
+                height, onefile, widthPNG, heightPNG, pheatmapObject)
         
         if(returnPlot)
             return(pheatmapObject)
