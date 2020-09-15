@@ -1724,6 +1724,8 @@ setMethod(
 #' @description
 #' Saves and/or plots the tSNE colored by expression.
 #'
+#' @param theObject A scRNAseq object with the top markers retrieved. See
+#' ?retrieveTopClustersMarkers.
 #' @param tSNECoords Coordinates of the tSNE.
 #' @param pointSize Size of the points on the tSNE. Default = 1.
 #' @param alpha Opacity of the points of the plot. Default = 1.
@@ -1744,9 +1746,9 @@ setMethod(
 #'
 #' @keywords internal
 #' @noRd
-.saveAndPlotGeneExpression <- function(tSNECoords, pointSize, alpha, palette,
-        limits, geneName, savePlot, clustersNumber, tSNEpicture, plotPDF, 
-        width, height, silentPlot){
+.saveAndPlotGeneExpression <- function(theObject, tSNECoords, pointSize, alpha,
+        palette, limits, geneName, savePlot, clustersNumber, tSNEpicture, 
+        plotPDF, width, height, silentPlot){
     
     ggres <- ggplot2::ggplot(tSNECoords, aes(x=tSNECoords[,1],
                             y=tSNECoords[,2], color=expression)) +
@@ -1905,8 +1907,8 @@ setMethod(
         if(isTRUE(all.equal(length(limits), 1)))
             limits <- c(min(tSNECoords$expression), max(tSNECoords$expression))
 
-        ggres <- .saveAndPlotGeneExpression(tSNECoords, pointSize, alpha, 
-                palette, limits, geneName, savePlot, clustersNumber, 
+        ggres <- .saveAndPlotGeneExpression(theObject, tSNECoords, pointSize, 
+                alpha, palette, limits, geneName, savePlot, clustersNumber, 
                 tSNEpicture, plotPDF, width, height, silentPlot)
         
         if(returnPlot)
