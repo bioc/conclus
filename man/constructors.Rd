@@ -104,14 +104,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
                 species         = "mouse",
                 outputDirectory = outputDirectory)
                 
-
 mat <- matrix(seq_len(20), ncol=2)
 colnames(mat) <- c("X", "Y")
 TsneCluster(name = "test", pc = 30, perplexity = 4, 
 coordinates = mat)
-                                             
+
 DbscanCluster("test", 0.5, 2, matrix(1:10))
-                                         
+
 }
 \seealso{
 scRNAseq-class
