@@ -7,8 +7,17 @@
 \alias{DbscanCluster}
 \title{constructors}
 \usage{
-singlecellRNAseq(experimentName, countMatrix, species, outputDirectory, 
-tSNElist=list(new("Tsne")))
+singlecellRNAseq(experimentName, countMatrix, species, outputDirectory,
+ tSNElist=list(new("Tsne")), dbscanlist=list(new("Dbscan")), 
+cellSimMat= matrix(), clustSimMat=as.matrix(data.frame(1, row.names=1)),
+clustSimOrdered=factor(1), markgenlist=list(data.frame(Gene = c("gene1"),
+mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA))), 
+clustMark=data.frame(geneName="gene1", clusters=NA),
+genesInf = data.frame(uniprot_gn_symbol=c("symbol"), clusters="1", 
+external_gene_name="gene", go_id="GO1,GO2", mgi_description="description",
+entrezgene_description="descr", gene_biotype="gene", chromosome_name="1",
+Symbol="symbol", ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+uniprot_gn_id="ID"))
 
 TsneCluster(name, pc, perplexity, coordinates)
 
@@ -48,6 +57,9 @@ genes of one cluster.}
 \item{clustMark}{A data frame containing the top 10 (by default)
 marker genes of each clusters.}
 
+\item{genesInf}{A data frame containing informations of the markers
+genes for each clusters.}
+
 \item{name}{A 'character' string representing the name of the Dbscan
 clustering.}
 
@@ -67,9 +79,6 @@ of points to construct a cluster.}
 
 \item{clustering}{A 'matrix' that contains the result of one DBSCAN
 clustering solution.}
-
-\item{genesInfos}{A data frame containing informations of the markers
-genes for each clusters.}
 }
 \value{
 Object of class scRNAseq
