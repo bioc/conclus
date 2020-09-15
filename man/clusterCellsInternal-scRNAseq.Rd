@@ -5,7 +5,7 @@
 \alias{clusterCellsInternal}
 \title{clusterCellsInternal}
 \usage{
-clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=1,
+clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=2,
                 clusteringMethod="ward.D2")
 }
 \arguments{
@@ -51,13 +51,13 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=1)
+scrDbscan <- runDBSCAN(scrTsne, cores=2)
 
 ## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=1)
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
 
 }
 \seealso{

@@ -5,7 +5,7 @@
 \alias{runDBSCAN}
 \title{runDBSCAN}
 \usage{
-runDBSCAN(theObject, cores=1, epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4),
+runDBSCAN(theObject, cores=2, epsilon=c(1.3, 1.4, 1.5), minPoints=c(3, 4),
 writeOutput=FALSE)
 }
 \arguments{
@@ -62,10 +62,10 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=1)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=1)
+scrDbscan <- runDBSCAN(scrTsne, cores=2)
 
 }
 \seealso{

@@ -7,7 +7,7 @@
 \usage{
 testClustering(theObject, dbscanEpsilon=1.4, minPts=5,
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
-                cores=1, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
+                cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf",
                 fileClust="test_clustering.pdf", ...)
 }
@@ -68,7 +68,7 @@ y-axis. In our example, optimal epsilon is 1.4 for 5-NN distance where 5
 corresponds to MinPts.
 
 In the "test_clustering" folder under outputDirectory, the three plots will
-be saved where one corresponds to the "distance_graph.pdf", another one to
+ be saved where one corresponds to the "distance_graph.pdf", another one to
 "test_tSNE.pdf", and the last one will be saved as "test_clustering.pdf".
 }
 \examples{

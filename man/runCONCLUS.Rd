@@ -6,7 +6,7 @@
 \usage{
 runCONCLUS(
         ## General parameters
-        outputDirectory, experimentName, countMatrix, species, cores=1,
+        outputDirectory, experimentName, countMatrix, species, cores=2,
         clusteringMethod="ward.D2", exportAllResults=TRUE,
         orderClusters=FALSE, clusToAdd=NA,
 
