@@ -116,12 +116,11 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
 #' @rdname constructors
 #' 
 #' @examples
-#'
 #' mat <- matrix(seq_len(20), ncol=2)
 #' colnames(mat) <- c("X", "Y")
 #' TsneCluster(name = "test", pc = 30, perplexity = 4, 
 #' coordinates = mat)
-#'                                              
+#' 
 #' @aliases TsneCluster
 #' @seealso Tsne-class
 #' @export TsneCluster
@@ -155,7 +154,7 @@ TsneCluster <- function(name, pc, perplexity, coordinates){
 #' 
 #' @examples
 #' DbscanCluster("test", 0.5, 2, matrix(1:10))
-#'                                          
+#' 
 #' @aliases DbscanCluster
 #' @seealso Dbscan-class
 #' @export DbscanCluster
