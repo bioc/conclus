@@ -8,7 +8,7 @@
 \title{constructors}
 \usage{
 singlecellRNAseq(experimentName, countMatrix, species, outputDirectory,
- tSNElist=list(new("Tsne")), dbscanlist=list(new("Dbscan")), 
+tSNElist=list(new("Tsne")), dbscanlist=list(new("Dbscan")), 
 cellSimMat= matrix(), clustSimMat=as.matrix(data.frame(1, row.names=1)),
 clustSimOrdered=factor(1), markgenlist=list(data.frame(Gene = c("gene1"),
 mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA))), 
