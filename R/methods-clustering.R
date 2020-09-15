@@ -277,7 +277,7 @@
 #' corresponds to MinPts.
 #'
 #' In the "test_clustering" folder under outputDirectory, the three plots will
-#'  be saved where one corresponds to the "distance_graph.pdf", another one to
+#' be saved where one corresponds to the "distance_graph.pdf", another one to
 #' "test_tSNE.pdf", and the last one will be saved as "test_clustering.pdf".
 #'
 #' @author
