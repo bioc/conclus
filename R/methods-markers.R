@@ -390,7 +390,7 @@ setMethod(
 
 
 .checkParamsretrieveGenesInfo <- function(theObject, orderGenes, genes, species,
-        databaseDict, saveInfos){
+        saveInfos){
 
     if(!isTRUE(all.equal(orderGenes,"initial")) &&
             !isTRUE(all.equal(orderGenes,"alphabetical")))
@@ -751,7 +751,7 @@ setMethod(
             species <- getSpecies(theObject)
             genes <- getClustersMarkers(theObject)
             .checkParamsretrieveGenesInfo(theObject, orderGenes, genes, species,
-                    databaseDict, saveInfos)
+                    saveInfos)
 
             ## Additional Special database and columns according to species
             if(isTRUE(all.equal(species, "mouse"))){
