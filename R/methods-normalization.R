@@ -8,8 +8,6 @@
 #' ' 
 #' @keywords internal
 #' @importFrom biomaRt useMart
-#' @importFrom org.Hs.eg.db org.Hs.eg.db
-#' @importFrom org.Mm.eg.db org.Mm.eg.db
 #' @return Returns the genome annotation name, the pattern to use to retrieve
 #' ensembl IDs and the biomaRt database.
 #' @noRd
