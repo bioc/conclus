@@ -9,8 +9,20 @@ NULL
 #' singlecellRNAseq
 #'
 #' @usage
-#' singlecellRNAseq(experimentName, countMatrix, species, outputDirectory, 
-#' tSNElist=list(new("Tsne")))
+#' singlecellRNAseq <- function(experimentName, countMatrix, species,
+#'        outputDirectory, tSNElist=list(new("Tsne")), 
+#'        dbscanlist=list(new("Dbscan")), cellSimMat= matrix(),
+#'        clustSimMat=as.matrix(data.frame(1, row.names=1)),
+#'        clustSimOrdered=factor(1),
+#'        markgenlist=list(data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA),
+#'                        n_05 = c(NA), score = c(NA))),
+#'        clustMark=data.frame(geneName="gene1", clusters=NA),
+#'        genesInf = data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
+#'                external_gene_name="gene", go_id="GO1,GO2",
+#'                mgi_description="description", entrezgene_description="descr",
+#'                gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+#'                ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+#'                uniprot_gn_id="ID"))
 #'
 #' @param experimentName character string representing the name of the
 #' experiment. Many output of scRNAseq will use this name.
@@ -34,7 +46,7 @@ NULL
 #' genes of one cluster.
 #' @param clustMark A data frame containing the top 10 (by default)
 #' marker genes of each clusters.
-#' @param genesInfos A data frame containing informations of the markers
+#' @param genesInf A data frame containing informations of the markers
 #' genes for each clusters.
 #' 
 #' @return Object of class scRNAseq
