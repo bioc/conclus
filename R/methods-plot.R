@@ -1434,13 +1434,26 @@ setMethod(
 #' clustering.
 #' @param fontsize base fontsize for the plot. Default = 7.5.
 #' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
-
+#' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png
+#' otherwise. Default = TRUE.
+#' @param fileName Name of the output file to which the heatmap is saved.
+#' @param width Width of the plot in the pdf file. See ?pdf for more details.
+#' Default = 10.
+#' @param height Height of the plot in the pdf file. See ?pdf for more details.
+#' Default = 8.5.
+#' @param onefile Logical: if TRUE allow multiple figures in one file. If FALSE,
+#' generate a file with name containing the page number for each page.
+#' Defaults to FALSE.
+#' @param widthPNG Width of the png. See ?png for details. Default=800.
+#' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' 
 #' @keywords internal
 #' @noRd
 #' @return The pheatmap object of the clustering.
 .plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
         showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
-        silentPlot, savePlot){
+        silentPlot, savePlot, plotPDF, fileName, width, height, onefile,
+        widthPNG, heightPNG){
     
     annotationColors <- .generateAnnotationColors(colDf, colorPalette,
             statePalette)
@@ -1636,7 +1649,8 @@ setMethod(
         
         pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
                 expressionMatrix, showColnames, fontsizeRow, clusterCols, 
-                clusterRows, fontsize, silentPlot, savePlot)
+                clusterRows, fontsize, silentPlot, savePlot, plotPDF, fileName,
+                width, height, onefile, widthPNG, heightPNG)
 
         if(returnPlot)
             return(pheatmapObject)
