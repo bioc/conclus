@@ -1446,6 +1446,9 @@ setMethod(
 #' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
+#' @param theObject A scRNAseq object with the cluster similarity matrix
+#' obtained with ?calculateClustersSimilarity method and the top markers
+#' obtained with ?retrieveTopClustersMarkers.
 #' 
 #' @keywords internal
 #' @noRd
@@ -1453,7 +1456,7 @@ setMethod(
 .plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
         showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
         silentPlot, savePlot, plotPDF, fileName, width, height, onefile,
-        widthPNG, heightPNG){
+        widthPNG, heightPNG, theObject){
     
     annotationColors <- .generateAnnotationColors(colDf, colorPalette,
             statePalette)
@@ -1650,7 +1653,7 @@ setMethod(
         pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
                 expressionMatrix, showColnames, fontsizeRow, clusterCols, 
                 clusterRows, fontsize, silentPlot, savePlot, plotPDF, fileName,
-                width, height, onefile, widthPNG, heightPNG)
+                width, height, onefile, widthPNG, heightPNG, theObject)
 
         if(returnPlot)
             return(pheatmapObject)
