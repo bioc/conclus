@@ -191,7 +191,7 @@ scr <- singlecellRNAseq(experimentName = experimentName,
                 outputDirectory = outputDirectory)
                 
 setExperimentName(scr) <- "newName"
-setCountMatrix(scr) <- countMatrix[1:10,1:10]
+setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(150)]
 setSpecies(scr) <- "human"
 setOutputDirectory(scr) <- "newPath"
 
