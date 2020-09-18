@@ -104,7 +104,8 @@ scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber = 10,
         deepSplit = 4, cores = 2, clusteringMethod = "ward.D2")
 cci <- getCellsSimilarityMatrix(scrCCI)
 scrCCiwrong <- scrCCI
-setCellsSimilarityMatrix(scrCCiwrong) <-  matrix(nrow=0,ncol=0)
+setCellsSimilarityMatrix(scrCCiwrong) <-  matrix(data=1, nrow=1, ncol=1,
+                                                    dimnames=list("c1", "c1"))
 
 ## Calculate clusters similarity
 
@@ -206,11 +207,11 @@ test_that("Errors are thrown when creating scr", {
             
             
             expM <- paste0("'outputDirectory' should be a conform folder path:",
-                    "'toto tata' is not.")
+                    "'path dir' is not.")
             expect_error(singlecellRNAseq(experimentName  = experimentName, 
                             countMatrix     = countMatrix, 
                             species         = "human",
-                            outputDirectory = "toto tata"), regexp = expM)
+                            outputDirectory = "path dir"), regexp = expM)
             
              expM <- "tSNEList is empty. This should be a list of tSNE objects."
              expect_error(singlecellRNAseq(experimentName = experimentName, 
@@ -1153,6 +1154,3 @@ test_that("addClustering works properly",{
                             clusToAdd=clustWrongcells), expM)
         })
 
-#runCONCLUS("YourOutputDirectory", "Bergiers", countMatrix, "mouse", cores=2)
-    
-    
