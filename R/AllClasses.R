@@ -72,9 +72,12 @@ Tsne <- setClass(
 
         coordinates <- getCoordinates(object)
 
-        if(!isTRUE(all.equal(ncol(coordinates),2)))
+        if(isFALSE(all.equal(ncol(coordinates), 2)) ||
+            isFALSE(identical(colnames(coordinates), c("X", "Y"))))
             stop("Coordinates should be a matrix with two columns X and Y.")
 
+        if(isFALSE(is.numeric(coordinates)))
+            stop("Coordinates should be a matrix of numeric values.")
     })
 
 
@@ -140,8 +143,16 @@ Dbscan <- setClass(
         name = "character",
         epsilon    = "numeric",
         minPoints  = "numeric",
-        clustering = "matrix"
-    ))
+        clustering = "matrix"),
+
+    validity = function(object){
+
+        clustering<- getClustering(object)
+
+        if(isFALSE(is.numeric(clustering)))
+            stop("'Clustering' slot should be a matrix of integer values.")
+
+    })
 
 
 
@@ -436,7 +447,10 @@ scRNAseq <- setClass(
         sceNorm = SingleCellExperiment::SingleCellExperiment(),
         tSNEList = list(new("Tsne")),
         dbscanList = list(new("Dbscan")),
-        clustersSimilarityMatrix = as.matrix(data.frame(1, row.names=1)),
+        cellsSimilarityMatrix =  matrix(nrow = 1, ncol = 1,
+                                dimnames = list("c1", "c1"), data = 1),
+        clustersSimilarityMatrix = matrix(nrow = 1, ncol = 1,
+                                    dimnames = list("1", "1"), data = 1),
         clustersSimiliratyOrdered = factor(1),
         markerGenesList = list(data.frame(Gene = c("gene1"),
                                         mean_log10_fdr = c(NA),
