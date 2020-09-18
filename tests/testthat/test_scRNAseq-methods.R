@@ -1,42 +1,3 @@
-### Test the methods of scRNAseq class.
-
-
-#if (!requireNamespace("BiocManager", quietly=TRUE))
-#    install.packages("BiocManager")
-#BiocManager::install(version = "devel")
-#BiocManager::valid()  
-#BiocManager::install("biomaRt")
-## BiocManager::install("grimbough/biomaRt")
-#
-#if (!require("pacman")) {
-#    install.packages("pacman",  repos = "https://cran.biotools.fr/")
-#}
-#
-# pacman::p_load(prettyunits, rlist, foreach, ggplot2, pheatmap, zoo,
-#               dynamicTreeCut, factoextra,
-#               digest, RColorBrewer,devtools, BiocParallel, scran, scater,
-#               monocle, SingleCellExperiment , KEGGREST, AnnotationDbi,
-#               Cairo, rvest, curl,  Matrix, dbscan, fpc, matrixStats,
-#               dplyr, org.Mm.eg.db, grDevices, S4Vectors, Biobase,
-#               DataCombine, zoo, rvest, DataCombine, doParallel,
-#               testthat, tidyr, biomaRt)
-
-# source("R/AllGenerics.R")
-# source("R/AllClasses.R")
-# source("R/sharedInternals.R")
-# source("R/checkFunctions.R")
-# source("R/getters.R")
-# source("R/setters.R")
-# source("R/methods-normalization.R")
-# source("R/methods-tsne.R")
-# source("R/methods-dbscan.R")
-# source("R/methods-clustering.R")
-# source("R/methods-plot.R")
-# source("R/methods-export.R")
-# source("R/methods-markers.R")
-# source("R/runCONCLUS.R")
-#source("R/constructors.R")
-
 library(conclus)
 ## Data
 
@@ -52,7 +13,7 @@ countMatrix <- as.matrix(read.delim(
     system.file("extdata/test_countMatrix.tsv", 
             package="conclus")))
 
-smallMatrix <- countMatrix[,1:50]
+smallMatrix <- countMatrix[,seq_len(50)]
 
 ## Retrieve the clustering to add
 clustAddTab <- read.delim(
@@ -178,14 +139,22 @@ test_that("Errors are thrown when creating scr", {
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
             
-            expM <- paste0("Not enough cells in the count matrix. There Should",
+            expM <- paste0("Not enough cells in the count matrix. ",
+                            "There should be at leat 100 cells. The current ",
+                            "count matrix contains 1 cells.")
+            expect_error(singlecellRNAseq(experimentName  = experimentName, 
+                            countMatrix     = matrix(), 
+                            species         = "mouse",
+                            outputDirectory = outputDirectory), regexp = expM)
+            
+            expM <- paste0("Not enough cells in the count matrix. There should",
                     " be at leat 100 cells. The current count matrix contains",
                     " 50 cells.")
             expect_error(singlecellRNAseq(experimentName  = experimentName, 
                             countMatrix     = smallMatrix, 
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
-                        
+            
             expM <- paste0("species should be 'mouse' or 'human'. '' is ",
                     "currently not supported.")
             expect_error(singlecellRNAseq(experimentName  = experimentName, 
