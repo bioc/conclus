@@ -713,7 +713,7 @@ setMethod(
                 "object.")
 
     ## Check the cell similarity matrix
-    if(all(dim(cellsSimilarityMatrix) == c(0,0)))
+    if(all(dim(cellsSimilarityMatrix) == c(1,1)))
         stop("The 'scRNAseq' object that you're using with ",
                 "'calculateClustersSimilarity' function doesn't have its ",
                 "'cellsSimilarityMatrix' slot updated by clusterCellsInternal.",
