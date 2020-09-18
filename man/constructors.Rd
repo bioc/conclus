@@ -7,15 +7,16 @@
 \alias{DbscanCluster}
 \title{constructors}
 \usage{
-singlecellRNAseq(experimentName, countMatrix, species, outputDirectory,
+singlecellRNAseq(experimentName, countMatrix, species, outputDirectory, 
 tSNElist=list(new("Tsne")), dbscanlist=list(new("Dbscan")), 
-cellSimMat= matrix(), clustSimMat=as.matrix(data.frame(1, row.names=1)),
-clustSimOrdered=factor(1), markgenlist=list(data.frame(Gene = c("gene1"),
-mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA))), 
-clustMark=data.frame(geneName="gene1", clusters=NA),
-genesInf = data.frame(uniprot_gn_symbol=c("symbol"), clusters="1", 
-external_gene_name="gene", go_id="GO1,GO2", mgi_description="description",
-entrezgene_description="descr", gene_biotype="gene", chromosome_name="1",
+cellSimMat= matrix(nrow = 1, ncol = 1, dimnames = list("c1", "c1"), 
+data = 1), clustSimMat=matrix(nrow = 1, ncol = 1, dimnames = list("1", "1"), 
+data = 1), clustSimOrdered=factor(1), markgenlist=list(data.frame(
+Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA))),
+clustMark=data.frame(geneName="gene1", clusters=NA), genesInf = data.frame(
+uniprot_gn_symbol=c("symbol"), clusters="1", external_gene_name="gene", 
+go_id="GO1,GO2", mgi_description="description", 
+entrezgene_description="descr", gene_biotype="gene", chromosome_name="1", 
 Symbol="symbol", ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
 uniprot_gn_id="ID"))
 
