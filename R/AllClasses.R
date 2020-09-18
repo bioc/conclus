@@ -180,19 +180,22 @@ Dbscan <- setClass(
     
     countMatrix <- getCountMatrix(object)
     
-    if(isTRUE(all.equal(nrow(countMatrix), 0)) &&
-            isTRUE(all.equal(ncol(countMatrix), 0)))
-        stop("The count matrix should not be empty. Please fill it.")
-    
-    if(all(is.na(countMatrix)))
-        stop("'countMatrix' slot is empty. It should be a matrix ",
-                "containing at leat 100 cells.\n")
-    
     if(ncol(countMatrix) < 100)
         stop("Not enough cells in the count matrix. There ",
                 "Should be at leat 100 cells. ", "The current count matrix ",
                 "contains ", ncol(countMatrix), " cells.\n")
     
+    if(isFALSE(is.numeric(countMatrix)))
+        stop("The count matrix is empty or does not contain whole numbers. ",
+                "Please check your count matrix.\n")
+    
+    if(isFALSE(is.character(rownames(countMatrix))))
+        stop("The name of the lines should be character class. ",
+                "Please check your count matrix.\n")
+    
+    if(isFALSE(is.character(colnames(countMatrix))))
+        stop("The name of the columns should be character class. ",
+                "Please check your count matrix.\n")    
 }
 
 .testsceNormSlot <- function(object){
@@ -230,13 +233,16 @@ Dbscan <- setClass(
                 "'", outputDirectory, "' is not.")
 }
 
-
 .testtSNEListSlot <- function(object){
     
     tSNEList <- getTSNEList(object)
     
     if(isTRUE(all.equal(length(tSNEList), 0)))
         stop("tSNEList is empty. This should be a list of tSNE objects.\n")
+    
+    if(isFALSE(all(vapply(tSNEList, is, class2 = "Tsne",
+                            FUN.VALUE = logical(1)))))
+        stop("tSNEList should be a list of Tsne objects.")
     
     invisible(checkList(tSNEList, getCoordinates, "Tsne"))
 }
@@ -249,6 +255,12 @@ Dbscan <- setClass(
         stop("dbscanList is empty. This should be a list of dbScan ",
                 "objects.\n")
     
+    if(isFALSE(all(
+                    vapply(dbscanList, is, class2 = "Dbscan", 
+                            FUN.VALUE = logical(1)))))
+        stop("dbscanList should be a list of Dbscan objects.")
+    
+    
     invisible(checkList(dbscanList, getClustering, "Dbscan"))
 }
 
@@ -256,19 +268,41 @@ Dbscan <- setClass(
     
     cellsSimilarityMatrix <- getCellsSimilarityMatrix(object)
     
-    if(!isTRUE(all.equal(nrow(cellsSimilarityMatrix),
-                    ncol(cellsSimilarityMatrix))))
-        stop("'cellsSimilarityMatrix' slot should contain a square matrix.")
+    if(is.null(rownames(cellsSimilarityMatrix)) ||
+            is.null(colnames(cellsSimilarityMatrix)))
+        stop("'cellsSimilarityMatrix' should have column and row names ",
+                "corresponding to cell names.")
+    
+    if(isFALSE(identical(colnames(cellsSimilarityMatrix),
+                    rownames(cellsSimilarityMatrix))))
+        stop("'cellsSimilarityMatrix' should be a square matrix with ",
+                "identical names in rows and columns.")
+    
+    if(isFALSE(all(
+                    vapply(cellsSimilarityMatrix, is, class2 = "numeric",
+                            FUN.VALUE = logical(1)))))
+        stop("'cellsSimilarityMatrix' should contain only numeric values.")
 }
 
 .testClustersSimilarityMatrixSlot <- function(object){
     
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(object)
     
-    if (!isTRUE(all.equal(nrow(clustersSimilarityMatrix),
-                    ncol(clustersSimilarityMatrix))))
-        stop("'clustersSimilarityMatrix' slot should contain a square ",
-                "matrix. ")
+    if(is.null(rownames(clustersSimilarityMatrix)) ||
+            is.null(colnames(clustersSimilarityMatrix)))
+        stop("'clustersSimilarityMatrix' should have column and row names ",
+                "corresponding to cluster names.")
+    
+    if(isFALSE(identical(colnames(clustersSimilarityMatrix),
+                    rownames(clustersSimilarityMatrix))))
+        stop("'clustersSimilarityMatrix' should be a square matrix with ",
+                "identical names in rows and colums.")
+    
+    if(isFALSE(all(
+                    vapply(clustersSimilarityMatrix, is, class2 = "numeric",
+                            FUN.VALUE = logical(1)))))
+        stop("'clustersSimilarityMatrix' should contain only numeric ",
+                "values.")
 }
 
 .testClustersSimiliratyOrderedSlot <- function(object){
@@ -320,7 +354,7 @@ Dbscan <- setClass(
     
     if(isTRUE(all.equal(length(genesInfos), 0)))
         stop("genesInfos is empty. This should be a dataframe")
-
+    
     invisible(checkGenesInfos(genesInfos, species,
                     clustersSimiliratyOrdered))
     
