@@ -89,7 +89,8 @@ test_that("setCountMatrix works properly", {
     
     ## Setting with too small matrix
     wrongCountMatrix <- countMatrix[1:50, 1:50]
-    expM <- paste("Not enough cells in the count matrix. There Should be at leat 100 cells. The current count matrix contains 50 cells.\n")
+    expM <- paste("Not enough cells in the count matrix. There Should be at",
+            " leat 100 cells. The current count matrix contains 50 cells.\n")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with character instead of matrix
