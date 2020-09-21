@@ -318,8 +318,9 @@ test_that("genesInfos works properly", {
                 ensembl_gene_id=c("ENS1", "ENS2"), mgi_id=c("MGI:1", "MGI:2"), 
                 entrezgene_id= c("20200", "19202"), 
                 uniprot_gn_id=c("P14069", "P14069"))
-    expM <- paste("genesInfos should have the same number of clusters than the",
-                    " number of clusters found. Nb clusters for genesInfos")
+    expM <- paste0("genesInfos should have the same number of clusters than ",
+            "the number of clusters found. Nb clusters for genesInfos: 2. ",
+            "Nb of clusters: 1")
     expect_error(setGenesInfos(scr) <- wrongDF, regexp=expM)
     
     ## Setting with empty df
