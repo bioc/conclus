@@ -95,7 +95,7 @@ test_that("setCountMatrix works properly", {
     
     ## Setting with character instead of matrix
     expM <- paste0("assignment of an object of class “character” is not valid",
-                    "for @‘countMatrix’")
+                    " for @‘countMatrix’")
     expect_error(setCountMatrix(scr) <- "name", regexp=expM)
 })
 
@@ -115,7 +115,7 @@ test_that("setSpecies works properly", {
     ## Setting with wrong value
     wrongSpecies <- 1
     expM <- paste0("assignment of an object of class “numeric” is not valid",
-                    "for @‘species’")
+                    " for @‘species’")
     expect_error(setSpecies(scr) <- wrongSpecies, regexp=expM)
 })
 
@@ -129,7 +129,7 @@ test_that("setOutputDirectory works properly", {
     ## Setting with wrong path
     wrongOutputDir <- "Single Cell Experiment"
     expM <- paste0("'outputDirectory' should be a conform folder path:",
-                    "'Single Cell Experiment' is not.")
+                    " 'Single Cell Experiment' is not.")
     expect_error(setOutputDirectory(scr) <- wrongOutputDir, regexp=expM)
     
     ## Setting with empty value
@@ -148,7 +148,7 @@ test_that("setSceNorm works properly", {
     ## Setting with wrong value
     wrongSceNorm <- "Single Cell Experiment"
     expM <- paste0("assignment of an object of class “character” is not valid",
-                    "for @‘sceNorm")
+                    " for @‘sceNorm")
     expect_error(setSceNorm(scr) <- wrongSceNorm, regexp=expM)
 
 })
@@ -201,7 +201,7 @@ test_that("cellsSimilarityMatrix works properly", {
     ## Setting with wrong value
     wrongCCI <- matrix(ncol=3, nrow=2, data=seq(6))
     expM <- paste0("'cellsSimilarityMatrix' should have column and row names",
-                "corresponding to cell names.")
+                " corresponding to cell names.")
     expect_error(setCellsSimilarityMatrix(scr) <- wrongCCI, regexp=expM)
 
     ## Setting with matrix non identical names in row and columns
@@ -209,7 +209,7 @@ test_that("cellsSimilarityMatrix works properly", {
     rownames(wrongCCI) <- c("c1", "c2", "c3")
     colnames(wrongCCI) <- c("c3", "c1", "c2")
     expM <- paste0("'cellsSimilarityMatrix' should be a square matrix with",
-            "identical names in rows and columns.")
+            " identical names in rows and columns.")
     expect_error(setCellsSimilarityMatrix(scr) <- wrongCCI, regexp=expM)
     
     
@@ -242,7 +242,7 @@ test_that("clustersSimilarityMatrix works properly", {
     rownames(wrongCSM) <- c("1", "2", "3")
     colnames(wrongCSM) <- c("3", "2", "1")
     expM <- paste0("'clustersSimilarityMatrix' should be a square matrix with",
-        "identical names in rows and colums.")
+        " identical names in rows and colums.")
     expect_error(setClustersSimilarityMatrix(scr) <- wrongCSM, regexp=expM)
     
     ## Setting with matrix of non numeric values
@@ -250,7 +250,7 @@ test_that("clustersSimilarityMatrix works properly", {
     rownames(wrongCSM) <- c("1", "2", "3")
     colnames(wrongCSM) <- c("1", "2", "3")
     expM <- paste0("'clustersSimilarityMatrix' should contain only numeric",
-        "values.")
+        " values.")
     expect_error(setClustersSimilarityMatrix(scr) <- wrongCSM, regexp=expM)
 })
 
@@ -267,8 +267,8 @@ test_that("markerGenesList works properly", {
     ## Setting with wrong list
     wrongList <- list(1, 2, 3)
     expM <- paste0("markerGenesList' slot should contain a list of dataframes",
-                    "with at least following columns : 'Gene'," ,
-                    "'mean_log10_fdr', 'n_05', 'score")
+                    " with at least following columns : 'Gene'," ,
+                    " 'mean_log10_fdr', 'n_05', 'score")
     expect_error(setMarkerGenesList(scr) <- wrongList, regexp=expM)
     
 })
@@ -289,7 +289,7 @@ test_that("clustersMarkers works properly", {
     ## Setting df with wrong colnames
     wrongDF <- data.frame(3)
     expM <- paste0("The clusterMarkers data frame should have the columns", 
-                    "'geneName' and 'clusters'")
+                    " 'geneName' and 'clusters'")
     expect_error(setClustersMarkers(scr) <- wrongDF, regexp=expM)
 })
 
@@ -319,7 +319,7 @@ test_that("genesInfos works properly", {
                 entrezgene_id= c("20200", "19202"), 
                 uniprot_gn_id=c("P14069", "P14069"))
     expM <- paste("genesInfos should have the same number of clusters than the",
-                    "number of clusters found. Nb clusters for genesInfos")
+                    " number of clusters found. Nb clusters for genesInfos")
     expect_error(setGenesInfos(scr) <- wrongDF, regexp=expM)
     
     ## Setting with empty df
