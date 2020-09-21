@@ -162,7 +162,7 @@ test_that("setTSNEList works properly", {
     
     ## Setting with empty list
     newList <- list()
-    expM <- "tSNEList is empty. This should be a list of Tsne objects"
+    expM <- "tSNEList is empty. This should be a list of Tsne objects.\n"
     expect_error(setTSNEList(scr) <- newList, regexp=expM)
     
     ## Setting with wrong list
