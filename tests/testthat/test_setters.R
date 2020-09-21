@@ -129,7 +129,7 @@ test_that("setOutputDirectory works properly", {
     ## Setting with wrong path
     wrongOutputDir <- "Single Cell Experiment"
     expM <- paste0("'outputDirectory' should be a conform folder path:",
-                    " 'Single Cell Experiment' is not.")
+                    "'Single Cell Experiment' is not.")
     expect_error(setOutputDirectory(scr) <- wrongOutputDir, regexp=expM)
     
     ## Setting with empty value
