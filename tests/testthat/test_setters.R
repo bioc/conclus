@@ -49,8 +49,8 @@ test_that("setExperimentName works properly", {
     expect_equal("newName", getExperimentName(scr))
     
     ## Setting with wrong value
-    expM <- paste("assignment of an object of class “numeric” is not valid for",
-        "@‘experimentName’")
+    expM <- paste0("assignment of an object of class “numeric” is not valid",
+            " for @‘experimentName’")
     expect_error(setExperimentName(scr) <- 1, regexp=expM)
 })
 
@@ -76,25 +76,25 @@ test_that("setCountMatrix works properly", {
     
     ## Setting with matrix without rownames
     wrongCountMatrix <- matrix(seq(10000), ncol = 100)
-    expM <- paste("The name of the lines should be character class.",
+    expM <- paste0("The name of the lines should be character class.",
                     "Please check your count matrix.")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with matrix without colnames
     wrongCountMatrix <- matrix(seq(10000), ncol = 100)
     rownames(wrongCountMatrix) <- paste0(rep("id_", 100) , seq(100))
-    expM <- paste("The name of the columns should be character class.",
+    expM <- paste0("The name of the columns should be character class.",
         "Please check your count matrix.")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with too small matrix
     wrongCountMatrix <- countMatrix[1:50, 1:50]
-    expM <- paste("Not enough cells in the count matrix. There Should be at",
+    expM <- paste0("Not enough cells in the count matrix. There Should be at",
             " leat 100 cells. The current count matrix contains 50 cells.\n")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with character instead of matrix
-    expM <- paste("assignment of an object of class “character” is not valid",
+    expM <- paste0("assignment of an object of class “character” is not valid",
                     "for @‘countMatrix’")
     expect_error(setCountMatrix(scr) <- "name", regexp=expM)
 })
@@ -108,13 +108,13 @@ test_that("setSpecies works properly", {
 
     ## Setting with wrong species
     wrongSpecies <- "toto"
-    expM <- paste("species should be 'mouse' or 'human'.",
-    "'toto' is currently not supported.")
+    expM <- paste0("species should be 'mouse' or 'human'. 'toto' is currently",
+            " not supported.")
     expect_error(setSpecies(scr) <- wrongSpecies, regexp=expM)
     
     ## Setting with wrong value
     wrongSpecies <- 1
-    expM <- paste("assignment of an object of class “numeric” is not valid",
+    expM <- paste0("assignment of an object of class “numeric” is not valid",
                     "for @‘species’")
     expect_error(setSpecies(scr) <- wrongSpecies, regexp=expM)
 })
@@ -128,13 +128,13 @@ test_that("setOutputDirectory works properly", {
     
     ## Setting with wrong path
     wrongOutputDir <- "Single Cell Experiment"
-    expM <- paste("'outputDirectory' should be a conform folder path:",
+    expM <- paste0("'outputDirectory' should be a conform folder path:",
                     "'Single Cell Experiment' is not.")
     expect_error(setOutputDirectory(scr) <- wrongOutputDir, regexp=expM)
     
     ## Setting with empty value
     wrongOutputDir <- character()
-    expM <- paste("'outputDirectory' slot is empty. Please fill it.")
+    expM <- "'outputDirectory' slot is empty. Please fill it."
     expect_error(setOutputDirectory(scr) <- wrongOutputDir, regexp=expM)
 })
 
@@ -147,7 +147,7 @@ test_that("setSceNorm works properly", {
     
     ## Setting with wrong value
     wrongSceNorm <- "Single Cell Experiment"
-    expM <- paste("assignment of an object of class “character” is not valid",
+    expM <- paste0("assignment of an object of class “character” is not valid",
                     "for @‘sceNorm")
     expect_error(setSceNorm(scr) <- wrongSceNorm, regexp=expM)
 
@@ -162,12 +162,12 @@ test_that("setTSNEList works properly", {
     
     ## Setting with empty list
     newList <- list()
-    expM <- paste("tSNEList is empty. This should be a list of Tsne objects")
+    expM <- "tSNEList is empty. This should be a list of Tsne objects"
     expect_error(setTSNEList(scr) <- newList, regexp=expM)
     
     ## Setting with wrong list
     newList <- list(1, 2, 3)
-    expM <- paste("tSNEList should be a list of Tsne objects.")
+    expM <- "tSNEList should be a list of Tsne objects."
     expect_error(setTSNEList(scr) <- newList, regexp=expM)
 })
 
@@ -180,13 +180,12 @@ test_that("setDbscanList works properly", {
     
     ## Setting with empty list
     newList <- list()
-    expM <- paste("dbscanList is empty. This should be a list of",
-                    "Dbscan objects")
+    expM <- "dbscanList is empty. This should be a list of Dbscan objects"
     expect_error(setDbscanList(scr) <- newList, regexp=expM)
     
     ## Setting with wrong list
     newList <- list(1, 2, 3)
-    expM <- paste("dbscanList should be a list of Dbscan objects.")
+    expM <- "dbscanList should be a list of Dbscan objects."
     expect_error(setDbscanList(scr) <- newList, regexp=expM)
 })
 
@@ -201,7 +200,7 @@ test_that("cellsSimilarityMatrix works properly", {
     
     ## Setting with wrong value
     wrongCCI <- matrix(ncol=3, nrow=2, data=seq(6))
-    expM <- paste("'cellsSimilarityMatrix' should have column and row names",
+    expM <- paste0("'cellsSimilarityMatrix' should have column and row names",
                 "corresponding to cell names.")
     expect_error(setCellsSimilarityMatrix(scr) <- wrongCCI, regexp=expM)
 
@@ -209,7 +208,7 @@ test_that("cellsSimilarityMatrix works properly", {
     wrongCCI <- matrix(ncol=3, nrow=3, data=seq(9))
     rownames(wrongCCI) <- c("c1", "c2", "c3")
     colnames(wrongCCI) <- c("c3", "c1", "c2")
-    expM <- paste("'cellsSimilarityMatrix' should be a square matrix with",
+    expM <- paste0("'cellsSimilarityMatrix' should be a square matrix with",
             "identical names in rows and columns.")
     expect_error(setCellsSimilarityMatrix(scr) <- wrongCCI, regexp=expM)
     
@@ -219,7 +218,7 @@ test_that("cellsSimilarityMatrix works properly", {
     rownames(wrongCCI) <- c("c1", "c2", "c3")
     colnames(wrongCCI) <-  c("c1", "c2", "c3")
     
-    expM <- paste("'cellsSimilarityMatrix' should contain only numeric values.")
+    expM <- "'cellsSimilarityMatrix' should contain only numeric values."
     expect_error(setCellsSimilarityMatrix(scr) <- wrongCCI, regexp=expM)
 })
 
@@ -234,15 +233,15 @@ test_that("clustersSimilarityMatrix works properly", {
     
     ## Setting with wrong value
     wrongCSM <- matrix(ncol=3, nrow=2, data=seq(6))
-    expM <- paste("'clustersSimilarityMatrix' should have column and row names",
-        "corresponding to cluster names.")
+    expM <- paste0("'clustersSimilarityMatrix' should have column and row ",
+            "names corresponding to cluster names.")
     expect_error(setClustersSimilarityMatrix(scr) <- wrongCSM, regexp=expM)
     
     ## Setting with matrix non identical names in row and columns
     wrongCSM <- matrix(ncol=3, nrow=3, data=seq(9))
     rownames(wrongCSM) <- c("1", "2", "3")
     colnames(wrongCSM) <- c("3", "2", "1")
-    expM <- paste("'clustersSimilarityMatrix' should be a square matrix with",
+    expM <- paste0("'clustersSimilarityMatrix' should be a square matrix with",
         "identical names in rows and colums.")
     expect_error(setClustersSimilarityMatrix(scr) <- wrongCSM, regexp=expM)
     
@@ -250,7 +249,7 @@ test_that("clustersSimilarityMatrix works properly", {
     wrongCSM <- matrix(rep("toto", 9), ncol=3, nrow=3)
     rownames(wrongCSM) <- c("1", "2", "3")
     colnames(wrongCSM) <- c("1", "2", "3")
-    expM <- paste("'clustersSimilarityMatrix' should contain only numeric",
+    expM <- paste0("'clustersSimilarityMatrix' should contain only numeric",
         "values.")
     expect_error(setClustersSimilarityMatrix(scr) <- wrongCSM, regexp=expM)
 })
@@ -267,7 +266,7 @@ test_that("markerGenesList works properly", {
     
     ## Setting with wrong list
     wrongList <- list(1, 2, 3)
-    expM <- paste("markerGenesList' slot should contain a list of dataframes",
+    expM <- paste0("markerGenesList' slot should contain a list of dataframes",
                     "with at least following columns : 'Gene'," ,
                     "'mean_log10_fdr', 'n_05', 'score")
     expect_error(setMarkerGenesList(scr) <- wrongList, regexp=expM)
@@ -284,12 +283,12 @@ test_that("clustersMarkers works properly", {
     
     ## Setting with empty df
     wrongDF <- data.frame()
-    expM <- paste("clusterMarkers is empty. This should be a dataframe.")
+    expM <- "clusterMarkers is empty. This should be a dataframe."
     expect_error(setClustersMarkers(scr) <- wrongDF, regexp=expM)
     
     ## Setting df with wrong colnames
     wrongDF <- data.frame(3)
-    expM <- paste("The clusterMarkers data frame should have the columns", 
+    expM <- paste0("The clusterMarkers data frame should have the columns", 
                     "'geneName' and 'clusters'")
     expect_error(setClustersMarkers(scr) <- wrongDF, regexp=expM)
 })
@@ -325,7 +324,7 @@ test_that("genesInfos works properly", {
     
     ## Setting with empty df
     wrongDF <- data.frame()
-    expM <- paste("genesInfos is empty. This should be a dataframe.")
+    expM <- paste0("genesInfos is empty. This should be a dataframe.")
     expect_error(setGenesInfos(scr) <- wrongDF, regexp=expM)
     
     ## Setting df with wrong colnames
