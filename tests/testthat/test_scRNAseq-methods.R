@@ -288,27 +288,29 @@ test_that("Errors are thrown when creating scr", {
                      outputDirectory = outputDirectory,
                      cellSimMat = wrongCCIchar), regexp = expM)
      
-#             
-#      
-#          !!!!!!!!!!!!!!!!! ADD TEST
-#  
-#  f(is.null(rownames(clustersSimilarityMatrix)) ||
-#                  is.null(colnames(clustersSimilarityMatrix)))
-#  stop("'clustersSimilarityMatrix' should have column and row names ",
-#          "corresponding to cluster names.")
-#  
-#  if(isFALSE(identical(colnames(clustersSimilarityMatrix),
-#                  rownames(clustersSimilarityMatrix))))
-#      stop("'clustersSimilarityMatrix' should be a square matrix with ",
-#              "identical names in rows and colums.")
-#  
-#  if(isFALSE(all(
-#                  vapply(clustersSimilarityMatrix, is, class2 = "numeric",
-#                          FUN.VALUE = logical(1)))))
-#      stop("'clustersSimilarityMatrix' should contain only numeric ",
-#              "values.")
-#  
-#       !!!!!!!!!!!!!!!!!!!!!!!!!!!
+            expM <- paste0("'clustersSimilarityMatrix' should have column ",
+                    "and row names corresponding to cluster names.")
+            expect_error(singlecellRNAseq(experimentName = experimentName, 
+                  countMatrix     = countMatrix, 
+                  species         = "mouse",
+                  outputDirectory = outputDirectory,
+                  clustSimMat = wrongCCI), regexp = expM)
+  
+            expM <- paste0("'clustersSimilarityMatrix' should be a square ",
+                    "matrix with identical names in rows and colums.")
+            expect_error(singlecellRNAseq(experimentName = experimentName, 
+                  countMatrix     = countMatrix, 
+                  species         = "mouse",
+                  outputDirectory = outputDirectory,
+                  clustSimMat = wrongCCIbis), regexp = expM)
+  
+            expM <- paste0("'clustersSimilarityMatrix' should contain only ",
+                    "numeric values.")
+            expect_error(singlecellRNAseq(experimentName = experimentName, 
+                  countMatrix     = countMatrix, 
+                  species         = "mouse",
+                  outputDirectory = outputDirectory,
+                  clustSimMat = wrongCCIchar), regexp = expM)
                
              expM <- paste0("'clustersSimiliratyOrdered' slot should contain ",
                      "the same clusters as 'clustersSimilarityMatrix'.")
@@ -878,8 +880,8 @@ test_that("plotGeneExpression work properly", {
     
     ## Test with incorrect savePlot
     expM <- "savePlot should be a boolean."
-    expect_error(plotGeneExpression(scrFinal, geneName = geneName, savePlot="str1"), 
-            expM)
+    expect_error(plotGeneExpression(scrFinal, geneName = geneName, 
+                    savePlot="str1"), expM)
     
     ## Test with incorrect width
     expM <- "width should be a numeric."
