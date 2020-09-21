@@ -325,7 +325,7 @@ test_that("genesInfos works properly", {
     
     ## Setting with empty df
     wrongDF <- data.frame()
-    expM <- paste0("genesInfos is empty. This should be a dataframe.")
+    expM <- paste0("genesInfos is empty. This should be a dataframe")
     expect_error(setGenesInfos(scr) <- wrongDF, regexp=expM)
     
     ## Setting df with wrong colnames
