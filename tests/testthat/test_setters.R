@@ -180,7 +180,7 @@ test_that("setDbscanList works properly", {
     
     ## Setting with empty list
     newList <- list()
-    expM <- "dbscanList is empty. This should be a list of dbscan objects.\n"
+    expM <- "dbscanList is empty. This should be a list of dbScan objects.\n"
     expect_error(setDbscanList(scr) <- newList, regexp=expM)
     
     ## Setting with wrong list
