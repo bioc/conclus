@@ -283,7 +283,7 @@ test_that("clustersMarkers works properly", {
     
     ## Setting with empty df
     wrongDF <- data.frame()
-    expM <- "clusterMarkers is empty. This should be a dataframe."
+    expM <- "clusterMarkers is empty. This should be a dataframe"
     expect_error(setClustersMarkers(scr) <- wrongDF, regexp=expM)
     
     ## Setting df with wrong colnames
