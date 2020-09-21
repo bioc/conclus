@@ -64,14 +64,14 @@ test_that("setCountMatrix works properly", {
 
     ## Setting with matrix of NAs
     wrongCountMatrix <- matrix(rep(NA,1000), ncol = 100)
-    expM <- paste("The counts should be whole numbers.",
-                    "Please check your count matrix.")
+    expM <- paste0("The count matrix is empty or does not contain ",
+            "whole numbers. Please check your count matrix.\n")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with matrix of characters
     wrongCountMatrix <- matrix(rep("toto", 1000), ncol = 100)
-    expM <- paste("The counts should be whole numbers.",
-                    "Please check your count matrix.")
+    expM <- paste0("The count matrix is empty or does not contain ",
+            "whole numbers. Please check your count matrix.\n")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with matrix without rownames
