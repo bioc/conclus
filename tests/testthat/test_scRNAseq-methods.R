@@ -146,17 +146,17 @@ test_that("Errors are thrown when creating scr", {
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
             
-            expM <- paste0("Not enough cells in the count matrix. ",
-                            "There should be at leat 100 cells. The current ",
-                            "count matrix contains 1 cells.\n")
+            expM <- paste0("Not enough cells in the count matrix. There ",
+                    "Should be at leat 100 cells. The current count matrix ",
+                    "contains 1 cells.\n")
             expect_error(singlecellRNAseq(experimentName  = experimentName, 
                             countMatrix     = matrix(), 
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
             
-            expM <- paste0("Not enough cells in the count matrix. There should",
-                    " be at leat 100 cells. The current count matrix contains",
-                    " 50 cells.\n")
+            expM <- paste0("Not enough cells in the count matrix. There Should",
+                    " be at leat 100 cells. The current count matrix contains ",
+                    "50 cells.\n")
             expect_error(singlecellRNAseq(experimentName  = experimentName, 
                             countMatrix     = smallMatrix, 
                             species         = "mouse",
