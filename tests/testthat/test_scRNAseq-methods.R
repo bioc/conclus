@@ -132,13 +132,6 @@ test_that("Errors are thrown when creating scr", {
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
             
-            expM <- paste0("'countMatrix' slot is empty. It should be a matrix",
-                    " containing at leat 100 cells.")
-            expect_error(singlecellRNAseq(experimentName  = experimentName, 
-                            countMatrix     = matrix(), 
-                            species         = "mouse",
-                            outputDirectory = outputDirectory), regexp = expM)
-            
             expM <- paste0("Not enough cells in the count matrix. ",
                             "There should be at leat 100 cells. The current ",
                             "count matrix contains 1 cells.")
@@ -154,6 +147,31 @@ test_that("Errors are thrown when creating scr", {
                             countMatrix     = smallMatrix, 
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
+            
+#            !!!!!!!!! DO THE TESTS
+#            
+#            
+#            wrongCountMatrix <- matrix(rep("toto", 1000), ncol = 100)
+#            
+#            expect_error(singlecellRNAseq(experimentName  = experimentName, 
+#                            countMatrix     = wrongCountMatrix, 
+#                            species         = "mouse",
+#                            outputDirectory = outputDirectory), regexp = expM)
+#            
+#            
+#                    if(isFALSE(is.numeric(countMatrix)))
+#                        stop("The count matrix is empty or does not contain whole numbers. Please check your ",
+#                                "count matrix.\n")
+#            
+#            if(isFALSE(is.character(rownames(countMatrix))))
+#                stop("The name of the lines should be character class. ",
+#                        "Please check your count matrix.\n")
+#            
+#            if(isFALSE(is.character(colnames(countMatrix))))
+#                stop("The name of the columns should be character class. ",
+#                        "Please check your count matrix.\n")          
+#            !!!!!!!!!!!!
+            
             
             expM <- paste0("species should be 'mouse' or 'human'. '' is ",
                     "currently not supported.")
@@ -181,7 +199,7 @@ test_that("Errors are thrown when creating scr", {
                             countMatrix     = countMatrix, 
                             species         = "human",
                             outputDirectory = "path dir"), regexp = expM)
-            
+                    
              expM <- "tSNEList is empty. This should be a list of tSNE objects."
              expect_error(singlecellRNAseq(experimentName = experimentName, 
                      countMatrix     = countMatrix, 
@@ -206,6 +224,17 @@ test_that("Errors are thrown when creating scr", {
                                              perplexity = 4,
                                              coordinates = matrix(seq_len(9), 
                                                      ncol=3)))), regexp = expM)
+            
+#             !!!!!!! ADD TESTS
+#             
+#             if(isFALSE(all(vapply(tSNEList, is, class2 = "Tsne",
+#                                     FUN.VALUE = logical(1)))))
+#                 stop("tSNEList should be a list of Tsne objects.")
+#             
+#             
+#             !!!!!!!
+                     
+             
              
              expM <- paste0("dbscanList is empty. This should be a list of ",
                      "dbScan objects.")
@@ -223,22 +252,60 @@ test_that("Errors are thrown when creating scr", {
                      outputDirectory = outputDirectory,
                      dbscanlist = dbscanListWrong), regexp = expM)
              
-             expM <- paste0("'cellsSimilarityMatrix' slot should contain a ",
-                     "square matrix.")
-             expect_error(singlecellRNAseq(experimentName = experimentName, 
-             countMatrix     = countMatrix, 
-             species         = "mouse",
-             outputDirectory = outputDirectory,
-             cellSimMat = csm[1:2,]), regexp = expM)
-             
-             expM <- paste0("'clustersSimilarityMatrix' slot should contain a ",
-                     "square matrix.")
-             expect_error(singlecellRNAseq(experimentName = experimentName, 
-                 countMatrix     = countMatrix, 
-                 species         = "mouse",
-                 outputDirectory = outputDirectory,
-                 clustSimMat = csm[1:2,]), regexp = expM)
-             
+#     !!!!!!!!!! ADD TESTS
+#     
+#     
+#     if(isFALSE(all(
+#                     vapply(dbscanList, is, class2 = "Dbscan", FUN.VALUE = logical(1)))))
+#         stop("dbscanList should be a list of Dbscan objects.")
+#     
+#     
+#     !!!!!!!!!!!
+#             
+#     
+#     
+#     !!!!!!!!!!!! ADD TESTS
+#     
+#     if(is.null(rownames(cellsSimilarityMatrix)) ||
+#             is.null(colnames(cellsSimilarityMatrix)))
+#         stop("'cellsSimilarityMatrix' should have column and row names ",
+#                 "corresponding to cell names.")
+#     
+#     if(isFALSE(identical(colnames(cellsSimilarityMatrix),
+#                     rownames(cellsSimilarityMatrix))))
+#         stop("'cellsSimilarityMatrix' should be a square matrix with ",
+#                 "identical names in rows and columns.")
+#     
+#     if(isFALSE(all(
+#                     vapply(cellsSimilarityMatrix, is, class2 = "numeric",
+#                             FUN.VALUE = logical(1)))))
+#         stop("'cellsSimilarityMatrix' should contain only numeric values.")
+#     
+#     
+#     
+#     !!!!!!!!!!!!!!
+#             
+#      
+#          !!!!!!!!!!!!!!!!! ADD TEST
+#  
+#  f(is.null(rownames(clustersSimilarityMatrix)) ||
+#                  is.null(colnames(clustersSimilarityMatrix)))
+#  stop("'clustersSimilarityMatrix' should have column and row names ",
+#          "corresponding to cluster names.")
+#  
+#  if(isFALSE(identical(colnames(clustersSimilarityMatrix),
+#                  rownames(clustersSimilarityMatrix))))
+#      stop("'clustersSimilarityMatrix' should be a square matrix with ",
+#              "identical names in rows and colums.")
+#  
+#  if(isFALSE(all(
+#                  vapply(clustersSimilarityMatrix, is, class2 = "numeric",
+#                          FUN.VALUE = logical(1)))))
+#      stop("'clustersSimilarityMatrix' should contain only numeric ",
+#              "values.")
+#  
+#       !!!!!!!!!!!!!!!!!!!!!!!!!!!
+               
              expM <- paste0("'clustersSimiliratyOrdered' slot should contain ",
                      "the same clusters as 'clustersSimilarityMatrix'.")
              expect_error(singlecellRNAseq(experimentName = experimentName,
