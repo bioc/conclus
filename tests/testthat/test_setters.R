@@ -1,4 +1,6 @@
 library(conclus)
+library(testthat)
+
 ## Data
 
 outputDirectory <- "YourOutputDirectory"
