@@ -76,7 +76,7 @@ test_that("setCountMatrix works properly", {
     
     ## Setting with matrix without rownames
     wrongCountMatrix <- matrix(seq(10000), ncol = 100)
-    expM <- paste0("The name of the lines should be character class.",
+    expM <- paste0("The name of the lines should be character class. ",
                     "Please check your count matrix.")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
