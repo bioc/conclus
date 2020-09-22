@@ -1,6 +1,6 @@
 library(conclus)
 library(SingleCellExperiment)
-library(testthat)
+
 
 ## Data
 
