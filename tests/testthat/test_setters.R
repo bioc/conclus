@@ -1,6 +1,3 @@
-library(conclus)
-
-
 ## Data
 
 outputDirectory <- "YourOutputDirectory"

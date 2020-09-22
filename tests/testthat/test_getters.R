@@ -1,7 +1,3 @@
-library(conclus)
-library(SingleCellExperiment)
-
-
 ## Data
 
 outputDirectory <- "YourOutputDirectory"
