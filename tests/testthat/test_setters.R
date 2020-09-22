@@ -48,9 +48,7 @@ test_that("setExperimentName works properly", {
     expect_equal("newName", getExperimentName(scr))
     
     ## Setting with wrong value
-    expM <- paste0("assignment of an object of class \"numeric\" is not valid ",
-            "for @'experimentName' in an object of class \"scRNAseq\"; ",
-            "is(value, \"character\") is not TRUE")
+    expM <- paste0("assignment of an object of class \"numeric\" is not valid for @'experimentName' in an object of class \"scRNAseq\"; is(value, \"character\") is not TRUE")
     expect_error(setExperimentName(scr) <- 1, regexp=expM)
 })
 
@@ -94,9 +92,7 @@ test_that("setCountMatrix works properly", {
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
     
     ## Setting with character instead of matrix
-    expM <- paste0("assignment of an object of class \"character\" is not ",
-            "valid for @'countMatrix' in an object of class \"scRNAseq\"; ",
-            "is(value, \"matrix\") is not TRUE")
+    expM <- paste0("assignment of an object of class \"character\" is not valid for @'countMatrix' in an object of class \"scRNAseq\"; is(value, \"matrix\") is not TRUE")
     expect_error(setCountMatrix(scr) <- "name", regexp=expM)
 })
 
@@ -115,9 +111,7 @@ test_that("setSpecies works properly", {
     
     ## Setting with wrong value
     wrongSpecies <- 1
-    expM <- paste0("assignment of an object of class \"numeric\" is not valid ",
-            "for @'species' in an object of class \"scRNAseq\"; ",
-            "is(value, \"character\") is not TRUE")
+    expM <- paste0("assignment of an object of class \"numeric\" is not valid for @'species' in an object of class \"scRNAseq\"; is(value, \"character\") is not TRUE")
     expect_error(setSpecies(scr) <- wrongSpecies, regexp=expM)
 })
 
@@ -149,9 +143,7 @@ test_that("setSceNorm works properly", {
     
     ## Setting with wrong value
     wrongSceNorm <- "Single Cell Experiment"
-    expM <- paste0("assignment of an object of class \"character\" is not ",
-            "valid for @'sceNorm' in an object of class \"scRNAseq\"; ",
-            "is(value, \"SingleCellExperiment\") is not TRUE")
+    expM <- paste0("assignment of an object of class \"character\" is not valid for @'sceNorm' in an object of class \"scRNAseq\"; is(value, \"SingleCellExperiment\") is not TRUE")
     expect_error(setSceNorm(scr) <- wrongSceNorm, regexp=expM)
 
 })
