@@ -1,4 +1,5 @@
 library(conclus)
+library(testthat)
 
 
 ## Data
@@ -424,6 +425,29 @@ test_that("Normalization works properly", {
                                     outputDirectory = outputDirectory,
                                     species         = "melanogaster")), 
                     regexp=expM)
+            
+            badCountMatrix <- countMatrix[1:100, 1:100]
+            badCountMatrix[badCountMatrix > 0] <- 1
+            expM <- paste("Any of your cells has a sum more than 100 genes.",
+                        "The first step of the cell filtering is to keep cells",
+                        "with this feature. Please check the count matrix.")
+            expect_error(normaliseCountMatrix(singlecellRNAseq(
+                                        experimentName = experimentName, 
+                                        countMatrix     = badCountMatrix, 
+                                        outputDirectory = outputDirectory,
+                                        species         = "mouse")), 
+                          regexp=expM)
+            
+            expM <- paste("There are no more genes after filtering. Maybe",
+                            "the count matrix contains only genes which are",
+                            "less than in 10 cells or more than",
+                            "all-10 cells. Please check the count matrix.")
+            expect_error(normaliseCountMatrix(singlecellRNAseq(
+                                experimentName = experimentName, 
+                                countMatrix     = countMatrix[1:100, 1:100], 
+                                outputDirectory = outputDirectory,
+                                species         = "mouse")), 
+                        regexp=expM)
 })
 
 
@@ -467,7 +491,7 @@ test_that("Tsne works properly", {
                     "'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
                     " on the object before.")
             expect_error(generateTSNECoordinates(scr, cores=2),
-                         regexp=expM)
+                        regexp=expM)
 })
 
 
