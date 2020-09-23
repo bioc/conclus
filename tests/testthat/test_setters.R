@@ -49,11 +49,6 @@ test_that("setExperimentName works properly", {
     ## Setting with correct value
     setExperimentName(scr) <- "newName"
     expect_equal("newName", getExperimentName(scr))
-    
-    ## Setting with wrong value
-    expM <- paste0("assignment of an object of class “numeric” is not valid",
-            " for @‘experimentName’")
-    expect_error(setExperimentName(scr) <- 1, regexp=expM)
 })
 
 
@@ -94,11 +89,6 @@ test_that("setCountMatrix works properly", {
     expM <- paste0("Not enough cells in the count matrix. There Should be at",
             " leat 100 cells. The current count matrix contains 50 cells.\n")
     expect_error(setCountMatrix(scr) <- wrongCountMatrix, regexp=expM)
-    
-    ## Setting with character instead of matrix
-    expM <- paste0("assignment of an object of class “character” is not valid",
-                    " for @‘countMatrix’")
-    expect_error(setCountMatrix(scr) <- "name", regexp=expM)
 })
 
 
@@ -112,12 +102,6 @@ test_that("setSpecies works properly", {
     wrongSpecies <- "toto"
     expM <- paste0("species should be 'mouse' or 'human'. 'toto' is currently",
             " not supported.")
-    expect_error(setSpecies(scr) <- wrongSpecies, regexp=expM)
-    
-    ## Setting with wrong value
-    wrongSpecies <- 1
-    expM <- paste0("assignment of an object of class “numeric” is not valid",
-                    " for @‘species’")
     expect_error(setSpecies(scr) <- wrongSpecies, regexp=expM)
 })
 
@@ -146,13 +130,6 @@ test_that("setSceNorm works properly", {
     newSceNorm <- SingleCellExperiment::SingleCellExperiment()
     setSceNorm(scr) <- newSceNorm
     expect_equal(newSceNorm, getSceNorm(scr))
-    
-    ## Setting with wrong value
-    wrongSceNorm <- "Single Cell Experiment"
-    expM <- paste0("assignment of an object of class “character” is not valid",
-                    " for @‘sceNorm")
-    expect_error(setSceNorm(scr) <- wrongSceNorm, regexp=expM)
-
 })
 
 
