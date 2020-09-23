@@ -157,13 +157,17 @@
 .annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
         lengthSymbols, symbolGenes){
     
-    if(!isTRUE(all.equal(length(ensemblGenes), 0)))
+    if(!isTRUE(all.equal(length(ensemblGenes), 0))) {
         rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
-                genomeAnnot)
+                                            genomeAnnot)
+    }else
+        rowdataEnsembl <- NULL
     
-    if(!isTRUE(all.equal(lengthSymbols, 0)))
+    if(!isTRUE(all.equal(lengthSymbols, 0))) {
         rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot) 
-    
+    }else
+        rowdataSymbol <- NULL
+
     rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
     return(rowdata)
 }
@@ -366,22 +370,23 @@
 .filterCells <- function(countMatrix, colData, genesSumThr=100,
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
-
     message("Running filterCells.")
-    countMatrix <- countMatrix[,colSums(countMatrix) > genesSumThr]
-    colData <- colData[colnames(countMatrix),]
+    countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
+    if (isTRUE(all.equal(ncol(countMatrix), 0)))
+        stop("Any of your cells has a sum more than 100 genes. The first step ",
+            "of the cell filtering is to keep cells with this feature. ",
+            "Please check the count matrix.")
+    
+    colData <- colData[colnames(countMatrix), ]
     mb <- MoreBetter
     mw <- MoreWorse
-    columnNames <- c(mb,mw)
+    columnNames <- c(mb, mw)
 
     ## Create the report table
     reportTable <- unlist(lapply(columnNames, .createReportTable, colData,
                                     mb, mw))
-    reportTable <- matrix(reportTable, ncol=length(columnNames), )
-    colnames(reportTable) <- columnNames
-
-    ## Add rownames to the report table
-    rownames(reportTable) <- colData$cellName
+    reportTable <- matrix(reportTable, ncol=length(columnNames),
+                        dimnames=list(colData$cellName, columnNames))
 
     ## Add cell names column to the report table
     reportTable <- data.frame(cellName=colData$cellName, reportTable)
@@ -562,7 +567,7 @@
 
     ## internal function, filters genes which are more than
     ## in 10 cells and less than (all-10) cells
-
+    message("Running filterGenes.")
     selRows <- ((rowSums(countMatrix[, ] >= 1)) > 10)
     countMatrix <- countMatrix[selRows, ]
     rowData <- rowData[rowData$nameInCountMatrix %in% rownames(countMatrix), ]
@@ -626,7 +631,8 @@
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @return A single cell experiment object
 .filterSCE <- function(alreadyCellFiltered, countMatrix, coldata, rowdata){
-    
+            
+
     if(!alreadyCellFiltered){
         
         filterCellsResult <- .filterCells(countMatrix, coldata)
@@ -634,9 +640,19 @@
         coldata <- filterCellsResult[[2]]
     }
     
+    if(isTRUE(nrow(coldata) == 0))
+        stop("There are no more cells after filtering. Maybe the ", 
+            "count matrix does not contain enough informative cells. ",
+            "Please check the count matrix.")
+    
     filterGenesResult <- .filterGenes(countMatrix, rowdata)
     countMatrix <- filterGenesResult[[1]]
     rowdata <- filterGenesResult[[2]]
+    
+    if(isTRUE(nrow(rowdata) == 0))
+        stop("There are no more genes after filtering. Maybe the count matrix ",
+            "contains only genes which are less than in 10 cells or more than ",
+            "all-10 cells. Please check the count matrix.")
     
     stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
     stopifnot(all(colnames(countMatrix) == rownames(coldata)))
@@ -730,7 +746,6 @@ setMethod(
 
         .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
                 runQuickCluster)
-
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
         rowdata <- .annotateGenes(countMatrix, species = species,
