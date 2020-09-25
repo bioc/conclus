@@ -108,13 +108,12 @@
     tTestPval <- data.frame(row.names=rownames(mat))
 
     tTestPval <- lapply(otherGroups, function(currentOther){
-
                 tTestPval[, paste0("vs_", currentOther)] <- NA
-                x <- mat[, colDF[, c(colLabel)] == currentGroup]
-                y <- mat[, colDF[, c(colLabel)] == currentOther]
-                t <- (rowMeans(x)-rowMeans(y))/sqrt(apply(mat, 1,
-                                var)*(1 / ncol(x) + 1 / ncol(y)))
-                df <- ncol(x)+ncol(y)-2
+                x <- as.matrix(mat[, colDF[, c(colLabel)] == currentGroup])
+                y <- as.matrix(mat[, colDF[, c(colLabel)] == currentOther])
+                t <- (rowMeans(x) - rowMeans(y)) / sqrt(apply(mat, 1,
+                                var) * (1 / ncol(x) + 1 / ncol(y)))
+                df <- ncol(x) + ncol(y) - 2
                 tTestPval[, paste0("vs_", currentOther)] <- pt(t,
                         df, lower.tail=FALSE)
                 return(tTestPval)
@@ -446,6 +445,7 @@ setMethod(
     return(db1)
 }
 
+
 .returnDB2 <- function(genes, ensembl){
 
     db2 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
@@ -568,32 +568,49 @@ setMethod(
     databaseDict <- c(mouse = "mmusculus_gene_ensembl",
             human = "hsapiens_gene_ensembl")
     dataset <- databaseDict[species]
-    ensembl <- useEnsembl(biomart="genes", dataset=dataset)
-    
+    c <- 1
+repeat{
+    ensembl <- try(useEnsembl(biomart="genes", dataset=dataset))
+    if(isTRUE(is(ensembl, "try-error"))){
+        error_type <- attr(ensembl, "condition")
+        regex <- "curl::curl_fetch_memory(url, handle = handle)"
+        
+        ## If there is this specific error, getBM is repeated
+        if(isTRUE(grepl(pattern=regex, x=error_type$message))){
+            ## Five attempts to succeed
+            if(c <= 5){
+                message("An error relating to BioMart package has ",
+                        "occurred. Re-running of function useEnsembl, ",
+                        "attempt n.", c, "...")
+                c <- c + 1
+            }else
+                stop("There is a problem of connexion with BioMart for ",
+                    "now. Please retry later.")
+        }
+    }else{
+        print("Connected with success.")
+        break
+        }
+    }
     ## Query biomart
     database <- .queryBiomart(genes, ensembl)
-    
+
     ## Group the GO id and the uniprot Id
-    spDB <- .groupGOandUniprotID(speDbID, speDBdescription, genes, 
-            ensembl)
+    spDB <- .groupGOandUniprotID(speDbID, speDBdescription, genes, ensembl)
     
-    ## Merge the second column, the first already existing in the first
-    ## table
+    ## Merge the second column, the first already existing in the first table
     if(!is.null(spDB))
-        database <- merge(x = database, y = spDB, by =
-                        c("uniprot_gn_symbol", "external_gene_name"),
-                all.x = TRUE)
+        database <- merge(x = database, all.x = TRUE, y = spDB, by =
+                        c("uniprot_gn_symbol", "external_gene_name"))
     
     ## Add cluster column
     database <- merge(x = database, y = genes,
-            by.x = "uniprot_gn_symbol",  by.y = "geneName",
-            all.x = TRUE)
+            by.x = "uniprot_gn_symbol",  by.y = "geneName", all.x = TRUE)
     
     ## Add Symbol column
     database <- cbind(database, Symbol = database$uniprot_gn_symbol)
     
     return(database)
-    
 }
 
 #' .orderCol
