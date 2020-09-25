@@ -652,9 +652,8 @@ setMethod(
 
     resultMedList <- lapply(clustersNames, function(currentClustName,
                     fullmat, clusts){
-
-                return(matrixStats::rowMedians(fullmat[, clusts ==
-                                                currentClustName]))
+                return(matrixStats::rowMedians(as.matrix(fullmat[, clusts ==
+                                                currentClustName])))
             }, mat, clusters)
     medMat <- do.call(cbind, resultMedList)
     return(medMat)
