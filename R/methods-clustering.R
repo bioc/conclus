@@ -620,6 +620,10 @@ setMethod(
 
             setCellsSimilarityMatrix(theObject) <- cellsSimilarityMatrix
             setSceNorm(theObject) <- sceObject
+            message(paste0(capture.output(
+                table(SummarizedExperiment::colData(sceObject)$clusters,
+                dnn=list("Cells distribution by clusters: "))),collapse = "\n"))
+
             return(theObject)
         })
 
