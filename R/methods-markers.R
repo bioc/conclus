@@ -569,26 +569,23 @@ setMethod(
             human = "hsapiens_gene_ensembl")
     dataset <- databaseDict[species]
     c <- 1
-repeat{
-    ensembl <- try(useEnsembl(biomart="genes", dataset=dataset))
+    repeat{
+    message("Connecting to the BioMart database. Attempt number ", c, " ...")
+    ensembl <- try(useEnsembl(biomart="genes", dataset=dataset), silent=TRUE)
     if(isTRUE(is(ensembl, "try-error"))){
         error_type <- attr(ensembl, "condition")
-        regex <- "curl::curl_fetch_memory(url, handle = handle)"
-        
+        regex <- "Peer's Certificate issuer is not recognized."
         ## If there is this specific error, getBM is repeated
         if(isTRUE(grepl(pattern=regex, x=error_type$message))){
             ## Five attempts to succeed
             if(c <= 5){
-                message("An error relating to BioMart package has ",
-                        "occurred. Re-running of function useEnsembl, ",
-                        "attempt n.", c, "...")
                 c <- c + 1
             }else
                 stop("There is a problem of connexion with BioMart for ",
                     "now. Please retry later.")
         }
     }else{
-        print("Connected with success.")
+        message("Connected with success.")
         break
         }
     }
