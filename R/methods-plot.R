@@ -580,7 +580,7 @@ setMethod(
     invisible(mapply(function(currentTsne, currentName, plotPDF, width, height,
                             onefile, widthPNG, heightPNG, outputDir){
 
-                        filePath <- file.path(outputDir,currentName)
+                        filePath <- file.path(outputDir, currentName)
 
                         if(plotPDF)
                             pdf(file=paste0(filePath, ".pdf"), width=width,
@@ -896,6 +896,9 @@ setMethod(
     ## Plotting tSNE
     if(!silentPlot){
         if(is.na(tSNENb))
+            ## !!! Cette partie de code crée des fichiers Rplots.pdf !!!
+            ## !!! en dehors du dossier YourOutputDirectory !!!
+            ## !!!  alors que savePlot = False !!!
             invisible(lapply(tSNEplots, function(currentTSNE){
                                 print(currentTSNE)
                                 dev.new()}))
@@ -1054,7 +1057,7 @@ setMethod(
         .plotAndSaveTSNE(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList, 
                 plotPDF, width, height, onefile, widthPNG, heightPNG, outputdir)
         
-        if(returnPlot)
+        if(returnPlot && is.na(tSNENb))
             return(tSNEplots)
 
     })
