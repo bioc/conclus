@@ -191,16 +191,34 @@
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
     
-    message("Retrieving information about genes from biomaRt.")
-    
-    res <- getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
-                    "chromosome_name", "gene_biotype"), mart=ensembl)
+    c <- 1
+    repeat{
+    message("Retrieving information about genes from biomaRt. ", 
+            "Attempt number ", c, " ...")
+    res <- try(getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
+                "chromosome_name", "gene_biotype"), mart=ensembl), silent=TRUE)
+    if(isTRUE(is(res, "try-error"))){
+        error_type <- attr(res, "condition")
+        regex <- "Timeout was reached"
+        ## If there is this specific error, getBM is repeated
+        if(isTRUE(grepl(pattern=regex, x=error_type$message))){
+            ## Five attempts to succeed
+            if(c <= 5){
+                c <- c + 1
+            }else
+                stop("There is a problem of connexion with getBM for ",
+                    "now. Please retry later.")
+        }
+    }else{
+        message("Information retrieved with success.")
+        break
+        }
+    }
     tmp <- res[!duplicated(res$ensembl_gene_id),]
     
     rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
                             "gene_biotype")], by.x = "ENSEMBL",
-            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE,
-            sort = FALSE)
+            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
     
     rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
                             "go_id", "name_1006")], by.x = "ENSEMBL",
@@ -215,9 +233,8 @@
     rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
     rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
                             "name_1006")], by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
+            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE, 
             sort = FALSE)
-    
     return(rowdata)
 }
 
