@@ -517,7 +517,6 @@
 .addCellsInfo <- function(countMatrix, rowdataDF, coldataDF = NULL){
 
     message("Adding cell info for cells filtering.")
-
     coldata <- data.frame(cellName = colnames(countMatrix),
             stringsAsFactors = FALSE)
 
@@ -550,10 +549,11 @@
             codPer = 100*coldata$codGenes/coldata$genesNum,
             sumMtPer = 100*coldata$mtSum/coldata$genesSum,
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
-
+    
     if (!is.null(coldataDF)){
-
-        coldataDF$cellName <- rownames(coldataDF)
+        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, value = T)
+        colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
+        coldataDF$cellName <- coldata$cellName
         coldata <- merge(coldataDF, coldata, by.x = "cellName",
                 by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
     }
