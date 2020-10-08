@@ -786,7 +786,7 @@ setMethod(
     ## Verify columnName
     if(!isTRUE(all.equal(columnName, "clusters")) &&
         !isTRUE(all.equal(columnName, "noColor")) &&
-        !isTRUE(all.equal(columnName,"state")))
+        !isTRUE(all.equal(columnName, "state")))
         stop("columnName should be: clusters, noColor, or state.")
 
     ## Verify width
@@ -842,8 +842,8 @@ setMethod(
     if(isTRUE(all.equal(columnName, "noColor")))
         numberElements <- NULL
     else{
-
-        nb <- unique(SummarizedExperiment::colData(sceObject)[, columnName])
+        coldata <- SummarizedExperiment::colData(sceObject)
+        nb <- unique(coldata[, columnName])
         numberElements <- length(nb)
         colorPalette <- .choosePalette(colorPalette, numberElements)
     }
@@ -1057,7 +1057,7 @@ setMethod(
         .plotAndSaveTSNE(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList, 
                 plotPDF, width, height, onefile, widthPNG, heightPNG, outputdir)
         
-        if(returnPlot && is.na(tSNENb))
+        if(returnPlot)
             return(tSNEplots)
 
     })
@@ -1480,7 +1480,6 @@ setMethod(
     
     color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
                     "#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
-    
     pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
             show_colnames=showColnames, annotation_col=annCol,
             annotation_colors=annColors, fontsize_row=fontsizeRow,
