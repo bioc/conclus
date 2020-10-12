@@ -126,7 +126,7 @@ test_that("setSceNorm works properly", {
     ## Setting with correct object
     newSceNorm <- SingleCellExperiment::SingleCellExperiment()
     setSceNorm(scr) <- newSceNorm
-    expect_equal(newSceNorm, getSceNorm(scr))    
+    expect_equal(newSceNorm, getSceNorm(scr))
 })
 
 
