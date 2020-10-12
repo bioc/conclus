@@ -160,9 +160,13 @@
     if(!isTRUE(all.equal(length(ensemblGenes), 0)))
         rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
                 genomeAnnot)
+    else
+        rowdataEnsembl <- NULL
     
     if(!isTRUE(all.equal(lengthSymbols, 0)))
-        rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot) 
+        rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot)
+    else
+        rowdataSymbol <- NULL
     
     rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
     return(rowdata)
@@ -187,16 +191,34 @@
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
     
-    message("Retrieving information about genes from biomaRt.")
-    
-    res <- getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
-                    "chromosome_name", "gene_biotype"), mart=ensembl)
+    c <- 1
+    repeat{
+    message("Retrieving information about genes from biomaRt. ", 
+            "Attempt number ", c, " ...")
+    res <- try(getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
+                "chromosome_name", "gene_biotype"), mart=ensembl), silent=TRUE)
+    if(isTRUE(is(res, "try-error"))){
+        error_type <- attr(res, "condition")
+        regex <- "Timeout was reached"
+        ## If there is this specific error, getBM is repeated
+        if(isTRUE(grepl(pattern=regex, x=error_type$message))){
+            ## Five attempts to succeed
+            if(c <= 5){
+                c <- c + 1
+            }else
+                stop("There is a problem of connexion with getBM for ",
+                    "now. Please retry later.")
+        }
+    }else{
+        message("Information retrieved with success.")
+        break
+        }
+    }
     tmp <- res[!duplicated(res$ensembl_gene_id),]
     
     rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
                             "gene_biotype")], by.x = "ENSEMBL",
-            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE,
-            sort = FALSE)
+            by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
     
     rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
                             "go_id", "name_1006")], by.x = "ENSEMBL",
@@ -211,9 +233,8 @@
     rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
     rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
                             "name_1006")], by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
+            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE, 
             sort = FALSE)
-    
     return(rowdata)
 }
 
@@ -368,8 +389,13 @@
                         MoreWorse=c("sumMtPer")){
 
     message("Running filterCells.")
-    countMatrix <- countMatrix[,colSums(countMatrix) > genesSumThr]
-    colData <- colData[colnames(countMatrix),]
+    countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
+    if (isTRUE(all.equal(ncol(countMatrix), 0)))
+        stop("None of your cells has at least 100 genes expressed. Since the ",
+            "filtering keeps only those cells, nothing will be kept. ",
+            "Please check the count matrix.")
+    
+    colData <- colData[colnames(countMatrix), ]
     mb <- MoreBetter
     mw <- MoreWorse
     columnNames <- c(mb,mw)
@@ -377,11 +403,8 @@
     ## Create the report table
     reportTable <- unlist(lapply(columnNames, .createReportTable, colData,
                                     mb, mw))
-    reportTable <- matrix(reportTable, ncol=length(columnNames), )
-    colnames(reportTable) <- columnNames
-
-    ## Add rownames to the report table
-    rownames(reportTable) <- colData$cellName
+    reportTable <- matrix(reportTable, ncol=length(columnNames),
+                        dimnames=list(colData$cellName, columnNames))
 
     ## Add cell names column to the report table
     reportTable <- data.frame(cellName=colData$cellName, reportTable)
@@ -495,7 +518,6 @@
 .addCellsInfo <- function(countMatrix, rowdataDF, coldataDF = NULL){
 
     message("Adding cell info for cells filtering.")
-
     coldata <- data.frame(cellName = colnames(countMatrix),
             stringsAsFactors = FALSE)
 
@@ -528,10 +550,11 @@
             codPer = 100*coldata$codGenes/coldata$genesNum,
             sumMtPer = 100*coldata$mtSum/coldata$genesSum,
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
-
+    
     if (!is.null(coldataDF)){
-
-        coldataDF$cellName <- rownames(coldataDF)
+        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, value = T)
+        colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
+        coldataDF$cellName <- coldata$cellName
         coldata <- merge(coldataDF, coldata, by.x = "cellName",
                 by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
     }
@@ -562,7 +585,7 @@
 
     ## internal function, filters genes which are more than
     ## in 10 cells and less than (all-10) cells
-
+    message("Running filterGenes.")
     selRows <- ((rowSums(countMatrix[, ] >= 1)) > 10)
     countMatrix <- countMatrix[selRows, ]
     rowData <- rowData[rowData$nameInCountMatrix %in% rownames(countMatrix), ]
@@ -626,7 +649,8 @@
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @return A single cell experiment object
 .filterSCE <- function(alreadyCellFiltered, countMatrix, coldata, rowdata){
-    
+            
+
     if(!alreadyCellFiltered){
         
         filterCellsResult <- .filterCells(countMatrix, coldata)
@@ -634,9 +658,19 @@
         coldata <- filterCellsResult[[2]]
     }
     
+    if(isTRUE(nrow(coldata) == 0))
+        stop("There are no more cells after filtering. Maybe the ", 
+            "count matrix does not contain enough informative cells. ",
+            "Please check the count matrix.")
+    
     filterGenesResult <- .filterGenes(countMatrix, rowdata)
     countMatrix <- filterGenesResult[[1]]
     rowdata <- filterGenesResult[[2]]
+    
+    if(isTRUE(nrow(rowdata) == 0))
+        stop("There are no more genes after filtering. Maybe the count matrix ",
+            "contains only genes which are less than in 10 cells or more than ",
+            "all-10 cells. Please check the count matrix.")
     
     stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
     stopifnot(all(colnames(countMatrix) == rownames(coldata)))
