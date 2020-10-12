@@ -620,6 +620,10 @@ setMethod(
 
             setCellsSimilarityMatrix(theObject) <- cellsSimilarityMatrix
             setSceNorm(theObject) <- sceObject
+            message(paste0(capture.output(
+                table(SummarizedExperiment::colData(sceObject)$clusters,
+                dnn=list("Cells distribution by clusters: "))),collapse = "\n"))
+
             return(theObject)
         })
 
@@ -652,9 +656,8 @@ setMethod(
 
     resultMedList <- lapply(clustersNames, function(currentClustName,
                     fullmat, clusts){
-
-                return(matrixStats::rowMedians(fullmat[, clusts ==
-                                                currentClustName]))
+                return(matrixStats::rowMedians(as.matrix(fullmat[, clusts ==
+                                                currentClustName])))
             }, mat, clusters)
     medMat <- do.call(cbind, resultMedList)
     return(medMat)
