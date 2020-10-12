@@ -18,6 +18,9 @@ wrongNamesCountMatrix <- matrix(seq(10000), ncol = 100)
 wrongColsCountMatrix <- wrongNamesCountMatrix
 rownames(wrongColsCountMatrix) <- paste0(rep("id_", 100) , seq(100))
 
+badCountMatrix <- countMatrix[1:100, 1:100]
+badCountMatrix[badCountMatrix > 0] <- 1
+            
 
 ## Retrieve the clustering to add
 clustAddTab <- read.delim(
@@ -421,6 +424,27 @@ test_that("Normalization works properly", {
                                     outputDirectory = outputDirectory,
                                     species         = "melanogaster")), 
                     regexp=expM)
+            
+            expM <- paste0("None of your cells has at least 100 genes ",
+            "expressed. Since the filtering keeps only those cells, ","
+            nothing will be kept. Please check the count matrix.")
+            expect_error(normaliseCountMatrix(singlecellRNAseq(
+                                        experimentName = experimentName, 
+                                        countMatrix     = badCountMatrix, 
+                                        outputDirectory = outputDirectory,
+                                        species         = "mouse")), 
+                          regexp=expM)
+            
+            expM <- paste0("There are no more genes after filtering. Maybe",
+                            "the count matrix contains only genes which are",
+                            "less than in 10 cells or more than",
+                            "all-10 cells. Please check the count matrix.")
+            expect_error(normaliseCountMatrix(singlecellRNAseq(
+                                experimentName = experimentName, 
+                                countMatrix     = countMatrix[1:100, 1:100], 
+                                outputDirectory = outputDirectory,
+                                species         = "mouse")), 
+                        regexp=expM)
 })
 
 
