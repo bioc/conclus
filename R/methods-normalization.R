@@ -157,7 +157,7 @@
 .annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
         lengthSymbols, symbolGenes){
     
-    if(!isTRUE(all.equal(length(ensemblGenes), 0))) {
+    if(!isTRUE(all.equal(length(ensemblGenes), 0)))
         rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
                 genomeAnnot)
     else
