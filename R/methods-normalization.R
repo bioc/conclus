@@ -762,6 +762,17 @@ setMethod(
 
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
+        
+        if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
+                        nrow(countMatrix))))
+            stop("The provided row metadata should contain the same number ",
+                    "of rows than the matrix.")
+        
+        if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
+                        ncol(countMatrix))))
+            stop("The provided col metadata should contain the same number ",
+                    "of rows than the matrix number of columns.")
+        
         rowdata <- .annotateGenes(countMatrix, species = species,
                 rowdataDF = rowdata)
         coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
