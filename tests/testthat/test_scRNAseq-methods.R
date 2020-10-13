@@ -506,7 +506,7 @@ test_that("Tsne works properly", {
                     "'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
                     " on the object before.")
             expect_error(generateTSNECoordinates(scr, cores=2),
-                         regexp=expM)
+                        regexp=expM)
 })
 
 

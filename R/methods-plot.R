@@ -580,7 +580,7 @@ setMethod(
     invisible(mapply(function(currentTsne, currentName, plotPDF, width, height,
                             onefile, widthPNG, heightPNG, outputDir){
 
-                        filePath <- file.path(outputDir,currentName)
+                        filePath <- file.path(outputDir, currentName)
 
                         if(plotPDF)
                             pdf(file=paste0(filePath, ".pdf"), width=width,
@@ -786,7 +786,7 @@ setMethod(
     ## Verify columnName
     if(!isTRUE(all.equal(columnName, "clusters")) &&
         !isTRUE(all.equal(columnName, "noColor")) &&
-        !isTRUE(all.equal(columnName,"state")))
+        !isTRUE(all.equal(columnName, "state")))
         stop("columnName should be: clusters, noColor, or state.")
 
     ## Verify width
@@ -842,8 +842,8 @@ setMethod(
     if(isTRUE(all.equal(columnName, "noColor")))
         numberElements <- NULL
     else{
-
-        nb <- unique(SummarizedExperiment::colData(sceObject)[, columnName])
+        coldata <- SummarizedExperiment::colData(sceObject)
+        nb <- unique(coldata[, columnName])
         numberElements <- length(nb)
         colorPalette <- .choosePalette(colorPalette, numberElements)
     }
@@ -896,6 +896,9 @@ setMethod(
     ## Plotting tSNE
     if(!silentPlot){
         if(is.na(tSNENb))
+            ## !!! Cette partie de code crée des fichiers Rplots.pdf !!!
+            ## !!! en dehors du dossier YourOutputDirectory !!!
+            ## !!!  alors que savePlot = False !!!
             invisible(lapply(tSNEplots, function(currentTSNE){
                                 print(currentTSNE)
                                 dev.new()}))
@@ -1477,7 +1480,6 @@ setMethod(
     
     color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
                     "#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
-    
     pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
             show_colnames=showColnames, annotation_col=annCol,
             annotation_colors=annColors, fontsize_row=fontsizeRow,

@@ -445,6 +445,7 @@ setMethod(
     return(db1)
 }
 
+
 .returnDB2 <- function(genes, ensembl){
 
     db2 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
@@ -586,7 +587,7 @@ setMethod(
     }
     ## Query biomart
     database <- .queryBiomart(genes, ensembl)
-    
+
     ## Group the GO id and the uniprot Id
     spDB <- .groupGOandUniprotID(speDbID, speDBdescription, genes, ensembl)
     
