@@ -278,7 +278,7 @@
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
@@ -579,7 +579,7 @@ setMethod(
         if(c > 5)
             stop("There is a problem of connexion with BioMart for ",
                 "now. Please retry later.")
-        }
+        
     }else{
         message("Connected with success.")
         break
@@ -708,7 +708,7 @@ setMethod(
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
@@ -899,7 +899,7 @@ setMethod(
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,

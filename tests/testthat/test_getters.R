@@ -1,13 +1,9 @@
-library(conclus)
-library(SingleCellExperiment)
-
-
 ## Data
 
 outputDirectory <- "YourOutputDirectory"
 experimentName <- "Bergiers"
 columnsMetaData <- read.delim(
-    system.file("extdata/Bergiers_colData_filtered.tsv",
+    system.file("extdata/test_colData_filtered.tsv",
         package="conclus"))
 
 ## Creation of the count Matrix

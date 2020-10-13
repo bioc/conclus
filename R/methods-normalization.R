@@ -159,15 +159,15 @@
     
     if(!isTRUE(all.equal(length(ensemblGenes), 0))) {
         rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
-                                            genomeAnnot)
-    }else
+                genomeAnnot)
+    else
         rowdataEnsembl <- NULL
     
-    if(!isTRUE(all.equal(lengthSymbols, 0))) {
-        rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot) 
-    }else
+    if(!isTRUE(all.equal(lengthSymbols, 0)))
+        rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot)
+    else
         rowdataSymbol <- NULL
-
+    
     rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
     return(rowdata)
 }
@@ -385,8 +385,8 @@
     message("Running filterCells.")
     countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
-        stop("Any of your cells has a sum more than 100 genes. The first step ",
-            "of the cell filtering is to keep cells with this feature. ",
+        stop("None of your cells has at least 100 genes expressed. Since the ",
+            "filtering keeps only those cells, nothing will be kept. ",
             "Please check the count matrix.")
     
     colData <- colData[colnames(countMatrix), ]
@@ -729,7 +729,7 @@
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' scr <- singlecellRNAseq(experimentName = experimentName,
 #'                 countMatrix     = countMatrix,
@@ -760,6 +760,17 @@ setMethod(
                 runQuickCluster)
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
+        
+        if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
+                        nrow(countMatrix))))
+            stop("The provided row metadata should contain the same number ",
+                    "of rows than the matrix.")
+        
+        if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
+                        ncol(countMatrix))))
+            stop("The provided col metadata should contain the same number ",
+                    "of rows than the matrix number of columns.")
+        
         rowdata <- .annotateGenes(countMatrix, species = species,
                 rowdataDF = rowdata)
         coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
