@@ -578,7 +578,7 @@ setMethod(
         if(c > 5)
             stop("There is a problem of connexion with BioMart for ",
                 "now. Please retry later.")
-        }
+        
     }else{
         message("Connected with success.")
         break
