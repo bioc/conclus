@@ -730,7 +730,7 @@
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "./"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' scr <- singlecellRNAseq(experimentName = experimentName,
 #'                 countMatrix     = countMatrix,

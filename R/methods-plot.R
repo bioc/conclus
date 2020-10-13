@@ -454,7 +454,7 @@
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
@@ -970,7 +970,7 @@ setMethod(
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
@@ -1563,7 +1563,7 @@ setMethod(
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
@@ -1844,7 +1844,7 @@ setMethod(
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
@@ -2171,7 +2171,7 @@ setMethod(
 #' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
 #' columnsMetaData <- read.delim(
-#' system.file("extdata/Bergiers_colData_filtered.tsv", package="conclus"))
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,

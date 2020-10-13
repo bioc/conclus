@@ -3,7 +3,7 @@
 outputDirectory <- "YourOutputDirectory"
 experimentName <- "Bergiers"
 columnsMetaData <- read.delim(
-    system.file("extdata/Bergiers_colData_filtered.tsv", 
+    system.file("extdata/test_colData_filtered.tsv", 
             package="conclus"))
 
 ## Creation of the count Matrix
@@ -435,6 +435,14 @@ test_that("Normalization works properly", {
                                         species         = "mouse")), 
                           regexp=expM)
             
+                  
+           # !!!!!!!!!!!!!
+                    
+                    
+            #!!!!!!!!!!!!!!        
+                  
+                  
+                  
             expM <- paste0("There are no more genes after filtering. Maybe",
                             "the count matrix contains only genes which are",
                             "less than in 10 cells or more than",
