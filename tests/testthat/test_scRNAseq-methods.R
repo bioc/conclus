@@ -426,8 +426,8 @@ test_that("Normalization works properly", {
                     regexp=expM)
             
             expM <- paste0("None of your cells has at least 100 genes ",
-            "expressed. Since the filtering keeps only those cells, ","
-            nothing will be kept. Please check the count matrix.")
+            "expressed. Since the filtering keeps only those cells, ",
+            "nothing will be kept. Please check the count matrix.")
             expect_error(normaliseCountMatrix(singlecellRNAseq(
                                         experimentName = experimentName, 
                                         countMatrix     = badCountMatrix, 
@@ -435,13 +435,23 @@ test_that("Normalization works properly", {
                                         species         = "mouse")), 
                           regexp=expM)
             
-                  
-           # !!!!!!!!!!!!!
-                    
-                    
-            #!!!!!!!!!!!!!!        
-                  
-                  
+           expM <- paste0("The provided row metadata should contain the same ",
+                   "number of rows than the matrix.")
+           expect_error(normaliseCountMatrix(singlecellRNAseq(
+                experimentName = experimentName, 
+                countMatrix     = badCountMatrix, 
+                outputDirectory = outputDirectory,
+                species         = "mouse"),
+                rowdata=data.frame()), regexp=expM)
+              
+            expM <- paste0("The provided col metadata should contain the ",
+                    "same number of rows than the matrix number of columns.")
+            expect_error(normaliseCountMatrix(singlecellRNAseq(
+                experimentName = experimentName, 
+                countMatrix     = badCountMatrix, 
+                outputDirectory = outputDirectory,
+                species         = "mouse"),
+                coldata=data.frame()), regexp=expM)
                   
             expM <- paste0("There are no more genes after filtering. Maybe",
                             "the count matrix contains only genes which are",
