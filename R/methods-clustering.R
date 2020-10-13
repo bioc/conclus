@@ -576,6 +576,7 @@ setMethod(
 #' @importFrom stats as.dist
 #' @importFrom stats cutree
 #' @importFrom methods validObject
+#' @importFrom utils capture.output
 
 setMethod(
 
