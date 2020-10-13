@@ -2,7 +2,7 @@
 title: "ScRNA-seq workflow CONCLUS: from CONsensus CLUSters to a meaningful CONCLUSion"
 header-includes: \usepackage{graphicx}
 author: | 
-  | Polina Pavlovich$^1$$^2$$^3$, Nicolas Descostes$^1$*, and Christophe Lancrin$^1$
+  | Ilyess Rachedi$*, Polina Pavlovich$^1$$^2$$^3$, Nicolas Descostes$^1$, and Christophe Lancrin$^1$
   |
   | $^1$European Molecular Biology Laboratory, EMBL, Rome, Italy
   | $^2$Moscow Institute of Physics and Technology, MIPT,  Moscow, Russia
@@ -44,8 +44,10 @@ CONCLUS is organized into the following steps:
 
 # Getting help
 
-Issues can be submitted directly on github: https://github.com/lancrinlab/CONCLUS/issues. To contact us directly write to christophe.lancrin@embl.it. This package was developed by Polina Pavlovich who is now doing
-her Ph.D at the Max Planck Institute of Immunobiology and Epigenetics.
+Issues can be submitted directly on the Bioconductor forum. To contact us
+directly write to christophe.lancrin@embl.it. The principles of this package 
+were originally developed by Polina Pavlovich who is now doing her Ph.D at the
+Max Planck Institute of Immunobiology and Epigenetics.
 
 
 # Standard workflow
@@ -54,28 +56,12 @@ her Ph.D at the Max Planck Institute of Immunobiology and Epigenetics.
 
 ```{r loading_conclus, results="hide", warning = FALSE, message = FALSE}
 # required R >= 3.4.
-if(!requireNamespace("devtools"))
-	install.packages("devtools")
-
 if(!requireNamespace("BiocManager"))
 	install.packages("BiocManager")
 
-library(devtools)
-library(BiocManager)
-
 if(!requireNamespace("conclus"))
-	install_github("lancrinlab/CONCLUS", dependencies = TRUE)
+    BiocManager::install("conclus")
 ```
-
-If you get a message such as: *packages ‘BiocParallel’, ‘scran’, ‘scater’, ‘monocle’, ‘SingleCellExperiment’, ‘KEGGREST’, ‘AnnotationDbi’, ‘biomaRt’, ‘org.Mm.eg.db’, ‘S4Vectors’, ‘Biobase’ are not available (for R version 3.6.0)*,
-please run the following commands:
-
-```{r, eval = FALSE}
-install(c("BiocParallel", "scran", "scater", "monocle", "SingleCellExperiment", 
-"KEGGREST", "AnnotationDbi", "biomaRt", "org.Mm.eg.db", "S4Vectors", "Biobase"))
-install_github("lancrinlab/CONCLUS", dependencies = TRUE)
-```
-
 
 ## Quick start
 
@@ -85,47 +71,50 @@ rows -- genes. CONCLUS needs a large number of cells to collect statistics,
 we recommend using CONCLUS if you have at least 100 cells.
 
 ```{r runConclus_first, results='hide', warning = FALSE, fig.keep = 'none', message= FALSE}
+
 library(conclus)
 
 ## Replace by the path to the directory in which results should be written
 outputDirectory <- "./YourOutputDirectory"
 experimentName <- "Bergiers"
+species <- "mouse"
 
-countMatrix <- read.delim(file.path(system.file("extdata", package = "conclus"),		
-                                    "Bergiers_counts_matrix_filtered.tsv"), 
-                          stringsAsFactors = FALSE)
-columnsMetaData <- read.delim(file.path(system.file("extdata", package = "conclus"), 
-                                "Bergiers_colData_filtered.tsv"))
+countMatrix <- as.matrix(read.delim(file.path(system.file("extdata", 
+                                package = "conclus"), 
+                        "Bergiers_counts_matrix_filtered.tsv"), 
+                          stringsAsFactors = FALSE))
 
-sceObjectCONCLUS <- runCONCLUS(outputDirectory, 
-                               experimentName,
-                               columnsMetaData,
-		                       species = "mmu", 
-                               plotPDFcellSim = TRUE, # FALSE for > 2500 cells
-                               k = 10, cores = 1,
-                               statePalette = c("bisque", "cadetblue2", 
-                                                "coral1", "cornflowerblue"),
-                               deleteOutliers = FALSE)
-                               
-exportClusteringResults(sceObjectCONCLUS, outputDirectory, experimentName, 
-                        "clusters_table.tsv")
+columnsMetaData <- read.delim(file.path(system.file("extdata", 
+                        package = "conclus"), "Bergiers_colData_filtered.tsv"))
+
+                
+sceObjectCONCLUS <- runCONCLUS(outputDirectory, experimentName, countMatrix, 
+        species, columnsMetaData = columnsMetaData)
 ```
 
-Five folders will appear in your "outputDirectory": 
+In your "outputDirectory", in the folder `Resuts`, you will find a
+`heatmaps_results.pdf` with the cells similarity, the clusters similarity, and
+the cells heatmap. The sub-folder `pictures` contains all tSNE with dbscan
+coloration. You will also find sub-folders containing: 
 
-  + *output_tables*:
-  
-    - _cellsSimilarityMatrix.csv: Similarity matrix used to define the consensus clusters using every cells.
-    - _clustersSimilarityMatrix.csv: Simplified similarity matrix with median averaged cell values per cluster.
-    - _clusters_table.tsv: Cell-cluster corresponding table for defined consensus clusters.
-    - _dbscan_results.tsv: Cell-cluster corresponding table for each db-scan parameter.
-    - _tSNEResults.rds: Saved RDS object containing a matrix of all t-SNE results (for different PCs and perplexities, see below).  
-  
-  + *pictures*: This folder contains two similarity matrices clustering heatmaps. One using all cells and the other median averaged by cluster.
-                It also contains a subfolder "tSNE_pictures" containing all tSNEs generated with different PCs and perplexity parameters,
-                and colored by condition, by cluster found, by dbscan, or uncolored (see below for details).
-  + *marker_genes*: This folder contains a list of marker genes, ordered by decreasing score, for each consensus cluster.
-  + *tsnes*: Folder containing, for each PCs/complexity values, the tSNE coordinates of each cell.
+  + `1_MatrixInfo`: The normalized count matrix and its meta-data for
+    both rows and columns.
+  + `2_TSNECoordinates`: The tSNE coordinates for each parameter of principal
+    components (PCs) and perplexities.
+  + `3_dbScan`: The different clusters given by DBscan according to different
+    parameters. Each file gives a cluster number for each cell.
+  + `4_CellSimilarityMatrix`: The matrix underlying the cells similarity
+    heatmap.
+  + `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity
+    heatmap.
+  + `6_ConclusResult`: A table containing the result of the consensus
+    clustering. This table conttains two columns: clusters-cells.
+  + `7_fullMarkers`: Files containing markers for each cluster, defined by the
+    consensus clustering.
+  + `8_TopMarkers`: Files containing the top 10 markers for each cluster.
+  + `9_genesInfos`: Files containing gene information for the top markers
+    defined in the previous folder.
+
 
 Further details about how all results are generated can be found below.
 
