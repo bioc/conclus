@@ -193,7 +193,7 @@
     
     c <- 1
     repeat{
-    message("### Attempt ", c, "/5 ###",
+    message("### Attempt ", c, "/5 ### ",
             "Retrieving information about genes from biomaRt. ") 
     res <- try(getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
                 "chromosome_name", "gene_biotype"), mart=ensembl), silent=TRUE)
