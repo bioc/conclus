@@ -157,7 +157,7 @@
 .annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
         lengthSymbols, symbolGenes){
     
-    if(!isTRUE(all.equal(length(ensemblGenes), 0)))
+    if(!isTRUE(all.equal(length(ensemblGenes), 0))) {
         rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
                 genomeAnnot)
     else
@@ -191,7 +191,7 @@
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
     
-       c <- 1
+    c <- 1
     repeat{
     message("### Attempt ", c, "/5 ### ",
             "Retrieving information about genes from biomaRt. ") 
@@ -382,7 +382,6 @@
 .filterCells <- function(countMatrix, colData, genesSumThr=100,
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
-
     message("Running filterCells.")
     countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
@@ -393,7 +392,7 @@
     colData <- colData[colnames(countMatrix), ]
     mb <- MoreBetter
     mw <- MoreWorse
-    columnNames <- c(mb,mw)
+    columnNames <- c(mb, mw)
 
     ## Create the report table
     reportTable <- unlist(lapply(columnNames, .createReportTable, colData,
@@ -759,7 +758,6 @@ setMethod(
 
         .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
                 runQuickCluster)
-
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
         
