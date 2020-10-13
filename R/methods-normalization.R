@@ -191,24 +191,19 @@
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
     
-    c <- 1
+       c <- 1
     repeat{
-    message("Retrieving information about genes from biomaRt. ", 
-            "Attempt number ", c, " ...")
+    message("### Attempt ", c, "/5 ### ",
+            "Retrieving information about genes from biomaRt. ") 
     res <- try(getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
                 "chromosome_name", "gene_biotype"), mart=ensembl), silent=TRUE)
     if(isTRUE(is(res, "try-error"))){
+        c <- c + 1
         error_type <- attr(res, "condition")
-        regex <- "Timeout was reached"
-        ## If there is this specific error, getBM is repeated
-        if(isTRUE(grepl(pattern=regex, x=error_type$message))){
-            ## Five attempts to succeed
-            if(c <= 5){
-                c <- c + 1
-            }else
-                stop("There is a problem of connexion with getBM for ",
-                    "now. Please retry later.")
-        }
+        message(error_type$message)
+        if(c > 5)
+            stop("There is a problem of connexion to Ensembl for ",
+                "now. Please retry later.")
     }else{
         message("Information retrieved with success.")
         break
