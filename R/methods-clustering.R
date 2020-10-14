@@ -345,7 +345,7 @@ setMethod(
                 silent=FALSE, ...){
             
             if(!writeOutput && silent)
-                stop("writeOutput and silent, nothing will happen.")
+                stop("writeOutput=FALSE and silent=TRUE, nothing will happen.")
             
             validObject(theObject)
 
