@@ -103,6 +103,7 @@
 #' @param height Height of the pdf file. Default=7. See ?pdf for details.
 #' @param tSNE Result of the function .getTSNEresults.
 #' @param fileTSNE Name of the pdf file. Default="test_tSNE.pdf"
+#' @param silent If TRUE, do not plot graphics. Default=FALSE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #'
 #' @keywords internal
@@ -112,7 +113,7 @@
 #' @noRd
 
 .printTSNE <- function(writeOutput, dataDirectory, width, height, tSNE,
-        fileTSNE, ...){
+        fileTSNE, silent, ...){
 
     if(writeOutput){
         message("Saving results tSNE.")
@@ -120,9 +121,12 @@
                 width=width, height=height, ...)
         print(tSNE)
         dev.off()
-    }else
+    }
+    
+    if(!silent)
         print(tSNE)
-
+    
+    return(tSNE)
 }
 
 
@@ -144,6 +148,7 @@
 #' @param minPoints Single value for the minimum no. of points parameter of
 #' dbscan. Default = 5. See ?runDBSCAN for more details.
 #' @param fileDist Name of the pdf file. Default="distance_graph.pdf"
+#' @param silent If TRUE, do not plot graphics. Default=FALSE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #'
 #' @details
@@ -157,7 +162,7 @@
 #' @noRd
 
 .printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
-        dbscanEpsilon, minPts, fileDist, ...){
+        dbscanEpsilon, minPts, fileDist, silent, ...){
 
     if(writeOutput){
 
@@ -167,7 +172,9 @@
         .plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
                 minNeighbours=minPts)
         dev.off()
-    }else{
+    }
+    
+    if(!silent){
 
         dev.new()
         .plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
@@ -194,6 +201,7 @@
 #' @param minPoints Single value for the minimum no. of points parameter of
 #' dbscan. Default = 5. See ?runDBSCAN for more details.
 #' @param fileClust Name of the pdf file. Default="test_clustering.pdf"
+#' @param silent If TRUE, do not plot graphics. Default=FALSE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #'
 #' @keywords internal
@@ -205,7 +213,7 @@
 #' @noRd
 
 .printDBScan <- function(writeOutput, dataDirectory, width, height, tSNE,
-        dbscanEpsilon, minPts, fileClust, ...){
+        dbscanEpsilon, minPts, fileClust, silent, ...){
 
     p <- .plotTestClustering(tSNE$data, epsilon=dbscanEpsilon,
             minNeighbours=minPts)
@@ -217,10 +225,14 @@
                 width=width, height=height, ...)
         print(p)
         dev.off()
-    }else{
+    }
+    
+    if(!silent){
         dev.new()
         print(p)
     }
+    
+    return(p)
 }
 
 
@@ -235,7 +247,7 @@
 #'                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
 #'                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
 #'                 fileDist="distance_graph.pdf",
-#'                 fileClust="test_clustering.pdf", ...)
+#'                 fileClust="test_clustering.pdf", silent=FALSE, ...)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
@@ -260,9 +272,10 @@
 #' Default="distance_graph.pdf"
 #' @param fileClust Name of the pdf file for dbscan.
 #' Default="test_clustering.pdf"
+#' @param silent If TRUE, do not plot graphics. Default=FALSE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #' 
-#' @return A single clustering iteration of CONCLUS.
+#' @return A ggplot object of the tSNE and the dbscan clustering.
 #'
 #' @aliases testClustering
 #'
@@ -329,8 +342,12 @@ setMethod(
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
-                ...){
-
+                silent=FALSE, ...){
+            
+            if(!writeOutput && silent)
+                warning("writeOutput=FALSE and silent=TRUE, nothing will ",
+                        "happen.", immediate. =TRUE)
+            
             validObject(theObject)
 
             ## Get the values from slots
@@ -338,28 +355,35 @@ setMethod(
             dataDirectory <- getOutputDirectory(theObject)
             experimentName <- getExperimentName(theObject)
 
-            initialisePath(dataDirectory)
-            dir.create(file.path(dataDirectory, "test_clustering"),
-                    showWarnings=FALSE)
-
             ## Checking parameters
             .checkParamsTests(sceObject, dbscanEpsilon, minPts, perplexities,
                     PCs, randomSeed)
 
             message("Generating TSNE.")
 
+            if(writeOutput){
+                
+                initialisePath(dataDirectory)
+                dir.create(file.path(dataDirectory, "test_clustering"),
+                        showWarnings=FALSE)
+            }
+            
+            p <- list()
+            
             ## 1. Generating 2D tSNE plots
             tSNE <- .getTSNEresults(theObject, Biobase::exprs(sceObject),
                     cores=cores, PCs=PCs, perplexities=perplexities,
                     randomSeed=randomSeed)
-            .printTSNE(writeOutput, dataDirectory, width, height, tSNE,
-                    fileTSNE, ...)
+            p[[1]] <- .printTSNE(writeOutput, dataDirectory, width, height, 
+                    tSNE, fileTSNE, silent, ...)
 
             ## 2. Clustering with dbscan
-            .printDist(writeOutput, dataDirectory, width, height, tSNE,
-                    dbscanEpsilon, minPts, fileDist, ...)
-            .printDBScan(writeOutput, dataDirectory, width, height, tSNE,
-                    dbscanEpsilon, minPts, fileClust, ...)
+            .printDist(writeOutput, dataDirectory, width, height, 
+                    tSNE, dbscanEpsilon, minPts, fileDist, silent, ...)
+            p[[2]] <- .printDBScan(writeOutput, dataDirectory, width, height, 
+                    tSNE, dbscanEpsilon, minPts, fileClust, silent, ...)
+            
+            return(p)
         })
 
 

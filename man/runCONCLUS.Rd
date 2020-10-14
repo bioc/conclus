@@ -8,7 +8,7 @@ runCONCLUS(
         ## General parameters
         outputDirectory, experimentName, countMatrix, species, cores=2,
         clusteringMethod="ward.D2", exportAllResults=TRUE,
-        orderClusters=FALSE, clusToAdd=NA,
+        orderClusters=FALSE, clusToAdd=NA, silentPlot=TRUE,
 
         ## Normalisation parameters
         sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
@@ -80,6 +80,9 @@ matrix of cells will be ordered by name. Default = FALSE.}
 This is particularly useful when one wants to compare the clustering
 performance of different tools. It should be a data frame having two columns
 'clusters' and 'cells'. Default=NA.}
+
+\item{silentPlot}{Boolean indicating if the figures should not be output on 
+the R graphics. Default=TRUE.}
 
 \item{sizes}{Vector of size factors from scran::computeSumFactors() function
 used by ?normaliseCountMatrix.}

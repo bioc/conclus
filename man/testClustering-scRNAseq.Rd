@@ -9,7 +9,7 @@ testClustering(theObject, dbscanEpsilon=1.4, minPts=5,
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf",
-                fileClust="test_clustering.pdf", ...)
+                fileClust="test_clustering.pdf", silent=FALSE, ...)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
@@ -48,10 +48,12 @@ Default="distance_graph.pdf"}
 \item{fileClust}{Name of the pdf file for dbscan.
 Default="test_clustering.pdf"}
 
+\item{silent}{If TRUE, do not plot graphics. Default=FALSE.}
+
 \item{...}{Options for generating the pdf files. See ?pdf for a list.}
 }
 \value{
-A single clustering iteration of CONCLUS.
+A ggplot object of the tSNE and the dbscan clustering.
 }
 \description{
 This function generates a single clustering iteration of CONCLUS to check

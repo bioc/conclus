@@ -219,6 +219,8 @@
 #' See ?pdf for more details. Default = 5.
 #' @param tSNENb Give the number of the tSNE to plot. If NA, all tSNE solutions
 #' are plotted (14 tSNE by default). Default=NA.
+#' @param silentPlot Boolean indicating if the figures should not be output on 
+#' the R graphics. Default=TRUE.
 #' @keywords internal
 #'
 #' @return Writes plots to the corresponding output folder. 
@@ -228,13 +230,13 @@
         meanCentered, orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols,
         savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs, perplexities,
         columnRankGenes, savePlotCTSNE, widthPlotClustTSNE, heightPlotClustTSNE,
-        tSNENb){
+        tSNENb, outputDirectory, silentPlot){
     
     message("## Plot the cell similarity matrix (step 10/13) ##")
     pCSM <- plotCellSimilarity(scrInfos, colorPalette=colorPalette,
             statePalette=statePalette, clusteringMethod=clusteringMethod,
             orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM,
-            height=heightCSM, returnPlot=TRUE, silentPlot=TRUE)
+            height=heightCSM, returnPlot=TRUE, silentPlot=silentPlot)
     
     message("## Plot the cell heatmap (step 11/13) ##")
     pCH <- plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
@@ -242,23 +244,32 @@
             clusteringMethod=clusteringMethod, orderClusters=orderClusters,
             orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH,
             height=heightCH, clusterCols=clusterCols, returnPlot=TRUE, 
-            silentPlot=TRUE)
+            silentPlot=silentPlot)
     
     message("## Plot the clusters similarity heatmap (step 12/13) ##")
     pClustSM <- plotClustersSimilarity(scrInfos, colorPalette=colorPalette,
             statePalette=statePalette, clusteringMethod=clusteringMethod,
             savePlot=savePlotClustSM, width=widthPlotClustSM, 
-            height=heightPlotClustSM, returnPlot=TRUE, silentPlot=TRUE)
+            height=heightPlotClustSM, returnPlot=TRUE, silentPlot=silentPlot)
     
+    if(!silentPlot){
+        
+        gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], 
+                        pClustSM[[4]]))
+        dev.new()
+    }
+        
+    pdf(file=file.path(outputDirectory,"heatmaps_results.pdf"), 
+            width=10, height=10)
     gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], pClustSM[[4]]))
-    
+    dev.off()
     
     message("## Plot clustered tSNE (step 13/13) ##")
-    dev.new()
     plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs,
             perplexities=perplexities, columnName=columnRankGenes, 
-            savePlot=savePlotCTSNE, width=widthPlotClustTSNE, 
-            height=heightPlotClustTSNE, tSNENb=tSNENb)
+            savePlot=if(silentPlot) TRUE else savePlotCTSNE, 
+            width=widthPlotClustTSNE, height=heightPlotClustTSNE, 
+            silentPlot=silentPlot, tSNENb=tSNENb)
 }
 
 
@@ -398,6 +409,9 @@
 #' are plotted (14 tSNE by default). Default=NA.
 #' @param exportAllResults If TRUE, Save all results of CONCLUS. See
 #' ?exportResults for details. Default=TRUE.
+#' @param silentPlot Boolean indicating if the figures should not be output on 
+#' the R graphics. Default=TRUE.
+#' 
 #' @keywords internal
 #'
 #' @return Writes results of each step to the corresponding output folders.
@@ -412,7 +426,7 @@
         writeCSM, widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
         widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
         heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
-        heightPlotClustTSNE, tSNENb, exportAllResults){
+        heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot){
     
     if(exportAllResults)
         writeOutputTSne <- writeOutputDbScan <- writeOutputRankGenes <- 
@@ -440,7 +454,7 @@
             orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols,
             savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs, 
             perplexities, columnRankGenes, savePlotCTSNE, widthPlotClustTSNE,
-            heightPlotClustTSNE, tSNENb)
+            heightPlotClustTSNE, tSNENb, outputDirectory, silentPlot)
     
     if(exportAllResults){
         message("Exporting all results to ", outputDirectory)
@@ -461,7 +475,7 @@
 #'         ## General parameters
 #'         outputDirectory, experimentName, countMatrix, species, cores=2,
 #'         clusteringMethod="ward.D2", exportAllResults=TRUE,
-#'         orderClusters=FALSE, clusToAdd=NA,
+#'         orderClusters=FALSE, clusToAdd=NA, silentPlot=TRUE,
 #'
 #'         ## Normalisation parameters
 #'         sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
@@ -525,6 +539,8 @@
 #' This is particularly useful when one wants to compare the clustering
 #' performance of different tools. It should be a data frame having two columns
 #' 'clusters' and 'cells'. Default=NA.
+#' @param silentPlot Boolean indicating if the figures should not be output on 
+#' the R graphics. Default=TRUE.
 #' @param sizes Vector of size factors from scran::computeSumFactors() function
 #' used by ?normaliseCountMatrix.
 #' @param rowMetaData Data frame containing genes informations. Default is NULL.
@@ -698,7 +714,7 @@ runCONCLUS <- function(
     ## General parameters
     outputDirectory, experimentName, countMatrix, species, cores=2,
     clusteringMethod="ward.D2", exportAllResults=TRUE, orderClusters=FALSE,
-    clusToAdd=NA,
+    clusToAdd=NA, silentPlot=TRUE,
     ## Normalisation parameters
     sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
     alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
@@ -738,7 +754,7 @@ runCONCLUS <- function(
             widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
             widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
             heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
-            heightPlotClustTSNE, tSNENb, exportAllResults)
+            heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot)
     return(scrInfos)
 }
 
