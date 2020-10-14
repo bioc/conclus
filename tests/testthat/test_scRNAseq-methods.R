@@ -1163,8 +1163,8 @@ test_that("exportResults works properly", {
 test_that("testClustering works properly", {
             
             expM <- "writeOutput=FALSE and silent=TRUE, nothing will happen."
-            expect_error(testClustering(scr, writeOutput=FALSE, silent=TRUE), 
-                    expM)
+            expect_error(testClustering(scrNorm, writeOutput=FALSE, 
+                            silent=TRUE), expM)
             
             expM <- paste0("The 'scRNAseq' object that you're using with ",
                     "'testClustering' method doesn't have its 'sceNorm' slot ",
