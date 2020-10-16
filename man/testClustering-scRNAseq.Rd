@@ -9,7 +9,8 @@ testClustering(theObject, dbscanEpsilon=1.4, minPts=5,
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf",
-                fileClust="test_clustering.pdf", silent=FALSE, ...)
+                fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE, 
+              ...)
 }
 \arguments{
 \item{theObject}{An Object of class scRNASeq for which the count matrix was
@@ -49,6 +50,8 @@ Default="distance_graph.pdf"}
 Default="test_clustering.pdf"}
 
 \item{silent}{If TRUE, do not plot graphics. Default=FALSE.}
+
+\item{plotKNN}{If TRUE, output the kNN plot on graphics. Default=TRUE.}
 
 \item{...}{Options for generating the pdf files. See ?pdf for a list.}
 }
