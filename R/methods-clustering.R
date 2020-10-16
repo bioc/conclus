@@ -148,7 +148,7 @@
 #' @param minPoints Single value for the minimum no. of points parameter of
 #' dbscan. Default = 5. See ?runDBSCAN for more details.
 #' @param fileDist Name of the pdf file. Default="distance_graph.pdf"
-#' @param silent If TRUE, do not plot graphics. Default=FALSE.
+#' @param plotKNN If TRUE, output the kNN plot on graphics. Default=TRUE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #'
 #' @details
@@ -162,7 +162,7 @@
 #' @noRd
 
 .printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
-        dbscanEpsilon, minPts, fileDist, silent, ...){
+        dbscanEpsilon, minPts, fileDist, plotKNN, ...){
 
     if(writeOutput){
 
@@ -174,7 +174,7 @@
         dev.off()
     }
     
-    if(!silent){
+    if(plotKNN){
 
         dev.new()
         .plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
@@ -247,7 +247,8 @@
 #'                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
 #'                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
 #'                 fileDist="distance_graph.pdf",
-#'                 fileClust="test_clustering.pdf", silent=FALSE, ...)
+#'                 fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE, 
+#'               ...)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
@@ -273,6 +274,7 @@
 #' @param fileClust Name of the pdf file for dbscan.
 #' Default="test_clustering.pdf"
 #' @param silent If TRUE, do not plot graphics. Default=FALSE.
+#' @param plotKNN If TRUE, output the kNN plot on graphics. Default=TRUE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #' 
 #' @return A ggplot object of the tSNE and the dbscan clustering.
@@ -342,7 +344,7 @@ setMethod(
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
-                silent=FALSE, ...){
+                silent=FALSE, plotKNN=TRUE, ...){
             
             if(!writeOutput && silent)
                 warning("writeOutput=FALSE and silent=TRUE, nothing will ",
@@ -379,7 +381,7 @@ setMethod(
 
             ## 2. Clustering with dbscan
             .printDist(writeOutput, dataDirectory, width, height, 
-                    tSNE, dbscanEpsilon, minPts, fileDist, silent, ...)
+                    tSNE, dbscanEpsilon, minPts, fileDist, plotKNN, ...)
             p[[2]] <- .printDBScan(writeOutput, dataDirectory, width, height, 
                     tSNE, dbscanEpsilon, minPts, fileClust, silent, ...)
             

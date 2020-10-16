@@ -22,7 +22,7 @@ setGeneric(
             perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
             cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
             fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
-            silent=FALSE, ...){
+            silent=FALSE, plotKNN=TRUE, ...){
             standardGenericic("testClustering")
     },
     signature="theObject")
