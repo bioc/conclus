@@ -164,7 +164,7 @@ scr <- singlecellRNAseq(experimentName = experimentName,
         outputDirectory = outputDirectory)
 
 ## Normalization of the count matrix
-scr <- normaliseCountMatrix(scr)
+scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
 ```
 
 
@@ -214,7 +214,7 @@ This function is currently limited to human and mouse.
 
 \newline
 ```{r normalization_2, eval = FALSE}
-scr <- normaliseCountMatrix(scr)
+scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
 ```
 
 The function *normaliseCountMatrix* returns a scRNASeq object with its sceNorm slot updated. This slot contains a SingleCellExperiment object having the normalized count matrix, the colData (table with cells informations), and the rowData (table with the
@@ -328,141 +328,74 @@ csm[1:10,1:10]
 
 CONCLUS generated 14 tSNE combining different values of PCs and perplexities. Each tSNE can be visualized either using coloring reflecting the results of DBScan clustering, the conditions or without colors. Here *plotClusteredTSNE*
 is used to generate all these possibilities of visualization. 
+
 \newline
 ```{r plotClustered}
-tSNEclusters <- conclus::plotClusteredTSNE(sceObjectFiltered, outputDirectory, 
-                experimentName, PCs=PCs, perplexities=perplexities, 
-                colorPalette = "default", columnName = "clusters", 
-                returnPlot = TRUE)
+tSNEclusters <- plotClusteredTSNE(scr, columnName="clusters", 
+                returnPlot=TRUE, silentPlot=TRUE)
                 
-tSNEnoColor <- conclus::plotClusteredTSNE(sceObjectFiltered, outputDirectory, 
-                experimentName, PCs=PCs, perplexities=perplexities, 
-                colorPalette = "default", columnName = "noColor", 
-                returnPlot = TRUE)
+tSNEnoColor <- plotClusteredTSNE(scr, columnName="noColor", 
+                returnPlot=TRUE, silentPlot=TRUE)
                 
-if(any(colnames(SummarizedExperiment::colData(sceObjectFiltered)) 
-   %in% "state")){
-  tSNEstate <- conclus::plotClusteredTSNE(sceObjectFiltered, outputDirectory, 
-               experimentName, PCs=PCs, perplexities=perplexities, 
-               colorPalette = "default", columnName = "state", 
-               returnPlot = TRUE)
-}
+tSNEstate <- plotClusteredTSNE(scr, columnName="state", 
+                returnPlot=TRUE, silentPlot=TRUE)                
 ```
 
 For visualizing the 5th (on 14) tSNE cluster (figure 4):
 \newline
-```{r plotClustered_visualization1, eval = FALSE}
+```{r plotClustered_visualization1}
 tSNEclusters[[5]]
 ```
 
-![tSNE result colored by dbSCAN clustering for the 5th cluster \label{figure4}](figures/fig4_tSNEColor_clusters.png)
-
-
 For visualizing the 5th (on 14) tSNE cluster without colors (figure 5):
 \newline
-```{r plotClustered_visualization2, eval = FALSE}
+```{r plotClustered_visualization2}
 tSNEnoColor[[5]]
 ```
 
-![tSNE result without colors for the 5th cluster \label{figure5}](figures/fig5_tSNEnoColor.png)
-
-
 For visualizing the 5th (on 14) tSNE cluster colored by state (figure 6):
 \newline
-```{r plotClustered_visualization3, eval = FALSE}
+```{r plotClustered_visualization2}
 tSNEstate[[5]]
 ```
 
-![tSNE result colored by states for the 5th cluster \label{figure6}](figures/fig6_tSNEState.png)
-
-
 ### Cell similarity heatmap
 
-The *cellsSimilarityMatrix* is then used to generate a heatmap (Figure 7) summarizing the results of the clustering and to show how stable the cell clusters are accross the 84 solutions.
+The *cellsSimilarityMatrix* is then used to generate a heatmap (Figure 7) summarizing the results of the clustering and to show how stable the cell clusters are across the 84 solutions.
 \newline
-```{r plotCellSimilarity, warning = FALSE, fig.keep = 'none'}
-colorPalette="default"
-statePalette="default"
-plotPDFcellSim = TRUE
-orderClusters = FALSE
-clustersNumber <- length(unique(
-                     SummarizedExperiment::colData(sceObjectFiltered)$clusters))
-colorPalette <- conclus::choosePalette(colorPalette, clustersNumber)
-
-# Plotting stability of clusters
-conclus::plotCellSimilarity(sceObjectFiltered, cellsSimilarityMatrix, outputDirectory,
-                 experimentName, colorPalette, 
-                 orderClusters = orderClusters, 
-                 statePalette = statePalette, 
-                 clusteringMethod = clusteringMethod,
-                 plotPDF = plotPDFcellSim,
-                 returnPlot = TRUE)
+```{r plotCellSimilarity, warning = FALSE}
+plotCellSimilarity(scr)
 ```
-
-![Cell similarity matrix \label{figure7}](figures/fig7_plotCellSimilarity.png)
 
 *CellsSimilarityMatrix* is symmetrical and its size proportional of to the "number of cells x number of cells". Each vertical or horizontal tiny strip is a cell. Intersection shows the proportion of clustering iterations in which a 
 pair of cells were in one cluster (score between 0 and 1, between blue and red). We will call this combination "consensus clusters" and use them everywhere later. We can appreciate that cellsSimilarityMatrix is the first evidence 
-showing that CONCLUS managed not only to distinguish i8TFs_plus cells from the three other groups (as in the original publication) but also find subpopulations within these groups which were impossible using PCA alone.
+showing that CONCLUS managed not only to distinguish i8TFs_plus cells from the three other groups (as in the original publication) but also find sub-populations within these groups which were impossible using PCA alone.
 
 ### Cluster similarity heatmap
 
-```{r plotClustersSimilarity, warning = FALSE, message = FALSE, eval = FALSE}  
-conclus::plotClustersSimilarity(clustersSimilarityMatrix, 
-                       sceObjectFiltered,
-                       dataDirectory = outputDirectory, 
-                       experimentName = experimentName, 
-                       colorPalette = colorPalette,
-                       statePalette = statePalette,
-                       clusteringMethod = clusteringMethod,
-                       returnPlot = TRUE)
+```{r plotClustersSimilarity, warning = FALSE, message = FALSE}  
+plotClustersSimilarity(scr)
 ```
-
-![Cluster similarity matrix \label{figure8}](figures/fig8_plotClustersSimilarity.png)
 
 In the *clusterSimilarityMatrix*, we can still see two major families of clusters: clusters with 8, 9, and 10 on one side and 1, 2, 3, 4, 5, 6 and 7, on the other. Almost all clusters have a high value of similarity across all clustering 
 solutions. Only clusters 5-6 have a quite low similarity value. Red color on the diagonal means that the group is homogenous, and usually, it is what we want to get. The yellow on the diagonal indicates that either 
 that group consists of two or more equal sized subgroups. Bluish color points to a cluster of dbscan "outliers" that usually surrounds dense clouds of cells in t-SNE plots. 
 
 
-## Results export
-
-  *runCONCLUS* is saving *cellsSimilarityMatrix* and *clustersSimilarityMatrix* to the subfolder *output_tables*.
-\newline
-```{r exportMatrix}
-conclus::exportMatrix(cellsSimilarityMatrix, outputDirectory, experimentName, 
-           "cellsSimilarityMatrix")
-conclus::exportMatrix(clustersSimilarityMatrix, outputDirectory, experimentName, 
-           "clustersSimilarityMatrix")
-```
-  The exportData function enables to save the normalized expression matrix, columns and row data as the full workspace to the *output_tables* subfolder.
-\newline  
-```{r exportData}
-conclus::exportData(sceObjectFiltered, outputDirectory, experimentName)
-```
-
-Finally, as seen in the runCONCLUS section, the conclus::exportClusteringResults() function enables to export all results.
-
-
-
 ## Marker genes identification
 
-To understand the nature of the consensus clusters identified by CONCLUS, it is essential to identify genes which could be classified as marker genes for each cluster. To this aim, each gene should be "associated" to a particular 
-cluster. This association is performed by looking at upregulated genes in a particular cluster compared to the others (multiple comparisons). The function *rankGenes* performs multiple comparisons of all genes from the 
-sceObjectFiltered and rank them according to a score reflecting a FDR power. It saves one file per cluster in the folder *marker_genes*.
+To understand the nature of the consensus clusters identified by CONCLUS, it is essential to identify genes which could be classified as marker genes for each cluster. To this aim, each gene should be "associated" to a particular cluster. This association is performed by looking at up-regulated 
+genes in a particular cluster compared to the others (multiple comparisons). The function *rankGenes* performs multiple comparisons of all genes from theObject and rank them according to a score reflecting a FDR power.
 
-In summary, the function *conclus::rankGenes()* gives a list of marker genes for each cluster, ordered by their significance. See ?conclus::rankGenes for more details.   
+In summary, the function *conclus::rankGenes()* gives a list of marker genes for each cluster, ordered by their significance. See ?rankGenes for more details.
 \newline
 ```{r rankGenes, message = FALSE}
-conclus::rankGenes(sceObjectFiltered, clustersSimilarityMatrix, outputDirectory, 
-            experimentName)
-rankedGenesClus5 <- read.delim(file.path(outputDirectory, "marker_genes",
-                               "Bergiers_cluster_5_genes.tsv"),
-                               stringsAsFactors = FALSE)
+src <- rankGenes(scr)
 ```
 
 ```{r rankGenes_result}
-head(rankedGenesClus5, n = 10)
+markers <- getMarkerGenesList(scr)
+head(markers[[1]])
 ```
 
 # Plot a heatmap with positive marker genes
