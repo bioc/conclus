@@ -285,6 +285,14 @@ shown in the "test_clustering/distance_graph.pdf" (See Test clustering section a
 scr <- runDBSCAN(scr)
 ```
 
+Results can be explored as follows:
+
+\newline
+```{r dbscan_showResults}
+dbscanList <- getDbscanList(scr)
+clusteringList <- lapply(dbscanList, getClustering)
+clusteringList[[1]][,1:10]
+```
 
 ## Cell and cluster similarity matrix calculation
 
