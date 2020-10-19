@@ -278,16 +278,11 @@ head(getCoordinates(tsneList[[1]]))
 
 Following the calculation of t-SNE coordinates, DBSCAN is run with a range of epsilon and MinPoints values which will yield a total of 84 clustering solutions (PCs x perplexities x MinPoints x epsilon). *minPoints* is the minimum 
 cluster size which you assume to be meaningful for your experiment and *epsilon* is the radius around the cell where the algorithm will try to find *minPoints* dots. Optimal *epsilon* must lay on the knee of the k-NN function as 
-shown in the "test_clustering/distance_graph.pdf" (See Test clustering section above). 
+shown in the "test_clustering/distance_graph.pdf" (See Test clustering section above).
+ 
 \newline
 ```{r runDBSScan, results="hide", warning = FALSE}
-epsilon=c(1.3, 1.4, 1.5)
-minPoints=c(3, 4)
-cores=1
-dbscanResults <- conclus::runDBSCAN(tSNEResults, sceObject, outputDirectory, 
-                           experimentName, epsilon=epsilon, 
-                           minPoints=minPoints,
-                           cores=cores)
+scr <- runDBSCAN(scr)
 ```
 
 
