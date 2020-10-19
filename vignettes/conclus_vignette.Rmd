@@ -193,8 +193,8 @@ The wrapper function runCONCLUS is organized into 7 steps:
   + Generation of t-SNE coordinates
   + Clustering with DB-SCAN
   + Cell and cluster similarity matrix calculation
-  + Marker genes identification
   + Plotting
+  + Marker genes identification
   + Results export
   
 
@@ -296,38 +296,29 @@ clusteringList[[1]][,1:10]
 
 ## Cell and cluster similarity matrix calculation
 
-The above calculated results are combined together in a matrix called “cell similarity matrix”. *RunDBSCAN* function returns a matrix where columns are cells and rows are 84 clustering solutions (which is equal to number of 
-PCs x perplexities x MinPoints x epsilon). Since the range of cluster varies from result to result, there is no exact match between numbers in different rows of the returned matrix. Cells having the same number within a row are 
-guaranteed to be in one cluster. We can calculate how many times out of 84 clustering solutions, every two cells were in one cluster and that is how we come to the similarity matrix of cells. We want to underline that zero in the 
-*dbscanResults* means that a cell was not assigned to any cluster, so two cells with zeros were not necessarily similar, that is why we count clusters starting from one. *clusterCellsInternal* is a general function which returns a 
-*sceObject* with new clusters and calculated *cellsSimilarityMatrix*. 
+The above calculated results are combined together in a matrix called “cell similarity matrix”. *runDBSCAN* function returns an object of class scRNASeq with its dbscanList slot updated. The list represents 84 clustering solutions (which is equal to number of 
+PCs x perplexities x MinPoints x epsilon). Since the range of cluster varies from result to result, there is no exact match between numbers in different elements of the list. Cells having the same number within an element are 
+guaranteed to be in one cluster. We can calculate how many times out of 84 clustering solutions, every two cells were in one cluster and that is how we come to the similarity matrix of cells. We want to underline that a zero in the 
+dbscan results means that a cell was not assigned to any cluster. Hence, cluster numbers start from one. *clusterCellsInternal* is a general method that returns an object of class scRNASeq with its cellsSimilarityMatrix slot updated.
+      
 \newline
-```{r clusterCellsInternal, results="hide", warning = FALSE}
-clusteringMethod="ward.D2"
-k=10 # parameter for cutree
-deepSplit = 0 # 0 to avoid cutreeDynamic, 1 to 4 to use it
-message("Calculating cells similarity matrix.")
-clusteringResults <- conclus::clusterCellsInternal(dbscanResults, sceObject, clusterNumber=k, 
-                                  deepSplit=deepSplit, cores=cores,
-                                  clusteringMethod=clusteringMethod)
-sceObjectFiltered <- clusteringResults[[1]]
-cellsSimilarityMatrix <- clusteringResults[[2]]
+```{r clusterCellsInternal, warning = FALSE}
+scr <- clusterCellsInternal(scr, clusterNumber = 10)
 ```
+
 ```{r clusterCellsInternal_showResults}
-print(table(SummarizedExperiment::colData(sceObjectFiltered)$clusters, 
-              dnn=list("Cells distribuion by clusters")))
+cci <- getCellsSimilarityMatrix(scr)
+cci[1:10,1:10]
 ```
 
 After looking at the similarity between elements on the single-cell level, which is useful if we want to understand if there is any substructure which we did not highlight with our clustering, a "bulk" level where we pool all cells 
 from a cluster into a representative "pseudo cell" can also be generated. This gives a *clusterSimilarityMatrix*:
 \newline
 ```{r clustersSimilarityMatrix}
-clustersSimilarityMatrix <- 
-      conclus::calculateClustersSimilarity(cellsSimilarityMatrix, 
-          sceObject = sceObjectFiltered,
-          clusteringMethod = "ward.D2")[[1]]
+scr <- calculateClustersSimilarity(scr)
+csm <- getClustersSimilarityMatrix(scr)
+csm[1:10,1:10]
 ```
-
 
 
 ## Plotting
