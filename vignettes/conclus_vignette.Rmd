@@ -398,85 +398,38 @@ markers <- getMarkerGenesList(scr)
 head(markers[[1]])
 ```
 
-# Plot a heatmap with positive marker genes
+The top 10 markers by cluster (default) can be selected with:
 
-To understand the nature of the consensus clusters identified by CONCLUS, it is essential to identify genes, which could be classified as marker genes for each cluster. Following the execution of the runCONCLUS function, a folder 
-called “marker_genes” is automatically generated in your dataDirectory. It contains one Tab Separated Values (tsv) file for each cluster. Each tsv file contains a list of genes ranked according to how high these genes are expressed 
-in a given cluster in comparison to all the other clusters.
-
-CONCLUS offers the option to visualize the marker genes on a heatmap (Figure 9). Below we chose to select 10 marker genes per cluster which should generate a heatmap with 100 genes (10 marker genes x 10 clusters) which is convenient for 
-visualization. In practice, the number of genes in this heatmap will be less than 100 because some genes have been classified as markers for more than one cluster. This can happen when several clusters correspond to similar cellular 
-types. In this particular example, we have a list of 88 genes.
-
-We ask the function *plotCellHeatmap* to order clusters and genes by similarity (the same order as in the *clusterSimilarityMatrix*) and show mean-centered normalized data. Mean-centering allows seeing the relative expression of a 
-gene compared to the mean.
 \newline
-```{r plotCellHeatmap_marker1, warning=FALSE, fig.keep = 'none'}
-genesNumber <- 10
-markersClusters <- conclus::getMarkerGenes(outputDirectory, sceObjectFiltered, 
-                                  experimentName = experimentName,
-                                  genesNumber = genesNumber)
-                                  
-orderClusters <- T # F will apply hierarchical clustering to all cells
-orderGenes <- T    # F will apply hierarchical clustering to all genes
-meanCentered <- T  # F to show normalized counts
-
-conclus::plotCellHeatmap(markersClusters, sceObjectFiltered, outputDirectory, 
-                experimentName, 
-                paste0("clusters",
-                       length(levels(
-                     SummarizedExperiment::colData(sceObjectFiltered)$clusters)),
-                       "_meanCentered",meanCentered,
-                       "_orderClusters",orderClusters,
-                       "_orderGenes",orderGenes,"_top",
-                       genesNumber, "markersPerCluster"), 
-                meanCentered = meanCentered, 
-                colorPalette = RColorBrewer::brewer.pal(10, "Paired"),
-                orderClusters = orderClusters,
-                orderGenes = orderGenes,
-                fontsize_row = 4,
-                statePalette = c("bisque", "cadetblue2", 
-                                 "coral1", "cornflowerblue"),
-                color = colorRampPalette(c("#023b84","#4b97fc", 
-                                           "#FEE395", 
-                                           "#F4794E", "#D73027",
-                                           "#a31008","#7a0f09"))(100),
-                returnPlot = TRUE,
-                width = 7.5, height = 6.5)
+```{r topMarkers_result}
+scr <- retrieveTopClustersMarkers(scr, removeDuplicates=FALSE)
+topMarkers <- getClustersMarkers(scr)
+topMarkers
 ```
 
-![Heatmap of cells with marker genes \label{figure9}](figures/fig9_positivemarkers.png)
+
+# Plot a heatmap with positive marker genes
+
+To understand the nature of the consensus clusters identified by CONCLUS, it is essential to identify genes, which could be classified as marker genes for each cluster. Following the execution of the `retrieveTopClustersMarkers`, CONCLUS offers the option to visualize the marker genes on a heatmap (Figure 9). 
+Below we chose to show the selected 10 marker genes per cluster which should generate a heatmap with 100 genes (10 marker genes x 10 clusters). This is convenient for visualization. In practice, the number of genes in this heatmap will be less than 100 because some genes can be classified as markers for more than one cluster. This can happen when several clusters correspond to similar cellular 
+types.
+
+After selecting the top markers with the method `retrieveTopClustersMarkers`, the method *plotCellHeatmap* is used to order clusters and genes by similarity (the same order as in the *clusterSimilarityMatrix*) and show 
+mean-centered normalized data. Mean-centering allows seeing the relative expression of a gene compared to the mean.
+
+\newline
+```{r plotCellHeatmap_marker1, warning=FALSE}
+plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE)
+```
+
 
 The second heatmap (Figure 10) below also shows the order of genes and clusters by similarity but for normalized expression data. As you can see, genes expressed at a level of seven and nine look very similar. It is hard to highlight all the 
 differences in expression of both lowly and highly detected genes in one heatmap using normalized data. For this reason, mean-centering helps to solve this issue.
-\newline
-```{r plotCellHeatmap_marker2, warning=FALSE, fig.keep = 'none'}
-orderClusters <- T # F will apply hierarchical clustering to all cells
-orderGenes <- T    # F will apply hierarchical clustering to all genes
-meanCentered <- F  # F to show normalized counts
-conclus::plotCellHeatmap(markersClusters, sceObjectFiltered, outputDirectory, 
-                experimentName, 
-                paste0("clusters",
-                       length(levels(SummarizedExperiment::colData(sceObjectFiltered)$clusters)),
-                       "_meanCentered",meanCentered,
-                       "_orderClusters",orderClusters,
-                       "_orderGenes",orderGenes,"_top",
-                       genesNumber, "markersPerCluster"), 
-                meanCentered = meanCentered, 
-                colorPalette = RColorBrewer::brewer.pal(10, "Paired"),
-                orderClusters = orderClusters,
-                orderGenes = orderGenes,
-                fontsize_row = 4,
-                statePalette = c("bisque", "cadetblue2", 
-                                 "coral1", "cornflowerblue"),
-                color = colorRampPalette(c("#023b84","#4b97fc", 
-                                           "#FEE395", 
-                                           "#F4794E", "#D73027",
-                                           "#a31008","#7a0f09"))(100),
-                returnPlot = TRUE)
-```
 
-![Heatmap of cells with marker genes without mean normalization \label{figure10}](figures/fig10_positivemarkers-unnorm.png)
+\newline
+```{r plotCellHeatmap_marker2, warning=FALSE}
+plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE, meanCentered=FALSE)
+```
 
 Alternative order of clusters is by name or by hierarchical clustering as in the default pheatmap function.
 
