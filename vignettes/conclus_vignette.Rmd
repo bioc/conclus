@@ -390,7 +390,7 @@ genes in a particular cluster compared to the others (multiple comparisons). The
 In summary, the function *conclus::rankGenes()* gives a list of marker genes for each cluster, ordered by their significance. See ?rankGenes for more details.
 \newline
 ```{r rankGenes, message = FALSE}
-src <- rankGenes(scr)
+scr <- rankGenes(scr)
 ```
 
 ```{r rankGenes_result}
