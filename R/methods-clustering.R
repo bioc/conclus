@@ -856,8 +856,100 @@ setMethod(
         })
 
 
+
 ##################
-## addClusteringManually
+## retrieveTableClustersCells
+##################
+        
+
+
+#' retrieveTableClustersCells
+#'
+#' @description
+#' Having computed clusterCellsInternal, retrieve to what cluster each cell 
+#' belongs. The output data.frame can be passed to the method ?addClustering.
+#'
+#' @usage
+#' retrieveTableClustersCells(theObject)
+#'
+#' @param theObject An Object of class scRNASeq for which the cells were 
+#' clustered internally. See ?clusterCellsInternal.
+#'
+#' @aliases retrieveTableClustersCells
+#'
+#' @author
+#' Nicolas DESCOSTES.
+#'
+#' @rdname
+#' retrieveTableClustersCells-scRNAseq
+#'
+#' @return
+#' A data frame containing two columns 'clusters' and 'cells' indicating the 
+#' result of the consensus clustering at the cellular level.
+#'
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(system.file(
+#' "extdata/test_countMatrix.tsv", package="conclus")))
+#' outputDirectory <- "YourOutputDirectory"
+#' columnsMetaData <- read.delim(
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
+#'
+#' ## Create the initial object
+#' scr <- singlecellRNAseq(experimentName = experimentName,
+#'                 countMatrix     = countMatrix,
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#'
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#'
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
+#'
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
+#'
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
+#'
+#' ## Retrieving the table clusters-cells.
+#' cellClustDf <- retrieveTableClustersCells(scrCCI)
+#'
+#' @seealso
+#' addClustering
+#'
+#' @exportMethod retrieveTableClustersCells
+#' @importFrom SummarizedExperiment colData
+
+setMethod(
+        
+        f = "retrieveTableClustersCells",
+        
+        signature = "scRNAseq",
+        
+        definition = function(theObject){
+            
+            ## Check if the Object is valid
+            validObject(theObject)
+            
+            ## Retrieve the clustering result in theObject
+            sceObject  <- getSceNorm(theObject)
+            colDf <- SummarizedExperiment::colData(sceObject)
+            
+            if(!any(names(colDf) == "clusters"))
+                stop("clusterCellsInternal should be performed before ",
+                        "retrieving this information.")
+            
+            colDf <- data.frame(clusters=colDf$clusters, cells=colDf$cellName)
+            
+            return(colDf)
+        })
+
+        
+        
+##################
+## addClustering
 ##################
 
 .checkParamsAddClustering <- function(theObject, clusToAdd, colDf){

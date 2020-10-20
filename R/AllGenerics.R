@@ -212,6 +212,15 @@ setGeneric(
     signature="theObject")
 
 
+setGeneric(
+        
+     name = "retrieveTableClustersCells",
+     
+     def= function(theObject){
+         standardGeneric("retrieveTableClustersCells")
+     },
+     signature="theObject")
+
 
 ################################################################################
 ############################### Getter methods #################################
