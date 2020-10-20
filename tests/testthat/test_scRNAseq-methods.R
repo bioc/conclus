@@ -1197,6 +1197,17 @@ test_that("testClustering works properly", {
                 
     
 
+#######################  retrieveTableClustersCells  ###########################
+
+test_that("retrieveTableClustersCells works properly",{
+          
+           expM <- paste0("clusterCellsInternal should be performed before ",
+            "retrieving this information.")
+           expect_error(retrieveTableClustersCells(scr), expM)
+    
+        })
+
+
 ############################  addClustering  ###########################    
 
 
