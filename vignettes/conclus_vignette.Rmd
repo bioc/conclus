@@ -410,9 +410,8 @@ topMarkers
 
 # Plot a heatmap with positive marker genes
 
-To understand the nature of the consensus clusters identified by CONCLUS, it is essential to identify genes, which could be classified as marker genes for each cluster. Following the execution of the `retrieveTopClustersMarkers`, CONCLUS offers the option to visualize the marker genes on a heatmap (Figure 9). 
-Below we chose to show the selected 10 marker genes per cluster which should generate a heatmap with 100 genes (10 marker genes x 10 clusters). This is convenient for visualization. In practice, the number of genes in this heatmap will be less than 100 because some genes can be classified as markers for more than one cluster. This can happen when several clusters correspond to similar cellular 
-types.
+Following the execution of the `retrieveTopClustersMarkers`, CONCLUS offers the option to visualize the marker genes on a heatmap (Figure 9). Below we chose to show the selected 10 marker genes per cluster which should generate a heatmap with 100 genes (10 marker genes x 10 clusters). This is 
+convenient for visualization. In practice, the number of genes in this heatmap will be less than 100 because some genes were classified as markers for more than one cluster. This can happen when several clusters correspond to similar cellular types.
 
 After selecting the top markers with the method `retrieveTopClustersMarkers`, the method *plotCellHeatmap* is used to order clusters and genes by similarity (the same order as in the *clusterSimilarityMatrix*) and show 
 mean-centered normalized data. Mean-centering allows seeing the relative expression of a gene compared to the mean.
@@ -439,76 +438,55 @@ Alternative order of clusters is by name or by hierarchical clustering as in the
 
 *PlotGeneExpression* allows visualizing the normalized expression of one gene in a t-SNE plot. It can be useful to inspect the specificity of top markers. Below are examples of marker genes that define a particular cluster (Figures 11-14).
 \newline
-```{r plotGeneExpression1, eval = FALSE}
+```{r plotGeneExpression1}
 # Plot gene expression in a selected tSNE plot
 # Ccl3, marker gene for clusters 2
-plotGeneExpression("Ccl3", experimentName, outputDirectory, sceObjectFiltered, 
-                  tSNEpicture = 10, returnPlot=T)
+plotGeneExpression(scr, "Ccl3")
 ```
 
-![tSNE colored by Ccl3 gene expression \label{figure11}](figures/fig11_positivemarkers-ccl3.png)
-
-```{r plotGeneExpression2, eval = FALSE}
+```{r plotGeneExpression2}
 # Gp9, marker gene for cluster 6
-plotGeneExpression("Gp9", experimentName, outputDirectory, sceObjectFiltered, 
-                   tSNEpicture = 10, returnPlot=T)
+plotGeneExpression(scr, "Gp9")
 ```
 
-![tSNE colored by Gp9 gene expression \label{figure12}](figures/fig12_positivemarkers-Gp9.png)
-
-```{r plotGeneExpression3, eval = FALSE}
+```{r plotGeneExpression3}
 # Fn1, marker gene for cluster 7
-plotGeneExpression("Fn1", experimentName, outputDirectory, sceObjectFiltered, 
-                   tSNEpicture = 10, returnPlot=T)
+plotGeneExpression(scr, "Fn1")
 ```
 
-![tSNE colored by Fn1 gene expression \label{figure13}](figures/fig13_positivemarkers-Fn1.png)
-
-```{r plotGeneExpression4, eval = FALSE}
+```{r plotGeneExpression4}
 # Alox5ap, marker gene for cluster 9
-plotGeneExpression("Alox5ap", experimentName, outputDirectory, sceObjectFiltered, 
-                    tSNEpicture = 10, returnPlot=T)
+plotGeneExpression(scr, "Alox5ap")
 ```
-
-![tSNE colored by Alox5ap gene expression \label{figure14}](figures/fig14_positivemarkers-Alox5ap.png)
 
 # Collect publicly available info about marker genes
 
 ## Collect information for the top 10 markers for each cluster
 
-*GetGenesInfo* is a function for gene information retrieval from open-source databases and websites of NCBI, MGI, and UniProt by web-scraping. It requires markersClusters data frame where the first column “geneName” is mandatory 
-and the second column “clusters” is optional. It can have more than two columns; they will be kept in the output file. *GetGenesInfo* can recognize Gene Symbols and Ensembl IDs, genes from both annotations can be present simultaneously.
-The second argument is “databaseDir” which is a path to the “Mmus_gene_database_secretedMol.tsv” database contained in the package. Databases for other organisms than mouse will be provided in the future or on request.
-\newline
-```{r getGenesInfo, eval = FALSE}
-result <- getGenesInfo(markersClusters, groupBy = "clusters",
-                       getUniprot = TRUE)
+`retrieveGenesInfo` is a method for gene information retrieval from open-source databases and websites of NCBI, MGI, and UniProt. It requires the `calculateClustersSimilarity` method to have been run on the object.
 
-outputDir <- file.path(outputDirectory, "/marker_genes/getGenesInfo")
-dir.create(outputDir, showWarnings=F)
-write.table(result, file = file.path(outputDir, 
-                      "Bergiers_markersClusters_top10_clusters9_genesInfo.csv"),
-            quote = FALSE, sep = ";", row.names = FALSE)
+\newline
+```{r getGenesInfo}
+scr <- retrieveGenesInfo(scr)
+result <- getGenesInfos(scr)
+head(result)
 ```
 
 *result* contains the following columns:
 
-  - geneName: official gene symbol or ENSEMBL ID.
-  - clusters: The cluster to which the gene is associated.
-  - Name: The complete gene name.
-  - Feature.Type: protein coding gene, lincRNA gene, miRNA gene, unclassified non-coding RNA gene,
-                 or pseudogene.
-  - go_id: Gene Ontology (GO) identification number.
-  - name_1006: Whether or not a gene belongs to GO terms containing proteins on the cell surface or 
-               involved in secretion.
-  - MGI: Knockout information from MGI.
-  - NCBI: A summary from NCBI.
-  - chromosome_name: The chromosome on which the gene is located
-  - Symbol: Official gene symbol
-  - Ensembl: Ensembl ID
-  - MGI.Gene.Marker.ID: MGI ID
-  - Entrez.Gene.ID: Entrez ID
-  - Uniprot.ID: Uniprot ID
+ - uniprot_gn_symbol: Uniprot gene symbol.
+ - clusters: The cluster to which the gene is associated.
+ - external_gene_name: The complete gene name.
+ - go_id: Gene Ontology (GO) identification number.
+ - mgi_description: If the species is mouse, description of the gene on MGI.
+ - entrezgene_description: Description of the gene by the Entrez database.
+ - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified non-coding RNA gene, or pseudogene.
+ - chromosome_name: The chromosome on which the gene is located.
+ - Symbol: Official gene symbol.
+ - ensembl_gene_id: ID of the gene in the ensembl database.
+ - mgi_id: If the species is mouse, ID of the gene on the MGI database.
+ - entrezgene_id: ID of the gene on the entrez database.
+ - uniprot_gn_id: ID of the gene on the uniprot database.
   
 
 ## Collect information for the top X markers for each cluster
