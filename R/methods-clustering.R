@@ -984,6 +984,27 @@ setMethod(
 
 
 
+.reinitializeObject <- function(theObject){
+    
+    setCellsSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
+            dimnames = list("c1", "c1"), data = 1)
+    setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
+            dimnames = list("1", "1"), data = 1)
+    setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"), 
+                    mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
+    setClustersMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
+    setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"), 
+            clusters="1", external_gene_name="gene", go_id="GO1,GO2", 
+            mgi_description="description", entrezgene_description="descr",
+            gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+            ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+            uniprot_gn_id="ID")
+    setClustersSimiliratyOrdered(theObject) <- factor(1)
+    
+    return(theObject)
+}
+
+
 #' addClustering
 #'
 #' @description
@@ -1080,8 +1101,24 @@ setMethod(
             ## Check Parameters
             .checkParamsAddClustering(theObject, clusToAdd, colDf)
 
+            ## Modify sceNorm
             colDf$clusters <- clusToAdd[colDf$cells, "clusters"]
+            colDf$clusters <- as.factor(as.vector(colDf$clusters))
+            clNb <- length(unique(colDf$clusters))
             SummarizedExperiment::colData(sceObject)$clusters <- colDf$clusters
             setSceNorm(theObject) <- sceObject
+            
+            ## Re-initialize values before re-computing markers
+            theObject <- .reinitializeObject(theObject)
+            
+            ## Recompute markers
+            message("Computing new markers..")
+            theObject <- clusterCellsInternal(theObject, clusterNumber=clNb)
+            theObject <- calculateClustersSimilarity(theObject)
+            theObject <- rankGenes(theObject)
+            theObject <- retrieveTopClustersMarkers(theObject, 
+                    removeDuplicates=FALSE)
+            theObject <- retrieveGenesInfo(theObject)
+            
             return(theObject)
         })
