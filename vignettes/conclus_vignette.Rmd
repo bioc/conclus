@@ -230,7 +230,7 @@ The slots can be accessed as indicated below:
 ## Accessing slots
 originalMat <- getCountMatrix(scr)
 SCEobject <- getSceNorm(scr)
-normMat <- SingleCellExperiment::counts(SCEobject)
+normMat <- SingleCellExperiment::logcounts(SCEobject)
 
 # checking what changed after the normalisation
 dim(originalMat)
