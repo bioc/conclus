@@ -509,101 +509,36 @@ clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
 scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 ```
 
-Now we re-calculate the markers for each cluster:
+Now we can visualize the new results taking into account the new classification:
 \newline
 ```{r addClusteringManually_runCONCLUS, results = "hide", message = FALSE, warning = FALSE, fig.keep = 'none'}
-
-
-setCellsSimilarityMatrix(scrUpdated) <-  matrix(nrow = 1, ncol = 1, dimnames = list("c1", "c1"), data = 1)
-setClustersSimilarityMatrix(scrUpdated) <-  matrix(nrow = 1, ncol = 1, dimnames = list("1", "1"), data = 1)
-setMarkerGenesList(scrUpdated) <- list(data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
-setClustersMarkers(scrUpdated) <- data.frame(geneName="gene1", clusters=NA)
-setGenesInfos(scrUpdated) <- data.frame(uniprot_gn_symbol=c("symbol"), clusters="1", external_gene_name="gene", go_id="GO1,GO2", 
-                mgi_description="description", entrezgene_description="descr",
-                gene_biotype="gene", chromosome_name="1", Symbol="symbol",
-                ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
-                uniprot_gn_id="ID")
-setClustersSimiliratyOrdered(scrUpdated) <- factor(1)
-
-
-
-scrUpdated <- clusterCellsInternal(scrUpdated, clusterNumber = 9)
-scrUpdated <- calculateClustersSimilarity(scrUpdated)
-scrUpdated <- rankGenes(scrUpdated)
-scrUpdated <- retrieveTopClustersMarkers(scrUpdated, removeDuplicates=FALSE)
-scrUpdated <- retrieveGenesInfo(scrUpdated)
-
- 
 plotCellSimilarity(scrUpdated)
 plotClustersSimilarity(scrUpdated)
 plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
-plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE, meanCentered=FALSE)
-plotGeneExpression(scrUpdated, "Ccl3")
-plotGeneExpression(scrUpdated, "Gp9")
-plotGeneExpression(scrUpdated, "Fn1")
-plotGeneExpression(scrUpdated, "Alox5ap")
- 
-  
 ```
 
-As previously, we can now make heatmaps of marker gene expression (Figure 15). 
-\newline
-```{r plotCellHeatmap_manualClustering, warning = FALSE, fig.keep = 'none'}
-# Plotting heatmap displaying mean-centered values
-meanCentered <- T  # F to show normalized counts, 
-plotCellHeatmap(markersClusters, sceObjectFiltered, outputDirectory, 
-                experimentName, 
-                paste0("clusters",
-                       length(levels(
-                     SummarizedExperiment::colData(sceObjectFiltered)$clusters)),
-                    "_meanCentered",meanCentered,"_orderClusters",orderClusters,
-                       "_orderGenes",orderGenes,"_top",
-                       genesNumber, "markersPerCluster"), 
-                meanCentered = meanCentered, 
-                colorPalette = c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
-                 "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6"),
-                orderClusters = orderClusters,
-                orderGenes = orderGenes,
-                fontsize_row = 5,
-                statePalette = c("bisque", "cadetblue2", 
-                                 "coral1", "cornflowerblue"),
-                color = colorRampPalette(c("#023b84","#4b97fc", 
-                                           "#FEE395", 
-                                           "#F4794E", "#D73027",
-                                           "#a31008","#7a0f09"))(100),
-                returnPlot = TRUE)
-```
-
-![Heatmap of cells with marker genes after clusters merge \label{figure15}](figures/fig15_plotCellHeatmapMeanCentered_manual.png)
 
 This heatmap shows that Cd52 and Alox5ap are good markers of cluster 9 (mix of old clusters 9 and 10). We can visualize them in the t-SNE plots below.
 \newline
-```{r, eval = FALSE}
+```{r}
 # Plot gene expression in a selected tSNE plot
 # Cd52, marker gene for clusters 9 (mix of old clusters 9 and 10)
-plotGeneExpression("Cd52", experimentName, outputDirectory, sceObjectFiltered,
-                   tSNEpicture = 10, returnPlot = TRUE)
+plotGeneExpression(scrUpdated, "Cd52")
 ```
 
-![tSNE colored by Cd52 gene expression \label{figure16}](figures/fig16_tSNE_manual_Cd52.png)
 
-```{r, eval = FALSE}
+```{r}
 # Alox5ap, marker gene for cluster 9 (mix of old clusters 9 and 10)
-plotGeneExpression("Alox5ap", experimentName, outputDirectory, sceObjectFiltered,
-                   tSNEpicture = 10, returnPlot = TRUE)
+plotGeneExpression(scrUpdated, "Alox5ap")
 ```
-
-![tSNE colored by Cd52 gene expression \label{figure17}](figures/fig17_tSNE_manual_Alox5ap.png)
-
 
 # Conclusion
 
-  Here we demonstrated how to use CONCLUS and combine multiple parameters testing for sc-RNA-seq analysis. It allowed us to gain more information on the dataset of Bergiers et al and will help gaining deeper insights in others. 
+  Here we demonstrated how to use CONCLUS and combine multiple parameters testing for sc-RNA-seq analysis. It allowed us to gain more information on the dataset of Bergiers et al and will help gaining deeper insights into others. 
   
   Indeed in the original analysis using PCA, two major clusters were found (one composed of i8TFs_plus cells and another comprising E_minus, E_plus, i8TFs_minus cells). Using CONCLUS, we see that there is still a big 
 difference between the i8TFs_plus experimental group and the other three. Interestingly, CONCLUS was able to unveil heterogeneity within the i8TFs group while the previous analysis performed by Bergiers et al was not able to reveal it. 
 This analysis offers additional information on the function of these eight transcription factors. 
-
 
 # Session info
 This section lists all the packages used for the CONCLUS tool.
