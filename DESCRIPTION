@@ -29,6 +29,7 @@ RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
+    BiocStyle,
     S4Vectors,
     matrixStats,
     org.Hs.eg.db,
