@@ -77,8 +77,8 @@ createDirectory <- function(dataDirectory, directory){
 #' @import Rtsne
 #' @return Returns the combinations of tSNES
 #' @noRd
-.getTSNEresults <- function(theObject, expressionMatrix, cores, PCs,
-        perplexities, randomSeed){
+.getTSNEresults <- function(expressionMatrix, cores, PCs, perplexities,
+                            randomSeed){
 
     PCAData <- prcomp(t(expressionMatrix))$x
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")

@@ -371,9 +371,8 @@ setMethod(
             p <- list()
             
             ## 1. Generating 2D tSNE plots
-            tSNE <- .getTSNEresults(theObject, Biobase::exprs(sceObject),
-                    cores=cores, PCs=PCs, perplexities=perplexities,
-                    randomSeed=randomSeed)
+            tSNE <- .getTSNEresults(Biobase::exprs(sceObject), cores=cores,
+                    PCs=PCs, perplexities=perplexities, randomSeed=randomSeed)
             p[[1]] <- .printTSNE(writeOutput, dataDirectory, width, height, 
                     tSNE, fileTSNE, silent, ...)
 
