@@ -258,7 +258,8 @@
                         pClustSM[[4]]))
         dev.new()
     }
-        
+    
+    dir.create(outputDirectory, showWarnings=FALSE)
     pdf(file=file.path(outputDirectory,"heatmaps_results.pdf"), 
             width=10, height=10)
     gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], pClustSM[[4]]))
