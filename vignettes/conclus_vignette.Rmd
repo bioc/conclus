@@ -350,7 +350,7 @@ tSNEnoColor[[5]]
 
 For visualizing the 5th (on 14) tSNE cluster colored by state (figure 6):
 \newline
-```{r plotClustered_visualization2}
+```{r plotClustered_visualization3}
 tSNEstate[[5]]
 ```
 
