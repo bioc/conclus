@@ -6,8 +6,8 @@
 \title{normaliseCountMatrix}
 \usage{
 normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
-                    coldata=NULL, alreadyCellFiltered=FALSE,
-                    runQuickCluster=TRUE)
+                    coldata=NULL, alreadyCellFiltered=FALSE, 
+                    alreadyNormalized=FALSE, runQuickCluster=TRUE)
 }
 \arguments{
 \item{theObject}{A scRNAseq object}
@@ -21,6 +21,9 @@ function.}
 
 \item{alreadyCellFiltered}{Logical. If TRUE, quality check and
 filtering will not be applied.}
+
+\item{alreadyNormalized}{Logical. If TRUE, quality check filtering  and 
+normalization will not be applied.}
 
 \item{runQuickCluster}{Logical. If TRUE scran::quickCluster() function will
 be applied. It usually improves the normalization for medium-size count
