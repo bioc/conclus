@@ -171,3 +171,80 @@ createDirectory <- function(dataDirectory, directory){
 }
 
 
+
+.tryUseMart <- function(biomart="ensembl", dataset){
+
+    c <- 1
+    
+    repeat{
+    message("# Attempt ", c, "/5 # ",
+            "Connection to Ensembl ... ") 
+    ensembl <- try(useMart(biomart, dataset=dataset), silent=TRUE)
+    
+    if(isTRUE(is(ensembl, "try-error"))){
+        c <- c + 1
+        error_type <- attr(ensembl, "condition")
+        message(error_type$message)
+        
+        if(c > 5)
+            stop("There is a problem of connexion to Ensembl for ",
+                "now. Please retry later.")
+        
+    }else{
+        message("Connected with success.")
+        return(ensembl)
+        }
+    }
+    
+}
+
+
+#' .tryGetBM 
+#'
+#' This function retrieves the user specified attributes from the BioMart
+#' database one is connected to, with five tries to succeed in case of 
+#' connection problem.
+#' 
+#' @param attributes A vector of attributes you want to retrieve.
+#' @param ensembl Object of class Mart, created with  useMart or useEnsembl 
+#' function
+#' @param values Values of the filter/
+#' @param filters Filters used in the query.
+#' 
+#' @keywords internal
+#'
+#' @return A data.frame with attributes.
+#' @noRd
+.tryGetBM <- function(attributes, ensembl, values=NULL, filters=NULL){
+    
+    c <- 1
+
+    repeat{
+        
+    message("# Attempt ", c, "/5 # ",
+            "Retrieving information about genes from biomaRt ...") 
+
+    
+    if (is.null(values) && is.null(filters))
+        res <- try(getBM(attributes=attributes, mart=ensembl), silent=TRUE)
+    else
+        res <- try(getBM(attributes=attributes, mart=ensembl, values=values,
+                            filters=filters), silent=TRUE)
+    
+    if(isTRUE(is(res, "try-error"))){
+        c <- c + 1
+        error_type <- attr(res, "condition")
+        message(error_type$message)
+        
+        if(c > 5)
+            stop("There is a problem of connexion to Ensembl for ",
+                "now. Please retry later.")
+        
+    }else{
+        message("Information retrieved with success.")
+        return(res)
+        }
+    }
+    
+}
+

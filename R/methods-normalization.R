@@ -30,24 +30,8 @@
     }else
         stop("Species should be human or mouse: ", species, "is not ",
                 "currently supported.")
-    c <- 1
-    repeat{
-    message("### Attempt ", c, "/5 ### ",
-            "Connection to Ensembl ... ") 
-    ensembl <- try(useMart(biomart="ensembl", dataset=dataset), silent=TRUE)
     
-    if(isTRUE(is(ensembl, "try-error"))){
-        c <- c + 1
-        error_type <- attr(ensembl, "condition")
-        message(error_type$message)
-        if(c > 5)
-            stop("There is a problem of connexion to Ensembl for ",
-                "now. Please retry later.")
-    }else{
-        message("Connected with success.")
-        break
-        }
-    }
+    ensembl <- .tryUseMart(biomart="ensembl", dataset)
     
     return(list(genomeAnnot, ensemblPattern, ensembl))
 }
@@ -209,24 +193,11 @@
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
     
-    c <- 1
-    repeat{
-    message("### Attempt ", c, "/5 ### ",
-            "Retrieving information about genes from biomaRt. ") 
-    res <- try(getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
-                "chromosome_name", "gene_biotype"), mart=ensembl), silent=TRUE)
-    if(isTRUE(is(res, "try-error"))){
-        c <- c + 1
-        error_type <- attr(res, "condition")
-        message(error_type$message)
-        if(c > 5)
-            stop("There is a problem of connexion to Ensembl for ",
-                "now. Please retry later.")
-    }else{
-        message("Information retrieved with success.")
-        break
-        }
-    }
+    attributes <- c("ensembl_gene_id", "go_id", "name_1006", "chromosome_name", 
+                    "gene_biotype")
+    
+    res <- .tryGetBM(attributes, ensembl)
+    
     tmp <- res[!duplicated(res$ensembl_gene_id),]
     
     rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
