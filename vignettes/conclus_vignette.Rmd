@@ -506,7 +506,7 @@ scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 
 Now we can visualize the new results taking into account the new classification:
 \newline
-```{r addClusteringManually_runCONCLUS, results = "hide", message = FALSE, warning = FALSE, fig.keep = 'none'}
+```{r addClusteringManually_visualization, results = "hide", message = FALSE, warning = FALSE, fig.keep = 'none'}
 plotCellSimilarity(scrUpdated)
 plotClustersSimilarity(scrUpdated)
 plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
@@ -515,14 +515,14 @@ plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 
 This heatmap shows that Cd52 and Alox5ap are good markers of cluster 9 (mix of old clusters 9 and 10). We can visualize them in the t-SNE plots below.
 \newline
-```{r}
+```{r replot1}
 # Plot gene expression in a selected tSNE plot
 # Cd52, marker gene for clusters 9 (mix of old clusters 9 and 10)
 plotGeneExpression(scrUpdated, "Cd52")
 ```
 
 
-```{r}
+```{r replot2}
 # Alox5ap, marker gene for cluster 9 (mix of old clusters 9 and 10)
 plotGeneExpression(scrUpdated, "Alox5ap")
 ```
@@ -537,6 +537,6 @@ This analysis offers additional information on the function of these eight trans
 
 # Session info
 This section lists all the packages used for the CONCLUS tool.
-```{r}
+```{r sessionInfo}
 sessionInfo()
 ```
