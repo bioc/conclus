@@ -416,7 +416,6 @@
 
     countMatrix <- countMatrix[,colData$filterPassed == 1]
     colData <- colData[colData$filterPassed == 1,]
-
     return(list(countMatrix, colData))
 }
 
@@ -536,7 +535,8 @@
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
     
     if (!is.null(coldataDF)){
-        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, value = T)
+        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, 
+                    value = TRUE)
         colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
         coldataDF$cellName <- coldata$cellName
         coldata <- merge(coldataDF, coldata, by.x = "cellName",
@@ -802,10 +802,8 @@ setMethod(
         species <- getSpecies(theObject)
         
         .checkRowAndColdata(countMatrix, rowdata, coldata)
-        rowdata <- .annotateGenes(countMatrix, species=species, 
-                                    rowdataDF=rowdata)
-        coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata, 
-                                    coldataDF=coldata)
+        rowdata <- .annotateGenes(countMatrix, species, rowdata)
+        coldata <- .addCellsInfo(countMatrix, rowdata, coldata)
         
         if (isTRUE(alreadyNormalized)){
             sceNorm <- .createSCE(countMatrix, coldata, rowdata)
