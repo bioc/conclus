@@ -7,7 +7,8 @@ setGeneric(
     name = "normaliseCountMatrix",
 
     def = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
-            coldata=NULL, alreadyCellFiltered=FALSE, runQuickCluster=TRUE){
+            coldata=NULL, alreadyCellFiltered=FALSE, alreadyNormalized=FALSE, 
+            runQuickCluster=TRUE){
             standardGeneric("normaliseCountMatrix")
     },
     signature="theObject")

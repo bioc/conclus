@@ -12,24 +12,42 @@
 #' ensembl IDs and the biomaRt database.
 #' @noRd
 .defineMartVar <- function(species){
-    
+
     if(isTRUE(all.equal(species, "human"))){
         
         # suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
         genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
         ensemblPattern <- "ENSG"
-        ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+        dataset <- "hsapiens_gene_ensembl"
         
     }else if(isTRUE(all.equal(species, "mouse"))){
         
         # suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
         genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
         ensemblPattern <- "ENSMUSG"
-        ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
+        dataset <-"mmusculus_gene_ensembl"
         
     }else
         stop("Species should be human or mouse: ", species, "is not ",
                 "currently supported.")
+    c <- 1
+    repeat{
+    message("### Attempt ", c, "/5 ### ",
+            "Connection to Ensembl ... ") 
+    ensembl <- try(useMart(biomart="ensembl", dataset=dataset), silent=TRUE)
+    
+    if(isTRUE(is(ensembl, "try-error"))){
+        c <- c + 1
+        error_type <- attr(ensembl, "condition")
+        message(error_type$message)
+        if(c > 5)
+            stop("There is a problem of connexion to Ensembl for ",
+                "now. Please retry later.")
+    }else{
+        message("Connected with success.")
+        break
+        }
+    }
     
     return(list(genomeAnnot, ensemblPattern, ensembl))
 }
@@ -383,6 +401,7 @@
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
     message("Running filterCells.")
+
     countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
         stop("None of your cells has at least 100 genes expressed. Since the ",
@@ -607,7 +626,7 @@
 #' @keywords internal
 #' @noRd
 .checkParamNorm <- function(sizes, rowdata, coldata, alreadyCellFiltered,
-        runQuickCluster){
+                            alreadyNormalized, runQuickCluster){
 
     if(!is.numeric(sizes))
         stop("'sizes' parameter should be a vector of numeric values.")
@@ -620,9 +639,41 @@
 
     if (!is.logical(alreadyCellFiltered))
         stop("'alreadyCellFiltered' parameter should be a boolean.")
+    
+    if (!is.logical(alreadyNormalized))
+        stop("'alreadyNormalized' parameter should be a boolean.")
 
     if (!is.logical(runQuickCluster))
         stop("'runQuickCluster' parameter should be a boolean.")
+}
+
+
+#' .createSCE
+#'
+#' @description
+#' This function create a SingleCellExperiment with the count matrix, the
+#' coldata and the rowdata.
+#'
+#' @param countMatrix The count matrix (raw or normalized).
+#' @param colData Data frame containing informations about cells.
+#' @param rowdata rowData of class data.frame, it contains gene names of the.
+#' count matrix.
+#' 
+#' @keywords internal
+#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom scater logNormCounts
+#' @return Returns a SingleCellExperiment object.
+#' @noRd
+.createSCE  <- function(countMatrix, coldata, rowdata){
+    
+    sce <- SingleCellExperiment::SingleCellExperiment(
+                assays=list(normcounts=as.matrix(countMatrix)),
+                colData=coldata,
+                rowData=rowdata)
+    
+    Biobase::exprs(sce) <- countMatrix
+    
+    return(sce)
 }
 
 
@@ -669,14 +720,29 @@
     stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
     stopifnot(all(colnames(countMatrix) == rownames(coldata)))
     
-    sce <- SingleCellExperiment::SingleCellExperiment(assays=list(
-                    counts=as.matrix(countMatrix)),
-            colData=coldata,
-            rowData=rowdata)
+    sce <- SingleCellExperiment::SingleCellExperiment(
+                assays=list(counts=as.matrix(countMatrix)),
+                colData=coldata,
+                rowData=rowdata)
     
     return(sce)
     
 }
+
+
+.checkRowAndColdata <- function(countMatrix, rowdata, coldata){
+    
+    if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
+                                                nrow(countMatrix))))
+        stop("The provided row metadata should contain the same number ",
+                "of rows than the matrix.")
+    
+    if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
+                                            ncol(countMatrix))))
+        stop("The provided col metadata should contain the same number ",
+                "of rows than the matrix number of columns.")
+}
+
 
 
 #' normaliseCountMatrix
@@ -688,8 +754,8 @@
 #'
 #' @usage 
 #' normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
-#'                     coldata=NULL, alreadyCellFiltered=FALSE,
-#'                     runQuickCluster=TRUE)
+#'                     coldata=NULL, alreadyCellFiltered=FALSE, 
+#'                     alreadyNormalized=FALSE, runQuickCluster=TRUE)
 #' 
 #' 
 #' @param theObject A scRNAseq object
@@ -699,6 +765,8 @@
 #' @param rowdata Data frame containing genes informations. Default is NULL.
 #' @param alreadyCellFiltered Logical. If TRUE, quality check and
 #' filtering will not be applied.
+#' @param alreadyNormalized Logical. If TRUE, quality check filtering  and 
+#' normalization will not be applied.
 #' @param runQuickCluster Logical. If TRUE scran::quickCluster() function will
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
@@ -751,58 +819,55 @@ setMethod(
     signature = "scRNAseq",
 
     definition = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
-                            coldata=NULL, alreadyCellFiltered=FALSE,
-                            runQuickCluster=TRUE){
+                        coldata=NULL, alreadyCellFiltered=FALSE,
+                        alreadyNormalized=FALSE, runQuickCluster=TRUE){
 
         validObject(theObject)
-
+        
         .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
-                runQuickCluster)
+                        alreadyNormalized, runQuickCluster)
+        
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
         
-        if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
-                        nrow(countMatrix))))
-            stop("The provided row metadata should contain the same number ",
-                    "of rows than the matrix.")
+        .checkRowAndColdata(countMatrix, rowdata, coldata)
+        rowdata <- .annotateGenes(countMatrix, species=species, 
+                                    rowdataDF=rowdata)
+        coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata, 
+                                    coldataDF=coldata)
         
-        if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
-                        ncol(countMatrix))))
-            stop("The provided col metadata should contain the same number ",
-                    "of rows than the matrix number of columns.")
-        
-        rowdata <- .annotateGenes(countMatrix, species = species,
-                rowdataDF = rowdata)
-        coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
-                coldataDF = coldata)
-
-        sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
-                                
-        # normalization
-        message("Running normalization. It can take a while depending on the",
-                " number of cells.")
-
-        if(runQuickCluster)
-            cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
-        else
-            cl <- NULL
-
-        # Compute sizeFactors which will be used for normalization
-        sceNorm <- scran::computeSumFactors(sce, sizes=sizes, clusters=cl)
-
-        message("summary(sizeFactors(sceObject)):")
-        print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
-
-        if (length(
-            SingleCellExperiment::sizeFactors(
-                sceNorm)[SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
-            message("Cells with negative sizeFactors will be deleted before the
-                        downstream analysis.")
-
-        sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
-        sceNorm <- scater::logNormCounts(sceNorm)
-        setSceNorm(theObject) <- sceNorm
-        return(theObject)
+        if (isTRUE(alreadyNormalized)){
+            sceNorm <- .createSCE(countMatrix, coldata, rowdata)
+            setSceNorm(theObject) <- sceNorm
+            return(theObject)
+            
+        }else{
+            sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata,rowdata)
+            message("Running normalization. It can take a while depending on",
+                    " the number of cells.")
+    
+            if(runQuickCluster)
+                cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
+            else
+                cl <- NULL
+    
+            # Compute sizeFactors which will be used for normalization
+            sceNorm <- scran::computeSumFactors(sce, sizes=sizes, clusters=cl)
+            message("summary(sizeFactors(sceObject)):")
+            print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
+    
+            if (length(
+                SingleCellExperiment::sizeFactors(sceNorm)[
+                    SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
+                message("Cells with negative sizeFactors will be deleted ",
+                        "before the downstream analysis.")
+    
+            sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
+            sceNorm <- scater::logNormCounts(sceNorm)
+            setSceNorm(theObject) <- sceNorm
+            
+            return(theObject)
+        }
     })
 
 
