@@ -525,6 +525,7 @@ difference between the i8TFs_plus experimental group and the other three. Intere
 This analysis offers additional information on the function of these eight transcription factors. 
 
 # Session info
+
 This section lists all the packages used for the CONCLUS tool.
 
 ```{r sessionInfo}
