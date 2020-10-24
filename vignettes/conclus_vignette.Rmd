@@ -54,7 +54,7 @@ identifiers (UMIs). The columns of the count matrix must contain cells and the
 rows -- genes. CONCLUS needs a large number of cells to collect statistics, 
 we recommend using CONCLUS if you have at least 100 cells.
 
-```{r runConclus_first, results='hide', warning = FALSE, fig.keep = 'none', message= FALSE}
+```{r runConclus_first}
 
 library(conclus)
 
@@ -139,7 +139,7 @@ In the "test_clustering" folder under outputDirectory, the three plots below wil
 “test_clustering.pdf” (*p[[3]]*, Figure3).
 
 
-```{r normalization_1, results="hide", warning = FALSE}
+```{r normalization_1}
 
 ## Creation of the single-cell RNA-Seq object
 scr <- singlecellRNAseq(experimentName = experimentName, 
@@ -157,13 +157,13 @@ p <- testClustering(scr, writeOutput=TRUE, silent=TRUE)
 ```
 
 
-```{r testClustering_result1, eval = FALSE}
+```{r testClustering_result1}
 # saved as "outputDirectory/test_clustering/test_tSNE.pdf"
 p[[1]]
 ```
 
 
-```{r testClustering_result2, eval = FALSE}
+```{r testClustering_result2}
 # saved as "outputDirectory/test_clustering/test_clustering.pdf"
 p[[2]]
 ```
@@ -245,7 +245,7 @@ The chosen values of PCs and perplexities can be changed if necessary. We found 
 we recommend to use more first PCs and higher perplexity, for example, *PCs=c(8, 10, 20, 40, 50, 80, 100)* and *perplexities=c(200, 240)*. For details about perplexities parameter see ‘?Rtsne’.
 
 
-```{r tsne_generation, results="hide", warning = FALSE}
+```{r tsne_generation}
 scr <- generateTSNECoordinates(scr)
 ```
 
@@ -265,7 +265,7 @@ cluster size which you assume to be meaningful for your experiment and *epsilon*
 shown in the "test_clustering/distance_graph.pdf" (See Test clustering section above).
  
 
-```{r runDBSScan, results="hide", warning = FALSE}
+```{r runDBSScan}
 scr <- runDBSCAN(scr)
 ```
 
@@ -286,7 +286,7 @@ guaranteed to be in one cluster. We can calculate how many times out of 84 clust
 dbscan results means that a cell was not assigned to any cluster. Hence, cluster numbers start from one. *clusterCellsInternal* is a general method that returns an object of class scRNASeq with its cellsSimilarityMatrix slot updated.
       
 
-```{r clusterCellsInternal, warning = FALSE}
+```{r clusterCellsInternal}
 scr <- clusterCellsInternal(scr, clusterNumber = 10)
 ```
 
@@ -347,7 +347,7 @@ tSNEstate[[5]]
 
 The *cellsSimilarityMatrix* is then used to generate a heatmap (Figure 7) summarizing the results of the clustering and to show how stable the cell clusters are across the 84 solutions.
 
-```{r plotCellSimilarity, warning = FALSE}
+```{r plotCellSimilarity}
 plotCellSimilarity(scr)
 ```
 
@@ -357,7 +357,7 @@ showing that CONCLUS managed not only to distinguish i8TFs_plus cells from the t
 
 ### Cluster similarity heatmap
 
-```{r plotClustersSimilarity, warning = FALSE, message = FALSE}  
+```{r plotClustersSimilarity}  
 plotClustersSimilarity(scr)
 ```
 
@@ -373,7 +373,7 @@ genes in a particular cluster compared to the others (multiple comparisons). The
 
 In summary, the function *conclus::rankGenes()* gives a list of marker genes for each cluster, ordered by their significance. See ?rankGenes for more details.
 
-```{r rankGenes, message = FALSE}
+```{r rankGenes}
 scr <- rankGenes(scr)
 ```
 
@@ -401,7 +401,7 @@ After selecting the top markers with the method `retrieveTopClustersMarkers`, th
 mean-centered normalized data. Mean-centering allows seeing the relative expression of a gene compared to the mean.
 
 
-```{r plotCellHeatmap_marker1, warning=FALSE}
+```{r plotCellHeatmap_marker1}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE)
 ```
 
@@ -410,7 +410,7 @@ The second heatmap (Figure 10) below also shows the order of genes and clusters 
 differences in expression of both lowly and highly detected genes in one heatmap using normalized data. For this reason, mean-centering helps to solve this issue.
 
 
-```{r plotCellHeatmap_marker2, warning=FALSE}
+```{r plotCellHeatmap_marker2}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE, meanCentered=FALSE)
 ```
 
@@ -495,9 +495,15 @@ scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 
 Now we can visualize the new results taking into account the new classification:
 
-```{r addClusteringManually_visualization, results = "hide", message = FALSE, warning = FALSE, fig.keep = 'none'}
+```{r addClusteringManually_visualization1}
 plotCellSimilarity(scrUpdated)
+```
+
+```{r addClusteringManually_visualization2}
 plotClustersSimilarity(scrUpdated)
+```
+
+```{r addClusteringManually_visualization3}
 plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 ```
 
