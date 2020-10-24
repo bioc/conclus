@@ -196,7 +196,7 @@ Before *scran* and *scater* normalization, the function will call *scran::quickC
 
 This function is currently limited to human and mouse.
 
-\newline
+
 ```{r normalization_2, eval = FALSE}
 scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
 ```
@@ -209,7 +209,7 @@ The rowdata can help to study cross-talk between cell types or find surface prot
 
 The slots can be accessed as indicated below:
 
-\newline
+
 ```{r normalization_results}
 ## Accessing slots
 originalMat <- getCountMatrix(scr)
@@ -244,14 +244,14 @@ principal components *PCs=c(4, 6, 8, 10, 20, 40, 50)* and two values of perplexi
 The chosen values of PCs and perplexities can be changed if necessary. We found that this combination works well for sc-RNA-seq datasets with 400-2000 cells. If you have 4000-9000 cells and expect more than 15 clusters, 
 we recommend to use more first PCs and higher perplexity, for example, *PCs=c(8, 10, 20, 40, 50, 80, 100)* and *perplexities=c(200, 240)*. For details about perplexities parameter see ‘?Rtsne’.
 
-\newline
+
 ```{r tsne_generation, results="hide", warning = FALSE}
 scr <- generateTSNECoordinates(scr)
 ```
 
 Results can be explored as follows:
 
-\newline
+
 ```{r tsne_showResults}
 tsneList <- getTSNEList(scr)
 head(getCoordinates(tsneList[[1]]))
@@ -264,14 +264,14 @@ Following the calculation of t-SNE coordinates, DBSCAN is run with a range of ep
 cluster size which you assume to be meaningful for your experiment and *epsilon* is the radius around the cell where the algorithm will try to find *minPoints* dots. Optimal *epsilon* must lay on the knee of the k-NN function as 
 shown in the "test_clustering/distance_graph.pdf" (See Test clustering section above).
  
-\newline
+
 ```{r runDBSScan, results="hide", warning = FALSE}
 scr <- runDBSCAN(scr)
 ```
 
 Results can be explored as follows:
 
-\newline
+
 ```{r dbscan_showResults}
 dbscanList <- getDbscanList(scr)
 clusteringList <- lapply(dbscanList, getClustering)
@@ -285,7 +285,7 @@ PCs x perplexities x MinPoints x epsilon). Since the range of cluster varies fro
 guaranteed to be in one cluster. We can calculate how many times out of 84 clustering solutions, every two cells were in one cluster and that is how we come to the similarity matrix of cells. We want to underline that a zero in the 
 dbscan results means that a cell was not assigned to any cluster. Hence, cluster numbers start from one. *clusterCellsInternal* is a general method that returns an object of class scRNASeq with its cellsSimilarityMatrix slot updated.
       
-\newline
+
 ```{r clusterCellsInternal, warning = FALSE}
 scr <- clusterCellsInternal(scr, clusterNumber = 10)
 ```
@@ -297,7 +297,7 @@ cci[1:10,1:10]
 
 After looking at the similarity between elements on the single-cell level, which is useful if we want to understand if there is any substructure which we did not highlight with our clustering, a "bulk" level where we pool all cells 
 from a cluster into a representative "pseudo cell" can also be generated. This gives a *clusterSimilarityMatrix*:
-\newline
+
 ```{r clustersSimilarityMatrix}
 scr <- calculateClustersSimilarity(scr)
 csm <- getClustersSimilarityMatrix(scr)
@@ -313,7 +313,7 @@ csm[1:10,1:10]
 CONCLUS generated 14 tSNE combining different values of PCs and perplexities. Each tSNE can be visualized either using coloring reflecting the results of DBScan clustering, the conditions or without colors. Here *plotClusteredTSNE*
 is used to generate all these possibilities of visualization. 
 
-\newline
+
 ```{r plotClustered}
 tSNEclusters <- plotClusteredTSNE(scr, columnName="clusters", 
                 returnPlot=TRUE, silentPlot=TRUE)
@@ -326,19 +326,19 @@ tSNEstate <- plotClusteredTSNE(scr, columnName="state",
 ```
 
 For visualizing the 5th (on 14) tSNE cluster (figure 4):
-\newline
+
 ```{r plotClustered_visualization1}
 tSNEclusters[[5]]
 ```
 
 For visualizing the 5th (on 14) tSNE cluster without colors (figure 5):
-\newline
+
 ```{r plotClustered_visualization2}
 tSNEnoColor[[5]]
 ```
 
 For visualizing the 5th (on 14) tSNE cluster colored by state (figure 6):
-\newline
+
 ```{r plotClustered_visualization3}
 tSNEstate[[5]]
 ```
@@ -346,7 +346,7 @@ tSNEstate[[5]]
 ### Cell similarity heatmap
 
 The *cellsSimilarityMatrix* is then used to generate a heatmap (Figure 7) summarizing the results of the clustering and to show how stable the cell clusters are across the 84 solutions.
-\newline
+
 ```{r plotCellSimilarity, warning = FALSE}
 plotCellSimilarity(scr)
 ```
@@ -372,7 +372,7 @@ To understand the nature of the consensus clusters identified by CONCLUS, it is 
 genes in a particular cluster compared to the others (multiple comparisons). The function *rankGenes* performs multiple comparisons of all genes from theObject and rank them according to a score reflecting a FDR power.
 
 In summary, the function *conclus::rankGenes()* gives a list of marker genes for each cluster, ordered by their significance. See ?rankGenes for more details.
-\newline
+
 ```{r rankGenes, message = FALSE}
 scr <- rankGenes(scr)
 ```
@@ -384,7 +384,7 @@ head(markers[[1]])
 
 The top 10 markers by cluster (default) can be selected with:
 
-\newline
+
 ```{r topMarkers_result}
 scr <- retrieveTopClustersMarkers(scr, removeDuplicates=FALSE)
 topMarkers <- getClustersMarkers(scr)
@@ -400,7 +400,7 @@ convenient for visualization. In practice, the number of genes in this heatmap w
 After selecting the top markers with the method `retrieveTopClustersMarkers`, the method *plotCellHeatmap* is used to order clusters and genes by similarity (the same order as in the *clusterSimilarityMatrix*) and show 
 mean-centered normalized data. Mean-centering allows seeing the relative expression of a gene compared to the mean.
 
-\newline
+
 ```{r plotCellHeatmap_marker1, warning=FALSE}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE)
 ```
@@ -409,7 +409,7 @@ plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE)
 The second heatmap (Figure 10) below also shows the order of genes and clusters by similarity but for normalized expression data. As you can see, genes expressed at a level of seven and nine look very similar. It is hard to highlight all the 
 differences in expression of both lowly and highly detected genes in one heatmap using normalized data. For this reason, mean-centering helps to solve this issue.
 
-\newline
+
 ```{r plotCellHeatmap_marker2, warning=FALSE}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE, meanCentered=FALSE)
 ```
@@ -421,7 +421,7 @@ Alternative order of clusters is by name or by hierarchical clustering as in the
 
 
 *PlotGeneExpression* allows visualizing the normalized expression of one gene in a t-SNE plot. It can be useful to inspect the specificity of top markers. Below are examples of marker genes that define a particular cluster (Figures 11-14).
-\newline
+
 ```{r plotGeneExpression1}
 # Plot gene expression in a selected tSNE plot
 # Ccl3, marker gene for clusters 2
@@ -449,7 +449,7 @@ plotGeneExpression(scr, "Alox5ap")
 
 `retrieveGenesInfo` retrieves gene information for the selected top markers, from open-source databases and websites of NCBI, MGI, and UniProt. It requires the `retrieveTopMarkers` method to have been run on the object.
 
-\newline
+
 ```{r getGenesInfo}
 scr <- retrieveGenesInfo(scr)
 result <- getGenesInfos(scr)
@@ -481,7 +481,7 @@ Bergiers et al. dataset above (cluster similarity heatmap), one can see that som
 
 It is mostly obvious for clusters 9 and 10. In order to figure out what marker genes are defining these families of clusters, one can use manual clustering in CONCLUS to fuse clusters of similar 
 nature: i.e. combine clusters 9 and 10 together.
-\newline
+
 ```{r merging_clusters}
 ## Retrieving the table indicating to which cluster each cell belongs
 clustCellsDf <- retrieveTableClustersCells(scr)
@@ -494,7 +494,7 @@ scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 ```
 
 Now we can visualize the new results taking into account the new classification:
-\newline
+
 ```{r addClusteringManually_visualization, results = "hide", message = FALSE, warning = FALSE, fig.keep = 'none'}
 plotCellSimilarity(scrUpdated)
 plotClustersSimilarity(scrUpdated)
@@ -503,7 +503,7 @@ plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 
 
 This heatmap shows that Cd52 and Alox5ap are good markers of cluster 9 (mix of old clusters 9 and 10). We can visualize them in the t-SNE plots below.
-\newline
+
 ```{r replot1}
 # Plot gene expression in a selected tSNE plot
 # Cd52, marker gene for clusters 9 (mix of old clusters 9 and 10)
@@ -526,6 +526,7 @@ This analysis offers additional information on the function of these eight trans
 
 # Session info
 This section lists all the packages used for the CONCLUS tool.
+
 ```{r sessionInfo}
 sessionInfo()
 ```
