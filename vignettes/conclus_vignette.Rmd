@@ -3,6 +3,8 @@ title: "ScRNA-seq workflow CONCLUS: from CONsensus CLUSters to a meaningful CONC
 author: "Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, and Christophe Lancrin"
 output:
   BiocStyle::pdf_document: default
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 
