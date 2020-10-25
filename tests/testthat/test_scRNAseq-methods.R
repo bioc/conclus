@@ -454,7 +454,7 @@ test_that("Normalization works properly", {
                 coldata=data.frame()), regexp=expM)
                   
             expM <- paste0("There are no more genes after filtering. Maybe",
-                            "the count matrix contains only genes which are",
+                            " the count matrix contains only genes which are",
                             " less than in 10 cells or more than ",
                             "all-10 cells. Please check the count matrix.")
             expect_error(normaliseCountMatrix(singlecellRNAseq(
