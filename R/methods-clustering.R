@@ -1067,8 +1067,24 @@ setMethod(
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
 #'
-#' ## Update clustering information
-#' scrFinal <- addClustering(scrCSM, clusToAdd=clustAddTab)
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#' ## Getting marker genes
+#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
+#'
+#' ## Getting genes info
+#' scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+#' 
+#' ## Retrieving the table indicating to which cluster each cell belongs
+#' clustCellsDf <- retrieveTableClustersCells(scrInfos)
+#' 
+#' ## Replace “10” by “9” to merge 9/10
+#' clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
+#' 
+#' ## Modifying the object to take into account the new classification
+#' scrUpdated <- addClustering(scrInfos, clusToAdd=clustCellsDf)
+#' 
 #'
 #' @exportMethod addClustering
 #' @importFrom SummarizedExperiment colData
