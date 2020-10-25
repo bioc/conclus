@@ -601,6 +601,7 @@ setMethod(
 #' @importFrom stats hclust
 #' @importFrom stats as.dist
 #' @importFrom stats cutree
+#' @importFrom utils capture.output
 #' @importFrom methods validObject
 
 setMethod(
