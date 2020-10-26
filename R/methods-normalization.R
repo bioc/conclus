@@ -12,24 +12,26 @@
 #' ensembl IDs and the biomaRt database.
 #' @noRd
 .defineMartVar <- function(species){
-    
+
     if(isTRUE(all.equal(species, "human"))){
         
-        # suppressMessages(library(org.Hs.eg.db, warn.conflicts=F))
+        # suppressMessages(library(org.Hs.eg.db, warn.conflicts=FALSE))
         genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
         ensemblPattern <- "ENSG"
-        ensembl <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+        dataset <- "hsapiens_gene_ensembl"
         
     }else if(isTRUE(all.equal(species, "mouse"))){
         
-        # suppressMessages(library(org.Mm.eg.db, warn.conflicts=F))
+        # suppressMessages(library(org.Mm.eg.db, warn.conflicts=FALSE))
         genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
         ensemblPattern <- "ENSMUSG"
-        ensembl <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
+        dataset <-"mmusculus_gene_ensembl"
         
     }else
         stop("Species should be human or mouse: ", species, "is not ",
                 "currently supported.")
+    
+    ensembl <- .tryUseMart(biomart="ensembl", dataset)
     
     return(list(genomeAnnot, ensemblPattern, ensembl))
 }
@@ -191,24 +193,11 @@
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
     
-    c <- 1
-    repeat{
-    message("### Attempt ", c, "/5 ### ",
-            "Retrieving information about genes from biomaRt. ") 
-    res <- try(getBM(attributes=c("ensembl_gene_id", "go_id", "name_1006",
-                "chromosome_name", "gene_biotype"), mart=ensembl), silent=TRUE)
-    if(isTRUE(is(res, "try-error"))){
-        c <- c + 1
-        error_type <- attr(res, "condition")
-        message(error_type$message)
-        if(c > 5)
-            stop("There is a problem of connexion to Ensembl for ",
-                "now. Please retry later.")
-    }else{
-        message("Information retrieved with success.")
-        break
-        }
-    }
+    attributes <- c("ensembl_gene_id", "go_id", "name_1006", "chromosome_name", 
+                    "gene_biotype")
+    
+    res <- .tryGetBM(attributes, ensembl)
+    
     tmp <- res[!duplicated(res$ensembl_gene_id),]
     
     rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
@@ -383,6 +372,7 @@
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
     message("Running filterCells.")
+    
     countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
         stop("None of your cells has at least 100 genes expressed. Since the ",
@@ -546,7 +536,8 @@
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
     
     if (!is.null(coldataDF)){
-        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, value = T)
+        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, 
+                    value = TRUE)
         colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
         coldataDF$cellName <- coldata$cellName
         coldata <- merge(coldataDF, coldata, by.x = "cellName",
@@ -765,7 +756,6 @@ setMethod(
                         nrow(countMatrix))))
             stop("The provided row metadata should contain the same number ",
                     "of rows than the matrix.")
-        
         if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
                         ncol(countMatrix))))
             stop("The provided col metadata should contain the same number ",
@@ -775,13 +765,11 @@ setMethod(
                 rowdataDF = rowdata)
         coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
                 coldataDF = coldata)
-
         sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
                                 
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
-
         if(runQuickCluster)
             cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
         else
@@ -789,7 +777,6 @@ setMethod(
 
         # Compute sizeFactors which will be used for normalization
         sceNorm <- scran::computeSumFactors(sce, sizes=sizes, clusters=cl)
-
         message("summary(sizeFactors(sceObject)):")
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
 
