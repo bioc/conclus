@@ -670,6 +670,32 @@
 }
 
 
+#' .checkRowAndColdata
+#'
+#' @description
+#' This function verifies that the meta-data have correct dimensions.
+#'
+#' @param countMatrix Class matrix representing the genes expression.
+#' @param rowdata Data frame containing genes informations. Default is NULL.
+#' @param coldata Data frame containing cells informations. Default is NULL.
+#'
+#' @keywords internal
+#' @noRd
+
+.checkRowAndColdata <- function(countMatrix, rowdata, coldata){
+    
+    if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
+                                                nrow(countMatrix))))
+        stop("The provided row metadata should contain the same number ",
+                "of rows than the matrix.")
+    
+    if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
+                                            ncol(countMatrix))))
+        stop("The provided col metadata should contain the same number ",
+                "of rows than the matrix number of columns.")
+}
+
+
 #' normaliseCountMatrix
 #'
 #' @description
@@ -752,14 +778,7 @@ setMethod(
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
         
-        if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
-                        nrow(countMatrix))))
-            stop("The provided row metadata should contain the same number ",
-                    "of rows than the matrix.")
-        if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
-                        ncol(countMatrix))))
-            stop("The provided col metadata should contain the same number ",
-                    "of rows than the matrix number of columns.")
+        .checkRowAndColdata(countMatrix, rowdata, coldata)
         
         rowdata <- .annotateGenes(countMatrix, species = species,
                 rowdataDF = rowdata)
