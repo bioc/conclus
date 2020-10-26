@@ -453,9 +453,15 @@ test_that("Normalization works properly", {
                 species         = "mouse"),
                 coldata=data.frame()), regexp=expM)
                   
+<<<<<<< HEAD
             expM <- paste0("There are no more genes after filtering. Maybe ",
                             "the count matrix contains only genes which are ",
                             "less than in 10 cells or more than ",
+=======
+            expM <- paste0("There are no more genes after filtering. Maybe",
+                            " the count matrix contains only genes which are",
+                            " less than in 10 cells or more than ",
+>>>>>>> NicolasSept2020
                             "all-10 cells. Please check the count matrix.")
             expect_error(normaliseCountMatrix(singlecellRNAseq(
                                 experimentName = experimentName, 

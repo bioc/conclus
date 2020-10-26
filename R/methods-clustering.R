@@ -148,7 +148,7 @@
 #' @param minPoints Single value for the minimum no. of points parameter of
 #' dbscan. Default = 5. See ?runDBSCAN for more details.
 #' @param fileDist Name of the pdf file. Default="distance_graph.pdf"
-#' @param silent If TRUE, do not plot graphics. Default=FALSE.
+#' @param plotKNN If TRUE, output the kNN plot on graphics. Default=TRUE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #'
 #' @details
@@ -162,7 +162,7 @@
 #' @noRd
 
 .printDist <- function(writeOutput, dataDirectory, width, height, tSNE,
-        dbscanEpsilon, minPts, fileDist, silent, ...){
+        dbscanEpsilon, minPts, fileDist, plotKNN, ...){
 
     if(writeOutput){
 
@@ -174,7 +174,7 @@
         dev.off()
     }
     
-    if(!silent){
+    if(plotKNN){
 
         dev.new()
         .plotDistanceGraphWithEpsilon(tSNE$data, epsilon=dbscanEpsilon,
@@ -247,7 +247,8 @@
 #'                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
 #'                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
 #'                 fileDist="distance_graph.pdf",
-#'                 fileClust="test_clustering.pdf", silent=FALSE, ...)
+#'                 fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE, 
+#'               ...)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
@@ -273,6 +274,7 @@
 #' @param fileClust Name of the pdf file for dbscan.
 #' Default="test_clustering.pdf"
 #' @param silent If TRUE, do not plot graphics. Default=FALSE.
+#' @param plotKNN If TRUE, output the kNN plot on graphics. Default=TRUE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
 #' 
 #' @return A ggplot object of the tSNE and the dbscan clustering.
@@ -342,7 +344,7 @@ setMethod(
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
-                silent=FALSE, ...){
+                silent=FALSE, plotKNN=TRUE, ...){
             
             if(!writeOutput && silent)
                 warning("writeOutput=FALSE and silent=TRUE, nothing will ",
@@ -378,7 +380,7 @@ setMethod(
 
             ## 2. Clustering with dbscan
             .printDist(writeOutput, dataDirectory, width, height, 
-                    tSNE, dbscanEpsilon, minPts, fileDist, silent, ...)
+                    tSNE, dbscanEpsilon, minPts, fileDist, plotKNN, ...)
             p[[2]] <- .printDBScan(writeOutput, dataDirectory, width, height, 
                     tSNE, dbscanEpsilon, minPts, fileClust, silent, ...)
             
@@ -598,6 +600,7 @@ setMethod(
 #' @importFrom stats hclust
 #' @importFrom stats as.dist
 #' @importFrom stats cutree
+#' @importFrom utils capture.output
 #' @importFrom methods validObject
 #' @importFrom utils capture.output
 
@@ -854,8 +857,100 @@ setMethod(
         })
 
 
+
 ##################
-## addClusteringManually
+## retrieveTableClustersCells
+##################
+        
+
+
+#' retrieveTableClustersCells
+#'
+#' @description
+#' Having computed clusterCellsInternal, retrieve to what cluster each cell 
+#' belongs. The output data.frame can be passed to the method ?addClustering.
+#'
+#' @usage
+#' retrieveTableClustersCells(theObject)
+#'
+#' @param theObject An Object of class scRNASeq for which the cells were 
+#' clustered internally. See ?clusterCellsInternal.
+#'
+#' @aliases retrieveTableClustersCells
+#'
+#' @author
+#' Nicolas DESCOSTES.
+#'
+#' @rdname
+#' retrieveTableClustersCells-scRNAseq
+#'
+#' @return
+#' A data frame containing two columns 'clusters' and 'cells' indicating the 
+#' result of the consensus clustering at the cellular level.
+#'
+#' @examples
+#' experimentName <- "Bergiers"
+#' countMatrix <- as.matrix(read.delim(system.file(
+#' "extdata/test_countMatrix.tsv", package="conclus")))
+#' outputDirectory <- "YourOutputDirectory"
+#' columnsMetaData <- read.delim(
+#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
+#'
+#' ## Create the initial object
+#' scr <- singlecellRNAseq(experimentName = experimentName,
+#'                 countMatrix     = countMatrix,
+#'                 species         = "mouse",
+#'                 outputDirectory = outputDirectory)
+#'
+#' ## Normalize and filter the raw counts matrix
+#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#'
+#' ## Compute the tSNE coordinates
+#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
+#'
+#' ## Perform the clustering with dbScan
+#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
+#'
+#' ## Compute the cell similarity matrix
+#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
+#'
+#' ## Retrieving the table clusters-cells.
+#' cellClustDf <- retrieveTableClustersCells(scrCCI)
+#'
+#' @seealso
+#' addClustering
+#'
+#' @exportMethod retrieveTableClustersCells
+#' @importFrom SummarizedExperiment colData
+
+setMethod(
+        
+        f = "retrieveTableClustersCells",
+        
+        signature = "scRNAseq",
+        
+        definition = function(theObject){
+            
+            ## Check if the Object is valid
+            validObject(theObject)
+            
+            ## Retrieve the clustering result in theObject
+            sceObject  <- getSceNorm(theObject)
+            colDf <- SummarizedExperiment::colData(sceObject)
+            
+            if(!any(names(colDf) == "clusters"))
+                stop("clusterCellsInternal should be performed before ",
+                        "retrieving this information.")
+            
+            colDf <- data.frame(clusters=colDf$clusters, cells=colDf$cellName)
+            
+            return(colDf)
+        })
+
+        
+        
+##################
+## addClustering
 ##################
 
 .checkParamsAddClustering <- function(theObject, clusToAdd, colDf){
@@ -888,6 +983,27 @@ setMethod(
                 " are the same.")
 }
 
+
+
+.reinitializeObject <- function(theObject){
+    
+    setCellsSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
+            dimnames = list("c1", "c1"), data = 1)
+    setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
+            dimnames = list("1", "1"), data = 1)
+    setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"), 
+                    mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
+    setClustersMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
+    setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"), 
+            clusters="1", external_gene_name="gene", go_id="GO1,GO2", 
+            mgi_description="description", entrezgene_description="descr",
+            gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+            ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+            uniprot_gn_id="ID")
+    setClustersSimiliratyOrdered(theObject) <- factor(1)
+    
+    return(theObject)
+}
 
 
 #' addClustering
@@ -951,8 +1067,24 @@ setMethod(
 #' ## Calculate clusters similarity
 #' scrCSM <- calculateClustersSimilarity(scrCCI)
 #'
-#' ## Update clustering information
-#' scrFinal <- addClustering(scrCSM, clusToAdd=clustAddTab)
+#' ## Ranking genes
+#' scrS4MG <- rankGenes(scrCSM)
+#' 
+#' ## Getting marker genes
+#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
+#'
+#' ## Getting genes info
+#' scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+#' 
+#' ## Retrieving the table indicating to which cluster each cell belongs
+#' clustCellsDf <- retrieveTableClustersCells(scrInfos)
+#' 
+#' ## Replace “10” by “9” to merge 9/10
+#' clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
+#' 
+#' ## Modifying the object to take into account the new classification
+#' scrUpdated <- addClustering(scrInfos, clusToAdd=clustCellsDf)
+#' 
 #'
 #' @exportMethod addClustering
 #' @importFrom SummarizedExperiment colData
@@ -986,8 +1118,24 @@ setMethod(
             ## Check Parameters
             .checkParamsAddClustering(theObject, clusToAdd, colDf)
 
+            ## Modify sceNorm
             colDf$clusters <- clusToAdd[colDf$cells, "clusters"]
+            colDf$clusters <- as.factor(as.vector(colDf$clusters))
+            clNb <- length(unique(colDf$clusters))
             SummarizedExperiment::colData(sceObject)$clusters <- colDf$clusters
             setSceNorm(theObject) <- sceObject
+            
+            ## Re-initialize values before re-computing markers
+            theObject <- .reinitializeObject(theObject)
+            
+            ## Recompute markers
+            message("Computing new markers..")
+            theObject <- clusterCellsInternal(theObject, clusterNumber=clNb)
+            theObject <- calculateClustersSimilarity(theObject)
+            theObject <- rankGenes(theObject)
+            theObject <- retrieveTopClustersMarkers(theObject, 
+                    removeDuplicates=FALSE)
+            theObject <- retrieveGenesInfo(theObject)
+            
             return(theObject)
         })

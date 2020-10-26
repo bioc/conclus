@@ -658,7 +658,7 @@ setMethod(
 #' normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 #' ?generateTSNECoordinates), dbScan was run (see ?runDBSCAN), cells were
 #' clustered (see ?clusterCellsInternal), as clusters themselves (see
-#' ?calculateClustersSimilarity).
+#' ?calculateClustersSimilarity), and ?rankGenes as ?retrieveTopMarkers.
 #' @param groupBy A column in the input table used for grouping the genes in
 #' the output tables. This option is useful if a table contains genes from
 #' different clusters. Default = "clusters".
