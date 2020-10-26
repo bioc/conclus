@@ -172,6 +172,20 @@ createDirectory <- function(dataDirectory, directory){
 
 
 
+#' .tryUseMart 
+#'
+#' This function retrieves an instance of ensembl biomaRt.
+#' 
+#' @param biomart Name of the database.
+#' @param dataset Name of the dataset. Currently mmusculus_gene_ensembl or
+#' hsapiens_gene_ensembl.
+#' 
+#' @keywords internal
+#'
+#' @return A Mart object.
+#' @importFrom biomaRt useMart
+#' @noRd
+
 .tryUseMart <- function(biomart="ensembl", dataset){
 
     c <- 1
