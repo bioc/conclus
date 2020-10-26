@@ -39,16 +39,6 @@ Max Planck Institute of Immunobiology and Epigenetics.
 
 # Standard workflow
 
-## Installation
-
-```{r loading_conclus, results="hide", warning = FALSE, message = FALSE}
-# required R >= 3.4.
-if(!requireNamespace("BiocManager"))
-	install.packages("BiocManager")
-
-if(!requireNamespace("conclus"))
-    BiocManager::install("conclus")
-```
 
 ## Quick start
 
