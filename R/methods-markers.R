@@ -433,14 +433,19 @@ setMethod(
 
 .returnDB1 <- function(genes, ensembl){
 
-    db1 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
+    attributes <- c("uniprot_gn_symbol",  # geneName
                     "external_gene_name", # Complete name,
                     "description",        # Description
                     "entrezgene_description",
                     "gene_biotype",        # Feature.Type
-                    "go_id" ),             # Gene Ontology
-            values=genes$geneName,
-            filters = "uniprot_gn_symbol", mart=ensembl)
+                    "go_id" )             # Gene Ontology
+        
+    values <- genes$geneName
+    
+    filters <- "uniprot_gn_symbol"
+
+    db1 <- .tryGetBM(attributes=attributes, mart=ensembl, values=values,
+                filters=filters)
 
     return(db1)
 }
@@ -448,14 +453,19 @@ setMethod(
 
 .returnDB2 <- function(genes, ensembl){
 
-    db2 <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
+    attributes <- c("uniprot_gn_symbol",  # geneName
                     "external_gene_name", # Complete name,
                     "chromosome_name",    # Chromosome name
                     "ensembl_gene_id",    # Ensembl
                     "entrezgene_id", #Entrez.Gene.ID
-                    "uniprot_gn_id"),     # Uniprot.ID
-            values=genes$geneName,
-            filters = "uniprot_gn_symbol", mart=ensembl)
+                    "uniprot_gn_id")     # Uniprot.ID
+    
+    values <- genes$geneName
+    
+    filters <- "uniprot_gn_symbol"
+
+    db2 <- .tryGetBM(attributes=attributes, mart=ensembl, values=values,
+                filters=filters)
 
     return(db2)
 }
@@ -568,23 +578,9 @@ setMethod(
     databaseDict <- c(mouse = "mmusculus_gene_ensembl",
             human = "hsapiens_gene_ensembl")
     dataset <- databaseDict[species]
-    c <- 1
-    repeat{
-    message("### Attempt ", c, "/5 ### ", "Connecting to the BioMart database")
-    ensembl <- try(useEnsembl(biomart="genes", dataset=dataset), silent=TRUE)
-    if(isTRUE(is(ensembl, "try-error"))){
-        c <- c + 1
-        error_type <- attr(ensembl, "condition")
-        message(error_type$message)
-        if(c > 5)
-            stop("There is a problem of connexion with BioMart for ",
-                "now. Please retry later.")
-        
-    }else{
-        message("Connected with success.")
-        break
-        }
-    }
+    
+	ensembl <- .tryUseMart(biomart="ensembl", dataset)
+	
     ## Query biomart
     database <- .queryBiomart(genes, ensembl)
 
