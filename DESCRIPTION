@@ -68,7 +68,8 @@ biocViews:
     SingleCell,
     Sequencing,
     Clustering,
-    ATACSeq
+    ATACSeq,
+    Classification
 Collate: 
     'AllClasses.R'
     'AllGenerics.R'
