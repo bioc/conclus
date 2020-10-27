@@ -101,21 +101,23 @@ Further details about how all results are generated can be found below.
 
 ## Data
 
-In this vignette, we demonstrate how to use CONCLUS on a sc-RNA-seq dataset from 
-[*Bergiers et al. eLife 2018*](https://elifesciences.org/articles/29312). The 
-design for this experiment is described in ([*Figure 4—figure supplement 2*](
-https://elifesciences.org/articles/29312/figures#fig4s2)). Bergiers et al. goal 
-was to analyze the effect of the simultaneous expression of eight transcription
- factors (8TFs): *Runx1* - and its partner - *Cbfb*, *Gata2*, *Tal1*, *Fli1*, 
-*Lyl1*, *Erg* and *Lmo2* in *in vitro* differentiated embryonic stem cells 
-(ESCs) in comparison to control. They knocked-in a polycistronic transgenic 
-construct allowing to over-express eigth transcription factors (i8TFs) 
-simultaneously after adding doxycycline (dox). The Empty ESC line did not have 
-any transgene. There were **four conditions**: E_minus (Empty no dox), E_plus 
-(Empty with dox), i8TFs_minus (i8TFs no dox) and i8TFs_plus (i8TFs with dox). 
+In this vignette, we demonstrate how to use CONCLUS on a sc-RNA-seq dataset 
+from [*Bergiers et al. eLife 2018*](https://elifesciences.org/articles/29312). 
+The design for this experiment is described in ([*Figure 4—figure supplement 
+2*](https://elifesciences.org/articles/29312/figures#fig4s2)). Bergiers et al. 
+goal was to analyze the effect of the simultaneous expression of eight 
+transcription factors (8TFs): *Runx1* - and its partner - *Cbfb*, *Gata2*, 
+*Tal1*, *Fli1*, *Lyl1*, *Erg* and *Lmo2* in *in vitro* differentiated embryonic
+ stem cells (ESCs) in comparison to control. They knocked-in a polycistronic 
+transgenic construct allowing to over-express eigth transcription factors 
+(i8TFs) simultaneously after adding doxycycline (dox). The Empty ESC line did 
+not have any transgene. There were **four conditions**: E_minus (Empty no dox),
+ E_plus (Empty with dox), i8TFs_minus (i8TFs no dox) and i8TFs_plus 
+ (i8TFs with dox). 
 
 This sc-RNA-seq experiment was performed using the SMARTer ICELL8 Single-Cell 
-System ([Click here for more info](https://www.takarabio.com/learning-centers/automation-systems/icell8-introduction/icell8-technology-overview)). 
+System ([Click here for more info](https://www.takarabio.com/learning-centers/
+automation-systems/icell8-introduction/icell8-technology-overview)). 
 The protocol was based on 3' end RNA sequencing where each mRNA molecule is 
 labeled with a unique molecular identifier (UMI) during reverse transcription 
 in every single cell. The analysis performed by *Bergiers et al.* was based on 
