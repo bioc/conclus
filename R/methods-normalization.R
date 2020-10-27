@@ -505,8 +505,7 @@
             stringsAsFactors = FALSE)
 
     ### add info about all genes in a cell
-    coldata <- .addGenesInfoCell(coldata, countMatrix)
-    
+    coldata <- .addGenesInfoCell(coldata, countMatrix) 
     ### add info about mitochondrial and protein-coding genes
     coldata <- dplyr::mutate(coldata, mtGenes = NA, mtSum = NA, codGenes = NA,
             codSum=NA)
