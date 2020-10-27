@@ -166,7 +166,7 @@ scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
 ```
 
 
-```{r testClustering, fig.height=5, fig.width=6}
+```{r testClustering}
 p <- testClustering(scr, writeOutput=TRUE, silent=TRUE)
 ```
 
