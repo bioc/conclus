@@ -213,13 +213,13 @@ setGeneric(
 
 
 setGeneric(
-        
-     name = "retrieveTableClustersCells",
-     
-     def= function(theObject){
-         standardGeneric("retrieveTableClustersCells")
-     },
-     signature="theObject")
+
+    name = "retrieveTableClustersCells",
+
+    def= function(theObject){
+        standardGeneric("retrieveTableClustersCells")
+    },
+    signature="theObject")
 
 
 ################################################################################
