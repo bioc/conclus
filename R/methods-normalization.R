@@ -413,7 +413,6 @@
     rownames(colData) <- colData$cellName
     colData <- colData[colnames(countMatrix), ]
     stopifnot(all(rownames(colData) == colnames(countMatrix)))
-
     countMatrix <- countMatrix[,colData$filterPassed == 1]
     colData <- colData[colData$filterPassed == 1,]
 
@@ -658,8 +657,7 @@
             "all-10 cells. Please check the count matrix.")
     
     stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
-    stopifnot(all(colnames(countMatrix) == rownames(coldata)))
-    
+    stopifnot(all(colnames(countMatrix) == rownames(coldata))) 
     sce <- SingleCellExperiment::SingleCellExperiment(assays=list(
                     counts=as.matrix(countMatrix)),
             colData=coldata,
