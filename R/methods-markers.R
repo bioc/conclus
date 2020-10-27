@@ -579,8 +579,8 @@ setMethod(
             human = "hsapiens_gene_ensembl")
     dataset <- databaseDict[species]
     
-	ensembl <- .tryUseMart(biomart="ensembl", dataset)
-	
+    ensembl <- .tryUseMart(biomart="ensembl", dataset)
+
     ## Query biomart
     database <- .queryBiomart(genes, ensembl)
 
