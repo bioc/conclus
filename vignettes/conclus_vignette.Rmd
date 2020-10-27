@@ -4,11 +4,11 @@ CONCLUSion"
 author: "Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, and Christophe 
 Lancrin"
 output:
-  BiocStyle::pdf_document: default
+    BiocStyle::pdf_document: default
 vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{ScRNA-seq workflow CONCLUS: from CONsensus CLUSters to 
-  a meaningful CONCLUSion}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteIndexEntry{ScRNA-seq workflow CONCLUS: from CONsensus CLUSters to 
+    a meaningful CONCLUSion}
 ---
 
 
@@ -22,14 +22,15 @@ sequencing. You can find a good resource to start with
 
 CONCLUS is organized into the following steps:
 
-  + Generation of multiple t-SNE plots with a range of parameters including 
+    + Generation of multiple t-SNE plots with a range of parameters including 
     different selection of genes extracted from PCA.
-  + Use the Density-based spatial clustering of applications with noise (DBSCAN)
-    algorithm for idenfication of clusters in each generated t-SNE plot.
-  + All DBSCAN results are combined into a cell similarity matrix.
-  + The cell similarity matrix is used to define "CONSENSUS" clusters conserved
-    accross the previously defined clustering solutions.
-  + Identify marker genes for each concensus cluster.
+    + Use the Density-based spatial clustering of applications with noise 
+    (DBSCAN) algorithm for idenfication of clusters in each generated t-SNE 
+    plot.
+    + All DBSCAN results are combined into a cell similarity matrix.
+    + The cell similarity matrix is used to define "CONSENSUS" clusters 
+    conserved accross the previously defined clustering solutions.
+    + Identify marker genes for each concensus cluster.
   
 
 # Getting help
