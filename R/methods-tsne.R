@@ -227,7 +227,8 @@ setMethod(
                     perplexities, writeOutput)
 
             message("Running TSNEs using ", cores, " cores.")
-            TSNEres <- .getTSNEresults(Biobase::exprs(sceObject),
+            TSNEres <- .getTSNEresults(
+                    expressionMatrix=Biobase::exprs(sceObject),
                     cores=cores, PCs=PCs, perplexities=perplexities,
                     randomSeed=randomSeed)
 
