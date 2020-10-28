@@ -2,6 +2,7 @@
 
 export(DbscanCluster)
 export(TsneCluster)
+export(retrieveFromGEO)
 export(runCONCLUS)
 export(singlecellRNAseq)
 exportClasses(scRNAseq)
