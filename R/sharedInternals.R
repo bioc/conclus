@@ -171,7 +171,19 @@ createDirectory <- function(dataDirectory, directory){
 }
 
 
-
+#' .tryUseMart
+#'
+#' This function connects to a specified BioMart database and 
+#' dataset hosted by Ensembl.
+#' 
+#' @param biomart BioMart database name you want to connect to.
+#' @param dataset Dataset you want to use.
+#' 
+#' @keywords internal
+#'
+#' @return An object of class 'Mart' connected to ensembl and using
+#' the selected dataset.
+#' @noRd
 .tryUseMart <- function(biomart="ensembl", dataset){
 
     c <- 1
