@@ -55,6 +55,7 @@
 #' 
 #' @importFrom GEOquery getGEO
 #' @importFrom clusterProfiler bitr
+#' @importFrom stringr str_extract
 #' @export retrieveFromGEO
 retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
         species, convertToSymbols=TRUE, annoType="ENSEMBL"){
@@ -67,7 +68,14 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
     
     ## Retrieving the columns meta-data
     message("Downloading the columns meta-data.")
-    gpl <- GEOquery::getGEO(filename=seriesMatrixName)
+    GEOnb <- stringr::str_extract(seriesMatrixName, "GSE[0-9]+")
+    gpl <- GEOquery::getGEO(GEOnb, GSEMatrix=TRUE)
+    
+    if(!any(names(gpl) == seriesMatrixName))
+        stop("The series matrix was not found. Contact the developper with ",
+                "a reproducible example.")
+    
+    gpl <- gpl[[seriesMatrixName]]
     gpl <- as(gpl, "data.frame")
     columnsMetaData <- data.frame(state=gpl$sampletype.ch1, 
             cellBarcode=gpl$wellbarcode.ch1)
