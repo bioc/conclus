@@ -155,7 +155,8 @@ dir.create(outputDirectory, showWarnings=FALSE)
 species <- "mouse"
 
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
-matrixURL <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz"
+matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982",
+"&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz")
 seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
 
 result <- retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrix, species)
@@ -167,7 +168,7 @@ columnsMetaData <- result[[2]]
 TFtoRemove <- c("Runx1", "Cbfb", "Gata2", "Tal1", "Fli1", "Lyl1", "Erg", 
 "Lmo2")
 idxTF <- match(TFtoRemove, rownames(countMatrix))
-countMatrix <- countMatrix[-idxTF,] 
+countMatrix <- countMatrix[-idxTF,]
 ```
 
 ## Test clustering
