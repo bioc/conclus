@@ -76,6 +76,7 @@ Collate:
     'constructors.R'
     'getters.R'
     'globalVar.R'
+    'loadDataset.R'
     'methods-clustering.R'
     'methods-dbscan.R'
     'methods-export.R'
