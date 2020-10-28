@@ -103,7 +103,7 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
     rownames(columnsMetaData) <- cellsnames
     
     ## Converting ensembl IDs to gene symbols
-    if(convertEnsemblToSymbols){
+    if(convertToSymbols){
        
         message("Converting ENSEMBL IDs to symbols.")
         if(isTRUE(all.equal(species, "mouse")))
