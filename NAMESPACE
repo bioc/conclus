@@ -3,6 +3,8 @@
 export(DbscanCluster)
 export(TsneCluster)
 export(runCONCLUS)
+export(loadColData)
+export(loadCountMatrix)
 export(singlecellRNAseq)
 exportClasses(scRNAseq)
 exportMethods("setCellsSimilarityMatrix<-")
