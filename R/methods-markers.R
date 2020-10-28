@@ -444,8 +444,8 @@ setMethod(
     
     filters <- "uniprot_gn_symbol"
 
-    .tryGetBM(attributes=attributes, mart=ensembl, values=values,
-                filters=filters)
+    db1 <- .tryGetBM(attributes=attributes, ensembl=ensembl, values=values,
+                    filters=filters)
 
     return(db1)
 }
@@ -464,7 +464,7 @@ setMethod(
     
     filters <- "uniprot_gn_symbol"
 
-    .tryGetBM(attributes=attributes, mart=ensembl, values=values,
+    db2 <- .tryGetBM(attributes=attributes, ensembl=ensembl, values=values,
                 filters=filters)
 
     return(db2)
