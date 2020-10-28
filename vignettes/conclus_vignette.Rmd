@@ -639,7 +639,7 @@ plotCellSimilarity(scrUpdated)
 plotClustersSimilarity(scrUpdated)
 ```
 
-```{r addClusteringManually_visualization3. fig.height=5, fig.width=6}
+```{r addClusteringManually_visualization3, fig.height=5, fig.width=6}
 plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 ```
 
