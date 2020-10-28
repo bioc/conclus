@@ -122,7 +122,6 @@
 #' name.
 #' @noRd
 .annotateSymbols <- function(symbolGenes, genomeAnnot){
-    
     message("Annotating ", length(symbolGenes),
             " genes considering them as SYMBOLs.")
     
@@ -503,8 +502,8 @@
 #' @noRd       
 .mergeColdata <- function(coldataDF, coldata, countMatrix){
     
-    if("cellName" %in% rownames(coldata) && 
-        "cellName" %in% rownames(coldataDF))
+    if("cellName" %in% colnames(coldata) && 
+        "cellName" %in% colnames(coldataDF))
             coldata <- merge(coldataDF, coldata, by.x = "cellName",
             by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
     else 
