@@ -131,6 +131,15 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
         rownames(countMatrix)[idxSym] <- symbolsVec$SYMBOL
     }
     
+    idxDup <- duplicated(rownames(countMatrix))
+    ldup <- length(which(idxDup))
+    
+    if(!isTRUE(all.equal(ldup, 0))){
+        countMatrix <- countMatrix[!idxDup,]
+        columnsMetaData <- columnsMetaData[!idxDup,]
+        warning("Nb of lines removed due to duplication of row names: ", ldup)
+    }
+        
     
     return(list(countMatrix, columnsMetaData))
 }
