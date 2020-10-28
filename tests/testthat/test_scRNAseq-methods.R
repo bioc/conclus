@@ -1,10 +1,20 @@
 ## Data
 
 outputDirectory <- "YourOutputDirectory"
+dir.create(outputDirectory)
 experimentName <- "Bergiers"
 columnsMetaData <- read.delim(
     system.file("extdata/test_colData_filtered.tsv", 
             package="conclus"))
+
+## Parameters for downloading from GEO
+species <- "mouse"
+countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
+matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982",
+        "&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz")
+seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
+
+wrongSeriesMatrix <- "GSE132042_series_matrix.txt.gz"
 
 ## Creation of the count Matrix
 
@@ -114,6 +124,21 @@ wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"),
         Symbol=c("symbol1", "symbol2"), ensembl_gene_id=c("ENS1","ENS2"), 
         mgi_id=c("MGI1", "MGI2"), entrezgene_id=c("1", "2"),
         uniprot_gn_id=c("ID1", "ID2"))
+
+
+
+####################  Downloading from GEO  ####################
+
+
+test_that("retrieveFromGEO works properly", {
+            
+            expM <- paste0("The cell barcodes were not found in the matrix. ",
+                    "Are you sure that the count matrix and the series matrix ",
+                    "correspond?")
+            expect_error(retrieveFromGEO(matrixURL, countMatrixPath, 
+                            wrongSeriesMatrix, species, convertToSymbols=TRUE, 
+                            annoType="ENSEMBL"), expM)        
+        })
 
 
 ####################  Construction of the object  ####################
