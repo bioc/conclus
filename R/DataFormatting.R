@@ -5,7 +5,7 @@
 #' They are formatted to be suitable inputs for conclus.
 #' 
 #' @usage
-#' retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
+#' retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrixName,
 #'        species, convertToSymbols=TRUE)
 #' 
 #' @param matrixURL URL of the count matrix. The matrix must be un-normalized.
