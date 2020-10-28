@@ -136,68 +136,38 @@ Highly abundant embryonic hemoglobins with names starting with "Hba" or "Hbb"
 were also excluded because they seemed to be a primary source of contamination.
 
 
-The code below format the count matrix and the columns meta-data:
+The code below format the count matrix and the columns meta-data. The source 
+data are downloaded from the GEO page 
+[GSE96982](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96982). The 
+URL of the count matrix was retrieved by right-click and 'copy link adress' 
+on the ftp hyperlink of the supplementary file GSE96982_countMatrix.txt.gz 
+at the bottom of the page. The name of the series matrix, containing 
+columns meta-data was retrieved by clicking the 'Series Matrix File(s)' link 
+just above the count matrix. Another complete tutorial is given for retrieving 
+and processing data of tabulamuris on the [landing page]() of the package on 
+the Bioconductor website.
 
 
 ```{r format_data}
-library(GEOquery)
-library(clusterProfiler)
-
 
 outputDirectory <- "./YourOutputDirectory"
 dir.create(outputDirectory, showWarnings=FALSE)
-experimentName <- "Bergiers"
 species <- "mouse"
 
-## Retrieving the count matrix
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
-download.file("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982&format=
-file&file=GSE96982%5FcountMatrix%2Etxt%2Egz", countMatrixPath)
-countMatrix <- as.matrix(read.table(countMatrixPath, header=TRUE, row.names=1,
-                                stringsAsFactors = FALSE))
+matrixURL <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz"
+seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
 
-## Retrieving the columns meta-data
-gpl <- GEOquery::getGEO(filename="GSE96982-GPL19057_series_matrix.txt.gz")
-gpl <- as(gpl, "data.frame")
-columnsMetaData <- data.frame(state=gpl$sampletype.ch1, 
-cellBarcode=gpl$wellbarcode.ch1)
+result <- retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrix, species)
+countMatrix <- result[[1]]
+columnsMetaData <- result[[2]]
 
-## Removing columns of the matrix not having meta-data
-idx <- match(colnames(countMatrix), columnsMetaData$cellBarcode)
-idxNA <- which(is.na(idx))
-countMatrix <- countMatrix[,-idxNA]
-idx <- idx[-idxNA]
-
-## Reordering columns meta-data
-columnsMetaData <- columnsMetaData[idx,]
-
-## Adding cells names
-cellsnames <- paste0("c", seq_len(ncol(countMatrix)))
-colnames(countMatrix) <- cellsnames
-columnsMetaData <- cbind(cellName=cellsnames, columnsMetaData)
-rownames(columnsMetaData) <- cellsnames
 
 ## Removing the 8 TFs:
-TFtoRemove <- c(Runx1 = "ENSMUSG00000022952", 
-Cbfb="ENSMUSG00000031885",
-Gata2="ENSMUSG00000015053",
-Tal1="ENSMUSG00000028717",
-Fli1="ENSMUSG00000016087",
-Lyl1="ENSMUSG00000034041",
-Erg="ENSMUSG00000040732",
-Lmo2="ENSMUSG00000032698")
-
+TFtoRemove <- c("Runx1", "Cbfb", "Gata2", "Tal1", "Fli1", "Lyl1", "Erg", 
+"Lmo2")
 idxTF <- match(TFtoRemove, rownames(countMatrix))
-countMatrix <- countMatrix[-idxTF,]
-
-## Converting ensembl IDs to gene symbols
-matrixSym <- rownames(countMatrix)
-symbols <- clusterProfiler::bitr(matrixSym, fromType="ENSEMBL", 
-                                toType=c("SYMBOL"), OrgDb= "org.Mm.eg.db")
-idxSymRemove <- which(duplicated(symbols$ENSEMBL))
-symbols <- symbols[-idxSymRemove,]
-idxSym <- match(symbols$ENSEMBL, matrixSym)
-rownames(countMatrix)[idxSym] <- symbols$SYMBOL  
+countMatrix <- countMatrix[-idxTF,] 
 ```
 
 ## Test clustering
@@ -220,7 +190,7 @@ to "test_tSNE.pdf" (*p[[1]]*), and the last one will be saved as
 ```{r normalization_1}
 
 ## Creation of the single-cell RNA-Seq object
-scr <- singlecellRNAseq(experimentName = experimentName, 
+scr <- singlecellRNAseq(experimentName = "Bergiers", 
         countMatrix     = countMatrix, 
         species         = "mouse",
         outputDirectory = outputDirectory)
