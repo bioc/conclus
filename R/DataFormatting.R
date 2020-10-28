@@ -53,10 +53,7 @@
 #' @author
 #' Nicolas DESCOSTES
 #' 
-#' @importFrom GEOquery getGEO
-#' @importFrom clusterProfiler bitr
 #' @export retrieveFromGEO
-
 retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
         species, convertToSymbols=TRUE, annoType="ENSEMBL"){
     
