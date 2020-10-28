@@ -53,7 +53,7 @@
 #' @author
 #' Nicolas DESCOSTES
 #' 
-#' @exportMethod retrieveFromGEO
+#' @export retrieveFromGEO
 #' @importFrom GEOquery getGEO
 #' @importFrom clusterProfiler bitr  
 
