@@ -27,17 +27,39 @@
 
 
 #' loadColData
-#'
+#' 
+#' @description 
+#' This function import the coldata. All parameters are mandatory and no
+#' default values, so the user has to know how is the coldata before the 
+#' import. This function also replaces the name of the column containing cell
+#' names and informed with 'columnCell' parameter by "cellName" for the good 
+#' walk of CONCLUS.
+#' 
+#' @usage 
+#' loadColData(file=coldataPath, columnCell="cellName", header=TRUE, 
+#'             dec=".", sep='\t')
+#'             
 #' @param file Path of the coldata to load.
-#' @param columnCell 
-#' @param header 
-#' @param sep 
-#' @param dec 
+#' @param columnCell Column name or indice of the column containing 
+#' cell names/id.
+#' @param header Set TRUE if the first row of the table corresponds to the
+#' column names, and FALSE if it doesn't.
+#' @param sep Character used in the table to separate the fields. 
+#' Usually it's ' ' ';' ',' or '\t'.
+#' @param dec Character used in the table for decimal points.
+#' Usually '.' or ',' .
 #'
-#' @return
+#' @return The coldata with cellName column
 #' @export
 #'
 #' @examples
+#' coldataPath <- file.path(system.file("extdata", package = "conclus"),
+#'                         "test_colData_filtered.tsv")
+#'                         
+#' loadColData(file=coldataPath, columnCell="cellName", header=TRUE, 
+#'             dec=".", sep='\t')
+#'
+#'
 loadColData<- function(file, columnCell, header, sep, dec){
 
     .checkLoadMatrix(file, columnCell, header, sep, dec, type="coldata")
@@ -61,6 +83,14 @@ loadColData<- function(file, columnCell, header, sep, dec){
         }else 
             stop("There is no column '", columnCell, "' in the table.")
     }
+    
+    if(isFALSE("state" %in% colnames(df))){
+         
+        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, 
+                    value = TRUE)
+        colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
+        coldataDF$cellName <- coldata$cellName
+     }
    
     rownames(df) <- df$cellName
     
@@ -69,7 +99,7 @@ loadColData<- function(file, columnCell, header, sep, dec){
 
 
 loadCountMatrix<- function(file, header, sep, dec){
-    
+
     .checkLoadMatrix(file, columnCell=NA, header, sep, 
                     dec, type="countMatrix")
 
@@ -78,7 +108,8 @@ loadCountMatrix<- function(file, header, sep, dec){
                     sep=sep,
                     dec=dec,
                     na.strings=c("", "NA",  "<NA>"),
-                    stringsAsFactors=FALSE)
+                    stringsAsFactors=FALSE,
+                    row.names = 1)
     
     mat <- as.matrix(df)
     
