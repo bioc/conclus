@@ -136,7 +136,6 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
     
     if(!isTRUE(all.equal(ldup, 0))){
         countMatrix <- countMatrix[!idxDup,]
-        columnsMetaData <- columnsMetaData[!idxDup,]
         warning("Nb of lines removed due to duplication of row names: ", ldup)
     }
         
