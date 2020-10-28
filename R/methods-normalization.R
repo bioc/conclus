@@ -305,7 +305,7 @@
 #' .createReportTable
 #'
 #' @description
-#' This function creates a boolean vector that is used to filer the cells
+#' This function creates a boolean vector that is used to filter the cells
 #' (see .filterCells below).
 #'
 #' @details
@@ -483,7 +483,36 @@
             oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
     return(coldata)
 }
+
+#' .mergeColdata
+#'
+#' @description
+#' This function merge the coldata created by CONCLUS with  the coldata
+#' provided by the user if he has entered it.
+#'
+#' @param coldataDF Data frame provided by the user containing information 
+#' about cells.
+#' @param coldata Data frame created by CONCLUS containing information 
+#' about cells.
+#' @param countMatrix The count matrix.
+#' 
+
+#' @keywords internal
+#'
+#' @return Returns the final coldata
+#' @noRd       
+.mergeColdata <- function(coldataDF, coldata, countMatrix){
+    
+    if("cellName" %in% rownames(coldata) && 
+        "cellName" %in% rownames(coldataDF))
+            coldata <- merge(coldataDF, coldata, by.x = "cellName",
+            by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
+    else 
+        stop("The submitted coldata does not have a column 'cellName' ",
+                "to perform the merge." )
         
+}
+
 #' .addCellsInfo
 #'
 #' @description
@@ -534,14 +563,8 @@
             sumMtPer = 100*coldata$mtSum/coldata$genesSum,
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
     
-    if (!is.null(coldataDF)){
-        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, 
-                    value = TRUE)
-        colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
-        coldataDF$cellName <- coldata$cellName
-        coldata <- merge(coldataDF, coldata, by.x = "cellName",
-                by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
-    }
+    if (!is.null(coldataDF))
+        .mergeColdata(coldataDF, coldata, countMatrix)
 
     rownames(coldata) <- coldata$cellName
     coldata <- coldata[colnames(countMatrix), ]
@@ -607,7 +630,7 @@
 
     if(!is.data.frame(coldata) && !is.null(coldata))
         stop("'coldata' parameter should be a data frame or be NULL.")
-
+    
     if (!is.logical(alreadyCellFiltered))
         stop("'alreadyCellFiltered' parameter should be a boolean.")
     
@@ -795,13 +818,13 @@ setMethod(
 
         validObject(theObject)
         
-        .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
-                        alreadyNormalized, runQuickCluster)
-        
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
         
-        .checkRowAndColdata(countMatrix, rowdata, coldata)
+        .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered, 
+                        alreadyNormalized, runQuickCluster)
+        
+        # .checkRowAndColdata(countMatrix, rowdata, coldata)
         rowdata <- .annotateGenes(countMatrix, species, rowdata)
         coldata <- .addCellsInfo(countMatrix, rowdata, coldata)
         
