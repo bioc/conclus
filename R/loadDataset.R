@@ -89,7 +89,6 @@ loadColData<- function(file, columnCell, header, sep, dec){
         exp <- grep("state", colnames(df), ignore.case = TRUE, 
                     value = TRUE)
         colnames(df)[colnames(df) == exp] <- "state"
-        df$cellName <- coldata$cellName
      }
    
     rownames(df) <- df$cellName
