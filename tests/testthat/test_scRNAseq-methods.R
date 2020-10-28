@@ -12,8 +12,6 @@ species <- "mouse"
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
 matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982",
         "&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz")
-seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
-
 wrongSeriesMatrix <- "GSE132042_series_matrix.txt.gz"
 
 ## Creation of the count Matrix
