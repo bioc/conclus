@@ -575,14 +575,14 @@ the default pheatmap function.
 in a t-SNE plot. It can be useful to inspect the specificity of top markers. 
 Below are examples of marker genes that define a particular cluster.
 
-```{r plotGeneExpression1, results="hide"}
+```{r plotGeneExpression1, eval=FALSE}
 # Plot gene expression in a selected tSNE plot
 # Hp, marker gene of cluster 2
 plotGeneExpression(scr, "Hp", tSNEpicture=5)
 ```
 ![Hp](figures/11_Hp_cluster2.png)
 
-```{r plotGeneExpression2, results="hide"}
+```{r plotGeneExpression2, eval=FALSE}
 # Alox5ap, marker gene of cluster 9
 plotGeneExpression(scr, "Alox5ap", tSNEpicture=5)
 ```
@@ -590,7 +590,7 @@ plotGeneExpression(scr, "Alox5ap", tSNEpicture=5)
 ![Alox5ap](figures/12_Alox5ap_cluster9.png)
 
 
-```{r plotGeneExpression3, results="hide"}
+```{r plotGeneExpression3, eval=FALSE}
 # CD52, marker gene of cluster 9
 plotGeneExpression(scr, "Cd52", tSNEpicture=5)
 ```
@@ -692,7 +692,7 @@ tSNEclusters[[5]]
 This heatmap shows that Tyrobp and Ccl9 are good markers of cluster 2 (mix of 
 old clusters 2 and 3). We can visualize them in the t-SNE plots below.
 
-```{r replot1, results="hide"}
+```{r replot1, eval=FALSE}
 # Tyrobp, marker gene for cluster 2 (mix of old clusters 2 and 3)
 plotGeneExpression(scrUpdated, "Tyrobp", tSNEpicture=5)
 ```
@@ -700,7 +700,7 @@ plotGeneExpression(scrUpdated, "Tyrobp", tSNEpicture=5)
 ![Tyrobp](figures/18_Tyrobp_cluster2.png)
 
 
-```{r replot2, results="hide"}
+```{r replot2, eval=FALSE}
 # Plot gene expression in a selected tSNE plot
 # Ccl9, marker gene for clusters 2 (mix of old clusters 2 and 3)
 plotGeneExpression(scrUpdated, "Ccl9", tSNEpicture=5)
