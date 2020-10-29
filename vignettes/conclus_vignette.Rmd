@@ -458,7 +458,7 @@ tSNEstate[[5]]
 ![tSNEstate The 5th tSNE solution colored by cell 
 condition.](figures/6_tSNEstate.png)
 
-
+\newpage
 ### Cell similarity heatmap
 
 The *cellsSimilarityMatrix* is then used to generate a heatmap summarizing the 
