@@ -21,15 +21,14 @@ sequencing. You can find a good resource to start with
 
 CONCLUS is organized into the following steps:
 
-    + Generation of multiple t-SNE plots with a range of parameters including 
-    different selection of genes extracted from PCA.
-    + Use the Density-based spatial clustering of applications with noise 
-    (DBSCAN) algorithm for idenfication of clusters in each generated t-SNE 
-    plot.
-    + All DBSCAN results are combined into a cell similarity matrix.
-    + The cell similarity matrix is used to define "CONSENSUS" clusters 
-    conserved accross the previously defined clustering solutions.
-    + Identify marker genes for each concensus cluster.
++ Generation of multiple t-SNE plots with a range of parameters including 
+different selection of genes extracted from PCA.
++ Use the Density-based spatial clustering of applications with noise 
+(DBSCAN) algorithm for idenfication of clusters in each generated t-SNE plot.
++ All DBSCAN results are combined into a cell similarity matrix.
++ The cell similarity matrix is used to define "CONSENSUS" clusters conserved 
+accross the previously defined clustering solutions.
++ Identify marker genes for each concensus cluster.
 
 
 # Getting help
@@ -84,23 +83,23 @@ In your "outputDirectory", in the folder `Resuts`, you will find a
 the cells heatmap. The sub-folder `pictures` contains all tSNE with dbscan
 coloration. You will also find sub-folders containing: 
 
-    + `1_MatrixInfo`: The normalized count matrix and its meta-data for
-    both rows and columns.
-    + `2_TSNECoordinates`: The tSNE coordinates for each parameter of principal
-    components (PCs) and perplexities.
-    + `3_dbScan`: The different clusters given by DBscan according to different
-    parameters. Each file gives a cluster number for each cell.
-    + `4_CellSimilarityMatrix`: The matrix underlying the cells similarity
-    heatmap.
-    + `5_ClusterSimilarityMatrix`: The matrix underlying the clusters 
-    similarity heatmap.
-    + `6_ConclusResult`: A table containing the result of the consensus
-    clustering. This table contains two columns: clusters-cells.
-    + `7_fullMarkers`: Files containing markers for each cluster, defined by the
-    consensus clustering.
-    + `8_TopMarkers`: Files containing the top 10 markers for each cluster.
-    + `9_genesInfos`: Files containing gene information for the top markers
-    defined in the previous folder.
++ `1_MatrixInfo`: The normalized count matrix and its meta-data for both rows 
+and columns.
++ `2_TSNECoordinates`: The tSNE coordinates for each parameter of principal
+components (PCs) and perplexities.
++ `3_dbScan`: The different clusters given by DBscan according to different
+parameters. Each file gives a cluster number for each cell.
++ `4_CellSimilarityMatrix`: The matrix underlying the cells similarity
+heatmap.
++ `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity 
+heatmap.
++ `6_ConclusResult`: A table containing the result of the consensus clustering.
+This table contains two columns: clusters-cells.
++ `7_fullMarkers`: Files containing markers for each cluster, defined by the
+consensus clustering.
++ `8_TopMarkers`: Files containing the top 10 markers for each cluster.
++ `9_genesInfos`: Files containing gene information for the top markers 
+defined in the previous folder.
 
 
 Further details about how all results are generated can be found below.
@@ -153,7 +152,7 @@ columns meta-data was retrieved by clicking the 'Series Matrix File(s)' link
 just above the count matrix. Another complete tutorial is given for retrieving 
 and processing data of tabulamuris on the [landing page]() of the package on 
 the Bioconductor website. The function `retrieveFromGEO` will download all 
-sries matrices present in the GEO record however only the one of interest will 
+series matrices present in the GEO record however only the one of interest will 
 be kept.
 
 
@@ -218,15 +217,17 @@ scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
 p <- testClustering(scr, writeOutput=TRUE, silent=TRUE)
 ```
 
-![Knn](figures/1_distancegraph.png)
+![Knn plot. If the dashed horizontal line in the k-NN distance plot lays on 
+the “knee” of the curve, it means that optimal epsilon is equal to the 
+intersection of the line to the y-axis.](figures/1_distancegraph.png)
 
-```{r testClustering_result1, results="hide"}
+```{r testClustering_result1, results="hide", fig.keep = 'none'}
 # saved as "outputDirectory/test_clustering/test_tSNE.pdf"
 p[[1]]
 ```
 ![tsne](figures/2_tsne.png)
 
-```{r testClustering_result2, results="hide"}
+```{r testClustering_result2, results="hide", fig.keep = 'none'}
 # saved as "outputDirectory/test_clustering/test_clustering.pdf"
 p[[2]]
 ```
