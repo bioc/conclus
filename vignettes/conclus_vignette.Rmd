@@ -700,7 +700,7 @@ plotGeneExpression(scrUpdated, "Tyrobp", tSNEpicture=5)
 ![Tyrobp](figures/18_Tyrobp_cluster2.png)
 
 
-```{r replot1, results="hide"}
+```{r replot2, results="hide"}
 # Plot gene expression in a selected tSNE plot
 # Ccl9, marker gene for clusters 2 (mix of old clusters 2 and 3)
 plotGeneExpression(scrUpdated, "Ccl9", tSNEpicture=5)
