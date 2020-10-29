@@ -36,7 +36,7 @@ CONCLUS is organized into the following steps:
 
 Issues can be submitted directly on the Bioconductor forum using the keyword 
 'conclus' in the post title. To contact us directly write to 
-christophe.lancrin@embl.it or nicolas.descostes@embl.it. The principles of 
+christophe.lancrin@embl.it or ilyessr@hotmail.fr. The principles of 
 this package were originally developed by Polina Pavlovich who is now doing 
 her Ph.D at the Max Planck Institute of Immunobiology and Epigenetics.
 
@@ -175,13 +175,12 @@ columnsMetaData <- result[[2]]
 ## Removing the 8 TFs:
 TFtoRemove <- c("Runx1", "Cbfb", "Gata2", "Tal1", "Fli1", "Lyl1", "Erg", 
 "Lmo2")
-rownamesVec <- rownames(countMatrix)
-idxTF <- match(TFtoRemove, rownamesVec)
+idxTF <- match(TFtoRemove, rownames(countMatrix))
 countMatrix <- countMatrix[-idxTF,]
 
 ## Removing embryonic hemoglobins with names starting with "Hba" or "Hbb"
-idxHba <- grep("Hba", rownamesVec)
-idxHbb <- grep("Hbb", rownamesVec)
+idxHba <- grep("Hba", rownames(countMatrix))
+idxHbb <- grep("Hbb", rownames(countMatrix))
 countMatrix <- countMatrix[-c(idxHba, idxHbb),]
 ```
 
@@ -215,19 +214,19 @@ scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
 ```
 
 
-```{r testClustering}
+```{r testClustering, results="hide"}
 p <- testClustering(scr, writeOutput=TRUE, silent=TRUE)
 ```
 
 ![Knn](figures/1_distancegraph.png)
 
-```{r testClustering_result1, eval=FALSE}
+```{r testClustering_result1, results="hide"}
 # saved as "outputDirectory/test_clustering/test_tSNE.pdf"
 p[[1]]
 ```
 ![tsne](figures/2_tsne.png)
 
-```{r testClustering_result2, eval=FALSE}
+```{r testClustering_result2, results="hide"}
 # saved as "outputDirectory/test_clustering/test_clustering.pdf"
 p[[2]]
 ```
@@ -429,7 +428,7 @@ tSNEstate <- plotClusteredTSNE(scr, columnName="state",
 
 For visualizing the 5th (out of 14) tSNE cluster:
 
-```{r plotClustered_visualization1, eval=FALSE}
+```{r plotClustered_visualization1, results="hide"}
 tSNEclusters[[5]]
 ```
 
@@ -437,7 +436,7 @@ tSNEclusters[[5]]
 
 For visualizing the 5th (out of 14) tSNE cluster without colors:
 
-```{r plotClustered_visualization2, eval=FALSE}
+```{r plotClustered_visualization2, results="hide"}
 tSNEnoColor[[5]]
 ```
 
@@ -446,7 +445,7 @@ tSNEnoColor[[5]]
 
 For visualizing the 5th (out of 14) tSNE cluster colored by state:
 
-```{r plotClustered_visualization3, eval=FALSE}
+```{r plotClustered_visualization3, results="hide"}
 tSNEstate[[5]]
 ```
 
@@ -459,9 +458,11 @@ The *cellsSimilarityMatrix* is then used to generate a heatmap summarizing the
 results of the clustering and to show how stable the cell clusters are across 
 the 84 solutions.
 
-```{r plotCellSimilarity}
+```{r plotCellSimilarity, results="hide"}
 plotCellSimilarity(scr)
 ```
+
+![cellSim](figures/7_cellSimilarity.png)
 
 *CellsSimilarityMatrix* is symmetrical and its size proportional of to the 
 "number of cells x number of cells". Each vertical or horizontal tiny strip is 
@@ -475,16 +476,18 @@ sub-populations within these groups which were impossible using PCA alone.
 
 ### Cluster similarity heatmap
 
-```{r plotClustersSimilarity}  
+```{r plotClustersSimilarity, results="hide"}  
 plotClustersSimilarity(scr)
 ```
+
+![clustersim](figures/8_clustersim.png)
 
 In the *clusterSimilarityMatrix*, we can still see two major families of 
 clusters: clusters with 8, 9, and 10 on one side and 1, 2, 3, 4, 5, 6 and 7, on 
 the other. Almost all clusters have a high value of similarity across all 
-clustering solutions. Only cluster 6 have a quite low similarity value. Red 
-color on the diagonal means that the group is homogenous, and usually, it is 
-what we want to get. The yellow on the diagonal indicates that either that 
+clustering solutions. Only cluster 5 has a quite low similarity value. 
+Red color on the diagonal means that the group is homogenous, and usually, it 
+is what we want to get. The yellow on the diagonal indicates that either that 
 group consists of two or more equal sized subgroups. Bluish color points to a 
 cluster of dbscan "outliers" that usually surrounds dense clouds of cells in 
 t-SNE plots. 
@@ -496,11 +499,11 @@ To understand the nature of the consensus clusters identified by CONCLUS, it is
 essential to identify genes which could be classified as marker genes for each 
 cluster. To this aim, each gene should be "associated" to a particular 
 cluster. This association is performed by looking at up-regulated genes in a 
-particular cluster compared to the others (multiple comparisons). The function 
-*rankGenes* performs multiple comparisons of all genes from theObject and rank 
-them according to a score reflecting a FDR power.
+particular cluster compared to the others (multiple comparisons). The method 
+*rankGenes* performs multiple comparisons of all genes from the object and 
+rank them according to a score reflecting a FDR power.
 
-In summary, the function *conclus::rankGenes()* gives a list of marker genes 
+In summary, the method *conclus::rankGenes()* gives a list of marker genes 
 for each cluster, ordered by their significance. See ?rankGenes for more 
 details.
 
@@ -541,9 +544,12 @@ normalized data. Mean-centering allows seeing the relative expression of a gene
 compared to the mean.
 
 
-```{r plotCellHeatmap_marker1, fig.height=5, fig.width=6}
+```{r plotCellHeatmap_marker1, results="hide"}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE)
 ```
+
+![cellHeatmap](figures/9_cellHeatmap.png)
+
 
 The second heatmap below also shows the order of genes and clusters by 
 similarity but for normalized expression data. As you can see, genes expressed 
@@ -553,9 +559,10 @@ heatmap using normalized data. For this reason, mean-centering helps to solve
 this issue.
 
 
-```{r plotCellHeatmap_marker2, fig.height=5, fig.width=6}
+```{r plotCellHeatmap_marker2, results="hide"}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE, meanCentered=FALSE)
 ```
+![cellHeatmapNoMean](figures/10_cellHeatmapNoMean.png)
 
 Alternative order of clusters is by name or by hierarchical clustering as in 
 the default pheatmap function.
@@ -568,22 +575,28 @@ the default pheatmap function.
 in a t-SNE plot. It can be useful to inspect the specificity of top markers. 
 Below are examples of marker genes that define a particular cluster.
 
-```{r plotGeneExpression1}
+```{r plotGeneExpression1, results="hide"}
 # Plot gene expression in a selected tSNE plot
-# Srgn, marker gene
-plotGeneExpression(scr, "Srgn", tSNEpicture=5)
+# Hp, marker gene of cluster 2
+plotGeneExpression(scr, "Hp", tSNEpicture=5)
+```
+![Hp](figures/11_Hp_cluster2.png)
+
+```{r plotGeneExpression2, results="hide"}
+# Alox5ap, marker gene of cluster 9
+plotGeneExpression(scr, "Alox5ap", tSNEpicture=5)
 ```
 
+![Alox5ap](figures/12_Alox5ap_cluster9.png)
 
-```{r plotGeneExpression3}
-# Hba-a2, marker gene
-plotGeneExpression(scr, "Hba-a2", tSNEpicture=5)
-```
 
-```{r plotGeneExpression4}
-# CD52, marker gene
+```{r plotGeneExpression3, results="hide"}
+# CD52, marker gene of cluster 9
 plotGeneExpression(scr, "Cd52", tSNEpicture=5)
 ```
+
+![CD52](figures/13_CD52_cluster9.png)
+
 
 # Collect publicly available info about marker genes
 
@@ -630,17 +643,17 @@ Bergiers et al. dataset above (cluster similarity heatmap), one can see that
 some clusters clearly belong to the same family of cells after examining the 
 clusters_similarity matrix generated by CONCLUS.
 
-It is mostly obvious for clusters 7 and 3. In order to figure out what marker 
+It is mostly obvious for clusters 2 and 3. In order to figure out what marker 
 genes are defining these families of clusters, one can use manual clustering in 
-CONCLUS to fuse clusters of similar nature: i.e. combine clusters 7 and 3 
+CONCLUS to fuse clusters of similar nature: i.e. combine clusters 2 and 3 
 together.
 
 ```{r merging_clusters}
 ## Retrieving the table indicating to which cluster each cell belongs
 clustCellsDf <- retrieveTableClustersCells(scr)
 
-## Replace "3" by "7" to merge 3/7
-clustCellsDf$clusters[which(clustCellsDf$clusters == 3)] <- 7
+## Replace "3" by "2" to merge 2/3
+clustCellsDf$clusters[which(clustCellsDf$clusters == 3)] <- 2
 
 ## Modifying the object to take into account the new classification
 scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
@@ -648,12 +661,14 @@ scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 
 Now we can visualize the new results taking into account the new classification:
 
-```{r addClusteringManually_visualization1}
-plotCellSimilarity(scrUpdated)
-```
-
-```{r addClusteringManually_visualization2}
+```{r addClusteringManually_visualization1, results="hide"}
 plotClustersSimilarity(scrUpdated)
+```
+![updatedClustSim](figures/14_updatedClusterSim.png)
+
+
+```{r addClusteringManually_visualization2, results="hide"}
+plotCellSimilarity(scrUpdated)
 ```
 
 ```{r addClusteringManually_visualization3, fig.height=5, fig.width=6}
