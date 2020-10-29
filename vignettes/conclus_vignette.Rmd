@@ -671,25 +671,42 @@ plotClustersSimilarity(scrUpdated)
 plotCellSimilarity(scrUpdated)
 ```
 
-```{r addClusteringManually_visualization3, fig.height=5, fig.width=6}
+![updatedCellSim](figures/15_updatedCellSim.png)
+
+
+```{r addClusteringManually_visualization3, results="hide"}
 plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 ```
 
-This heatmap shows that Cd52 and Alox5ap are good markers of cluster 5 (mix of 
-old clusters 5 and 6). We can visualize them in the t-SNE plots below.
+![updatedCellHeatmap](figures/16_updatedCellHeatmap.png)
 
-!!!!!!!!!!!!!!!!!!!!!
+```{r addClusteringManually_visualization4, results="hide"}
+tSNEclusters <- plotClusteredTSNE(scrUpdated, columnName="clusters", 
+                                    returnPlot=TRUE, silentPlot=TRUE)
+tSNEclusters[[5]]
+```
 
-```{r replot1}
+![updatedTSNE](figures/17_updatedTSNE.png)
+
+
+This heatmap shows that Tyrobp and Ccl9 are good markers of cluster 2 (mix of 
+old clusters 2 and 3). We can visualize them in the t-SNE plots below.
+
+```{r replot1, results="hide"}
+# Tyrobp, marker gene for cluster 2 (mix of old clusters 2 and 3)
+plotGeneExpression(scrUpdated, "Tyrobp", tSNEpicture=5)
+```
+
+![Tyrobp](figures/18_Tyrobp_cluster2.png)
+
+
+```{r replot1, results="hide"}
 # Plot gene expression in a selected tSNE plot
-# Cd52, marker gene for clusters 9 (mix of old clusters 9 and 10)
-plotGeneExpression(scrUpdated, "Cd52", tSNEpicture=5)
+# Ccl9, marker gene for clusters 2 (mix of old clusters 2 and 3)
+plotGeneExpression(scrUpdated, "Ccl9", tSNEpicture=5)
 ```
 
-```{r replot2}
-# Alox5ap, marker gene for cluster 9 (mix of old clusters 9 and 10)
-plotGeneExpression(scrUpdated, "Alox5ap", tSNEpicture=5)
-```
+![Ccl9](figures/19_ccl9_cluster2.png)
 
 # Conclusion
 
