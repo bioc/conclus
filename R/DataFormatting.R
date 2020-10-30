@@ -5,8 +5,8 @@
 #' They are formatted to be suitable inputs for conclus.
 #' 
 #' @usage
-#' retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrixName,
-#'        species, convertToSymbols=TRUE)
+#' retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
+#'        species, convertToSymbols=TRUE, annoType="ENSEMBL")
 #' 
 #' @param matrixURL URL of the count matrix. The matrix must be un-normalized.
 #' @param countMatrixPath Path to the file to which the downloaded count 
