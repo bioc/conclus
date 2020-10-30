@@ -5,7 +5,7 @@
 \title{retrieveFromGEO}
 \usage{
 retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrixName,
-       species, convertToSymbols=TRUE)
+       species, convertToSymbols=TRUE, annoType="ENSEMBL")
 }
 \arguments{
 \item{matrixURL}{URL of the count matrix. The matrix must be un-normalized.}
