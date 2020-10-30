@@ -57,6 +57,7 @@
 #' @importFrom clusterProfiler bitr
 #' @importFrom stringr str_extract
 #' @importFrom utils download.file
+#' @importFrom methods as
 #' @export retrieveFromGEO
 retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
         species, convertToSymbols=TRUE, annoType="ENSEMBL"){
@@ -77,7 +78,7 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
                 "a reproducible example.")
     
     gpl <- gpl[[seriesMatrixName]]
-    gpl <- as(gpl, "data.frame")
+    gpl <- methods::as(gpl, "data.frame")
     columnsMetaData <- data.frame(state=gpl$sampletype.ch1, 
             cellBarcode=gpl$wellbarcode.ch1)
     
