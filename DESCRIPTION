@@ -61,7 +61,10 @@ Imports:
     scales,
     grDevices,
     graphics,
-    Rtsne
+    Rtsne,
+    GEOquery,
+    clusterProfiler,
+    stringr
 biocViews:
     Software,
     Technology,
