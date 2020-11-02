@@ -1,4 +1,4 @@
-#' .testMattrixNames
+#' .defineMartVar
 #'
 #' @description
 #' This function retrieves the correct biomaRt parameters according to the
