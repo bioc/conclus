@@ -181,6 +181,11 @@ countMatrix <- countMatrix[-idxTF,]
 idxHba <- grep("Hba", rownames(countMatrix))
 idxHbb <- grep("Hbb", rownames(countMatrix))
 countMatrix <- countMatrix[-c(idxHba, idxHbb),]
+
+## Removing control human cells
+idxHuman <- which(columnsMetaData$state == "Pos_Ctrl")
+columnsMetaData <- columnsMetaData[-idxHuman,]
+countMatrix <- countMatrix[,-idxHuman]
 ```
 
 ## Test clustering
