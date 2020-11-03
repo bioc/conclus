@@ -1,3 +1,37 @@
+#' .normalizeCon
+#'
+#' @description
+#' This function is inspired from the function normalizeSCE of scater v1.12.2 
+#' and normalize the count matrix.
+#'
+#' @param object Result of scran::computeSumFactors filtering on cells having 
+#' a size factor higher than zero.
+#' ' 
+#' @keywords internal
+#' @importFrom SummarizedExperiment assay
+#' @return A SingleCellExperiment object containing the normalized matrix in 
+#' the logcounts slot.
+#' @noRd
+.normalizeCon <- function(object) {
+    
+    cur_exprs <- SummarizedExperiment::assay(object, i = "counts")
+    col_list <-  split(cur_exprs, rep(seq_len(ncol(cur_exprs)), 
+                    each = nrow(cur_exprs)))
+    norm_exprs <- mapply(function(exprsCol, sizeFact){
+                
+                result <- log2((exprsCol/sizeFact)+1)
+                
+            }, col_list, SingleCellExperiment::sizeFactors(object), 
+            SIMPLIFY=FALSE)
+    norm_exprs <- do.call("cbind", norm_exprs)
+    
+    SummarizedExperiment::assay(object, "logcounts",
+            withDimnames=FALSE) <- norm_exprs
+    
+    return(object)
+}
+
+
 #' .defineMartVar
 #'
 #' @description
@@ -803,13 +837,10 @@ setMethod(
                         downstream analysis.")
 
         sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
-        sceNorm <- scater::logNormCounts(sceNorm)
+        
+        sceNorm <- .normalizeCon(sceNorm)
         setSceNorm(theObject) <- sceNorm
         return(theObject)
     })
-
-
-
-
 
 
