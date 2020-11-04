@@ -94,11 +94,11 @@ createDirectory <- function(dataDirectory, directory){
                                         seq_len(PCAGetTSNEresults)]))
                 sce <- SingleCellExperiment::SingleCellExperiment(
                         assays=listsce)
+                
+                set.seed(randomSeed)
 
-                tsneCoord <- scater::runTSNE(sce, scale_features=FALSE,
-                perplexity=perpGetTSNEresults, rand_seed=randomSeed,
-                theme_size=13,
-                return_SCESet=FALSE)
+                tsneCoord <- scater::runTSNE(sce, scale=FALSE, 
+                        perplexity=perpGetTSNEresults)
             scater::plotTSNE(tsneCoord)
         }
 
