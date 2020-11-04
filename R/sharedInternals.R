@@ -99,7 +99,7 @@ createDirectory <- function(dataDirectory, directory){
 
                 tsneCoord <- scater::runTSNE(sce, scale=FALSE, 
                         perplexity=perpGetTSNEresults)
-            scater::plotTSNE(tsneCoord)
+           # scater::plotTSNE(tsneCoord)
         }
 
     parallel::stopCluster(myCluster)
