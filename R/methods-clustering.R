@@ -987,8 +987,6 @@ setMethod(
 
 .reinitializeObject <- function(theObject){
     
-    setCellsSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
-            dimnames = list("c1", "c1"), data = 1)
     setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
             dimnames = list("1", "1"), data = 1)
     setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"), 
@@ -1130,7 +1128,6 @@ setMethod(
             
             ## Recompute markers
             message("Computing new markers..")
-            theObject <- clusterCellsInternal(theObject, clusterNumber=clNb)
             theObject <- calculateClustersSimilarity(theObject)
             theObject <- rankGenes(theObject)
             theObject <- retrieveTopClustersMarkers(theObject, 
