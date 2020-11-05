@@ -534,7 +534,7 @@ The top 10 markers by cluster (default) can be selected with:
 
 
 ```{r topMarkers_result}
-scr <- retrieveTopClustersMarkers(scr, removeDuplicates=FALSE)
+scr <- retrieveTopClustersMarkers(scr, removeDuplicates=TRUE)
 topMarkers <- getClustersMarkers(scr)
 topMarkers
 ```
