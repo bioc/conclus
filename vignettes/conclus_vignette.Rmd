@@ -111,15 +111,34 @@ Further details about how all results are generated can be found below.
 ## Data
 
 In this vignette, we demonstrate how to use CONCLUS on a sc-RNA-seq dataset 
-from [........].
+from [Shvartsman *et al*](https://www.biorxiv.org/content/10.1101/774547v1).
+The Yolk Sac (YS) and Aorta-Gonad-Mesonephros (AGM) are two major 
+haematopoietic regions during embryonic development. Interestingly, AGM is the 
+only one generating haematopoietic stem cells (HSCs). To identify the 
+difference between AGM and YS, Shvartsman *et al* compared them using 
+single cell RNA sequencing between 9.5 and 11.5 days of mouse embryonic 
+development. The YS major component was an epithelial population expressing a 
+rare population of liver marker genes. This vignette aims at reproducing the 
+identificaton of the liver like population in the YS at day 11.5. The number 
+of clusters used in this vignette is lower than in the original article for 
+sake of simplification. This vignette neither provides a description of the 
+differences between the AGM and YS. Please refer to Shvartsman *et al* for 
+a complete description. 
+
+Since endothelial cells represent a small population in these tissues, 
+cells expressing the endothelial marker VE-Cadherin (VE-Cad, also called Cdh5) 
+were enriched and sorted, VE-Cad Negative cells constituting the 
+microenvironment. Therefore, four cell states are defined by the cell 
+barcodes: YS VE-Cad minus, AGM VE-Cad minus, YS VE-Cad minus, and AGM 
+VE-Cad minus. The E11.5 data are constituted of 1482 cells. After filtering 
+and normalization, 1303 cells are retained.  
 
 This sc-RNA-seq experiment was performed using the SMARTer ICELL8 Single-Cell 
 System ([Click here for more info](https://www.takarabio.com/learning-centers/
 automation-systems/icell8-introduction/icell8-technology-overview)). 
 The protocol was based on 3' end RNA sequencing where each mRNA molecule is 
 labeled with a unique molecular identifier (UMI) during reverse transcription 
-in every single cell. [...........]
-
+in every single cell.
 
 The code below format the count matrix and the columns meta-data. The source 
 data are downloaded from the GEO page [...](). The  
@@ -127,11 +146,15 @@ URL of the count matrix was retrieved by right-click and 'copy link adress'
 on the ftp hyperlink of the supplementary file [....] 
 at the bottom of the page. The name of the series matrix, containing 
 columns meta-data was retrieved by clicking the 'Series Matrix File(s)' link 
-just above the count matrix. Another complete tutorial is given for retrieving 
-and processing data of tabulamuris on the [landing page]() of the package on 
-the Bioconductor website. The function `retrieveFromGEO` will download all 
+just above the count matrix. The function `retrieveFromGEO` will download all 
 series matrices present in the GEO record however only the one of interest will 
 be kept.
+
+Shvartsman *et al* deleted highly abundant haemoglobins having names 
+starting with ‘Hba’ or ‘Hbb’ because they seemed to be the primary source of 
+contamination. Additionally, they excluded poorly annotated genes that did not 
+have gene symbols to improve the clusters annotation process. Finally, the 
+human controls were removed.
 
 
 ```{r format_data}
@@ -572,27 +595,35 @@ the default pheatmap function.
 
 
 *PlotGeneExpression* allows visualizing the normalized expression of one gene 
-in a t-SNE plot. It can be useful to inspect the specificity of top markers. 
-Below are examples of marker genes that define a particular cluster.
+in a t-SNE plot. It can be useful to inspect the specificity of top markers.
+
+Cluster 8 was identified as being a rare population with markers being 
+specific of liver. Below are examples of these marker genes:
 
 ```{r plotGeneExpression1, eval=FALSE}
-# Plot gene expression in a selected tSNE plot
-plotGeneExpression(scr, "Hp", tSNEpicture=5)
+plotGeneExpression(scr, "Maob", tSNEpicture=5)
 ```
-![Hp Marker gene of cluster 2.](figures/11_Hp_cluster2.png)
+
+![Maob Marker gene of cluster 8.](figures/11_Maob_cluster8.png)
 
 ```{r plotGeneExpression2, eval=FALSE}
-plotGeneExpression(scr, "Alox5ap", tSNEpicture=5)
+plotGeneExpression(scr, "Pcbd1", tSNEpicture=5)
 ```
 
-![Alox5ap Marker gene of cluster 9.](figures/12_Alox5ap_cluster9.png)
+![Pcbd1 Marker gene of cluster 8.](figures/12_Pcbd1_cluster8.png)
 
 
 ```{r plotGeneExpression3, eval=FALSE}
-plotGeneExpression(scr, "Cd52", tSNEpicture=5)
+plotGeneExpression(scr, "Serpinf2", tSNEpicture=5)
 ```
 
-![CD52 Marker gene of cluster 9.](figures/13_CD52_cluster9.png)
+![Serpinf2 Marker gene of cluster 8.](figures/13_Serpinf2_cluster8.png)
+
+```{r plotGeneExpression3, eval=FALSE}
+plotGeneExpression(scr, "Cldn1", tSNEpicture=5)
+```
+
+![Cldn1 Marker gene of cluster 8.](figures/14_Cldn1_cluster8.png)
 
 
 # Collect publicly available info about marker genes
