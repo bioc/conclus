@@ -14,7 +14,8 @@ vignette: >
 # Introduction
 
 CONCLUS is a tool for robust clustering and positive marker features selection 
-of single-cell RNA-seq (sc-RNA-seq) datasets. Of note, CONCLUS does not cover 
+of single-cell RNA-seq (sc-RNA-seq) datasets. It is designed to identify rare 
+cells populations by consensus clustering. Of note, CONCLUS does not cover 
 the preprocessing steps of sequencing files obtained following next-generation 
 sequencing. You can find a good resource to start with 
 [here](https://scrnaseq-course.cog.sanger.ac.uk/website/index.html). 
@@ -388,7 +389,8 @@ to any cluster. Hence, cluster numbers start from one. *clusterCellsInternal*
 is a general method that returns an object of class scRNASeq with its 
 cellsSimilarityMatrix slot updated.
       
-Note that the number of clusters is set to 10. Considering that clusters can 
+Note that the number of clusters is set to 10 (it was set to 11 in the 
+original study, see data section). Considering that clusters can 
 be merged afterwards (see Supervised clustering section), we advise to keep 
 this number. One might want to increase it if the cell similarity matrix or 
 the tSNE strongly suggest more clusters but this number is suitable for most 
@@ -469,7 +471,10 @@ tSNEstate[[5]]
 ![tSNEstate The 5th tSNE solution colored by cell 
 condition.](figures/6_tSNEstate.png)
 
+One can see that the cluster 8 contains only cells of the YS.
+
 \newpage
+
 ### Cell similarity heatmap
 
 The *cellsSimilarityMatrix* is then used to generate a heatmap summarizing the 
@@ -489,9 +494,8 @@ a cell. Intersection shows the proportion of clustering iterations in which a
 pair of cells was in one cluster (score between 0 and 1, between blue and 
 red). We will call this combination "consensus clusters" and use them 
 everywhere later. We can appreciate that cellsSimilarityMatrix is the first 
-evidence showing that CONCLUS managed not only to distinguish i8TFs_plus cells 
-from the three other groups (as in the original publication) but also find 
-sub-populations within these groups which were impossible using PCA alone.
+evidence showing that CONCLUS managed not only to distinguish VE-Cad plus 
+cells from the VE-Cad minus but also find sub-populations within these groups.
 
 ### Cluster similarity heatmap
 
@@ -502,15 +506,16 @@ plotClustersSimilarity(scr)
 ![clustersim Cluster similarity matrix. Each cell belonging to a particular 
 cluster were merged into a pseudo-cell.](figures/8_clustersim.png)
 
-In the *clusterSimilarityMatrix*, we can still see two major families of 
-clusters: clusters with 8, 9, and 10 on one side and 1, 2, 3, 4, 5, 6 and 7, on 
-the other. Almost all clusters have a high value of similarity across all 
-clustering solutions. Only cluster 5 has a quite low similarity value. 
-Red color on the diagonal means that the group is homogenous, and usually, it 
-is what we want to get. The yellow on the diagonal indicates that either that 
-group consists of two or more equal sized subgroups. Bluish color points to a 
-cluster of dbscan "outliers" that usually surrounds dense clouds of cells in 
-t-SNE plots. 
+In the *clusterSimilarityMatrix*, we can see that all clusters have a high 
+value of similarity across all clustering solutions. Red color on the diagonal 
+means that the group is homogenous, and usually, it is what we want to get. 
+The yellow on the diagonal indicates that either that group consists of two or 
+more equal sized subgroups. The orange on the diagonal suggests that groups 
+can be merged. Bluish color points to a cluster of dbscan "outliers" that 
+usually surrounds dense clouds of cells in t-SNE plots.
+
+As observed previously on the tSNE, clusters 1 and 2 as 9 and 10 are very 
+similar. Clusters 3 and 8 are very different. 
 
 
 ## Marker genes identification
@@ -545,6 +550,15 @@ topMarkers <- getClustersMarkers(scr)
 topMarkers
 ```
 
+Cluster 8 contains the marker genes A2m, Cldn1, Maob, Pcbd1, Pdzk1, Krt20, 
+Klb, Serpind1, and F2. Alpha-2-Macroglobulin (A2m) is a large (720 KDa) plasma 
+protein found in the blood and is mainly produced by the liver; Claudins 
+(CLDNs) are a family of integral membrane proteins that are aberrantly 
+expressed in diverse types of human cancers, including hepatocellular 
+carcinomas (HCCs); The  monoamine oxidase (Maob) is found in abundance in 
+the liver. All these markers play a role in the liver. This sub-population 
+is hence called liver-like hereafter. 
+
 
 # Plot a heatmap with positive marker genes
 
@@ -573,13 +587,9 @@ cluster. The values are normalized according to the
 mean.](figures/9_cellHeatmap.png)
 
 
-The second heatmap below also shows the order of genes and clusters by 
-similarity but for normalized expression data. As you can see, genes expressed 
-at a level of seven and nine look very similar. It is hard to highlight all 
-the differences in expression of both lowly and highly detected genes in one 
-heatmap using normalized data. For this reason, mean-centering helps to solve 
-this issue.
-
+One can also visualize the heatmap without mean centering and appreciate the 
+importance of the normalization of colors by row. Indeed, the different 
+markers are much harder to identify.
 
 ```{r plotCellHeatmap_marker2, results="hide", fig.keep = 'none'}
 plotCellHeatmap(scr, orderClusters=TRUE, orderGenes=TRUE, meanCentered=FALSE)
@@ -597,8 +607,8 @@ the default pheatmap function.
 *PlotGeneExpression* allows visualizing the normalized expression of one gene 
 in a t-SNE plot. It can be useful to inspect the specificity of top markers.
 
-Cluster 8 was identified as being a rare population with markers being 
-specific of liver. Below are examples of these marker genes:
+Cluster 8 was identified as being a liver-like rare population. Below are 
+examples of the expression of its marker genes:
 
 ```{r plotGeneExpression1, eval=FALSE}
 plotGeneExpression(scr, "Maob", tSNEpicture=5)
@@ -666,21 +676,22 @@ of the biologist remains a crucial asset to get the maximum of the data.
 This is why we have included in CONCLUS, additional options to do supervised 
 analysis (or “manual” clustering) to allow the researcher to use her/his 
 biological knowledge in the CONCLUS workflow. Going back to the example of the 
-Bergiers et al. dataset above (cluster similarity heatmap), one can see that 
+Shvartsman *et al.* dataset above (cluster similarity heatmap), one can see that 
 some clusters clearly belong to the same family of cells after examining the 
 clusters_similarity matrix generated by CONCLUS.
 
-It is mostly obvious for clusters 2 and 3. In order to figure out what marker 
-genes are defining these families of clusters, one can use manual clustering in 
-CONCLUS to fuse clusters of similar nature: i.e. combine clusters 2 and 3 
-together.
+As previously mentioned, clusters 1 and 2 as 9 and 10 are very similar. In 
+order to figure out what marker genes are defining these families of clusters, 
+one can use manual clustering in CONCLUS to fuse clusters of similar nature: 
+i.e. combine clusters 1 and 2 (9 and 10) together.
 
 ```{r merging_clusters}
 ## Retrieving the table indicating to which cluster each cell belongs
 clustCellsDf <- retrieveTableClustersCells(scr)
 
-## Replace "3" by "2" to merge 2/3
-clustCellsDf$clusters[which(clustCellsDf$clusters == 3)] <- 2
+## Replace "2/10" by "1/9" to merge 1/2 and 9/10
+clustCellsDf$clusters[which(clustCellsDf$clusters == 2)] <- 1
+clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
 
 ## Modifying the object to take into account the new classification
 scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
@@ -688,28 +699,20 @@ scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 
 Now we can visualize the new results taking into account the new classification:
 
-```{r addClusteringManually_visualization1, results="hide", fig.keep = 'none'}
-plotClustersSimilarity(scrUpdated)
-```
-![updatedClustSim Updated clusters similarity matrix with cluster 2  
-representing the merged old clusters 2 and 
-3.](figures/14_updatedClusterSim.png)
-
-
 ```{r addClusteringManually_visualization2, results="hide", fig.keep = 'none'}
 plotCellSimilarity(scrUpdated)
 ```
 
-![updatedCellSim Updated cells similarity matrix with cluster 2 representing 
-the merged old clusters 2 and 3.](figures/15_updatedCellSim.png)
+![updatedCellSim Updated cells similarity matrix with merged 1/2 
+and 9/10.](figures/15_updatedCellSim.png)
 
 
 ```{r addClusteringManually_visualization3, results="hide", fig.keep = 'none'}
 plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 ```
 
-![updatedCellHeatmap Updated cells heatmap with cluster 2 representing the 
-merged old clusters 2 and 3.](figures/16_updatedCellHeatmap.png)
+![updatedCellHeatmap Updated cells heatmap with merged 1/2 and 
+9/10.](figures/16_updatedCellHeatmap.png)
 
 ```{r addClusteringManually_visualization4, results="hide", fig.keep = 'none'}
 tSNEclusters <- plotClusteredTSNE(scrUpdated, columnName="clusters", 
@@ -717,43 +720,37 @@ tSNEclusters <- plotClusteredTSNE(scrUpdated, columnName="clusters",
 tSNEclusters[[5]]
 ```
 
-![updatedTSNE 5th tSNE solution colored by dbscan result showing the cluster 2 
-as being the merge of the old clusters 2 and 3.](figures/17_updatedTSNE.png)
+![updatedTSNE 5th tSNE solution colored by dbscan result showing the merged 
+clusters.](figures/17_updatedTSNE.png)
 
 
-The cell heatmap above shows that Tyrobp and Ccl9 are good markers of cluster 
-2 (at the bottom). One can visualize them in the t-SNE plots below.
+The cell heatmap above shows that Col1a1 is a good marker of cluster 1 and 
+that Cdk8 is a good marker of cluster 9 (at the bottom). One can visualize 
+them in the t-SNE plots below.
 
 ```{r replot1, eval=FALSE}
-plotGeneExpression(scrUpdated, "Tyrobp", tSNEpicture=5)
+plotGeneExpression(scrUpdated, "Col1a1", tSNEpicture=5)
 ```
 
-![Tyrobp Marker gene for cluster 2 (mix of old clusters 2 and 
-3)](figures/18_Tyrobp_cluster2.png)
+![Col1a1 Marker gene for cluster 1 (mix of old clusters 1 and 
+2)](figures/18_Col1a1_cluster2.png)
 
 
 ```{r replot2, eval=FALSE}
-plotGeneExpression(scrUpdated, "Ccl9", tSNEpicture=5)
+plotGeneExpression(scrUpdated, "Cdk8", tSNEpicture=5)
 ```
 
-![Ccl9 Marker gene for clusters 2 (mix of old clusters 2 and 
-3)](figures/19_ccl9_cluster2.png)
+![Cdk8 Marker gene for clusters 9 (mix of old clusters 9 and 
+10)](figures/19_Cdk8_cluster9.png)
 
 
 # Conclusion
 
 Here we demonstrated how to use CONCLUS and combine multiple parameters 
-testing for sc-RNA-seq analysis. It allowed us to gain more information on the 
-dataset of Bergiers et al and will help gaining deeper insights into others. 
+testing for sc-RNA-seq analysis. It allowed us to identify a rare population 
+in the data of Shvartsman *et al* and will help gaining deeper insights into 
+others. 
   
-Indeed in the original analysis using PCA, two major clusters were found (one 
-composed of i8TFs_plus cells and another comprising E_minus, E_plus, 
-i8TFs_minus cells). Using CONCLUS, we see that there is still a big difference 
-between the i8TFs_plus experimental group and the other three. Interestingly, 
-CONCLUS was able to unveil heterogeneity within the i8TFs group while the 
-previous analysis performed by Bergiers et al was not able to reveal it. 
-This analysis offers additional information on the function of these eight 
-transcription factors. 
 
 # Session info
 
