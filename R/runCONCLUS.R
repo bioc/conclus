@@ -233,38 +233,25 @@
         tSNENb, outputDirectory, silentPlot){
     
     message("## Plot the cell similarity matrix (step 10/13) ##")
-    pCSM <- plotCellSimilarity(scrInfos, colorPalette=colorPalette,
+    plotCellSimilarity(scrInfos, colorPalette=colorPalette,
             statePalette=statePalette, clusteringMethod=clusteringMethod,
             orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM,
-            height=heightCSM, returnPlot=TRUE, silentPlot=silentPlot)
+            height=heightCSM, returnPlot=FALSE, silentPlot=silentPlot)
     
     message("## Plot the cell heatmap (step 11/13) ##")
-    pCH <- plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
+    plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
             colorPalette=colorPalette, statePalette=statePalette, 
             clusteringMethod=clusteringMethod, orderClusters=orderClusters,
             orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH,
-            height=heightCH, clusterCols=clusterCols, returnPlot=TRUE, 
+            height=heightCH, clusterCols=clusterCols, returnPlot=FALSE, 
             silentPlot=silentPlot)
     
     message("## Plot the clusters similarity heatmap (step 12/13) ##")
-    pClustSM <- plotClustersSimilarity(scrInfos, colorPalette=colorPalette,
+    plotClustersSimilarity(scrInfos, colorPalette=colorPalette,
             statePalette=statePalette, clusteringMethod=clusteringMethod,
             savePlot=savePlotClustSM, width=widthPlotClustSM, 
-            height=heightPlotClustSM, returnPlot=TRUE, silentPlot=silentPlot)
-    
-    if(!silentPlot){
-        
-        gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], 
-                        pClustSM[[4]]))
-        dev.new()
-    }
-    
-    dir.create(outputDirectory)
-    pdf(file=file.path(outputDirectory,"heatmaps_results.pdf"), 
-            width=10, height=10)
-    gridExtra::grid.arrange(grobs = list(pCSM[[4]], pCH[[4]], pClustSM[[4]]))
-    dev.off()
-    
+            height=heightPlotClustSM, returnPlot=FALSE, silentPlot=silentPlot)
+     
     message("## Plot clustered tSNE (step 13/13) ##")
     plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs,
             perplexities=perplexities, columnName=columnRankGenes, 
@@ -429,10 +416,13 @@
         heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
         heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot){
     
-    if(exportAllResults)
+    if(exportAllResults){
+        
         writeOutputTSne <- writeOutputDbScan <- writeOutputRankGenes <- 
-            writeTopMarkers <- saveInfos <- writeCSM <- savePlotCTSNE <- 
-            savePlotCH <- savePlotClustSM <- FALSE
+                writeTopMarkers <- saveInfos <- FALSE 
+        
+        savePlotCTSNE <- savePlotCH <- savePlotClustSM <- writeCSM <- TRUE   
+    }
     
     message("## Building the single-cell RNA-Seq object (step 1/13) ##")
     scr <- singlecellRNAseq(experimentName = experimentName,
