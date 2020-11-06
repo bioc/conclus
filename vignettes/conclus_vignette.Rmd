@@ -160,7 +160,8 @@ columnsMetaData <- columnsMetaData[-c(idxHumanPos, idxHumanNeg),]
 countMatrix <- countMatrix[,-c(idxHumanPos, idxHumanNeg)]
 
 ## Removing genes not having an official symbol
-[...]
+idxENS <- grep("ENSMUSG", rownames(countMatrix))
+countMatrix <- countMatrix[-idxENS,]
 ```
 
 ## Test clustering
@@ -249,10 +250,9 @@ new ones at the end. If you do not want to lose any cell after quality metrics
 check, select *alreadyCellFiltered = TRUE*, by default it is *FALSE*. 
 Before *scran* and *scater* normalization, the function will call 
 *scran::quickCluster* (see manual for details). If you want to skip this step, 
-set *runQuickCluster = FALSE*, by default it is *TRUE*. We recommend to use
-*runQuickCluster = TRUE* for medium-size datasets with 500-10000 cells. 
-However, it can take a significant amount of time for a larger amount of cells 
-and will not be useful for small sets of 200-300 samples. 
+set *runQuickCluster = FALSE*, by default it is *TRUE*. We advice to first try 
+the analysis with this option and to set it to FALSE if no rare populations 
+are found. 
 
 ```{r normalization_2, eval = FALSE}
 scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
@@ -298,11 +298,10 @@ head(rowdataSCE)
 
 ## Generation of t-SNE coordinates
 
-*runCONCLUS* creates needed output folders (if you did not run 
-*testClustering* beforehand). Then it generates an object of fourteen (by 
-default) tables with tSNE coordinates. Fourteen because it will vary seven 
-values of principal components *PCs=c(4, 6, 8, 10, 20, 40, 50)* and two values 
-of perplexity *perplexities=c(30, 40)* in all possible combinations. 
+*runCONCLUS* generates an object of fourteen (by default) tables with tSNE 
+coordinates. Fourteen because it will vary seven values of principal 
+components *PCs=c(4, 6, 8, 10, 20, 40, 50)* and two values of perplexity 
+*perplexities=c(30, 40)* in all possible combinations. 
 
 The chosen values of PCs and perplexities can be changed if necessary. We 
 found that this combination works well for sc-RNA-seq datasets with 400-2000 
@@ -366,6 +365,11 @@ to any cluster. Hence, cluster numbers start from one. *clusterCellsInternal*
 is a general method that returns an object of class scRNASeq with its 
 cellsSimilarityMatrix slot updated.
       
+Note that the number of clusters is set to 10. Considering that clusters can 
+be merged afterwards (see Supervised clustering section), we advise to keep 
+this number. One might want to increase it if the cell similarity matrix or 
+the tSNE strongly suggest more clusters but this number is suitable for most 
+experiments in our hands.
 
 ```{r clusterCellsInternal}
 scr <- clusterCellsInternal(scr, clusterNumber = 10)
@@ -418,6 +422,10 @@ tSNEclusters[[5]]
 ```
 
 ![tSNEclusters DBscan results on the 5th tSNE.](figures/4_tSNEclusters.png)
+
+This tSNE suggests that the cluster 8 corresponds to a rare population of 
+cells. We can also appreciate that clusters 1 and 2, as clusters 9 and 10 
+could be considered as single clusters respectively.
 
 For visualizing the 5th (out of 14) tSNE cluster without colors:
 
