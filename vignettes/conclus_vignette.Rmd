@@ -111,45 +111,20 @@ Further details about how all results are generated can be found below.
 ## Data
 
 In this vignette, we demonstrate how to use CONCLUS on a sc-RNA-seq dataset 
-from [*Bergiers et al. eLife 2018*](https://elifesciences.org/articles/29312). 
-The design for this experiment is described in ([*Figure 4—figure supplement 
-2*](https://elifesciences.org/articles/29312/figures#fig4s2)). Bergiers et al. 
-goal was to analyze the effect of the simultaneous expression of eight 
-transcription factors (8TFs): *Runx1* - and its partner - *Cbfb*, *Gata2*, 
-*Tal1*, *Fli1*, *Lyl1*, *Erg* and *Lmo2* in *in vitro* differentiated 
-embryonic stem cells (ESCs) in comparison to control. They knocked-in a 
-polycistronic transgenic construct allowing to over-express eigth 
-transcription factors (i8TFs) simultaneously after adding doxycycline (dox). 
-The Empty ESC line did not have any transgene. There were **four conditions**: 
-E_minus (Empty no dox), E_plus (Empty with dox), i8TFs_minus (i8TFs no dox) 
-and i8TFs_plus (i8TFs with dox). 
+from [........].
 
 This sc-RNA-seq experiment was performed using the SMARTer ICELL8 Single-Cell 
 System ([Click here for more info](https://www.takarabio.com/learning-centers/
 automation-systems/icell8-introduction/icell8-technology-overview)). 
 The protocol was based on 3' end RNA sequencing where each mRNA molecule is 
 labeled with a unique molecular identifier (UMI) during reverse transcription 
-in every single cell. The analysis performed by *Bergiers et al.* was based on 
-the dimensionality reduction algorithm called Principal Component Analysis 
-(PCA), and they found that there was a major gene expression difference 
-between i8TFs_plus and the other three conditions (*Figure 4—figure supplement 
-2*). **However, it was not clear if other sub-clusters could be identified 
-consistently in this dataset besides the two major clusters. In the current 
-tutorial, we show how CONCLUS can help to answer this question.**
-
-Labels of the four conditions are in the *state* column of *columnsMetaData*. 
-To avoid a bias in the clustering analysis due to the high expression of the 
-eight transcription factors construct, we deleted genes *Cbfb*, *Gata2*, 
-*Tal1*, *Fli1*, *Lyl1*, *Erg*, and *Lmo2*. Highly abundant embryonic 
-hemoglobins with names starting with "Hba" or "Hbb" were also excluded because 
-they seemed to be a primary source of contamination.
+in every single cell. [...........]
 
 
 The code below format the count matrix and the columns meta-data. The source 
-data are downloaded from the GEO page 
-[GSE96982](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96982). The 
+data are downloaded from the GEO page [...](). The  
 URL of the count matrix was retrieved by right-click and 'copy link adress' 
-on the ftp hyperlink of the supplementary file GSE96982_countMatrix.txt.gz 
+on the ftp hyperlink of the supplementary file [....] 
 at the bottom of the page. The name of the series matrix, containing 
 columns meta-data was retrieved by clicking the 'Series Matrix File(s)' link 
 just above the count matrix. Another complete tutorial is given for retrieving 
@@ -166,19 +141,12 @@ dir.create(outputDirectory, showWarnings=FALSE)
 species <- "mouse"
 
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
-matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982",
-"&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz")
-seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
+matrixURL <- paste0([........])
+seriesMatrix <- "[.......]"
 
 result <- retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrix, species)
 countMatrix <- result[[1]]
 columnsMetaData <- result[[2]]
-
-## Removing the 8 TFs:
-TFtoRemove <- c("Runx1", "Cbfb", "Gata2", "Tal1", "Fli1", "Lyl1", "Erg", 
-"Lmo2")
-idxTF <- match(TFtoRemove, rownames(countMatrix))
-countMatrix <- countMatrix[-idxTF,]
 
 ## Removing embryonic hemoglobins with names starting with "Hba" or "Hbb"
 idxHba <- grep("Hba", rownames(countMatrix))
@@ -186,9 +154,13 @@ idxHbb <- grep("Hbb", rownames(countMatrix))
 countMatrix <- countMatrix[-c(idxHba, idxHbb),]
 
 ## Removing control human cells
-idxHuman <- which(columnsMetaData$state == "Pos_Ctrl")
-columnsMetaData <- columnsMetaData[-idxHuman,]
-countMatrix <- countMatrix[,-idxHuman]
+idxHumanPos <- which(columnsMetaData$State == "Pos Ctrl")
+idxHumanNeg <- which(columnsMetaData$State == "Neg Ctrl")
+columnsMetaData <- columnsMetaData[-c(idxHumanPos, idxHumanNeg),]
+countMatrix <- countMatrix[,-c(idxHumanPos, idxHumanNeg)]
+
+## Removing genes not having an official symbol
+[...]
 ```
 
 ## Test clustering
