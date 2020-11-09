@@ -225,7 +225,7 @@ setMethod(
             ## Check method parameters
             sceObject <- .checkParamTsne(theObject, randomSeed, cores, PCs,
                     perplexities, writeOutput)
-
+            
             message("Running TSNEs using ", cores, " cores.")
             TSNEres <- .getTSNEresults(
                     expressionMatrix=Biobase::exprs(sceObject),

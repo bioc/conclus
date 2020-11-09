@@ -13,7 +13,6 @@
 #' Default is NULL. See ?normaliseCountMatrix.
 #' @param alreadyCellFiltered If TRUE, quality check and filtering will not be
 #' applied during the normalization of the count matrix.
-#' See ?normaliseCountMatrix.
 #' @param runQuickCluster If TRUE scran::quickCluster() function will
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
@@ -58,9 +57,10 @@
 #' @return Writes results of each step to the corresponding output folders.
 #' @noRd
 .runProcessingStep <- function(scr, sizes, rowMetaData, columnsMetaData,
-        alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
-        perplexities, writeOutputTSne, epsilon, minPoints, writeOutputDbScan,
-        clusterNumber, deepSplit, clusteringMethod, clusToAdd){
+        alreadyCellFiltered, runQuickCluster, randomSeed, 
+        cores, PCs, perplexities, writeOutputTSne, epsilon, minPoints,
+        writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
+        clusToAdd){
     
     ## Processing
     
@@ -406,15 +406,16 @@
 #' @noRd
 .runAllSteps <- function(experimentName, countMatrix, species, sizes,
         outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-        runQuickCluster, randomSeed, cores, PCs, perplexities, writeOutputTSne,
-        epsilon, minPoints, writeOutputDbScan, clusterNumber, deepSplit,
-        clusteringMethod,clusToAdd, columnRankGenes, writeOutputRankGenes,
-        nTopMarkers, removeDuplicates, writeTopMarkers, groupBy, orderGenes, 
-        getUniprot, saveInfos, colorPalette, statePalette, orderClusters,
-        writeCSM, widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
-        widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
-        heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
-        heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot){
+        runQuickCluster, randomSeed, cores, PCs, perplexities,
+        writeOutputTSne, epsilon, minPoints, writeOutputDbScan, clusterNumber,
+        deepSplit, clusteringMethod,clusToAdd, columnRankGenes, 
+        writeOutputRankGenes, nTopMarkers, removeDuplicates, writeTopMarkers,
+        groupBy, orderGenes, getUniprot, saveInfos, colorPalette, statePalette,
+        orderClusters, writeCSM, widthCSM, heightCSM, meanCentered, 
+        orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols, 
+        savePlotClustSM, widthPlotClustSM, heightPlotClustSM, savePlotCTSNE,
+        widthPlotClustTSNE, heightPlotClustTSNE, tSNENb, exportAllResults,
+        silentPlot){
     
     if(exportAllResults){
         
@@ -431,10 +432,10 @@
                             outputDirectory = outputDirectory)
     
     scrCSM <- .runProcessingStep(scr, sizes, rowMetaData, columnsMetaData,
-            alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
-            perplexities, writeOutputTSne, epsilon, minPoints, 
-            writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
-            clusToAdd)
+            alreadyCellFiltered, runQuickCluster, 
+            randomSeed, cores, PCs, perplexities, writeOutputTSne, epsilon,
+            minPoints, writeOutputDbScan, clusterNumber, deepSplit, 
+            clusteringMethod, clusToAdd)
     
     scrInfos <- .runMarkersStep(scrCSM, columnRankGenes, writeOutputRankGenes,
             nTopMarkers, removeDuplicates, writeTopMarkers, cores, groupBy,
@@ -707,7 +708,7 @@ runCONCLUS <- function(
     clusteringMethod="ward.D2", exportAllResults=TRUE, orderClusters=FALSE,
     clusToAdd=NA, silentPlot=TRUE,
     ## Normalisation parameters
-    sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
+    sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData=NULL,
     alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
     ## tSNE parameters
     randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
@@ -736,10 +737,10 @@ runCONCLUS <- function(
     
     scrInfos <- .runAllSteps(experimentName, countMatrix, species, sizes,
             outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-            runQuickCluster, randomSeed, cores, PCs, perplexities, 
-            writeOutputTSne, epsilon, minPoints, writeOutputDbScan, 
-            clusterNumber, deepSplit, clusteringMethod, clusToAdd, 
-            columnRankGenes, writeOutputRankGenes, nTopMarkers, 
+            runQuickCluster, randomSeed, cores, PCs,
+            perplexities, writeOutputTSne, epsilon, minPoints, 
+            writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
+            clusToAdd, columnRankGenes, writeOutputRankGenes, nTopMarkers, 
             removeDuplicates, writeTopMarkers, groupBy, orderGenes, getUniprot,
             saveInfos, colorPalette, statePalette, orderClusters, writeCSM,
             widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,

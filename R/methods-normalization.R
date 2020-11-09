@@ -156,7 +156,6 @@
 #' name.
 #' @noRd
 .annotateSymbols <- function(symbolGenes, genomeAnnot){
-    
     message("Annotating ", length(symbolGenes),
             " genes considering them as SYMBOLs.")
     
@@ -271,13 +270,50 @@
 #' @return Returns the rowData filled with the rowdataDF annotations.
 #' @noRd
 .mergeRowDataDf <- function(rowdataDF, rowdata){
-    rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
-    rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-            sort = FALSE)
-    return(rowdata)
+
+   if("nameInCountMatrix" %in% colnames(rowdata) && 
+        "nameInCountMatrix" %in% colnames(rowdataDF)){
+        rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
+        rowdata <- merge(rowdataDF, rowdata, by = "nameInCountMatrix",
+                            all.x = TRUE, all.y = TRUE, sort = FALSE)
+
+        return(rowdata)
+   }else 
+        stop("One of the rowdata does not have a column 'nameInCountMatrix'",
+                " to perform the merge." )
 }
 
+
+#' .mergeColDataDf
+#'
+#' @description
+#' This function merge the coldata created by CONCLUS with  the coldata
+#' provided by the user if he has entered it.
+#'
+#' @param coldataDF Data frame provided by the user containing information 
+#' about cells.
+#' @param coldata Data frame created by CONCLUS containing information 
+#' about cells.
+#' @param countMatrix The count matrix.
+#' 
+
+#' @keywords internal
+#'
+#' @return Returns the final coldata
+#' @noRd       
+.mergeColDataDf <- function(coldataDF, coldata, countMatrix){
+    
+    if("cellName" %in% colnames(coldata)){
+        coldataDF$cellName <- coldata$cellName
+        coldata <- merge(coldataDF, coldata, by.x = "cellName",
+                by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
+
+    }
+    else 
+        stop("The coldata created by Conclus does not have a column 'cellName'",
+                " to perform the merge." )
+
+}
 
 #' .annotateGenes
 #'
@@ -339,7 +375,7 @@
 #' .createReportTable
 #'
 #' @description
-#' This function creates a boolean vector that is used to filer the cells
+#' This function creates a boolean vector that is used to filter the cells
 #' (see .filterCells below).
 #'
 #' @details
@@ -362,6 +398,7 @@
 #' @return A boolean vector
 #' @noRd
 .createReportTable <- function(columnName, colData, mb, mw){
+
     quan <- quantile(colData[, colnames(colData) == columnName])
     if (columnName %in% mb) {
         threshold <- 2.5*quan[2] - 1.5*quan[4]
@@ -376,6 +413,8 @@
         }
         vec <- as.numeric(colData[ ,columnName] <=  as.numeric(threshold))
     }
+    
+
     return(vec)
 }
 
@@ -423,6 +462,7 @@
                                     mb, mw))
     reportTable <- matrix(reportTable, ncol=length(columnNames),
                         dimnames=list(colData$cellName, columnNames))
+    
 
     ## Add cell names column to the report table
     reportTable <- data.frame(cellName=colData$cellName, reportTable)
@@ -449,7 +489,6 @@
     stopifnot(all(rownames(colData) == colnames(countMatrix)))
     countMatrix <- countMatrix[,colData$filterPassed == 1]
     colData <- colData[colData$filterPassed == 1,]
-
     return(list(countMatrix, colData))
 }
 
@@ -517,7 +556,8 @@
             oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
     return(coldata)
 }
-        
+
+
 #' .addCellsInfo
 #'
 #' @description
@@ -630,7 +670,7 @@
 #' @keywords internal
 #' @noRd
 .checkParamNorm <- function(sizes, rowdata, coldata, alreadyCellFiltered,
-        runQuickCluster){
+                            runQuickCluster){
 
     if(!is.numeric(sizes))
         stop("'sizes' parameter should be a vector of numeric values.")
@@ -640,12 +680,41 @@
 
     if(!is.data.frame(coldata) && !is.null(coldata))
         stop("'coldata' parameter should be a data frame or be NULL.")
-
+    
     if (!is.logical(alreadyCellFiltered))
         stop("'alreadyCellFiltered' parameter should be a boolean.")
 
     if (!is.logical(runQuickCluster))
         stop("'runQuickCluster' parameter should be a boolean.")
+}
+
+
+#' .createSCE
+#'
+#' @description
+#' This function create a SingleCellExperiment with the count matrix, the
+#' coldata and the rowdata.
+#'
+#' @param countMatrix The count matrix (raw or normalized).
+#' @param colData Data frame containing informations about cells.
+#' @param rowdata rowData of class data.frame, it contains gene names of the.
+#' count matrix.
+#' 
+#' @keywords internal
+#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom scater logNormCounts
+#' @return Returns a SingleCellExperiment object.
+#' @noRd
+.createSCE  <- function(countMatrix, coldata, rowdata){
+    
+    sce <- SingleCellExperiment::SingleCellExperiment(
+                assays=list(normcounts=as.matrix(countMatrix)),
+                colData=coldata,
+                rowData=rowdata)
+    
+    Biobase::exprs(sce) <- countMatrix
+    
+    return(sce)
 }
 
 
@@ -669,7 +738,6 @@
             
 
     if(!alreadyCellFiltered){
-        
         filterCellsResult <- .filterCells(countMatrix, coldata)
         countMatrix <- filterCellsResult[[1]]
         coldata <- filterCellsResult[[2]]
@@ -736,7 +804,7 @@
 #'
 #' @usage 
 #' normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
-#'                     coldata=NULL, alreadyCellFiltered=FALSE,
+#'                     coldata=NULL, alreadyCellFiltered=FALSE, 
 #'                     runQuickCluster=TRUE)
 #' 
 #' 
@@ -799,13 +867,11 @@ setMethod(
     signature = "scRNAseq",
 
     definition = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
-                            coldata=NULL, alreadyCellFiltered=FALSE,
-                            runQuickCluster=TRUE){
+                        coldata=NULL, alreadyCellFiltered=FALSE,
+                        runQuickCluster=TRUE){
 
         validObject(theObject)
-
-        .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
-                runQuickCluster)
+        
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
         
@@ -831,16 +897,17 @@ setMethod(
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
 
         if (length(
-            SingleCellExperiment::sizeFactors(
-                sceNorm)[SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
-            message("Cells with negative sizeFactors will be deleted before the
-                        downstream analysis.")
+            SingleCellExperiment::sizeFactors(sceNorm)[
+                SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
+            message("Cells with negative sizeFactors will be deleted ",
+                    "before the downstream analysis.")
 
         sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
         
         sceNorm <- .normalizeCon(sceNorm)
         setSceNorm(theObject) <- sceNorm
+        
         return(theObject)
-    })
+        })
 
 
