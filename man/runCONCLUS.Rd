@@ -12,8 +12,7 @@ runCONCLUS(
 
         ## Normalisation parameters
         sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
-        alreadyCellFiltered=FALSE, alreadyNormalized=FALSE, 
-        runQuickCluster=TRUE,
+        alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
 
         ## tSNE parameters
         randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50),
@@ -96,10 +95,6 @@ Default is NULL. See ?normaliseCountMatrix.}
 
 \item{alreadyCellFiltered}{If TRUE, quality check and filtering will not be
 applied during the normalization of the count matrix.
-See ?normaliseCountMatrix.}
-
-\item{alreadyNormalized}{If TRUE, quality check, filtering will  and
-normalisation not be applied during the normalization of the count matrix.
 See ?normaliseCountMatrix.}
 
 \item{runQuickCluster}{If TRUE scran::quickCluster() function will
