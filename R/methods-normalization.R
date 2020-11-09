@@ -236,13 +236,50 @@
 #' @return Returns the rowData filled with the rowdataDF annotations.
 #' @noRd
 .mergeRowDataDf <- function(rowdataDF, rowdata){
-    rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
-    rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-            sort = FALSE)
-    return(rowdata)
+
+   if("nameInCountMatrix" %in% colnames(rowdata) && 
+        "nameInCountMatrix" %in% colnames(rowdataDF)){
+        rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
+        rowdata <- merge(rowdataDF, rowdata, by = "nameInCountMatrix",
+                            all.x = TRUE, all.y = TRUE, sort = FALSE)
+
+        return(rowdata)
+   }else 
+        stop("One of the rowdata does not have a column 'nameInCountMatrix'",
+                " to perform the merge." )
 }
 
+
+#' .mergeColDataDf
+#'
+#' @description
+#' This function merge the coldata created by CONCLUS with  the coldata
+#' provided by the user if he has entered it.
+#'
+#' @param coldataDF Data frame provided by the user containing information 
+#' about cells.
+#' @param coldata Data frame created by CONCLUS containing information 
+#' about cells.
+#' @param countMatrix The count matrix.
+#' 
+
+#' @keywords internal
+#'
+#' @return Returns the final coldata
+#' @noRd       
+.mergeColDataDf <- function(coldataDF, coldata, countMatrix){
+    
+    if("cellName" %in% colnames(coldata)){
+        coldataDF$cellName <- coldata$cellName
+        coldata <- merge(coldataDF, coldata, by.x = "cellName",
+                by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
+
+    }
+    else 
+        stop("The coldata created by Conclus does not have a column 'cellName'",
+                " to perform the merge." )
+
+}
 
 #' .annotateGenes
 #'
@@ -327,6 +364,7 @@
 #' @return A boolean vector
 #' @noRd
 .createReportTable <- function(columnName, colData, mb, mw){
+
     quan <- quantile(colData[, colnames(colData) == columnName])
     if (columnName %in% mb) {
         threshold <- 2.5*quan[2] - 1.5*quan[4]
@@ -341,6 +379,8 @@
         }
         vec <- as.numeric(colData[ ,columnName] <=  as.numeric(threshold))
     }
+    
+
     return(vec)
 }
 
@@ -371,7 +411,7 @@
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
     message("Running filterCells.")
-
+    
     countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
         stop("None of your cells has at least 100 genes expressed. Since the ",
@@ -388,6 +428,7 @@
                                     mb, mw))
     reportTable <- matrix(reportTable, ncol=length(columnNames),
                         dimnames=list(colData$cellName, columnNames))
+    
 
     ## Add cell names column to the report table
     reportTable <- data.frame(cellName=colData$cellName, reportTable)
@@ -483,34 +524,6 @@
     return(coldata)
 }
 
-#' .mergeColdata
-#'
-#' @description
-#' This function merge the coldata created by CONCLUS with  the coldata
-#' provided by the user if he has entered it.
-#'
-#' @param coldataDF Data frame provided by the user containing information 
-#' about cells.
-#' @param coldata Data frame created by CONCLUS containing information 
-#' about cells.
-#' @param countMatrix The count matrix.
-#' 
-
-#' @keywords internal
-#'
-#' @return Returns the final coldata
-#' @noRd       
-.mergeColdata <- function(coldataDF, coldata, countMatrix){
-    
-    if("cellName" %in% colnames(coldata) && 
-        "cellName" %in% colnames(coldataDF))
-            coldata <- merge(coldataDF, coldata, by.x = "cellName",
-            by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
-    else 
-        stop("The submitted coldata does not have a column 'cellName' ",
-                "to perform the merge." )
-        
-}
 
 #' .addCellsInfo
 #'
@@ -563,7 +576,7 @@
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
     
     if (!is.null(coldataDF))
-        .mergeColdata(coldataDF, coldata, countMatrix)
+        coldata <- .mergeColDataDf(coldataDF, coldata, countMatrix)
 
     rownames(coldata) <- coldata$cellName
     coldata <- coldata[colnames(countMatrix), ]
@@ -619,7 +632,7 @@
 #' @keywords internal
 #' @noRd
 .checkParamNorm <- function(sizes, rowdata, coldata, alreadyCellFiltered,
-                            alreadyNormalized, runQuickCluster){
+                            runQuickCluster){
 
     if(!is.numeric(sizes))
         stop("'sizes' parameter should be a vector of numeric values.")
@@ -632,9 +645,6 @@
     
     if (!is.logical(alreadyCellFiltered))
         stop("'alreadyCellFiltered' parameter should be a boolean.")
-    
-    if (!is.logical(alreadyNormalized))
-        stop("'alreadyNormalized' parameter should be a boolean.")
 
     if (!is.logical(runQuickCluster))
         stop("'runQuickCluster' parameter should be a boolean.")
@@ -690,7 +700,6 @@
             
 
     if(!alreadyCellFiltered){
-        
         filterCellsResult <- .filterCells(countMatrix, coldata)
         countMatrix <- filterCellsResult[[1]]
         coldata <- filterCellsResult[[2]]
@@ -748,7 +757,7 @@
 #' @usage 
 #' normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
 #'                     coldata=NULL, alreadyCellFiltered=FALSE, 
-#'                     alreadyNormalized=FALSE, runQuickCluster=TRUE)
+#'                     runQuickCluster=TRUE)
 #' 
 #' 
 #' @param theObject A scRNAseq object
@@ -758,8 +767,6 @@
 #' @param rowdata Data frame containing genes informations. Default is NULL.
 #' @param alreadyCellFiltered Logical. If TRUE, quality check and
 #' filtering will not be applied.
-#' @param alreadyNormalized Logical. If TRUE, quality check filtering  and 
-#' normalization will not be applied.
 #' @param runQuickCluster Logical. If TRUE scran::quickCluster() function will
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
@@ -813,7 +820,7 @@ setMethod(
 
     definition = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
                         coldata=NULL, alreadyCellFiltered=FALSE,
-                        alreadyNormalized=FALSE, runQuickCluster=TRUE){
+                        runQuickCluster=TRUE){
 
         validObject(theObject)
         
@@ -821,45 +828,38 @@ setMethod(
         species <- getSpecies(theObject)
         
         .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered, 
-                        alreadyNormalized, runQuickCluster)
+                        runQuickCluster)
         
         # .checkRowAndColdata(countMatrix, rowdata, coldata)
         rowdata <- .annotateGenes(countMatrix, species, rowdata)
         coldata <- .addCellsInfo(countMatrix, rowdata, coldata)
+
+        sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata,rowdata)
+        message("Running normalization. It can take a while depending on",
+                " the number of cells.")
+
+        if(runQuickCluster)
+            cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
+        else
+            cl <- NULL
+
+        # Compute sizeFactors which will be used for normalization
+        sceNorm <- scran::computeSumFactors(sce, sizes=sizes, clusters=cl)
+        message("summary(sizeFactors(sceObject)):")
+        print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
+
+        if (length(
+            SingleCellExperiment::sizeFactors(sceNorm)[
+                SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
+            message("Cells with negative sizeFactors will be deleted ",
+                    "before the downstream analysis.")
+
+        # sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
+        sceNorm <- scater::logNormCounts(sceNorm)
+        setSceNorm(theObject) <- sceNorm
         
-        if (isTRUE(alreadyNormalized)){
-            sceNorm <- .createSCE(countMatrix, coldata, rowdata)
-            setSceNorm(theObject) <- sceNorm
-            return(theObject)
-            
-        }else{
-            sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata,rowdata)
-            message("Running normalization. It can take a while depending on",
-                    " the number of cells.")
-    
-            if(runQuickCluster)
-                cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
-            else
-                cl <- NULL
-    
-            # Compute sizeFactors which will be used for normalization
-            sceNorm <- scran::computeSumFactors(sce, sizes=sizes, clusters=cl)
-            message("summary(sizeFactors(sceObject)):")
-            print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
-    
-            if (length(
-                SingleCellExperiment::sizeFactors(sceNorm)[
-                    SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
-                message("Cells with negative sizeFactors will be deleted ",
-                        "before the downstream analysis.")
-    
-            sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
-            sceNorm <- scater::logNormCounts(sceNorm)
-            setSceNorm(theObject) <- sceNorm
-            
-            return(theObject)
-        }
-    })
+        return(theObject)
+        })
 
 
 
