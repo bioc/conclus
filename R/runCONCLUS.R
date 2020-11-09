@@ -13,9 +13,6 @@
 #' Default is NULL. See ?normaliseCountMatrix.
 #' @param alreadyCellFiltered If TRUE, quality check and filtering will not be
 #' applied during the normalization of the count matrix.
-#' @param alreadyNormalized If TRUE, quality check, filtering will  and
-#' normalisation not be applied during the normalization of the count matrix.
-#' See ?normaliseCountMatrix.
 #' @param runQuickCluster If TRUE scran::quickCluster() function will
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
@@ -60,7 +57,7 @@
 #' @return Writes results of each step to the corresponding output folders.
 #' @noRd
 .runProcessingStep <- function(scr, sizes, rowMetaData, columnsMetaData,
-        alreadyCellFiltered, alreadyNormalized, runQuickCluster, randomSeed, 
+        alreadyCellFiltered, runQuickCluster, randomSeed, 
         cores, PCs, perplexities, writeOutputTSne, epsilon, minPoints,
         writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
         clusToAdd){
@@ -71,7 +68,6 @@
     message("\t Note: The connection to biomaRt can take a while sometimes.")
     scrNorm <- normaliseCountMatrix(scr, sizes=sizes, rowdata=rowMetaData,
             coldata=columnsMetaData, alreadyCellFiltered=alreadyCellFiltered,
-            alreadyNormalized=alreadyNormalized,
             runQuickCluster=runQuickCluster)
     
     message("## Calculating all tSNEs (step 3/13) ##")
@@ -303,9 +299,6 @@
 #' @param alreadyCellFiltered If TRUE, quality check and filtering will not be
 #' applied during the normalization of the count matrix.
 #' See ?normaliseCountMatrix.
-#' @param alreadyNormalized If TRUE, quality check, filtering will  and
-#' normalisation not be applied during the normalization of the count matrix.
-#' See ?normaliseCountMatrix.
 #' @param runQuickCluster If TRUE scran::quickCluster() function will
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
@@ -426,7 +419,7 @@
 #' @noRd
 .runAllSteps <- function(experimentName, countMatrix, species, sizes,
         outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-        alreadyNormalized,runQuickCluster, randomSeed, cores, PCs, perplexities,
+        runQuickCluster, randomSeed, cores, PCs, perplexities,
         writeOutputTSne, epsilon, minPoints, writeOutputDbScan, clusterNumber,
         deepSplit, clusteringMethod,clusToAdd, columnRankGenes, 
         writeOutputRankGenes, nTopMarkers, removeDuplicates, writeTopMarkers,
@@ -449,7 +442,7 @@
                             outputDirectory = outputDirectory)
     
     scrCSM <- .runProcessingStep(scr, sizes, rowMetaData, columnsMetaData,
-            alreadyCellFiltered, alreadyNormalized, runQuickCluster, 
+            alreadyCellFiltered, runQuickCluster, 
             randomSeed, cores, PCs, perplexities, writeOutputTSne, epsilon,
             minPoints, writeOutputDbScan, clusterNumber, deepSplit, 
             clusteringMethod, clusToAdd)
@@ -488,8 +481,7 @@
 #'
 #'         ## Normalisation parameters
 #'         sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
-#'         alreadyCellFiltered=FALSE, alreadyNormalized=FALSE, 
-#'         runQuickCluster=TRUE,
+#'         alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
 #'
 #'         ## tSNE parameters
 #'         randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50),
@@ -559,9 +551,6 @@
 #' Default is NULL. See ?normaliseCountMatrix.
 #' @param alreadyCellFiltered If TRUE, quality check and filtering will not be
 #' applied during the normalization of the count matrix.
-#' See ?normaliseCountMatrix.
-#' @param alreadyNormalized If TRUE, quality check, filtering will  and
-#' normalisation not be applied during the normalization of the count matrix.
 #' See ?normaliseCountMatrix.
 #' @param runQuickCluster If TRUE scran::quickCluster() function will
 #' be applied. It usually improves the normalization for medium-size count
@@ -730,7 +719,7 @@ runCONCLUS <- function(
     clusToAdd=NA, silentPlot=TRUE,
     ## Normalisation parameters
     sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData=NULL,
-    alreadyCellFiltered=FALSE, alreadyNormalized=FALSE, runQuickCluster=TRUE,
+    alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
     ## tSNE parameters
     randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
     writeOutputTSne = FALSE,
@@ -758,7 +747,7 @@ runCONCLUS <- function(
     
     scrInfos <- .runAllSteps(experimentName, countMatrix, species, sizes,
             outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-            alreadyNormalized, runQuickCluster, randomSeed, cores, PCs,
+            runQuickCluster, randomSeed, cores, PCs,
             perplexities, writeOutputTSne, epsilon, minPoints, 
             writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
             clusToAdd, columnRankGenes, writeOutputRankGenes, nTopMarkers, 
