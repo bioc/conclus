@@ -629,7 +629,7 @@ plotGeneExpression(scr, "Serpinf2", tSNEpicture=5)
 
 ![Serpinf2 Marker gene of cluster 8.](figures/13_Serpinf2_cluster8.png)
 
-```{r plotGeneExpression3, eval=FALSE}
+```{r plotGeneExpression4, eval=FALSE}
 plotGeneExpression(scr, "Cldn1", tSNEpicture=5)
 ```
 
