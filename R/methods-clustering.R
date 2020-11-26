@@ -533,6 +533,24 @@ setMethod(
 }
 
 
+.reinitializeObject <- function(theObject){
+    
+    setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
+            dimnames = list("1", "1"), data = 1)
+    setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"), 
+                    mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
+    setClustersMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
+    setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"), 
+            clusters="1", external_gene_name="gene", go_id="GO1,GO2", 
+            mgi_description="description", entrezgene_description="descr",
+            gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+            ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+            uniprot_gn_id="ID")
+    setClustersSimiliratyOrdered(theObject) <- factor(1)
+    
+    return(theObject)
+}
+
 
 #' clusterCellsInternal
 #'
@@ -615,6 +633,7 @@ setMethod(
 
             ## Check if the Object is valid
             validObject(theObject)
+            .reinitializeObject(theObject)
 
             sceObject  <- getSceNorm(theObject)
             dbscanList <- getDbscanList(theObject)
@@ -626,14 +645,14 @@ setMethod(
             cellsSimilarityMatrix <- .mkSimMat(dbscanList, cores=cores)
 
 
-            distanceMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
-            clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
+            distMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
+            clusteringTree <- hclust(distMatrix, method=clusteringMethod)
 
             if(clusterNumber == 0){
                 message(paste0("Assigning cells to clusters. DeepSplit = ",
                                 deepSplit))
                 clusters <- unname(dynamicTreeCut::cutreeDynamic(clusteringTree,
-                                distM=as.matrix(distanceMatrix),
+                                distM=as.matrix(distMatrix),
                                 verbose=0,
                                 deepSplit=deepSplit))
             } else {
@@ -842,8 +861,8 @@ setMethod(
                     as.matrix(cellsSimilarityMatrix), clusters, clustersNames)
 
             ## Plotting matrix
-            distanceMatrix <- as.dist(sqrt((1 - clustersSimilarityMatrix)/2))
-            clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
+            distMatrix <- as.dist(sqrt((1 - clustersSimilarityMatrix)/2))
+            clusteringTree <- hclust(distMatrix, method=clusteringMethod)
 
             clustersSimOrdered <- data.frame(clusterNames=clustersNames,
                     clusterIndexes=seq_len(clustersNumber))
@@ -981,26 +1000,6 @@ setMethod(
                 "names that are not the same then the ones of the cluster to ",
                 "add. Make sure that the cells names of the cluster to add ",
                 " are the same.")
-}
-
-
-
-.reinitializeObject <- function(theObject){
-    
-    setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
-            dimnames = list("1", "1"), data = 1)
-    setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"), 
-                    mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
-    setClustersMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
-    setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"), 
-            clusters="1", external_gene_name="gene", go_id="GO1,GO2", 
-            mgi_description="description", entrezgene_description="descr",
-            gene_biotype="gene", chromosome_name="1", Symbol="symbol",
-            ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
-            uniprot_gn_id="ID")
-    setClustersSimiliratyOrdered(theObject) <- factor(1)
-    
-    return(theObject)
 }
 
 
