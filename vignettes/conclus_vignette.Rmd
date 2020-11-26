@@ -118,9 +118,8 @@ haematopoietic regions during embryonic development. Interestingly, AGM is the
 only one generating haematopoietic stem cells (HSCs). To identify the 
 difference between AGM and YS, Shvartsman *et al* compared them using 
 single cell RNA sequencing between 9.5 and 11.5 days of mouse embryonic 
-development. The YS major component was an epithelial population expressing a 
-rare population of liver marker genes. This vignette aims at reproducing the 
-identificaton of the liver like population in the YS at day 11.5. The number 
+development. This vignette aims at reproducing the identification of a rare 
+population corresponding to liver like cells in the YS at day 11.5. The number 
 of clusters used in this vignette is lower than in the original article for 
 sake of simplification. This vignette neither provides a description of the 
 differences between the AGM and YS. Please refer to Shvartsman *et al* for 
@@ -132,7 +131,7 @@ were enriched and sorted, VE-Cad Negative cells constituting the
 microenvironment. Therefore, four cell states are defined by the cell 
 barcodes: YS VE-Cad minus, AGM VE-Cad minus, YS VE-Cad minus, and AGM 
 VE-Cad minus. The E11.5 data are constituted of 1482 cells. After filtering 
-and normalization, 1303 cells are retained.  
+and normalization, 1303 cells were retained.  
 
 This sc-RNA-seq experiment was performed using the SMARTer ICELL8 Single-Cell 
 System ([Click here for more info](https://www.takarabio.com/learning-centers/
@@ -142,20 +141,22 @@ labeled with a unique molecular identifier (UMI) during reverse transcription
 in every single cell.
 
 The code below format the count matrix and the columns meta-data. The source 
-data are downloaded from the GEO page [...](). The  
-URL of the count matrix was retrieved by right-click and 'copy link adress' 
-on the ftp hyperlink of the supplementary file [....] 
-at the bottom of the page. The name of the series matrix, containing 
-columns meta-data was retrieved by clicking the 'Series Matrix File(s)' link 
-just above the count matrix. The function `retrieveFromGEO` will download all 
-series matrices present in the GEO record however only the one of interest will 
-be kept.
+data are downloaded from the GEO page [GSE161933](https://www.ncbi.nlm.nih.gov/
+geo/query/acc.cgi?acc=GSE161933). The URL of the count matrix and the cells 
+meta-data were retrieved by right-click and 'copy link adress' on the http 
+hyperlink of the supplementary file at the bottom of the page.
+If the columns metadata are not available in the supplementary file section, 
+the name of the series matrix, containing columns meta-data can be retrieved 
+by clicking the 'Series Matrix File(s)' link just above the count matrix. The 
+function `retrieveFromGEO` used with the parameter seriesMatrixName will 
+download all series matrices present in the GEO record however only the one of 
+interest will be kept.
 
 Shvartsman *et al* deleted highly abundant haemoglobins having names 
 starting with ‘Hba’ or ‘Hbb’ because they seemed to be the primary source of 
 contamination. Additionally, they excluded poorly annotated genes that did not 
 have gene symbols to improve the clusters annotation process. Finally, the 
-human controls were removed.
+human cell controls were removed.
 
 
 ```{r format_data}
@@ -165,10 +166,14 @@ dir.create(outputDirectory, showWarnings=FALSE)
 species <- "mouse"
 
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
-matrixURL <- paste0([........])
-seriesMatrix <- "[.......]"
+metaDataPath <- file.path(outputDirectory, "metaData.txt")
+matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSM492",
+"3493&format=file&file=GSM4923493%5FE11%5F5%5Frawcounts%5Fmatrix%2Etsv%2Egz")
+metaDataURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=",
+"GSM4923493&format=file&file=GSM4923493%5FMetadata%5FE11%5F5%2Etxt%2Egz")
 
-result <- retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrix, species)
+result <- retrieveFromGEO(matrixURL, countMatrixPath, species, 
+metaDataPath=metaDataPath, colMetaDataURL=metaDataURL)
 countMatrix <- result[[1]]
 columnsMetaData <- result[[2]]
 
@@ -208,7 +213,7 @@ to "test_tSNE.pdf" (*p[[1]]*), and the last one will be saved as
 ```{r normalization_1}
 
 ## Creation of the single-cell RNA-Seq object
-scr <- singlecellRNAseq(experimentName = "Bergiers", 
+scr <- singlecellRNAseq(experimentName = "E11_5", 
         countMatrix     = countMatrix, 
         species         = "mouse",
         outputDirectory = outputDirectory)
@@ -553,9 +558,8 @@ topMarkers
 Cluster 8 contains the marker genes A2m, Cldn1, Maob, Pcbd1, Pdzk1, Krt20, 
 Klb, Serpind1, and F2. Alpha-2-Macroglobulin (A2m) is a large (720 KDa) plasma 
 protein found in the blood and is mainly produced by the liver; Claudins 
-(CLDNs) are a family of integral membrane proteins that are aberrantly 
-expressed in diverse types of human cancers, including hepatocellular 
-carcinomas (HCCs); The  monoamine oxidase (Maob) is found in abundance in 
+(CLDNs) are a family of integral membrane proteins, Cldn1 being expressed by 
+epithelial liver cells; The  monoamine oxidase (Maob) is found in abundance in 
 the liver. All these markers play a role in the liver. This sub-population 
 is hence called liver-like hereafter. 
 
