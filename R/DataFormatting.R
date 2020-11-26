@@ -121,26 +121,28 @@
     message("Formating data.")
     idx <- match(colnames(countMatrix), columnsMetaData$cellBarcode)
     if(isTRUE(all.equal(length(which(!is.na(idx))), 0)))
-        stop("The cell barcodes were not found in the matrix. Are you sure ",
-                "that the count matrix and the series matrix correspond?")
-    
-    idxNA <- which(is.na(idx))
-    if(!isTRUE(all.equal(length(idxNA), 0))){
-        countMatrix <- countMatrix[,-idxNA]
-        idx <- idx[-idxNA]
+        warning("The cell barcodes were not found in the matrix. Are you sure ",
+                "that the count matrix and the series matrix correspond?",
+                immediate. =TRUE)
+    else{
+        
+        idxNA <- which(is.na(idx))
+        if(!isTRUE(all.equal(length(idxNA), 0))){
+            countMatrix <- countMatrix[,-idxNA]
+            idx <- idx[-idxNA]
+        }
+        
+        ## Reordering columns meta-data
+        columnsMetaData <- columnsMetaData[idx,]
+        
+        ## Adding cells names
+        cellsnames <- paste0("c", seq_len(ncol(countMatrix)))
+        colnames(countMatrix) <- cellsnames
+        columnsMetaData <- cbind(cellName=cellsnames, columnsMetaData)
+        rownames(columnsMetaData) <- cellsnames
+        
+        return(list(countMatrix, columnsMetaData))
     }
-    
-    ## Reordering columns meta-data
-    columnsMetaData <- columnsMetaData[idx,]
-    
-    ## Adding cells names
-    cellsnames <- paste0("c", seq_len(ncol(countMatrix)))
-    colnames(countMatrix) <- cellsnames
-    columnsMetaData <- cbind(cellName=cellsnames, columnsMetaData)
-    rownames(columnsMetaData) <- cellsnames
-    
-    return(list(countMatrix, columnsMetaData))
-    
 }        
 
 
