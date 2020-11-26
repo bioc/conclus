@@ -121,9 +121,10 @@
     message("Formating data.")
     idx <- match(colnames(countMatrix), columnsMetaData$cellBarcode)
     if(isTRUE(all.equal(length(which(!is.na(idx))), 0)))
-        warning("The cell barcodes were not found in the matrix. Are you sure ",
-                "that the count matrix and the meta-data correspond?",
-                immediate. =TRUE)
+        warning("The cell barcodes were not found in the matrix. The columns ",
+                "of the count matrix and the rows of the meta-data will ",
+                "not be re-ordered. Are you sure that the count matrix and ",
+                "the meta-data correspond?", immediate. =TRUE)
     else{
         
         idxNA <- which(is.na(idx))
@@ -140,9 +141,8 @@
         colnames(countMatrix) <- cellsnames
         columnsMetaData <- cbind(cellName=cellsnames, columnsMetaData)
         rownames(columnsMetaData) <- cellsnames
-        
-        return(list(countMatrix, columnsMetaData))
     }
+    return(list(countMatrix, columnsMetaData))
 }        
 
 
