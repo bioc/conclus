@@ -25,13 +25,39 @@
 }
 
 
-#' .retrieveColMetaData
+#' .retrieveColMetaDataFromURL
+#' 
+#' @description
+#' Download and read the columns meta-data from a URL
+#' 
+#' @usage
+#' .retrieveColMetaDataFromURL(colMetaDataURL, metaDataPath){
+#' 
+#' @param colMetaDataURL URL of the meta-data. The columns should be cell ID,
+#' cell barcode and state.
+#' @param metaDataPath Path to the file to which the columns meta-data will be  
+#' saved.
+#' 
+#' @return The columns meta-data as a dataframe.
+#' @keywords internal
+#' @noRd
+#' @importFrom utils download.file
+.retrieveColMetaDataFromURL <- function(colMetaDataURL, metaDataPath){
+    
+    message("Downloading the columns meta-data.")
+    download.file(colMetaDataURL, metaDataPath)
+    metadata <- read.delim(metaDataPath, header=TRUE, stringsAsFactors=FALSE)
+    return(metadata)
+}
+
+
+#' .retrieveColMetaDataFromSeries
 #' 
 #' @description
 #' Download the columns meta-data from GEO.
 #' 
 #' @usage
-#' .retrieveColMetaData(seriesMatrixName)
+#' .retrieveColMetaDataFromSeries(seriesMatrixName)
 #' 
 #' @param seriesMatrixName Name of the columns meta-data file hosted on GEO.
 #' This name can usually be found in the 'Series Matrix File(s)' section.
@@ -47,15 +73,16 @@
 #' @importFrom stringr str_extract
 #' @importFrom GEOquery getGEO
 #' @importFrom methods as
-.retrieveColMetaData <- function(seriesMatrixName){
+.retrieveColMetaDataFromSeries <- function(seriesMatrixName){
     
     message("Downloading the columns meta-data.")
     GEOnb <- stringr::str_extract(seriesMatrixName, "GSE[0-9]+")
     gpl <- GEOquery::getGEO(GEOnb, GSEMatrix=TRUE)
     
     if(!any(names(gpl) == seriesMatrixName))
-        stop("The series matrix was not found. Contact the developper with ",
-                "a reproducible example.")
+        stop("The series matrix was not found. If the columns meta-data ",
+                "are provided as supplementary file, please use the ",
+                "colMetaDataURL parameter.")
     
     gpl <- gpl[[seriesMatrixName]]
     gpl <- methods::as(gpl, "data.frame")
@@ -64,8 +91,6 @@
     
     return(columnsMetaData)
 }
-
-
 
 #' .filteringAndOrdering
 #' 
@@ -183,15 +208,22 @@
 #' They are formatted to be suitable inputs for conclus.
 #' 
 #' @usage
-#' retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrixName,
-#'        species, convertToSymbols=TRUE, annoType="ENSEMBL")
+#' retrieveFromGEO <- function(matrixURL, countMatrixPath, species, 
+#' seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA, 
+#' convertToSymbols=TRUE, annoType="ENSEMBL")
 #' 
 #' @param matrixURL URL of the count matrix. The matrix must be un-normalized.
 #' @param countMatrixPath Path to the file to which the downloaded count 
 #' matrix will be saved.
-#' @param seriesMatrixName Name of the columns meta-data file hosted on GEO.
-#' This name can usually be found in the 'Series Matrix File(s)' section.
 #' @param species Values should be 'mouse' or 'human'.
+#' @param seriesMatrixName Name of the columns meta-data file hosted on GEO.
+#' This name can usually be found in the 'Series Matrix File(s)' section. 
+#' Should not be used if colMetaDataURL is defined. Default=NA.
+#' @param metaDataPath If colMetaDataURL is used, defines the path to the file 
+#' to which the downloaded meta-data will be saved.  
+#' @param colMetaDataURL URL of the columns meta-data file hosted on GEO.
+#' This file can be found in 'supplementary file'.
+#' Should not be used if seriesMatrixName is defined. Default=NA.
 #' @param convertToSymbols Boolean indicating if the genes IDs 
 #' contained in the row names of the matrix should be converted to official 
 #' genes symbols. Default: TRUE. To choose the type of IDs contained in the 
@@ -232,12 +264,21 @@
 #' Nicolas DESCOSTES
 #' 
 #' @export retrieveFromGEO
-retrieveFromGEO <- function(matrixURL, countMatrixPath, seriesMatrixName,
-        species, convertToSymbols=TRUE, annoType="ENSEMBL"){
+retrieveFromGEO <- function(matrixURL, countMatrixPath, species, 
+        seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA, 
+        convertToSymbols=TRUE, annoType="ENSEMBL"){
+    
+    if(is.na(seriesMatrixName) && is.na(colMetaDataURL))
+        stop("You should define at least seriesMatrixName or colMetaDataURL")
     
     ## Retrieving the count matrix and columns meta-data
     countMatrix <- .retrieveMatrix(matrixURL, countMatrixPath)
-    columnsMetaData <- .retrieveColMetaData(seriesMatrixName)
+    
+    if(!is.na(seriesMatrixName))
+        columnsMetaData <- .retrieveColMetaDataFromSeries(seriesMatrixName)
+    else
+        columnsMetaData <- .retrieveColMetaDataFromURL(colMetaDataURL, 
+                metaDataPath)
 
     ## Filtering, ordering and adding cells names
     result <- .filteringAndOrdering(countMatrix, columnsMetaData)
