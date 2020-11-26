@@ -124,7 +124,7 @@
         warning("The cell barcodes were not found in the matrix. The columns ",
                 "of the count matrix and the rows of the meta-data will ",
                 "not be re-ordered. Are you sure that the count matrix and ",
-                "the meta-data correspond?", immediate. =TRUE)
+                "the meta-data correspond?")
     else{
         
         idxNA <- which(is.na(idx))
