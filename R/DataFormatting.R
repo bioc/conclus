@@ -31,7 +31,7 @@
 #' Download and read the columns meta-data from a URL
 #' 
 #' @usage
-#' .retrieveColMetaDataFromURL(colMetaDataURL, metaDataPath){
+#' .retrieveColMetaDataFromURL(colMetaDataURL, metaDataPath)
 #' 
 #' @param colMetaDataURL URL of the meta-data. The columns should be cell ID,
 #' cell barcode and state.
