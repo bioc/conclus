@@ -122,7 +122,7 @@
     idx <- match(colnames(countMatrix), columnsMetaData$cellBarcode)
     if(isTRUE(all.equal(length(which(!is.na(idx))), 0)))
         warning("The cell barcodes were not found in the matrix. Are you sure ",
-                "that the count matrix and the series matrix correspond?",
+                "that the count matrix and the meta-data correspond?",
                 immediate. =TRUE)
     else{
         
