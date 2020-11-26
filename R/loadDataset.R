@@ -143,8 +143,9 @@ loadRowdata <- function(file, columnGenes, header, sep, dec){
             na.strings=c("", "NA",  "<NA>"),
             stringsAsFactors=FALSE)
     
-    ## The submitted coldata should have 'nameInCountMatrix' column to allow the merge
-    ## this one with the coldata created by conclus in method-normalisation.R
+    ## The submitted coldata should have 'nameInCountMatrix' column to allow 
+    ## to merge the one with the coldata created by conclus in 
+    ## method-normalisation.R
     if(isFALSE("nameInCountMatrix" %in% colnames(df))){
         
         if(isTRUE(columnGenes %in% colnames(df)) || columnGenes <= ncol(df)){
@@ -152,7 +153,8 @@ loadRowdata <- function(file, columnGenes, header, sep, dec){
             names(df)[names(df) == columnGenes] <- "nameInCountMatrix"
             ## Re-order the columns
             df <- df[, c("nameInCountMatrix", 
-                            colnames(df)[!colnames(df) %in% "nameInCountMatrix"])]
+                            colnames(df)[!colnames(df) %in% 
+                                            "nameInCountMatrix"])]
             
         }else 
             stop("There is no column '", columnGenes, "' in the submitted ",
