@@ -128,7 +128,7 @@ createDirectory <- function(dataDirectory, directory){
                         "#6A3D9A", "#FFFF99", "#B15928")[
                         seq_len(clustersNumber)])
     else
-        return(colorPalette26[seq_len(length(clustersNumber))])
+        return(colorPalette26[seq_len(clustersNumber)])
 }
 
 
@@ -165,7 +165,7 @@ createDirectory <- function(dataDirectory, directory){
                 "colors.")
 
     if(isTRUE(all.equal(colorPalette, "default")))
-        return(.pickDefaultPalette(clustersNumber))
+        return(.pickDefaultPalette(clustersNumber, colorPalette26))
 
     return(colorPalette)
 }
