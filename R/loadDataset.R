@@ -40,8 +40,7 @@
 #' walk of CONCLUS.
 #' 
 #' @usage 
-#' loadColdata(file=coldataPath, columnCells="cellName", header=TRUE, 
-#'             dec=".", sep='\t')
+#' loadColdata<- function(file, columnCells, header, sep, dec)
 #'             
 #' @param file Path of the coldata to load.
 #' @param columnCells Column name or indice of the column containing 
@@ -49,7 +48,7 @@
 #' @param header Set TRUE if the first row of the table corresponds to the
 #' column names, and FALSE if it doesn't.
 #' @param sep Character used in the table to separate the fields. 
-#' Usually it's ' ' ';' ',' or '\t'.
+#' Usually it's ' ' ';' ',' or '\\t'.
 #' @param dec Character used in the table for decimal points.
 #' Usually '.' or ',' .
 #'
@@ -61,7 +60,7 @@
 #'                         "test_colData_filtered.tsv")
 #'                         
 #' loadColdata(file=coldataPath, columnCells="cellName", header=TRUE, 
-#'             dec=".", sep='\t')
+#'             dec=".", sep="\t")
 #'
 #'
 loadColdata<- function(file, columnCells, header, sep, dec){
@@ -108,8 +107,7 @@ loadColdata<- function(file, columnCells, header, sep, dec){
 #' walk of CONCLUS.
 #' 
 #' @usage 
-#' loadRowdata(file=coldataPath, columnGenes="cellName", header=TRUE, 
-#'             dec=".", sep='\t')
+#' loadRowdata(file, columnGenes, header, sep, dec)
 #'             
 #' @param file Path of the coldata to load.
 #' @param columnGenes Column name or indice of the column containing 
@@ -117,7 +115,7 @@ loadColdata<- function(file, columnCells, header, sep, dec){
 #' @param header Set TRUE if the first row of the table corresponds to the
 #' column names, and FALSE if it doesn't.
 #' @param sep Character used in the table to separate the fields. 
-#' Usually it's ' ' ';' ',' or '\t'.
+#' Usually it's ' ' ';' ',' or '\\t'.
 #' @param dec Character used in the table for decimal points.
 #' Usually '.' or ',' .
 #'
@@ -129,7 +127,7 @@ loadColdata<- function(file, columnCells, header, sep, dec){
 #'                         "test_colData_filtered.tsv")
 #'                         
 #' loadColdata(file=coldataPath, columnGenes="nameInCountMatrix", header=TRUE, 
-#'             dec=".", sep='\t')
+#'             dec=".", sep="\t")
 #'
 #'
 loadRowdata <- function(file, columnGenes, header, sep, dec){
