@@ -271,13 +271,51 @@
 #' @return Returns the rowData filled with the rowdataDF annotations.
 #' @noRd
 .mergeRowDataDf <- function(rowdataDF, rowdata){
-    rowdataDF$nameInCountMatrix <- rownames(rowdataDF)
-    rowdata <- merge(rowdataDF, rowdata, by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
-            sort = FALSE)
-    return(rowdata)
+
+   if("nameInCountMatrix" %in% colnames(rowdata) && 
+    "nameInCountMatrix" %in% colnames(rowdataDF)){
+        rowdataMerged <- merge(rowdataDF, rowdata, all.x = TRUE, all.y = TRUE, 
+                            sort = FALSE)
+        
+        return(rowdataMerged)
+        
+   }else 
+        stop("No 'nameInCountMatrix' column in the rowdata or rowdataDF",
+                " to perform the merge." )
 }
 
+
+#' .mergeColDataDf
+#'
+#' @description
+#' This function merge the coldata created by CONCLUS with  the coldata
+#' provided by the user if he has entered it.
+#'
+#' @param coldataDF Data frame provided by the user containing information 
+#' about cells.
+#' @param coldata Data frame created by CONCLUS containing information 
+#' about cells.
+#' @param countMatrix The count matrix.
+#' 
+
+#' @keywords internal
+#'
+#' @return Returns the final coldata
+#' @noRd       
+.mergeColDataDf <- function(coldataDF, coldata, countMatrix){
+
+    if("cellName" %in% colnames(coldata) && 
+        "cellName" %in% colnames(coldataDF)){
+            coldataMerged <- merge(coldataDF, coldata, all.x = TRUE, 
+                                    all.y = TRUE, sort = FALSE)
+        
+        return(coldataMerged)
+        
+    }else 
+        stop("No 'cellName' column in the coldata or coldataDF",
+                " to perform the merge." )
+
+}
 
 #' .annotateGenes
 #'
@@ -339,7 +377,7 @@
 #' .createReportTable
 #'
 #' @description
-#' This function creates a boolean vector that is used to filer the cells
+#' This function creates a boolean vector that is used to filter the cells
 #' (see .filterCells below).
 #'
 #' @details
@@ -362,6 +400,7 @@
 #' @return A boolean vector
 #' @noRd
 .createReportTable <- function(columnName, colData, mb, mw){
+
     quan <- quantile(colData[, colnames(colData) == columnName])
     if (columnName %in% mb) {
         threshold <- 2.5*quan[2] - 1.5*quan[4]
@@ -376,6 +415,7 @@
         }
         vec <- as.numeric(colData[ ,columnName] <=  as.numeric(threshold))
     }
+    
     return(vec)
 }
 
@@ -567,14 +607,8 @@
             sumMtPer = 100*coldata$mtSum/coldata$genesSum,
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
     
-    if (!is.null(coldataDF)){
-        exp <- grep("state", colnames(coldataDF), ignore.case = TRUE, 
-                    value = TRUE)
-        colnames(coldataDF)[colnames(coldataDF) == exp] <- "state"
-        coldataDF$cellName <- coldata$cellName
-        coldata <- merge(coldataDF, coldata, by.x = "cellName",
-                by.y = "cellName", all.x = FALSE, all.y = TRUE, sort = FALSE)
-    }
+    if (!is.null(coldataDF))
+        coldata <- .mergeColDataDf(coldataDF, coldata, countMatrix)
 
     rownames(coldata) <- coldata$cellName
     coldata <- coldata[colnames(countMatrix), ]
@@ -712,7 +746,6 @@
 #'
 #' @keywords internal
 #' @noRd
-
 .checkRowAndColdata <- function(countMatrix, rowdata, coldata){
     
     if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
@@ -820,21 +853,24 @@ setMethod(
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
+                
         if(runQuickCluster)
             cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
         else
             cl <- NULL
 
         # Compute sizeFactors which will be used for normalization
-        sceNorm <- scran::computeSumFactors(sce, sizes=sizes, clusters=cl)
+        sceNorm <- suppressMessages(
+            scran::computeSumFactors(sce, sizes=sizes, clusters=cl, positive=F))
         message("summary(sizeFactors(sceObject)):")
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
 
-        if (length(
-            SingleCellExperiment::sizeFactors(
-                sceNorm)[SingleCellExperiment::sizeFactors(sceNorm) <= 0]) > 0)
-            message("Cells with negative sizeFactors will be deleted before the
-                        downstream analysis.")
+       nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(
+            sceNorm)[SingleCellExperiment::sizeFactors(sceNorm) <= 0])
+        
+        if (nbrNegSFCells > 0)
+            message(nbrNegSFCells, " cells with negative sizeFactors will be ",
+                    "deleted before the downstream analysis.")
 
         sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
         
