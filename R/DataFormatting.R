@@ -47,6 +47,12 @@
     message("Downloading the columns meta-data.")
     download.file(colMetaDataURL, metaDataPath)
     metadata <- read.delim(metaDataPath, header=TRUE, stringsAsFactors=FALSE)
+    
+    if(!isTRUE(all.equal(colnames(metaData), c("cellName", "state", 
+                            "cellBarcode"))))
+        warning("The columns of the cells meta-data should be: cellName, ",
+                "state, and cellBarcode. Please correct the dataframe.")
+    
     return(metadata)
 }
 
