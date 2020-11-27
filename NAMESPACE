@@ -2,6 +2,8 @@
 
 export(DbscanCluster)
 export(TsneCluster)
+export(loadColdata)
+export(loadRowdata)
 export(retrieveFromGEO)
 export(runCONCLUS)
 export(singlecellRNAseq)
