@@ -4,8 +4,7 @@
 \alias{loadColdata}
 \title{loadColdata}
 \usage{
-loadColdata(file=coldataPath, columnCells="cellName", header=TRUE, 
-            dec=".", sep='\t')
+loadColdata<- function(file, columnCells, header, sep, dec)
 }
 \arguments{
 \item{file}{Path of the coldata to load.}
@@ -17,7 +16,7 @@ cell names/id.}
 column names, and FALSE if it doesn't.}
 
 \item{sep}{Character used in the table to separate the fields. 
-Usually it's ' ' ';' ',' or '\t'.}
+Usually it's ' ' ';' ',' or '\\t'.}
 
 \item{dec}{Character used in the table for decimal points.
 Usually '.' or ',' .}
@@ -37,7 +36,7 @@ coldataPath <- file.path(system.file("extdata", package = "conclus"),
                         "test_colData_filtered.tsv")
                         
 loadColdata(file=coldataPath, columnCells="cellName", header=TRUE, 
-            dec=".", sep='\t')
+            dec=".", sep="\t")
 
 
 }

@@ -4,8 +4,7 @@
 \alias{loadRowdata}
 \title{loadRowdata}
 \usage{
-loadRowdata(file=coldataPath, columnGenes="cellName", header=TRUE, 
-            dec=".", sep='\t')
+loadRowdata(file, columnGenes, header, sep, dec)
 }
 \arguments{
 \item{file}{Path of the coldata to load.}
@@ -17,7 +16,7 @@ genes SYMBOL.}
 column names, and FALSE if it doesn't.}
 
 \item{sep}{Character used in the table to separate the fields. 
-Usually it's ' ' ';' ',' or '\t'.}
+Usually it's ' ' ';' ',' or '\\t'.}
 
 \item{dec}{Character used in the table for decimal points.
 Usually '.' or ',' .}
@@ -37,7 +36,7 @@ rowdataPath <- file.path(system.file("extdata", package = "conclus"),
                         "test_colData_filtered.tsv")
                         
 loadColdata(file=coldataPath, columnGenes="nameInCountMatrix", header=TRUE, 
-            dec=".", sep='\t')
+            dec=".", sep="\t")
 
 
 }
