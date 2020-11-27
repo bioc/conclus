@@ -868,12 +868,13 @@ setMethod(
        nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(
             sceNorm)[SingleCellExperiment::sizeFactors(sceNorm) <= 0])
         
-        if (nbrNegSFCells > 0)
+        if (nbrNegSFCells > 0){
             message(nbrNegSFCells, " cells with negative sizeFactors will be ",
                     "deleted before the downstream analysis.")
-
-        sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
-        
+            sceNorm <- sceNorm[, 
+                    SingleCellExperiment::sizeFactors(sceNorm) > 0]
+        }
+            
         sceNorm <- .normalizeCon(sceNorm)
         setSceNorm(theObject) <- sceNorm
         return(theObject)
