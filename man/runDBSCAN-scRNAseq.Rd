@@ -45,23 +45,18 @@ find *minPoints* dots. Optimal *epsilon* must lay one the knee of the k-NN
 function as shown in the "test_clustering/distance_graph.pdf".
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-                                sep='\t')
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-                                header=TRUE, dec=".", sep='\t')
+experimentName <- "Bergiers"
+countMatrix <- as.matrix(read.delim(system.file(
+"extdata/test_countMatrix.tsv", package="conclus")))
+outputDirectory <- "YourOutputDirectory"
+columnsMetaData <- read.delim(
+system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 
 ## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
+scr <- singlecellRNAseq(experimentName = experimentName,
                 countMatrix     = countMatrix,
                 species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
+                outputDirectory = outputDirectory)
 
 ## Normalize and filter the raw counts matrix
 scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
