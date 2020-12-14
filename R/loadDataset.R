@@ -203,7 +203,7 @@ loadRowdata <- function(file, columnGenes, header, sep, dec){
 #' Usually '.' or ',' .
 #'
 #' @return The count matrix.
-#' @export
+#' @export loadCountMatrix
 #'
 #' @examples
 #' 
