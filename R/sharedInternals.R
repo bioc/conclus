@@ -147,13 +147,14 @@ createDirectory <- function(dataDirectory, directory){
 #' @noRd
 .choosePalette <- function(colorPalette, clustersNumber){
 
-    colorPalette26 <- c("yellow", "darkgoldenrod1", "coral1", "deeppink",
-                        "indianred", "coral4", "darkblue", "darkmagenta",
+    colorPalette26 <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99",
+                        "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6",
+                        "#6A3D9A", "#FFFF99", "#B15928", "darkgoldenrod1", 
+                        "coral1", "deeppink",
+                        "indianred", "coral4", "darkmagenta",
                         "darkcyan", "mediumorchid", "plum2", "gray73",
-                        "cadetblue3", "khaki", "darkolivegreen1", "lightgreen",
-                        "limegreen", "darkolivegreen4", "green", "#CC79A7",
-                        "violetred3", "brown3", "darkslategray1", "gray51",
-                        "slateblue2", "blue")
+                        "cadetblue3", "khaki",
+                        "violetred3", "brown3")
 
     if(isTRUE(all.equal(colorPalette, "default")) && clustersNumber > 26)
         stop("The default option is limited to 26 colors, please provide your ",
