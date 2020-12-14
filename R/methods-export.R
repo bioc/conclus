@@ -663,18 +663,23 @@
 #'
 #'
 #' @examples
-#' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(system.file(
-#' "extdata/test_countMatrix.tsv", package="conclus")))
-#' outputDirectory <- "YourOutputDirectory"
-#' columnsMetaData <- read.delim(
-#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
-#'
+#' ## Load the count matrix
+#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+#'                             package="conclus")
+#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
+#'                                 sep='\t')
+#' 
+#' ## Load the coldata
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#'                             package="conclus")
+#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
+#'                                 header=TRUE, dec=".", sep='\t')
+#' 
 #' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = experimentName,
+#' scr <- singlecellRNAseq(experimentName = "Bergiers",
 #'                 countMatrix     = countMatrix,
 #'                 species         = "mouse",
-#'                 outputDirectory = outputDirectory)
+#'                 outputDirectory = "YourOutputDirectory")
 #'
 #' ## Normalize and filter the raw counts matrix
 #' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
@@ -704,7 +709,7 @@
 #' exportResults(scrInfos, saveAll=TRUE)
 #'
 #' ## Removing output directory
-#' unlink(outputDirectory, recursive=TRUE)
+#' unlink("YourOutputDirectory", recursive=TRUE)
 #'
 #' @exportMethod exportResults
 #' @importFrom SummarizedExperiment rowData
