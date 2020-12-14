@@ -53,11 +53,19 @@ NULL
 #' 
 #' @examples
 #' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(system.file(
-#' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
-#' columnsMetaData <- read.delim(
-#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
+#' 
+#' ## Load the count matrix
+#' countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+#'                                "test_countMatrix.tsv")
+#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
+#'                                sep='\t')
+#'                                
+#' ## Load the coldata
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#'            package="conclus")
+#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
+#'                                header=TRUE, dec=".", sep='\t')
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = experimentName,
