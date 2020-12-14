@@ -1,0 +1,501 @@
+"gene_ID"	"ENSEMBL"	"SYMBOL"	"GENENAME"	"chromosome_name"	"gene_biotype"	"go_id"	"name_1006"
+"1"	"Cav2"	"ENSMUSG00000000058"	"Cav2"	"caveolin 2"	"6"	"protein_coding"	"GO:0009986"	"cell surface"
+"2"	"Tspan32"	"ENSMUSG00000000244"	"Tspan32"	"tetraspanin 32"	"7"	"protein_coding"	"GO:0009986"	"cell surface"
+"3"	"Itgb2"	"ENSMUSG00000000290"	"Itgb2"	"integrin beta 2"	"10"	"protein_coding"	"GO:0009986"	"cell surface"
+"4"	"Pdgfb"	"ENSMUSG00000000489"	"Pdgfb"	"platelet derived growth factor, B polypeptide"	"15"	"protein_coding"	"GO:0009986"	"cell surface"
+"5"	"Acvrl1"	"ENSMUSG00000000530"	"Acvrl1"	"activin A receptor, type II-like 1"	"15"	"protein_coding"	"GO:0009986"	"cell surface"
+"6"	"Acvr1b"	"ENSMUSG00000000532"	"Acvr1b"	"activin A receptor, type 1B"	"15"	"protein_coding"	"GO:0007166"	"cell surface receptor signaling pathway"
+"7"	"Itga5"	"ENSMUSG00000000555"	"Itga5"	"integrin alpha 5 (fibronectin receptor alpha)"	"15"	"protein_coding"	"GO:0009986"	"cell surface"
+"8"	"Ramp2"	"ENSMUSG00000001240"	"Ramp2"	"receptor (calcitonin) activity modifying protein 2"	"11"	"protein_coding"	"GO:0009986"	"cell surface"
+"9"	"Itga3"	"ENSMUSG00000001507"	"Itga3"	"integrin alpha 3"	"11"	"protein_coding"	"GO:0009986"	"cell surface"
+"10"	"Smo"	"ENSMUSG00000001761"	"Smo"	"smoothened, frizzled class receptor"	"6"	"protein_coding"	"GO:0007166"	"cell surface receptor signaling pathway"
+"11"	"Tspan33"	"ENSMUSG00000001763"	"Tspan33"	"tetraspanin 33"	"6"	"protein_coding"	"GO:0009986"	"cell surface"
+"12"	"Axl"	"ENSMUSG00000002602"	"Axl"	"AXL receptor tyrosine kinase"	"7"	"protein_coding"	"GO:0009986"	"cell surface"
+"13"	"Tgfb1"	"ENSMUSG00000002603"	"Tgfb1"	"transforming growth factor, beta 1"	"7"	"protein_coding"	"GO:0009986"	"cell surface"
+"14"	"Adgre5"	"ENSMUSG00000002885"	"Adgre5"	"adhesion G protein-coupled receptor E5"	"8"	"protein_coding"	"GO:0007166"	"cell surface receptor signaling pathway"
+"15"	"Apoe"	"ENSMUSG00000002985"	"Apoe"	"apolipoprotein E"	"7"	"protein_coding"	"GO:0009986"	"cell surface"
+"16"	"Calr"	"ENSMUSG00000003814"	"Calr"	"calreticulin"	"8"	"protein_coding"	"GO:0009986"	"cell surface"
+"17"	"Phb2"	"ENSMUSG00000004264"	"Phb2"	"prohibitin 2"	"6"	"protein_coding"	"GO:0009986"	"cell surface"
+"18"	"Adgre1"	"ENSMUSG00000004730"	"Adgre1"	"adhesion G protein-coupled receptor E1"	"17"	"protein_coding"	"GO:0007166"	"cell surface receptor signaling pathway"
+"19"	"Gnai3"	"ENSMUSG00000000001"	"Gnai3"	"guanine nucleotide binding protein (G protein), alpha inhibiting 3"	"3"	"protein_coding"	NA	NA
+"20"	"Cdc45"	"ENSMUSG00000000028"	"Cdc45"	"cell division cycle 45"	"16"	"protein_coding"	NA	NA
+"21"	"H19"	"ENSMUSG00000000031"	"H19"	"H19, imprinted maternally expressed transcript"	"7"	"lincRNA"	NA	NA
+"22"	"Narf"	"ENSMUSG00000000056"	"Narf"	"nuclear prelamin A recognition factor"	"11"	"protein_coding"	NA	NA
+"23"	"Efnb2"	"ENSMUSG00000001300"	"Efnb2"	"ephrin B2"	"8"	"protein_coding"	NA	NA
+"24"	"Klf6"	"ENSMUSG00000000078"	"Klf6"	"Kruppel-like factor 6"	"13"	"protein_coding"	NA	NA
+"25"	"Scmh1"	"ENSMUSG00000000085"	"Scmh1"	"sex comb on midleg homolog 1"	"4"	"protein_coding"	NA	NA
+"26"	"Cox5a"	"ENSMUSG00000000088"	"Cox5a"	"cytochrome c oxidase subunit 5A"	"9"	"protein_coding"	NA	NA
+"27"	"Fer"	"ENSMUSG00000000127"	"Fer"	"fer (fms/fps related) protein kinase"	"17"	"protein_coding"	NA	NA
+"28"	"Xpo6"	"ENSMUSG00000000131"	"Xpo6"	"exportin 6"	"7"	"protein_coding"	NA	NA
+"29"	"Tfe3"	"ENSMUSG00000000134"	"Tfe3"	"transcription factor E3"	"X"	"protein_coding"	NA	NA
+"30"	"Brat1"	"ENSMUSG00000000148"	"Brat1"	"BRCA1-associated ATM activator 1"	"5"	"protein_coding"	NA	NA
+"31"	"Gna12"	"ENSMUSG00000000149"	"Gna12"	"guanine nucleotide binding protein, alpha 12"	"5"	"protein_coding"	NA	NA
+"32"	"Dlat"	"ENSMUSG00000000168"	"Dlat"	"dihydrolipoamide S-acetyltransferase (E2 component of pyruvate dehydrogenase complex)"	"9"	"protein_coding"	NA	NA
+"33"	"Sdhd"	"ENSMUSG00000000171"	"Sdhd"	"succinate dehydrogenase complex, subunit D, integral membrane protein"	"9"	"protein_coding"	NA	NA
+"34"	"Ccnd2"	"ENSMUSG00000000184"	"Ccnd2"	"cyclin D2"	"6"	"protein_coding"	NA	NA
+"35"	"Gpr107"	"ENSMUSG00000000194"	"Gpr107"	"G protein-coupled receptor 107"	"2"	"protein_coding"	NA	NA
+"36"	"Glmp"	"ENSMUSG00000001418"	"Glmp"	"glycosylated lysosomal membrane protein"	"3"	"protein_coding"	NA	NA
+"37"	"Gmpr"	"ENSMUSG00000000253"	"Gmpr"	"guanosine monophosphate reductase"	"13"	"protein_coding"	NA	NA
+"38"	"Mid2"	"ENSMUSG00000000266"	"Mid2"	"midline 2"	"X"	"protein_coding"	NA	NA
+"39"	"Trim25"	"ENSMUSG00000000275"	"Trim25"	"tripartite motif-containing 25"	"11"	"protein_coding"	NA	NA
+"40"	"Dgke"	"ENSMUSG00000000276"	"Dgke"	"diacylglycerol kinase, epsilon"	"11"	"protein_coding"	NA	NA
+"41"	"Scpep1"	"ENSMUSG00000000278"	"Scpep1"	"serine carboxypeptidase 1"	"11"	"protein_coding"	NA	NA
+"42"	"Mnt"	"ENSMUSG00000000282"	"Mnt"	"max binding protein"	"11"	"protein_coding"	NA	NA
+"43"	"Npepps"	"ENSMUSG00000001441"	"Npepps"	"aminopeptidase puromycin sensitive"	"11"	"protein_coding"	NA	NA
+"44"	"Hddc2"	"ENSMUSG00000000295"	"Hddc2"	"HD domain containing 2"	"10"	"protein_coding"	NA	NA
+"45"	"Tpd52l1"	"ENSMUSG00000000296"	"Tpd52l1"	"tumor protein D52-like 1"	"10"	"protein_coding"	NA	NA
+"46"	"Pemt"	"ENSMUSG00000000301"	"Pemt"	"phosphatidylethanolamine N-methyltransferase"	"11"	"protein_coding"	NA	NA
+"47"	"Arvcf"	"ENSMUSG00000000325"	"Arvcf"	"armadillo repeat gene deleted in velocardiofacial syndrome"	"16"	"protein_coding"	NA	NA
+"48"	"Comt"	"ENSMUSG00000000326"	"Comt"	"catechol-O-methyltransferase"	"16"	"protein_coding"	NA	NA
+"49"	"Rtca"	"ENSMUSG00000000339"	"Rtca"	"RNA 3'-terminal phosphate cyclase"	"3"	"protein_coding"	NA	NA
+"50"	"Dbt"	"ENSMUSG00000000340"	"Dbt"	"dihydrolipoamide branched chain transacylase E2"	"3"	"protein_coding"	NA	NA
+"51"	"Dazap2"	"ENSMUSG00000000346"	"Dazap2"	"DAZ associated protein 2"	"15"	"protein_coding"	NA	NA
+"52"	"Mcts1"	"ENSMUSG00000000355"	"Mcts1"	"malignant T cell amplified sequence 1"	"X"	"protein_coding"	NA	NA
+"53"	"Trappc10"	"ENSMUSG00000000374"	"Trappc10"	"trafficking protein particle complex 10"	"10"	"protein_coding"	NA	NA
+"54"	"Ccm2"	"ENSMUSG00000000378"	"Ccm2"	"cerebral cavernous malformation 2"	"11"	"protein_coding"	NA	NA
+"55"	"Tbrg4"	"ENSMUSG00000000384"	"Tbrg4"	"transforming growth factor beta regulated gene 4"	"11"	"protein_coding"	NA	NA
+"56"	"Mx1"	"ENSMUSG00000000386"	"Mx1"	"MX dynamin-like GTPase 1"	"16"	"polymorphic_pseudogene"	NA	NA
+"57"	"Ndufa9"	"ENSMUSG00000000399"	"Ndufa9"	"NADH:ubiquinone oxidoreductase subunit A9"	"6"	"protein_coding"	NA	NA
+"58"	"Galnt1"	"ENSMUSG00000000420"	"Galnt1"	"polypeptide N-acetylgalactosaminyltransferase 1"	"18"	"protein_coding"	NA	NA
+"59"	"Mkrn2"	"ENSMUSG00000000439"	"Mkrn2"	"makorin, ring finger protein, 2"	"6"	"protein_coding"	NA	NA
+"60"	"Pparg"	"ENSMUSG00000000440"	"Pparg"	"peroxisome proliferator activated receptor gamma"	"6"	"protein_coding"	NA	NA
+"61"	"Raf1"	"ENSMUSG00000000441"	"Raf1"	"v-raf-leukemia viral oncogene 1"	"6"	"protein_coding"	NA	NA
+"62"	"Brpf1"	"ENSMUSG00000001632"	"Brpf1"	"bromodomain and PHD finger containing, 1"	"6"	"protein_coding"	NA	NA
+"63"	"Akr1b3"	"ENSMUSG00000001642"	"Akr1b3"	"aldo-keto reductase family 1, member B3 (aldose reductase)"	"6"	"protein_coding"	NA	NA
+"64"	"Grasp"	"ENSMUSG00000000531"	"Grasp"	"GRP1 (general receptor for phosphoinositides 1)-associated scaffold protein"	"15"	"protein_coding"	NA	NA
+"65"	"Ddx18"	"ENSMUSG00000001674"	"Ddx18"	"DEAD box helicase 18"	"1"	"protein_coding"	NA	NA
+"66"	"Tom1l2"	"ENSMUSG00000000538"	"Tom1l2"	"target of myb1-like 2 (chicken)"	"11"	"protein_coding"	NA	NA
+"67"	"Gramd3"	"ENSMUSG00000001700"	"Gramd3"	"GRAM domain containing 3"	"18"	"protein_coding"	NA	NA
+"68"	"Wdr77"	"ENSMUSG00000000561"	"Wdr77"	"WD repeat domain 77"	"3"	"protein_coding"	NA	NA
+"69"	"Hnrnpd"	"ENSMUSG00000000568"	"Hnrnpd"	"heterogeneous nuclear ribonucleoprotein D"	"5"	"protein_coding"	NA	NA
+"70"	"C1d"	"ENSMUSG00000000581"	"C1d"	"C1D nuclear receptor co-repressor"	"11"	"protein_coding"	NA	NA
+"71"	"Gm2a"	"ENSMUSG00000000594"	"Gm2a"	"GM2 ganglioside activator protein"	"11"	"protein_coding"	NA	NA
+"72"	"Krit1"	"ENSMUSG00000000600"	"Krit1"	"KRIT1, ankyrin repeat containing"	"5"	"protein_coding"	NA	NA
+"73"	"Clcn4"	"ENSMUSG00000000605"	"Clcn4"	"chloride channel, voltage-sensitive 4"	"7"	"protein_coding"	NA	NA
+"74"	"Hk2"	"ENSMUSG00000000628"	"Hk2"	"hexokinase 2"	"6"	"protein_coding"	NA	NA
+"75"	"Myo18a"	"ENSMUSG00000000631"	"Myo18a"	"myosin XVIIIA"	"11"	"protein_coding"	NA	NA
+"76"	"Cd52"	"ENSMUSG00000000682"	"Cd52"	"CD52 antigen"	"4"	"protein_coding"	NA	NA
+"77"	"Abhd15"	"ENSMUSG00000000686"	"Abhd15"	"abhydrolase domain containing 15"	"11"	"protein_coding"	NA	NA
+"78"	"Kat2b"	"ENSMUSG00000000708"	"Kat2b"	"K(lysine) acetyltransferase 2B"	"17"	"protein_coding"	NA	NA
+"79"	"Rab5b"	"ENSMUSG00000000711"	"Rab5b"	"RAB5B, member RAS oncogene family"	"10"	"protein_coding"	NA	NA
+"80"	"Chmp1a"	"ENSMUSG00000000743"	"Chmp1a"	"charged multivesicular body protein 1A"	"8"	"protein_coding"	NA	NA
+"81"	"Rpa1"	"ENSMUSG00000000751"	"Rpa1"	"replication protein A1"	"11"	"protein_coding"	NA	NA
+"82"	"Serpinf1"	"ENSMUSG00000000753"	"Serpinf1"	"serine (or cysteine) peptidase inhibitor, clade F, member 1"	"11"	"protein_coding"	NA	NA
+"83"	"Tubgcp3"	"ENSMUSG00000000759"	"Tubgcp3"	"tubulin, gamma complex associated protein 3"	"8"	"protein_coding"	NA	NA
+"84"	"Polr3d"	"ENSMUSG00000000776"	"Polr3d"	"polymerase (RNA) III (DNA directed) polypeptide D"	"14"	"protein_coding"	NA	NA
+"85"	"Ddx3x"	"ENSMUSG00000000787"	"Ddx3x"	"DEAD box helicase 3, X-linked"	"X"	"protein_coding"	NA	NA
+"86"	"Usp32"	"ENSMUSG00000000804"	"Usp32"	"ubiquitin specific peptidase 32"	"11"	"protein_coding"	NA	NA
+"87"	"Dnajc5"	"ENSMUSG00000000826"	"Dnajc5"	"DnaJ heat shock protein family (Hsp40) member C5"	"2"	"protein_coding"	NA	NA
+"88"	"Tpd52l2"	"ENSMUSG00000000827"	"Tpd52l2"	"tumor protein D52-like 2"	"2"	"protein_coding"	NA	NA
+"89"	"Fmr1"	"ENSMUSG00000000838"	"Fmr1"	"FMRP translational regulator 1"	"X"	"protein_coding"	NA	NA
+"90"	"Pxmp4"	"ENSMUSG00000000876"	"Pxmp4"	"peroxisomal membrane protein 4"	"2"	"protein_coding"	NA	NA
+"91"	"Dlg3"	"ENSMUSG00000000881"	"Dlg3"	"discs large MAGUK scaffold protein 3"	"X"	"protein_coding"	NA	NA
+"92"	"Gnb1l"	"ENSMUSG00000000884"	"Gnb1l"	"guanine nucleotide binding protein (G protein), beta polypeptide 1-like"	"16"	"protein_coding"	NA	NA
+"93"	"Mmp11"	"ENSMUSG00000000901"	"Mmp11"	"matrix metallopeptidase 11"	"10"	"protein_coding"	NA	NA
+"94"	"Smarcb1"	"ENSMUSG00000000902"	"Smarcb1"	"SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily b, member 1"	"10"	"protein_coding"	NA	NA
+"95"	"Nsun5"	"ENSMUSG00000000916"	"Nsun5"	"NOL1/NOP2/Sun domain family, member 5"	"5"	"protein_coding"	NA	NA
+"96"	"Mmp14"	"ENSMUSG00000000957"	"Mmp14"	"matrix metallopeptidase 14 (membrane-inserted)"	"14"	"protein_coding"	NA	NA
+"97"	"Slc7a7"	"ENSMUSG00000000958"	"Slc7a7"	"solute carrier family 7 (cationic amino acid transporter, y+ system), member 7"	"14"	"protein_coding"	NA	NA
+"98"	"Oxa1l"	"ENSMUSG00000000959"	"Oxa1l"	"oxidase assembly 1-like"	"14"	"protein_coding"	NA	NA
+"99"	"Heatr6"	"ENSMUSG00000000976"	"Heatr6"	"HEAT repeat containing 6"	"11"	"protein_coding"	NA	NA
+"100"	"Ccl3"	"ENSMUSG00000000982"	"Ccl3"	"chemokine (C-C motif) ligand 3"	"11"	"protein_coding"	NA	NA
+"101"	"Icam4"	"ENSMUSG00000001014"	"Icam4"	"intercellular adhesion molecule 4, Landsteiner-Wiener blood group"	"9"	"protein_coding"	NA	NA
+"102"	"Ilf2"	"ENSMUSG00000001016"	"Ilf2"	"interleukin enhancer binding factor 2"	"3"	"protein_coding"	NA	NA
+"103"	"Chtop"	"ENSMUSG00000001017"	"Chtop"	"chromatin target of PRMT1"	"3"	"protein_coding"	NA	NA
+"104"	"Snapin"	"ENSMUSG00000001018"	"Snapin"	"SNAP-associated protein"	"3"	"protein_coding"	NA	NA
+"105"	"S100a4"	"ENSMUSG00000001020"	"S100a4"	"S100 calcium binding protein A4"	"3"	"protein_coding"	NA	NA
+"106"	"S100a6"	"ENSMUSG00000001025"	"S100a6"	"S100 calcium binding protein A6 (calcyclin)"	"3"	"protein_coding"	NA	NA
+"107"	"Icam2"	"ENSMUSG00000001029"	"Icam2"	"intercellular adhesion molecule 2"	"11"	"protein_coding"	NA	NA
+"108"	"Mapk7"	"ENSMUSG00000001034"	"Mapk7"	"mitogen-activated protein kinase 7"	"11"	"protein_coding"	NA	NA
+"109"	"Epn2"	"ENSMUSG00000001036"	"Epn2"	"epsin 2"	"11"	"protein_coding"	NA	NA
+"110"	"B9d1"	"ENSMUSG00000001039"	"B9d1"	"B9 protein domain 1"	"11"	"protein_coding"	NA	NA
+"111"	"Sec24b"	"ENSMUSG00000001052"	"Sec24b"	"Sec24 related gene family, member B (S. cerevisiae)"	"3"	"protein_coding"	NA	NA
+"112"	"Rmnd5b"	"ENSMUSG00000001054"	"Rmnd5b"	"required for meiotic nuclear division 5 homolog B"	"11"	"protein_coding"	NA	NA
+"113"	"Nhp2"	"ENSMUSG00000001056"	"Nhp2"	"NHP2 ribonucleoprotein"	"11"	"protein_coding"	NA	NA
+"114"	"Mfsd10"	"ENSMUSG00000001082"	"Mfsd10"	"major facilitator superfamily domain containing 10"	"5"	"protein_coding"	NA	NA
+"115"	"Luzp1"	"ENSMUSG00000001089"	"Luzp1"	"leucine zipper protein 1"	"4"	"protein_coding"	NA	NA
+"116"	"Kctd10"	"ENSMUSG00000001098"	"Kctd10"	"potassium channel tetramerisation domain containing 10"	"5"	"protein_coding"	NA	NA
+"117"	"Poldip2"	"ENSMUSG00000001100"	"Poldip2"	"polymerase (DNA-directed), delta interacting protein 2"	"11"	"protein_coding"	NA	NA
+"118"	"Ift20"	"ENSMUSG00000001105"	"Ift20"	"intraflagellar transport 20"	"11"	"protein_coding"	NA	NA
+"119"	"Col6a1"	"ENSMUSG00000001119"	"Col6a1"	"collagen, type VI, alpha 1"	"10"	"protein_coding"	NA	NA
+"120"	"Lgals9"	"ENSMUSG00000001123"	"Lgals9"	"lectin, galactose binding, soluble 9"	"11"	"protein_coding"	NA	NA
+"121"	"Araf"	"ENSMUSG00000001127"	"Araf"	"Araf proto-oncogene, serine/threonine kinase"	"X"	"protein_coding"	NA	NA
+"122"	"Cfp"	"ENSMUSG00000001128"	"Cfp"	"complement factor properdin"	"X"	"protein_coding"	NA	NA
+"123"	"Timp1"	"ENSMUSG00000001131"	"Timp1"	"tissue inhibitor of metalloproteinase 1"	"X"	"protein_coding"	NA	NA
+"124"	"Uxt"	"ENSMUSG00000001134"	"Uxt"	"ubiquitously expressed prefoldin like chaperone"	"X"	"protein_coding"	NA	NA
+"125"	"Lman2l"	"ENSMUSG00000001143"	"Lman2l"	"lectin, mannose-binding 2-like"	"1"	"protein_coding"	NA	NA
+"126"	"Mcm3ap"	"ENSMUSG00000001150"	"Mcm3ap"	"minichromosome maintenance complex component 3 associated protein"	"10"	"protein_coding"	NA	NA
+"127"	"Pcnt"	"ENSMUSG00000001151"	"Pcnt"	"pericentrin (kendrin)"	"10"	"protein_coding"	NA	NA
+"128"	"Mxd1"	"ENSMUSG00000001156"	"Mxd1"	"MAX dimerization protein 1"	"6"	"protein_coding"	NA	NA
+"129"	"Gmcl1"	"ENSMUSG00000001157"	"Gmcl1"	"germ cell-less, spermatogenesis associated 1"	"6"	"protein_coding"	NA	NA
+"130"	"Snrnp27"	"ENSMUSG00000001158"	"Snrnp27"	"small nuclear ribonucleoprotein 27 (U4/U6.U5)"	"6"	"protein_coding"	NA	NA
+"131"	"Ocrl"	"ENSMUSG00000001173"	"Ocrl"	"OCRL, inositol polyphosphate-5-phosphatase"	"X"	"protein_coding"	NA	NA
+"132"	"Calm1"	"ENSMUSG00000001175"	"Calm1"	"calmodulin 1"	"12"	"protein_coding"	NA	NA
+"133"	"Agpat3"	"ENSMUSG00000001211"	"Agpat3"	"1-acylglycerol-3-phosphate O-acyltransferase 3"	"10"	"protein_coding"	NA	NA
+"134"	"Uhrf1"	"ENSMUSG00000001228"	"Uhrf1"	"ubiquitin-like, containing PHD and RING finger domains, 1"	"17"	"protein_coding"	NA	NA
+"135"	"Dpp9"	"ENSMUSG00000001229"	"Dpp9"	"dipeptidylpeptidase 9"	"17"	"protein_coding"	NA	NA
+"136"	"Peg3"	"ENSMUSG00000002265"	"Peg3"	"paternally expressed 3"	"7"	"protein_coding"	NA	NA
+"137"	"Lsr"	"ENSMUSG00000001247"	"Lsr"	"lipolysis stimulated lipoprotein receptor"	"7"	"protein_coding"	NA	NA
+"138"	"Gramd1a"	"ENSMUSG00000001248"	"Gramd1a"	"GRAM domain containing 1A"	"7"	"protein_coding"	NA	NA
+"139"	"Ckb"	"ENSMUSG00000001270"	"Ckb"	"creatine kinase, brain"	"12"	"protein_coding"	NA	NA
+"140"	"Sp1"	"ENSMUSG00000001280"	"Sp1"	"trans-acting transcription factor 1"	"15"	"protein_coding"	NA	NA
+"141"	"Myg1"	"ENSMUSG00000001285"	"Myg1"	"melanocyte proliferating gene 1"	"15"	"protein_coding"	NA	NA
+"142"	"Rarg"	"ENSMUSG00000001288"	"Rarg"	"retinoic acid receptor, gamma"	"15"	"protein_coding"	NA	NA
+"143"	"Pfdn5"	"ENSMUSG00000001289"	"Pfdn5"	"prefoldin 5"	"15"	"protein_coding"	NA	NA
+"144"	"Gmpr2"	"ENSMUSG00000002326"	"Gmpr2"	"guanosine monophosphate reductase 2"	"14"	"protein_coding"	NA	NA
+"145"	"Rrp15"	"ENSMUSG00000001305"	"Rrp15"	"ribosomal RNA processing 15 homolog"	"1"	"protein_coding"	NA	NA
+"146"	"Rnd2"	"ENSMUSG00000001313"	"Rnd2"	"Rho family GTPase 2"	"11"	"protein_coding"	NA	NA
+"147"	"Srr"	"ENSMUSG00000001323"	"Srr"	"serine racemase"	"11"	"protein_coding"	NA	NA
+"148"	"Acp5"	"ENSMUSG00000001348"	"Acp5"	"acid phosphatase 5, tartrate resistant"	"9"	"protein_coding"	NA	NA
+"149"	"Cnn1"	"ENSMUSG00000001349"	"Cnn1"	"calponin 1"	"9"	"protein_coding"	NA	NA
+"150"	"Fbxo9"	"ENSMUSG00000001366"	"Fbxo9"	"f-box protein 9"	"9"	"protein_coding"	NA	NA
+"151"	"Vps50"	"ENSMUSG00000001376"	"Vps50"	"VPS50 EARP/GARPII complex subunit"	"6"	"protein_coding"	NA	NA
+"152"	"Hars"	"ENSMUSG00000001380"	"Hars"	"histidyl-tRNA synthetase"	"18"	"protein_coding"	NA	NA
+"153"	"Zmat2"	"ENSMUSG00000001383"	"Zmat2"	"zinc finger, matrin type 2"	"18"	"protein_coding"	NA	NA
+"154"	"Ube2c"	"ENSMUSG00000001403"	"Ube2c"	"ubiquitin-conjugating enzyme E2C"	"2"	"protein_coding"	NA	NA
+"155"	"Smg5"	"ENSMUSG00000001415"	"Smg5"	"Smg-5 homolog, nonsense mediated mRNA decay factor (C. elegans)"	"3"	"protein_coding"	NA	NA
+"156"	"Cct3"	"ENSMUSG00000001416"	"Cct3"	"chaperonin containing Tcp1, subunit 3 (gamma)"	"3"	"protein_coding"	NA	NA
+"157"	"Ndufb2"	"ENSMUSG00000002416"	"Ndufb2"	"NADH:ubiquinone oxidoreductase subunit B2"	"6"	"protein_coding"	NA	NA
+"158"	"Mef2d"	"ENSMUSG00000001419"	"Mef2d"	"myocyte enhancer factor 2D"	"3"	"protein_coding"	NA	NA
+"159"	"Tmem79"	"ENSMUSG00000001420"	"Tmem79"	"transmembrane protein 79"	"3"	"protein_coding"	NA	NA
+"160"	"Snd1"	"ENSMUSG00000001424"	"Snd1"	"staphylococcal nuclease and tudor domain containing 1"	"6"	"protein_coding"	NA	NA
+"161"	"Col18a1"	"ENSMUSG00000001435"	"Col18a1"	"collagen, type XVIII, alpha 1"	"10"	"protein_coding"	NA	NA
+"162"	"Slc19a1"	"ENSMUSG00000001436"	"Slc19a1"	"solute carrier family 19 (folate transporter), member 1"	"10"	"protein_coding"	NA	NA
+"163"	"Kpnb1"	"ENSMUSG00000001440"	"Kpnb1"	"karyopherin (importin) beta 1"	"11"	"protein_coding"	NA	NA
+"164"	"Tsc2"	"ENSMUSG00000002496"	"Tsc2"	"TSC complex subunit 2"	"17"	"protein_coding"	NA	NA
+"165"	"Mrpl10"	"ENSMUSG00000001445"	"Mrpl10"	"mitochondrial ribosomal protein L10"	"11"	"protein_coding"	NA	NA
+"166"	"Cyp51"	"ENSMUSG00000001467"	"Cyp51"	"cytochrome P450, family 51"	"5"	"protein_coding"	NA	NA
+"167"	"Tubb6"	"ENSMUSG00000001473"	"Tubb6"	"tubulin, beta 6 class V"	"18"	"protein_coding"	NA	NA
+"168"	"Col1a1"	"ENSMUSG00000001506"	"Col1a1"	"collagen, type I, alpha 1"	"11"	"protein_coding"	NA	NA
+"169"	"Mien1"	"ENSMUSG00000002580"	"Mien1"	"migration and invasion enhancer 1"	"11"	"protein_coding"	NA	NA
+"170"	"Foxm1"	"ENSMUSG00000001517"	"Foxm1"	"forkhead box M1"	"6"	"protein_coding"	NA	NA
+"171"	"Itfg2"	"ENSMUSG00000001518"	"Itfg2"	"integrin alpha FG-GAP repeat containing 2"	"6"	"protein_coding"	NA	NA
+"172"	"Tulp3"	"ENSMUSG00000001521"	"Tulp3"	"tubby-like protein 3"	"6"	"protein_coding"	NA	NA
+"173"	"Gtf2h4"	"ENSMUSG00000001524"	"Gtf2h4"	"general transcription factor II H, polypeptide 4"	"17"	"protein_coding"	NA	NA
+"174"	"Tubb5"	"ENSMUSG00000001525"	"Tubb5"	"tubulin, beta 5 class I"	"17"	"protein_coding"	NA	NA
+"175"	"Ell2"	"ENSMUSG00000001542"	"Ell2"	"elongation factor for RNA polymerase II 2"	"13"	"protein_coding"	NA	NA
+"176"	"Jup"	"ENSMUSG00000001552"	"Jup"	"junction plakoglobin"	"11"	"protein_coding"	NA	NA
+"177"	"Fkbp10"	"ENSMUSG00000001555"	"Fkbp10"	"FK506 binding protein 10"	"11"	"protein_coding"	NA	NA
+"178"	"Nom1"	"ENSMUSG00000001569"	"Nom1"	"nucleolar protein with MIF4G domain 1"	"5"	"protein_coding"	NA	NA
+"179"	"Ergic1"	"ENSMUSG00000001576"	"Ergic1"	"endoplasmic reticulum-golgi intermediate compartment (ERGIC) 1"	"17"	"protein_coding"	NA	NA
+"180"	"Acap1"	"ENSMUSG00000001588"	"Acap1"	"ArfGAP with coiled-coil, ankyrin repeat and PH domains 1"	"11"	"protein_coding"	NA	NA
+"181"	"Ifrd1"	"ENSMUSG00000001627"	"Ifrd1"	"interferon-related developmental regulator 1"	"12"	"protein_coding"	NA	NA
+"182"	"Stk38l"	"ENSMUSG00000001630"	"Stk38l"	"serine/threonine kinase 38 like"	"6"	"protein_coding"	NA	NA
+"183"	"Prkra"	"ENSMUSG00000002731"	"Prkra"	"protein kinase, interferon inducible double stranded RNA dependent activator"	"2"	"protein_coding"	NA	NA
+"184"	"Fkbp7"	"ENSMUSG00000002732"	"Fkbp7"	"FK506 binding protein 7"	"2"	"protein_coding"	NA	NA
+"185"	"Ddt"	"ENSMUSG00000001666"	"Ddt"	"D-dopachrome tautomerase"	"10"	"protein_coding"	NA	NA
+"186"	"Ykt6"	"ENSMUSG00000002741"	"Ykt6"	"YKT6 v-SNARE homolog (S. cerevisiae)"	"11"	"protein_coding"	NA	NA
+"187"	"Ubl3"	"ENSMUSG00000001687"	"Ubl3"	"ubiquitin-like 3"	"5"	"protein_coding"	NA	NA
+"188"	"Kdelr1"	"ENSMUSG00000002778"	"Kdelr1"	"KDEL (Lys-Asp-Glu-Leu) endoplasmic reticulum protein retention receptor 1"	"7"	"protein_coding"	NA	NA
+"189"	"Eef1e1"	"ENSMUSG00000001707"	"Eef1e1"	"eukaryotic translation elongation factor 1 epsilon 1"	"13"	"protein_coding"	NA	NA
+"190"	"Akt1"	"ENSMUSG00000001729"	"Akt1"	"thymoma viral proto-oncogene 1"	"12"	"protein_coding"	NA	NA
+"191"	"Tcirg1"	"ENSMUSG00000001750"	"Tcirg1"	"T cell, immune regulator 1, ATPase, H+ transporting, lysosomal V0 protein A3"	"19"	"protein_coding"	NA	NA
+"192"	"Naglu"	"ENSMUSG00000001751"	"Naglu"	"alpha-N-acetylglucosaminidase (Sanfilippo disease IIIB)"	"11"	"protein_coding"	NA	NA
+"193"	"Coasy"	"ENSMUSG00000001755"	"Coasy"	"Coenzyme A synthase"	"11"	"protein_coding"	NA	NA
+"194"	"Qtrt1"	"ENSMUSG00000002825"	"Qtrt1"	"queuine tRNA-ribosyltransferase catalytic subunit 1"	"9"	"protein_coding"	NA	NA
+"195"	"Hdgfl2"	"ENSMUSG00000002833"	"Hdgfl2"	"HDGF like 2"	"17"	"protein_coding"	NA	NA
+"196"	"Crnkl1"	"ENSMUSG00000001767"	"Crnkl1"	"crooked neck pre-mRNA splicing factor 1"	"2"	"protein_coding"	NA	NA
+"197"	"Rin2"	"ENSMUSG00000001768"	"Rin2"	"Ras and Rab interactor 2"	"2"	"protein_coding"	NA	NA
+"198"	"Chordc1"	"ENSMUSG00000001774"	"Chordc1"	"cysteine and histidine-rich domain (CHORD)-containing, zinc-binding protein 1"	"9"	"protein_coding"	NA	NA
+"199"	"Rtcb"	"ENSMUSG00000001783"	"Rtcb"	"RNA 2',3'-cyclic phosphate and 5'-OH ligase"	"10"	"protein_coding"	NA	NA
+"200"	"Pwp1"	"ENSMUSG00000001785"	"Pwp1"	"PWP1 homolog, endonuclein"	"10"	"protein_coding"	NA	NA
+"201"	"Fbxo7"	"ENSMUSG00000001786"	"Fbxo7"	"F-box protein 7"	"10"	"protein_coding"	NA	NA
+"202"	"Capns1"	"ENSMUSG00000001794"	"Capns1"	"calpain, small subunit 1"	"7"	"protein_coding"	NA	NA
+"203"	"Clpb"	"ENSMUSG00000001829"	"Clpb"	"ClpB caseinolytic peptidase B"	"7"	"protein_coding"	NA	NA
+"204"	"Zdhhc4"	"ENSMUSG00000001844"	"Zdhhc4"	"zinc finger, DHHC domain containing 4"	"5"	"protein_coding"	NA	NA
+"205"	"Rac1"	"ENSMUSG00000001847"	"Rac1"	"Rac family small GTPase 1"	"5"	"protein_coding"	NA	NA
+"206"	"Nup214"	"ENSMUSG00000001855"	"Nup214"	"nucleoporin 214"	"2"	"protein_coding"	NA	NA
+"207"	"Aif1l"	"ENSMUSG00000001864"	"Aif1l"	"allograft inflammatory factor 1-like"	"2"	"protein_coding"	NA	NA
+"208"	"Cpa3"	"ENSMUSG00000001865"	"Cpa3"	"carboxypeptidase A3, mast cell"	"3"	"protein_coding"	NA	NA
+"209"	"Ltbp1"	"ENSMUSG00000001870"	"Ltbp1"	"latent transforming growth factor beta binding protein 1"	"17"	"protein_coding"	NA	NA
+"210"	"Ugp2"	"ENSMUSG00000001891"	"Ugp2"	"UDP-glucose pyrophosphorylase 2"	"11"	"protein_coding"	NA	NA
+"211"	"Trmt1"	"ENSMUSG00000001909"	"Trmt1"	"tRNA methyltransferase 1"	"8"	"protein_coding"	NA	NA
+"212"	"Nacc1"	"ENSMUSG00000001910"	"Nacc1"	"nucleus accumbens associated 1, BEN and BTB (POZ) domain containing"	"8"	"protein_coding"	NA	NA
+"213"	"Slc1a5"	"ENSMUSG00000001918"	"Slc1a5"	"solute carrier family 1 (neutral amino acid transporter), member 5"	"7"	"protein_coding"	NA	NA
+"214"	"Uba1"	"ENSMUSG00000001924"	"Uba1"	"ubiquitin-like modifier activating enzyme 1"	"X"	"protein_coding"	NA	NA
+"215"	"Vwf"	"ENSMUSG00000001930"	"Vwf"	"Von Willebrand factor"	"6"	"protein_coding"	NA	NA
+"216"	"Siae"	"ENSMUSG00000001942"	"Siae"	"sialic acid acetylesterase"	"9"	"protein_coding"	NA	NA
+"217"	"Esam"	"ENSMUSG00000001946"	"Esam"	"endothelial cell-specific adhesion molecule"	"9"	"protein_coding"	NA	NA
+"218"	"Spa17"	"ENSMUSG00000001948"	"Spa17"	"sperm autoantigenic protein 17"	"9"	"protein_coding"	NA	NA
+"219"	"Fam50a"	"ENSMUSG00000001962"	"Fam50a"	"family with sequence similarity 50, member A"	"X"	"protein_coding"	NA	NA
+"220"	"Emd"	"ENSMUSG00000001964"	"Emd"	"emerin"	"X"	"protein_coding"	NA	NA
+"221"	"Taco1"	"ENSMUSG00000001983"	"Taco1"	"translational activator of mitochondrially encoded cytochrome c oxidase I"	"11"	"protein_coding"	NA	NA
+"222"	"Gria3"	"ENSMUSG00000001986"	"Gria3"	"glutamate receptor, ionotropic, AMPA3 (alpha 3)"	"X"	"protein_coding"	NA	NA
+"223"	"Sipa1l2"	"ENSMUSG00000001995"	"Sipa1l2"	"signal-induced proliferation-associated 1 like 2"	"8"	"protein_coding"	NA	NA
+"224"	"Ap4e1"	"ENSMUSG00000001998"	"Ap4e1"	"adaptor-related protein complex AP-4, epsilon 1"	"2"	"protein_coding"	NA	NA
+"225"	"Blvra"	"ENSMUSG00000001999"	"Blvra"	"biliverdin reductase A"	"2"	"protein_coding"	NA	NA
+"226"	"Idh3g"	"ENSMUSG00000002010"	"Idh3g"	"isocitrate dehydrogenase 3 (NAD+), gamma"	"X"	"protein_coding"	NA	NA
+"227"	"Ssr4"	"ENSMUSG00000002014"	"Ssr4"	"signal sequence receptor, delta"	"X"	"protein_coding"	NA	NA
+"228"	"Bcap31"	"ENSMUSG00000002015"	"Bcap31"	"B cell receptor associated protein 31"	"X"	"protein_coding"	NA	NA
+"229"	"Fam98a"	"ENSMUSG00000002017"	"Fam98a"	"family with sequence similarity 98, member A"	"17"	"protein_coding"	NA	NA
+"230"	"Kmt2a"	"ENSMUSG00000002028"	"Kmt2a"	"lysine (K)-specific methyltransferase 2A"	"9"	"protein_coding"	NA	NA
+"231"	"Ift46"	"ENSMUSG00000002031"	"Ift46"	"intraflagellar transport 46"	"9"	"protein_coding"	NA	NA
+"232"	"Trappc6a"	"ENSMUSG00000002043"	"Trappc6a"	"trafficking protein particle complex 6A"	"7"	"protein_coding"	NA	NA
+"233"	"Supt6"	"ENSMUSG00000002052"	"Supt6"	"SPT6, histone chaperone and transcription elongation factor"	"11"	"protein_coding"	NA	NA
+"234"	"Spag5"	"ENSMUSG00000002055"	"Spag5"	"sperm associated antigen 5"	"11"	"protein_coding"	NA	NA
+"235"	"Unc119"	"ENSMUSG00000002058"	"Unc119"	"unc-119 lipid binding chaperone"	"11"	"protein_coding"	NA	NA
+"236"	"Rab34"	"ENSMUSG00000002059"	"Rab34"	"RAB34, member RAS oncogene family"	"11"	"protein_coding"	NA	NA
+"237"	"Sdf2"	"ENSMUSG00000002064"	"Sdf2"	"stromal cell derived factor 2"	"11"	"protein_coding"	NA	NA
+"238"	"Ccne1"	"ENSMUSG00000002068"	"Ccne1"	"cyclin E1"	"7"	"protein_coding"	NA	NA
+"239"	"Psmc3"	"ENSMUSG00000002102"	"Psmc3"	"proteasome (prosome, macropain) 26S subunit, ATPase 3"	"2"	"protein_coding"	NA	NA
+"240"	"Acp2"	"ENSMUSG00000002103"	"Acp2"	"acid phosphatase 2, lysosomal"	"2"	"protein_coding"	NA	NA
+"241"	"Rapsn"	"ENSMUSG00000002104"	"Rapsn"	"receptor-associated protein of the synapse"	"2"	"protein_coding"	NA	NA
+"242"	"Slc39a13"	"ENSMUSG00000002105"	"Slc39a13"	"solute carrier family 39 (metal ion transporter), member 13"	"2"	"protein_coding"	NA	NA
+"243"	"Celf2"	"ENSMUSG00000002107"	"Celf2"	"CUGBP, Elav-like family member 2"	"2"	"protein_coding"	NA	NA
+"244"	"Ddb2"	"ENSMUSG00000002109"	"Ddb2"	"damage specific DNA binding protein 2"	"2"	"protein_coding"	NA	NA
+"245"	"Spi1"	"ENSMUSG00000002111"	"Spi1"	"spleen focus forming virus (SFFV) proviral integration oncogene"	"2"	"protein_coding"	NA	NA
+"246"	"Sf3a1"	"ENSMUSG00000002129"	"Sf3a1"	"splicing factor 3a, subunit 1"	"11"	"protein_coding"	NA	NA
+"247"	"Stat6"	"ENSMUSG00000002147"	"Stat6"	"signal transducer and activator of transcription 6"	"10"	"protein_coding"	NA	NA
+"248"	"Napsa"	"ENSMUSG00000002204"	"Napsa"	"napsin A aspartic peptidase"	"7"	"protein_coding"	NA	NA
+"249"	"Vrk3"	"ENSMUSG00000002205"	"Vrk3"	"vaccinia related kinase 3"	"7"	"protein_coding"	NA	NA
+"250"	"Smg9"	"ENSMUSG00000002210"	"Smg9"	"smg-9 homolog, nonsense mediated mRNA decay factor (C. elegans)"	"7"	"protein_coding"	NA	NA
+"251"	"Paxip1"	"ENSMUSG00000002221"	"Paxip1"	"PAX interacting (with transcription-activation domain) protein 1"	"5"	"protein_coding"	NA	NA
+"252"	"Rmnd5a"	"ENSMUSG00000002222"	"Rmnd5a"	"required for meiotic nuclear division 5 homolog A"	"6"	"protein_coding"	NA	NA
+"253"	"Mov10"	"ENSMUSG00000002227"	"Mov10"	"Mov10 RISC complex RNA helicase"	"3"	"protein_coding"	NA	NA
+"254"	"Rhoc"	"ENSMUSG00000002233"	"Rhoc"	"ras homolog family member C"	"3"	"protein_coding"	NA	NA
+"255"	"Ppard"	"ENSMUSG00000002250"	"Ppard"	"peroxisome proliferator activator receptor delta"	"17"	"protein_coding"	NA	NA
+"256"	"Def6"	"ENSMUSG00000002257"	"Def6"	"differentially expressed in FDCP 6"	"17"	"protein_coding"	NA	NA
+"257"	"Rabac1"	"ENSMUSG00000003380"	"Rabac1"	"Rab acceptor 1 (prenylated)"	"7"	"protein_coding"	NA	NA
+"258"	"Zim1"	"ENSMUSG00000002266"	"Zim1"	"zinc finger, imprinted 1"	"7"	"protein_coding"	NA	NA
+"259"	"Lmf1"	"ENSMUSG00000002279"	"Lmf1"	"lipase maturation factor 1"	"17"	"protein_coding"	NA	NA
+"260"	"Dbf4"	"ENSMUSG00000002297"	"Dbf4"	"DBF4 zinc finger"	"5"	"protein_coding"	NA	NA
+"261"	"Daxx"	"ENSMUSG00000002307"	"Daxx"	"Fas death domain-associated protein"	"17"	"protein_coding"	NA	NA
+"262"	"Cd320"	"ENSMUSG00000002308"	"Cd320"	"CD320 antigen"	"17"	"protein_coding"	NA	NA
+"263"	"Ipo4"	"ENSMUSG00000002319"	"Ipo4"	"importin 4"	"14"	"protein_coding"	NA	NA
+"264"	"Irf9"	"ENSMUSG00000002325"	"Irf9"	"interferon regulatory factor 9"	"14"	"protein_coding"	NA	NA
+"265"	"Timm50"	"ENSMUSG00000003438"	"Timm50"	"translocase of inner mitochondrial membrane 50"	"7"	"protein_coding"	NA	NA
+"266"	"Mdp1"	"ENSMUSG00000002329"	"Mdp1"	"magnesium-dependent phosphatase 1"	"14"	"protein_coding"	NA	NA
+"267"	"Dhrs1"	"ENSMUSG00000002332"	"Dhrs1"	"dehydrogenase/reductase (SDR family) member 1"	"14"	"protein_coding"	NA	NA
+"268"	"Tmem161a"	"ENSMUSG00000002342"	"Tmem161a"	"transmembrane protein 161A"	"8"	"protein_coding"	NA	NA
+"269"	"Armc6"	"ENSMUSG00000002343"	"Armc6"	"armadillo repeat containing 6"	"8"	"protein_coding"	NA	NA
+"270"	"Borcs8"	"ENSMUSG00000002345"	"Borcs8"	"BLOC-1 related complex subunit 8"	"8"	"protein_coding"	NA	NA
+"271"	"Snx9"	"ENSMUSG00000002365"	"Snx9"	"sorting nexin 9"	"17"	"protein_coding"	NA	NA
+"272"	"Ranbp3"	"ENSMUSG00000002372"	"Ranbp3"	"RAN binding protein 3"	"17"	"protein_coding"	NA	NA
+"273"	"Ndufa11"	"ENSMUSG00000002379"	"Ndufa11"	"NADH:ubiquinone oxidoreductase subunit A11"	"17"	"protein_coding"	NA	NA
+"274"	"Nr2f6"	"ENSMUSG00000002393"	"Nr2f6"	"nuclear receptor subfamily 2, group F, member 6"	"8"	"protein_coding"	NA	NA
+"275"	"Use1"	"ENSMUSG00000002395"	"Use1"	"unconventional SNARE in the ER 1 homolog (S. cerevisiae)"	"8"	"protein_coding"	NA	NA
+"276"	"Ocel1"	"ENSMUSG00000002396"	"Ocel1"	"occludin/ELL domain containing 1"	"8"	"protein_coding"	NA	NA
+"277"	"Braf"	"ENSMUSG00000002413"	"Braf"	"Braf transforming gene"	"6"	"protein_coding"	NA	NA
+"278"	"Fosb"	"ENSMUSG00000003545"	"Fosb"	"FBJ osteosarcoma oncogene B"	"7"	"protein_coding"	NA	NA
+"279"	"Hltf"	"ENSMUSG00000002428"	"Hltf"	"helicase-like transcription factor"	"3"	"protein_coding"	NA	NA
+"280"	"Prpf6"	"ENSMUSG00000002455"	"Prpf6"	"pre-mRNA splicing factor 6"	"2"	"protein_coding"	NA	NA
+"281"	"Rgs19"	"ENSMUSG00000002458"	"Rgs19"	"regulator of G-protein signaling 19"	"2"	"protein_coding"	NA	NA
+"282"	"Snrpd1"	"ENSMUSG00000002477"	"Snrpd1"	"small nuclear ribonucleoprotein D1"	"18"	"protein_coding"	NA	NA
+"283"	"Tchp"	"ENSMUSG00000002486"	"Tchp"	"trichoplein, keratin filament binding"	"5"	"protein_coding"	NA	NA
+"284"	"Tiam1"	"ENSMUSG00000002489"	"Tiam1"	"T cell lymphoma invasion and metastasis 1"	"16"	"protein_coding"	NA	NA
+"285"	"Crot"	"ENSMUSG00000003623"	"Crot"	"carnitine O-octanoyltransferase"	"5"	"protein_coding"	NA	NA
+"286"	"Slc9a3r2"	"ENSMUSG00000002504"	"Slc9a3r2"	"solute carrier family 9 (sodium/hydrogen exchanger), member 3 regulator 2"	"17"	"protein_coding"	NA	NA
+"287"	"Puf60"	"ENSMUSG00000002524"	"Puf60"	"poly-U binding splicing factor 60"	"15"	"protein_coding"	NA	NA
+"288"	"Golga2"	"ENSMUSG00000002546"	"Golga2"	"golgi autoantigen, golgin subfamily a, 2"	"2"	"protein_coding"	NA	NA
+"289"	"Uck1"	"ENSMUSG00000002550"	"Uck1"	"uridine-cytidine kinase 1"	"2"	"protein_coding"	NA	NA
+"290"	"Insig2"	"ENSMUSG00000003721"	"Insig2"	"insulin induced gene 2"	"1"	"protein_coding"	NA	NA
+"291"	"Kpna6"	"ENSMUSG00000003731"	"Kpna6"	"karyopherin (importin) alpha 6"	"4"	"protein_coding"	NA	NA
+"292"	"Man1a"	"ENSMUSG00000003746"	"Man1a"	"mannosidase 1, alpha"	"10"	"protein_coding"	NA	NA
+"293"	"Ccdc97"	"ENSMUSG00000002608"	"Ccdc97"	"coiled-coil domain containing 97"	"7"	"protein_coding"	NA	NA
+"294"	"Akap8l"	"ENSMUSG00000002625"	"Akap8l"	"A kinase (PRKA) anchor protein 8-like"	"17"	"protein_coding"	NA	NA
+"295"	"Pdcd2l"	"ENSMUSG00000002635"	"Pdcd2l"	"programmed cell death 2-like"	"7"	"protein_coding"	NA	NA
+"296"	"Gtf2f1"	"ENSMUSG00000002658"	"Gtf2f1"	"general transcription factor IIF, polypeptide 1"	"17"	"protein_coding"	NA	NA
+"297"	"Clpp"	"ENSMUSG00000002660"	"Clpp"	"caseinolytic mitochondrial matrix peptidase proteolytic subunit"	"17"	"protein_coding"	NA	NA
+"298"	"Alkbh7"	"ENSMUSG00000002661"	"Alkbh7"	"alkB homolog 7"	"17"	"protein_coding"	NA	NA
+"299"	"Med6"	"ENSMUSG00000002679"	"Med6"	"mediator complex subunit 6"	"12"	"protein_coding"	NA	NA
+"300"	"Prkd1"	"ENSMUSG00000002688"	"Prkd1"	"protein kinase D1"	"12"	"protein_coding"	NA	NA
+"301"	"Lcp2"	"ENSMUSG00000002699"	"Lcp2"	"lymphocyte cytosolic protein 2"	"11"	"protein_coding"	NA	NA
+"302"	"Cse1l"	"ENSMUSG00000002718"	"Cse1l"	"chromosome segregation 1-like (S. cerevisiae)"	"2"	"protein_coding"	NA	NA
+"303"	"Naa20"	"ENSMUSG00000002728"	"Naa20"	"N(alpha)-acetyltransferase 20, NatB catalytic subunit"	"2"	"protein_coding"	NA	NA
+"304"	"Nob1"	"ENSMUSG00000003848"	"Nob1"	"NIN1/RPN12 binding protein 1 homolog"	"8"	"protein_coding"	NA	NA
+"305"	"Nqo1"	"ENSMUSG00000003849"	"Nqo1"	"NAD(P)H dehydrogenase, quinone 1"	"8"	"protein_coding"	NA	NA
+"306"	"Plekha3"	"ENSMUSG00000002733"	"Plekha3"	"pleckstrin homology domain-containing, family A (phosphoinositide binding specific) member 3"	"2"	"protein_coding"	NA	NA
+"307"	"Ruvbl2"	"ENSMUSG00000003868"	"Ruvbl2"	"RuvB-like protein 2"	"7"	"protein_coding"	NA	NA
+"308"	"Baz1b"	"ENSMUSG00000002748"	"Baz1b"	"bromodomain adjacent to zinc finger domain, 1B"	"5"	"protein_coding"	NA	NA
+"309"	"Tfam"	"ENSMUSG00000003923"	"Tfam"	"transcription factor A, mitochondrial"	"10"	"protein_coding"	NA	NA
+"310"	"Ggct"	"ENSMUSG00000002797"	"Ggct"	"gamma-glutamyl cyclotransferase"	"6"	"protein_coding"	NA	NA
+"311"	"Nudt14"	"ENSMUSG00000002804"	"Nudt14"	"nudix (nucleoside diphosphate linked moiety X)-type motif 14"	"12"	"protein_coding"	NA	NA
+"312"	"Flii"	"ENSMUSG00000002812"	"Flii"	"flightless I actin binding protein"	"11"	"protein_coding"	NA	NA
+"313"	"Top3a"	"ENSMUSG00000002814"	"Top3a"	"topoisomerase (DNA) III alpha"	"11"	"protein_coding"	NA	NA
+"314"	"Atg4d"	"ENSMUSG00000002820"	"Atg4d"	"autophagy related 4D, cysteine peptidase"	"9"	"protein_coding"	NA	NA
+"315"	"Fancl"	"ENSMUSG00000004018"	"Fancl"	"Fanconi anemia, complementation group L"	"11"	"protein_coding"	NA	NA
+"316"	"Gstm5"	"ENSMUSG00000004032"	"Gstm5"	"glutathione S-transferase, mu 5"	"3"	"protein_coding"	NA	NA
+"317"	"Chaf1a"	"ENSMUSG00000002835"	"Chaf1a"	"chromatin assembly factor 1, subunit A (p150)"	"17"	"protein_coding"	NA	NA
+"318"	"Adprh"	"ENSMUSG00000002844"	"Adprh"	"ADP-ribosylarginine hydrolase"	"16"	"protein_coding"	NA	NA
+"319"	"Tmem39a"	"ENSMUSG00000002845"	"Tmem39a"	"transmembrane protein 39a"	"16"	"protein_coding"	NA	NA
+"320"	"Timmdc1"	"ENSMUSG00000002846"	"Timmdc1"	"translocase of inner mitochondrial membrane domain containing 1"	"16"	"protein_coding"	NA	NA
+"321"	"Mcm2"	"ENSMUSG00000002870"	"Mcm2"	"minichromosome maintenance complex component 2"	"6"	"protein_coding"	NA	NA
+"322"	"Tpra1"	"ENSMUSG00000002871"	"Tpra1"	"transmembrane protein, adipocyte asscociated 1"	"6"	"protein_coding"	NA	NA
+"323"	"Nab1"	"ENSMUSG00000002881"	"Nab1"	"Ngfi-A binding protein 1"	"1"	"protein_coding"	NA	NA
+"324"	"Map3k20"	"ENSMUSG00000004085"	"Map3k20"	"mitogen-activated protein kinase kinase kinase 20"	"2"	"protein_coding"	NA	NA
+"325"	"Il17ra"	"ENSMUSG00000002897"	"Il17ra"	"interleukin 17 receptor A"	"6"	"protein_coding"	NA	NA
+"326"	"Lamb1"	"ENSMUSG00000002900"	"Lamb1"	"laminin B1"	"12"	"protein_coding"	NA	NA
+"327"	"Map2k7"	"ENSMUSG00000002948"	"Map2k7"	"mitogen-activated protein kinase kinase 7"	"8"	"protein_coding"	NA	NA
+"328"	"Timm44"	"ENSMUSG00000002949"	"Timm44"	"translocase of inner mitochondrial membrane 44"	"8"	"protein_coding"	NA	NA
+"329"	"Ap2a2"	"ENSMUSG00000002957"	"Ap2a2"	"adaptor-related protein complex 2, alpha 2 subunit"	"7"	"protein_coding"	NA	NA
+"330"	"Pnkp"	"ENSMUSG00000002963"	"Pnkp"	"polynucleotide kinase 3'- phosphatase"	"7"	"protein_coding"	NA	NA
+"331"	"Med25"	"ENSMUSG00000002968"	"Med25"	"mediator complex subunit 25"	"7"	"protein_coding"	NA	NA
+"332"	"Clptm1"	"ENSMUSG00000002981"	"Clptm1"	"cleft lip and palate associated transmembrane protein 1"	"7"	"protein_coding"	NA	NA
+"333"	"Tomm40"	"ENSMUSG00000002984"	"Tomm40"	"translocase of outer mitochondrial membrane 40"	"7"	"protein_coding"	NA	NA
+"334"	"Emg1"	"ENSMUSG00000004268"	"Emg1"	"EMG1 N1-specific pseudouridine methyltransferase"	"6"	"protein_coding"	NA	NA
+"335"	"Hbp1"	"ENSMUSG00000002996"	"Hbp1"	"high mobility group box transcription factor 1"	"12"	"protein_coding"	NA	NA
+"336"	"Prkar2b"	"ENSMUSG00000002997"	"Prkar2b"	"protein kinase, cAMP dependent regulatory, type II beta"	"12"	"protein_coding"	NA	NA
+"337"	"Cdkn1b"	"ENSMUSG00000003031"	"Cdkn1b"	"cyclin-dependent kinase inhibitor 1B"	"6"	"protein_coding"	NA	NA
+"338"	"Klf4"	"ENSMUSG00000003032"	"Klf4"	"Kruppel-like factor 4 (gut)"	"4"	"protein_coding"	NA	NA
+"339"	"Ap1m1"	"ENSMUSG00000003033"	"Ap1m1"	"adaptor-related protein complex AP-1, mu subunit 1"	"8"	"protein_coding"	NA	NA
+"340"	"Rab8a"	"ENSMUSG00000003037"	"Rab8a"	"RAB8A, member RAS oncogene family"	"8"	"protein_coding"	NA	NA
+"341"	"Hmgn2"	"ENSMUSG00000003038"	"Hmgn2"	"high mobility group nucleosomal binding domain 2"	"4"	"protein_coding"	NA	NA
+"342"	"Fam32a"	"ENSMUSG00000003039"	"Fam32a"	"family with sequence similarity 32, member A"	"8"	"protein_coding"	NA	NA
+"343"	"Stard3nl"	"ENSMUSG00000003062"	"Stard3nl"	"STARD3 N-terminal like"	"13"	"protein_coding"	NA	NA
+"344"	"Stk11"	"ENSMUSG00000003068"	"Stk11"	"serine/threonine kinase 11"	"10"	"protein_coding"	NA	NA
+"345"	"Atp5d"	"ENSMUSG00000003072"	"Atp5d"	"ATP synthase, H+ transporting, mitochondrial F1 complex, delta subunit"	"10"	"protein_coding"	NA	NA
+"346"	"Ppp5c"	"ENSMUSG00000003099"	"Ppp5c"	"protein phosphatase 5, catalytic subunit"	"7"	"protein_coding"	NA	NA
+"347"	"Cdk12"	"ENSMUSG00000003119"	"Cdk12"	"cyclin-dependent kinase 12"	"11"	"protein_coding"	NA	NA
+"348"	"Pafah1b2"	"ENSMUSG00000003131"	"Pafah1b2"	"platelet-activating factor acetylhydrolase, isoform 1b, subunit 2"	"9"	"protein_coding"	NA	NA
+"349"	"Tbc1d8"	"ENSMUSG00000003134"	"Tbc1d8"	"TBC1 domain family, member 8"	"1"	"protein_coding"	NA	NA
+"350"	"Cnot11"	"ENSMUSG00000003135"	"Cnot11"	"CCR4-NOT transcription complex, subunit 11"	"1"	"protein_coding"	NA	NA
+"351"	"Slc2a3"	"ENSMUSG00000003153"	"Slc2a3"	"solute carrier family 2 (facilitated glucose transporter), member 3"	"6"	"protein_coding"	NA	NA
+"352"	"Foxj2"	"ENSMUSG00000003154"	"Foxj2"	"forkhead box J2"	"6"	"protein_coding"	NA	NA
+"353"	"Sri"	"ENSMUSG00000003161"	"Sri"	"sorcin"	"5"	"protein_coding"	NA	NA
+"354"	"Irf3"	"ENSMUSG00000003184"	"Irf3"	"interferon regulatory factor 3"	"7"	"protein_coding"	NA	NA
+"355"	"Bcl2l12"	"ENSMUSG00000003190"	"Bcl2l12"	"BCL2-like 12 (proline rich)"	"7"	"protein_coding"	NA	NA
+"356"	"Zfp959"	"ENSMUSG00000003198"	"Zfp959"	"zinc finger protein 959"	"17"	"protein_coding"	NA	NA
+"357"	"Mpnd"	"ENSMUSG00000003199"	"Mpnd"	"MPN domain containing"	"17"	"protein_coding"	NA	NA
+"358"	"Sh3gl1"	"ENSMUSG00000003200"	"Sh3gl1"	"SH3-domain GRB2-like 1"	"17"	"protein_coding"	NA	NA
+"359"	"Ebi3"	"ENSMUSG00000003206"	"Ebi3"	"Epstein-Barr virus induced gene 3"	"17"	"protein_coding"	NA	NA
+"360"	"Yju2"	"ENSMUSG00000003208"	"Yju2"	"YJU2 splicing factor"	"17"	"protein_coding"	NA	NA
+"361"	"Ranbp2"	"ENSMUSG00000003226"	"Ranbp2"	"RAN binding protein 2"	"10"	"protein_coding"	NA	NA
+"362"	"Grk5"	"ENSMUSG00000003228"	"Grk5"	"G protein-coupled receptor kinase 5"	"19"	"protein_coding"	NA	NA
+"363"	"Abcf3"	"ENSMUSG00000003234"	"Abcf3"	"ATP-binding cassette, sub-family F (GCN20), member 3"	"16"	"protein_coding"	NA	NA
+"364"	"Eif2b5"	"ENSMUSG00000003235"	"Eif2b5"	"eukaryotic translation initiation factor 2B, subunit 5 epsilon"	"16"	"protein_coding"	NA	NA
+"365"	"Cyth2"	"ENSMUSG00000003269"	"Cyth2"	"cytohesin 2"	"7"	"protein_coding"	NA	NA
+"366"	"Plag1"	"ENSMUSG00000003282"	"Plag1"	"pleiomorphic adenoma gene 1"	"4"	"protein_coding"	NA	NA
+"367"	"Hck"	"ENSMUSG00000003283"	"Hck"	"hemopoietic cell kinase"	"2"	"protein_coding"	NA	NA
+"368"	"Mrpl4"	"ENSMUSG00000003299"	"Mrpl4"	"mitochondrial ribosomal protein L4"	"9"	"protein_coding"	NA	NA
+"369"	"Keap1"	"ENSMUSG00000003308"	"Keap1"	"kelch-like ECH-associated protein 1"	"9"	"protein_coding"	NA	NA
+"370"	"Glg1"	"ENSMUSG00000003316"	"Glg1"	"golgi apparatus protein 1"	"8"	"protein_coding"	NA	NA
+"371"	"Btbd2"	"ENSMUSG00000003344"	"Btbd2"	"BTB (POZ) domain containing 2"	"10"	"protein_coding"	NA	NA
+"372"	"Csnk1g2"	"ENSMUSG00000003345"	"Csnk1g2"	"casein kinase 1, gamma 2"	"10"	"protein_coding"	NA	NA
+"373"	"Abhd17a"	"ENSMUSG00000003346"	"Abhd17a"	"abhydrolase domain containing 17A"	"10"	"protein_coding"	NA	NA
+"374"	"Mob3a"	"ENSMUSG00000003348"	"Mob3a"	"MOB kinase activator 3A"	"10"	"protein_coding"	NA	NA
+"375"	"Fkbp11"	"ENSMUSG00000003355"	"Fkbp11"	"FK506 binding protein 11"	"15"	"protein_coding"	NA	NA
+"376"	"Ddx23"	"ENSMUSG00000003360"	"Ddx23"	"DEAD box helicase 23"	"15"	"protein_coding"	NA	NA
+"377"	"Pld3"	"ENSMUSG00000003363"	"Pld3"	"phospholipase D family, member 3"	"7"	"protein_coding"	NA	NA
+"378"	"Pgf"	"ENSMUSG00000004791"	"Pgf"	"placental growth factor"	"12"	"protein_coding"	NA	NA
+"379"	"Etv3"	"ENSMUSG00000003382"	"Etv3"	"ets variant 3"	"3"	"protein_coding"	NA	NA
+"380"	"Prkcsh"	"ENSMUSG00000003402"	"Prkcsh"	"protein kinase C substrate 80K-H"	"9"	"protein_coding"	NA	NA
+"381"	"Nosip"	"ENSMUSG00000003421"	"Nosip"	"nitric oxide synthase interacting protein"	"7"	"protein_coding"	NA	NA
+"382"	"Pih1d1"	"ENSMUSG00000003423"	"Pih1d1"	"PIH1 domain containing 1"	"7"	"protein_coding"	NA	NA
+"383"	"Rps11"	"ENSMUSG00000003429"	"Rps11"	"ribosomal protein S11"	"7"	"protein_coding"	NA	NA
+"384"	"Supt5"	"ENSMUSG00000003435"	"Supt5"	"suppressor of Ty 5, DSIF elongation factor subunit"	"7"	"protein_coding"	NA	NA
+"385"	"Paf1"	"ENSMUSG00000003437"	"Paf1"	"Paf1, RNA polymerase II complex component"	"7"	"protein_coding"	NA	NA
+"386"	"Nes"	"ENSMUSG00000004891"	"Nes"	"nestin"	"3"	"protein_coding"	NA	NA
+"387"	"Med29"	"ENSMUSG00000003444"	"Med29"	"mediator complex subunit 29"	"7"	"protein_coding"	NA	NA
+"388"	"Bicd1"	"ENSMUSG00000003452"	"Bicd1"	"BICD cargo adaptor 1"	"6"	"protein_coding"	NA	NA
+"389"	"Ncstn"	"ENSMUSG00000003458"	"Ncstn"	"nicastrin"	"1"	"protein_coding"	NA	NA
+"390"	"Pex19"	"ENSMUSG00000003464"	"Pex19"	"peroxisomal biogenesis factor 19"	"1"	"protein_coding"	NA	NA
+"391"	"Impdh1"	"ENSMUSG00000003500"	"Impdh1"	"inosine monophosphate dehydrogenase 1"	"6"	"protein_coding"	NA	NA
+"392"	"Dusp3"	"ENSMUSG00000003518"	"Dusp3"	"dual specificity phosphatase 3 (vaccinia virus phosphatase VH1-related)"	"11"	"protein_coding"	NA	NA
+"393"	"Prodh"	"ENSMUSG00000003526"	"Prodh"	"proline dehydrogenase"	"16"	"protein_coding"	NA	NA
+"394"	"Ess2"	"ENSMUSG00000003527"	"Ess2"	"ess-2 splicing factor"	"16"	"protein_coding"	NA	NA
+"395"	"Slc25a1"	"ENSMUSG00000003528"	"Slc25a1"	"solute carrier family 25 (mitochondrial carrier, citrate transporter), member 1"	"16"	"protein_coding"	NA	NA
+"396"	"Dgcr6"	"ENSMUSG00000003531"	"Dgcr6"	"DiGeorge syndrome critical region gene 6"	"16"	"protein_coding"	NA	NA
+"397"	"Ddr1"	"ENSMUSG00000003534"	"Ddr1"	"discoidin domain receptor family, member 1"	"17"	"protein_coding"	NA	NA
+"398"	"Ier3"	"ENSMUSG00000003541"	"Ier3"	"immediate early response 3"	"17"	"protein_coding"	NA	NA
+"399"	"Cavin1"	"ENSMUSG00000004044"	"Cavin1"	"caveolae associated 1"	"11"	"protein_coding"	NA	NA
+"400"	"Klc4"	"ENSMUSG00000003546"	"Klc4"	"kinesin light chain 4"	"17"	"protein_coding"	NA	NA
+"401"	"Ercc1"	"ENSMUSG00000003549"	"Ercc1"	"excision repair cross-complementing rodent repair deficiency, complementation group 1"	"7"	"protein_coding"	NA	NA
+"402"	"As3mt"	"ENSMUSG00000003559"	"As3mt"	"arsenite methyltransferase"	"19"	"protein_coding"	NA	NA
+"403"	"Homer3"	"ENSMUSG00000003573"	"Homer3"	"homer scaffolding protein 3"	"8"	"protein_coding"	NA	NA
+"404"	"Rnf215"	"ENSMUSG00000003581"	"Rnf215"	"ring finger protein 215"	"11"	"protein_coding"	NA	NA
+"405"	"Aven"	"ENSMUSG00000003604"	"Aven"	"apoptosis, caspase activation inhibitor"	"2"	"protein_coding"	NA	NA
+"406"	"Cwc15"	"ENSMUSG00000004096"	"Cwc15"	"CWC15 spliceosome-associated protein"	"9"	"protein_coding"	NA	NA
+"407"	"Rps6ka1"	"ENSMUSG00000003644"	"Rps6ka1"	"ribosomal protein S6 kinase polypeptide 1"	"4"	"protein_coding"	NA	NA
+"408"	"Snrnp200"	"ENSMUSG00000003660"	"Snrnp200"	"small nuclear ribonucleoprotein 200 (U5)"	"2"	"protein_coding"	NA	NA
+"409"	"Ciao1"	"ENSMUSG00000003662"	"Ciao1"	"cytosolic iron-sulfur protein assembly 1"	"2"	"protein_coding"	NA	NA
+"410"	"Taf6l"	"ENSMUSG00000003680"	"Taf6l"	"TATA-box binding protein associated factor 6 like"	"19"	"protein_coding"	NA	NA
+"411"	"Ikbkg"	"ENSMUSG00000004221"	"Ikbkg"	"inhibitor of kappaB kinase gamma"	"X"	"protein_coding"	NA	NA
+"412"	"Wars2"	"ENSMUSG00000004233"	"Wars2"	"tryptophanyl tRNA synthetase 2 (mitochondrial)"	"3"	"protein_coding"	NA	NA
+"413"	"Bid"	"ENSMUSG00000004446"	"Bid"	"BH3 interacting domain death agonist"	"6"	"protein_coding"	NA	NA
+"414"	"Coq8b"	"ENSMUSG00000003762"	"Coq8b"	"coenzyme Q8B"	"7"	"protein_coding"	NA	NA
+"415"	"Brd8"	"ENSMUSG00000003778"	"Brd8"	"bromodomain containing 8"	"18"	"protein_coding"	NA	NA
+"416"	"Kif20a"	"ENSMUSG00000003779"	"Kif20a"	"kinesin family member 20A"	"18"	"protein_coding"	NA	NA
+"417"	"Farsa"	"ENSMUSG00000003808"	"Farsa"	"phenylalanyl-tRNA synthetase, alpha subunit"	"8"	"protein_coding"	NA	NA
+"418"	"Gcdh"	"ENSMUSG00000003809"	"Gcdh"	"glutaryl-Coenzyme A dehydrogenase"	"8"	"protein_coding"	NA	NA
+"419"	"Mast2"	"ENSMUSG00000003810"	"Mast2"	"microtubule associated serine/threonine kinase 2"	"4"	"protein_coding"	NA	NA
+"420"	"Dnase2a"	"ENSMUSG00000003812"	"Dnase2a"	"deoxyribonuclease II alpha"	"8"	"protein_coding"	NA	NA
+"421"	"Rad23a"	"ENSMUSG00000003813"	"Rad23a"	"RAD23 homolog A, nucleotide excision repair protein"	"8"	"protein_coding"	NA	NA
+"422"	"Cul3"	"ENSMUSG00000004364"	"Cul3"	"cullin 3"	"1"	"protein_coding"	NA	NA
+"423"	"Syce2"	"ENSMUSG00000003824"	"Syce2"	"synaptonemal complex central element protein 2"	"8"	"protein_coding"	NA	NA
+"424"	"Nfat5"	"ENSMUSG00000003847"	"Nfat5"	"nuclear factor of activated T cells 5"	"8"	"protein_coding"	NA	NA
+"425"	"Tmed4"	"ENSMUSG00000004394"	"Tmed4"	"transmembrane p24 trafficking protein 4"	"11"	"protein_coding"	NA	NA
+"426"	"Arhgef18"	"ENSMUSG00000004568"	"Arhgef18"	"rho/rac guanine nucleotide exchange factor (GEF) 18"	"8"	"protein_coding"	NA	NA
+"427"	"Gys1"	"ENSMUSG00000003865"	"Gys1"	"glycogen synthase 1, muscle"	"7"	"protein_coding"	NA	NA
+"428"	"Ppp1cc"	"ENSMUSG00000004455"	"Ppp1cc"	"protein phosphatase 1 catalytic subunit gamma"	"5"	"protein_coding"	NA	NA
+"429"	"Bax"	"ENSMUSG00000003873"	"Bax"	"BCL2-associated X protein"	"7"	"protein_coding"	NA	NA
+"430"	"Tbccd1"	"ENSMUSG00000004462"	"Tbccd1"	"TBCC domain containing 1"	"16"	"protein_coding"	NA	NA
+"431"	"Zfp81"	"ENSMUSG00000003929"	"Zfp81"	"zinc finger protein 81"	"17"	"protein_coding"	NA	NA
+"432"	"Mmd"	"ENSMUSG00000003948"	"Mmd"	"monocyte to macrophage differentiation-associated"	"11"	"protein_coding"	NA	NA
+"433"	"Fam162a"	"ENSMUSG00000003955"	"Fam162a"	"family with sequence similarity 162, member A"	"16"	"protein_coding"	NA	NA
+"434"	"Rpl8"	"ENSMUSG00000003970"	"Rpl8"	"ribosomal protein L8"	"15"	"protein_coding"	NA	NA
+"435"	"Ssbp2"	"ENSMUSG00000003992"	"Ssbp2"	"single-stranded DNA binding protein 2"	"13"	"protein_coding"	NA	NA
+"436"	"Arhgef40"	"ENSMUSG00000004562"	"Arhgef40"	"Rho guanine nucleotide exchange factor (GEF) 40"	"14"	"protein_coding"	NA	NA
+"437"	"Pnpla6"	"ENSMUSG00000004565"	"Pnpla6"	"patatin-like phospholipase domain containing 6"	"8"	"protein_coding"	NA	NA
+"438"	"Stat3"	"ENSMUSG00000004040"	"Stat3"	"signal transducer and activator of transcription 3"	"11"	"protein_coding"	NA	NA
+"439"	"Cd244a"	"ENSMUSG00000004709"	"Cd244a"	"CD244 molecule A"	"1"	"protein_coding"	NA	NA
+"440"	"Map3k11"	"ENSMUSG00000004054"	"Map3k11"	"mitogen-activated protein kinase kinase kinase 11"	"19"	"protein_coding"	NA	NA
+"441"	"Akt2"	"ENSMUSG00000004056"	"Akt2"	"thymoma viral proto-oncogene 2"	"7"	"protein_coding"	NA	NA
+"442"	"Dnaja3"	"ENSMUSG00000004069"	"Dnaja3"	"DnaJ heat shock protein family (Hsp40) member A3"	"16"	"protein_coding"	NA	NA
+"443"	"Hmox2"	"ENSMUSG00000004070"	"Hmox2"	"heme oxygenase 2"	"16"	"protein_coding"	NA	NA
+"444"	"Cdip1"	"ENSMUSG00000004071"	"Cdip1"	"cell death inducing Trp53 target 1"	"16"	"protein_coding"	NA	NA
+"445"	"Chn2"	"ENSMUSG00000004633"	"Chn2"	"chimerin 2"	"6"	"protein_coding"	NA	NA
+"446"	"Wwox"	"ENSMUSG00000004637"	"Wwox"	"WW domain-containing oxidoreductase"	"8"	"protein_coding"	NA	NA
+"447"	"Dnmt1"	"ENSMUSG00000004099"	"Dnmt1"	"DNA methyltransferase (cytosine-5) 1"	"9"	"protein_coding"	NA	NA
+"448"	"Ppan"	"ENSMUSG00000004100"	"Ppan"	"peter pan homolog"	"9"	"protein_coding"	NA	NA
+"449"	"Trmt10a"	"ENSMUSG00000004127"	"Trmt10a"	"tRNA methyltransferase 10A"	"3"	"protein_coding"	NA	NA
+"450"	"Psap"	"ENSMUSG00000004207"	"Psap"	"prosaposin"	"10"	"protein_coding"	NA	NA
+"451"	"Myo9b"	"ENSMUSG00000004677"	"Myo9b"	"myosin IXb"	"8"	"protein_coding"	NA	NA
+"452"	"Srpk1"	"ENSMUSG00000004865"	"Srpk1"	"serine/arginine-rich protein specific kinase 1"	"17"	"protein_coding"	NA	NA
+"453"	"Lbr"	"ENSMUSG00000004880"	"Lbr"	"lamin B receptor"	"1"	"protein_coding"	NA	NA
+"454"	"Ptpn6"	"ENSMUSG00000004266"	"Ptpn6"	"protein tyrosine phosphatase, non-receptor type 6"	"6"	"protein_coding"	NA	NA
+"455"	"Rab23"	"ENSMUSG00000004768"	"Rab23"	"RAB23, member RAS oncogene family"	"1"	"protein_coding"	NA	NA
+"456"	"Lpcat3"	"ENSMUSG00000004270"	"Lpcat3"	"lysophosphatidylcholine acyltransferase 3"	"6"	"protein_coding"	NA	NA
+"457"	"Atp6v1f"	"ENSMUSG00000004285"	"Atp6v1f"	"ATPase, H+ transporting, lysosomal V1 subunit F"	"6"	"protein_coding"	NA	NA
+"458"	"Clcn5"	"ENSMUSG00000004317"	"Clcn5"	"chloride channel, voltage-sensitive 5"	"X"	"protein_coding"	NA	NA
+"459"	"Clcn3"	"ENSMUSG00000004319"	"Clcn3"	"chloride channel, voltage-sensitive 3"	"8"	"protein_coding"	NA	NA
+"460"	"Hif3a"	"ENSMUSG00000004328"	"Hif3a"	"hypoxia inducible factor 3, alpha subunit"	"7"	"protein_coding"	NA	NA
+"461"	"Utp20"	"ENSMUSG00000004356"	"Utp20"	"UTP20 small subunit processome component"	"10"	"protein_coding"	NA	NA
+"462"	"Chmp2b"	"ENSMUSG00000004843"	"Chmp2b"	"charged multivesicular body protein 2B"	"16"	"protein_coding"	NA	NA
+"463"	"Large1"	"ENSMUSG00000004383"	"Large1"	"LARGE xylosyl- and glucuronyltransferase 1"	"8"	"protein_coding"	NA	NA
+"464"	"Ddx56"	"ENSMUSG00000004393"	"Ddx56"	"DEAD box helicase 56"	"11"	"protein_coding"	NA	NA
+"465"	"Mcoln1"	"ENSMUSG00000004567"	"Mcoln1"	"mucolipin 1"	"8"	"protein_coding"	NA	NA
+"466"	"Atp5f1"	NA	"Atp5f1"	NA	NA	NA	NA	NA
+"467"	"Ralb"	"ENSMUSG00000004451"	"Ralb"	"v-ral simian leukemia viral oncogene B"	"1"	"protein_coding"	NA	NA
+"468"	"Prcc"	"ENSMUSG00000004895"	"Prcc"	"papillary renal cell carcinoma (translocation-associated)"	"3"	"protein_coding"	NA	NA
+"469"	"Dnajb11"	"ENSMUSG00000004460"	"Dnajb11"	"DnaJ heat shock protein family (Hsp40) member B11"	"16"	"protein_coding"	NA	NA
+"470"	"Hdgf"	"ENSMUSG00000004897"	"Hdgf"	"heparin binding growth factor"	"3"	"protein_coding"	NA	NA
+"471"	"Gab2"	"ENSMUSG00000004508"	"Gab2"	"growth factor receptor bound protein 2-associated protein 2"	"7"	"protein_coding"	NA	NA
+"472"	"Coro1c"	"ENSMUSG00000004530"	"Coro1c"	"coronin, actin binding protein 1C"	"5"	"protein_coding"	NA	NA
+"473"	"Tax1bp1"	"ENSMUSG00000004535"	"Tax1bp1"	"Tax1 (human T cell leukemia virus type I) binding protein 1"	"6"	"protein_coding"	NA	NA
+"474"	"Ctse"	"ENSMUSG00000004552"	"Ctse"	"cathepsin E"	"1"	"protein_coding"	NA	NA
+"475"	"Mettl17"	"ENSMUSG00000004561"	"Mettl17"	"methyltransferase like 17"	"14"	"protein_coding"	NA	NA
+"476"	"ENSMUSG00000003178"	"ENSMUSG00000003178"	NA	NA	NA	NA	NA	NA
+"477"	"Gm38393"	NA	"Gm38393"	NA	NA	NA	NA	NA
+"478"	"Ap1s1"	"ENSMUSG00000004849"	"Ap1s1"	"adaptor protein complex AP-1, sigma 1"	"5"	"protein_coding"	NA	NA
+"479"	"Stxbp2"	"ENSMUSG00000004626"	"Stxbp2"	"syntaxin binding protein 2"	"8"	"protein_coding"	NA	NA
+"480"	"Pkn2"	"ENSMUSG00000004591"	"Pkn2"	"protein kinase N2"	"3"	"protein_coding"	NA	NA
+"481"	"Cd33"	"ENSMUSG00000004609"	"Cd33"	"CD33 antigen"	"7"	"protein_coding"	NA	NA
+"482"	"Etfb"	"ENSMUSG00000004610"	"Etfb"	"electron transferring flavoprotein, beta polypeptide"	"7"	"protein_coding"	NA	NA
+"483"	"Slbp"	"ENSMUSG00000004642"	"Slbp"	"stem-loop binding protein"	"5"	"protein_coding"	NA	NA
+"484"	"Sgce"	"ENSMUSG00000004631"	"Sgce"	"sarcoglycan, epsilon"	"6"	"protein_coding"	NA	NA
+"485"	"Dlst"	"ENSMUSG00000004789"	"Dlst"	"dihydrolipoamide S-succinyltransferase (E2 component of 2-oxo-glutarate complex)"	"12"	"protein_coding"	NA	NA
+"486"	"Apba3"	"ENSMUSG00000004931"	"Apba3"	"amyloid beta (A4) precursor protein-binding, family A, member 3"	"10"	"protein_coding"	NA	NA
+"487"	"Plod3"	"ENSMUSG00000004846"	"Plod3"	"procollagen-lysine, 2-oxoglutarate 5-dioxygenase 3"	"5"	"protein_coding"	NA	NA
+"488"	"Arid3b"	"ENSMUSG00000004661"	"Arid3b"	"AT rich interactive domain 3B (BRIGHT-like)"	"9"	"protein_coding"	NA	NA
+"489"	"Cnn2"	"ENSMUSG00000004665"	"Cnn2"	"calponin 2"	"10"	"protein_coding"	NA	NA
+"490"	"Polr2e"	"ENSMUSG00000004667"	"Polr2e"	"polymerase (RNA) II (DNA directed) polypeptide E"	"10"	"protein_coding"	NA	NA
+"491"	"Rab11a"	"ENSMUSG00000004771"	"Rab11a"	"RAB11A, member RAS oncogene family"	"9"	"protein_coding"	NA	NA
+"492"	"Eif2b2"	"ENSMUSG00000004788"	"Eif2b2"	"eukaryotic translation initiation factor 2B, subunit 2 beta"	"12"	"protein_coding"	NA	NA
+"493"	"Mtfp1"	"ENSMUSG00000004748"	"Mtfp1"	"mitochondrial fission process 1"	"11"	"protein_coding"	NA	NA
+"494"	"Ulk2"	"ENSMUSG00000004798"	"Ulk2"	"unc-51 like kinase 2"	"11"	"protein_coding"	NA	NA
+"495"	"Grap"	"ENSMUSG00000004837"	"Grap"	"GRB2-related adaptor protein"	"11"	"protein_coding"	NA	NA
+"496"	"Thop1"	"ENSMUSG00000004929"	"Thop1"	"thimet oligopeptidase 1"	"10"	"protein_coding"	NA	NA
+"497"	"Rrnad1"	"ENSMUSG00000004896"	"Rrnad1"	"ribosomal RNA adenine dimethylase domain containing 1"	"3"	"protein_coding"	NA	NA
+"498"	"Narfl"	NA	"Narfl"	NA	NA	NA	NA	NA
+"499"	"Pias4"	"ENSMUSG00000004934"	"Pias4"	"protein inhibitor of activated STAT 4"	"10"	"protein_coding"	NA	NA
+"500"	"Sept7"	NA	"Sept7"	NA	NA	NA	NA	NA
