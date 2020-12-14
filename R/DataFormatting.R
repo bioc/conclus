@@ -216,7 +216,7 @@
 #' They are formatted to be suitable inputs for conclus.
 #' 
 #' @usage
-#' retrieveFromGEO <- function(matrixURL, countMatrixPath, species, 
+#' retrieveFromGEO(matrixURL, countMatrixPath, species, 
 #' seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA, 
 #' convertToSymbols=TRUE, annoType="ENSEMBL")
 #' 
