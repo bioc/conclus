@@ -3,9 +3,10 @@
 outputDirectory <- "YourOutputDirectory"
 dir.create(outputDirectory)
 experimentName <- "Bergiers"
-columnsMetaData <- read.delim(
-    system.file("extdata/test_colData_filtered.tsv", 
-            package="conclus"))
+coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+            package="conclus")
+columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
+                                header=TRUE, dec=".", sep='\t')
 
 ## Parameters for downloading from GEO
 species <- "mouse"
@@ -16,9 +17,11 @@ wrongSeriesMatrix <- "GSE132042_series_matrix.txt.gz"
 
 ## Creation of the count Matrix
 
-countMatrix <- as.matrix(read.delim(
-    system.file("extdata/test_countMatrix.tsv", 
-            package="conclus")))
+countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+                                "test_countMatrix.tsv")
+
+countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
+                                sep='\t')
 
 smallMatrix <- countMatrix[,seq_len(50)]
 wrongCountMatrix <- matrix(rep("toto", 1000), ncol = 100)
