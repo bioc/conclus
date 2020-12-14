@@ -4,13 +4,12 @@
 \alias{loadColdata}
 \title{loadColdata}
 \usage{
-loadColdata<- function(file, columnCells, header, sep, dec)
+loadColdata(file, columnCells, header, sep, dec)
 }
 \arguments{
 \item{file}{Path of the coldata to load.}
 
-\item{columnCells}{Column name or indice of the column containing 
-cell names/id.}
+\item{columnCells}{Column name containing cell names/id.}
 
 \item{header}{Set TRUE if the first row of the table corresponds to the
 column names, and FALSE if it doesn't.}
@@ -25,18 +24,17 @@ Usually '.' or ',' .}
 The coldata with cellName column
 }
 \description{
-This function import the coldata. All parameters are mandatory and no
-default values, so the user has to know how is the coldata before the 
-import. This function also replaces the name of the column containing cell
-names and informed with 'columnCells' parameter by "cellName" for the good 
-walk of CONCLUS.
+This function allows to import the coldata. All parameters are mandatory 
+and no default values, so it is necessary to know how is the coldata before
+importing. This function also replaces via 'columnCells' parameter the 
+name of the column containing cell names by 'cellName' for the 
+good walk of CONCLUS.
 }
 \examples{
-coldataPath <- file.path(system.file("extdata", package = "conclus"),
-                        "test_colData_filtered.tsv")
+coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+                            package = "conclus")
                         
-loadColdata(file=coldataPath, columnCells="cellName", header=TRUE, 
-            dec=".", sep="\t")
-
+loadColdata(file=coldataPath, columnCells="cell_ID", header=TRUE, 
+            sep='\t', dec=".")
 
 }

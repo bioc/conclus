@@ -7,7 +7,7 @@
 loadRowdata(file, columnGenes, header, sep, dec)
 }
 \arguments{
-\item{file}{Path of the coldata to load.}
+\item{file}{Path of the rowdata. to load.}
 
 \item{columnGenes}{Column name or indice of the column containing 
 genes SYMBOL.}
@@ -25,18 +25,17 @@ Usually '.' or ',' .}
 The rowdata with nameInCountMatrix column
 }
 \description{
-This function import the coldata. All parameters are mandatory and no
-default values, so the user has to know how is the coldata before the 
-import. This function also replaces the name of the column containing cell
-names and informed with 'columnGenes' parameter by "cellName" for the good 
-walk of CONCLUS.
+This function allows to import the rowdata. All parameters are mandatory 
+and no default values, so it is necessary to know how is the rowdata before 
+importing. This function also replaces via 'columnGenes' parameter the 
+name of the column containing gene names by 'nameInCountMatrix' for the 
+good walk of CONCLUS.
 }
 \examples{
-rowdataPath <- file.path(system.file("extdata", package = "conclus"),
-                        "test_colData_filtered.tsv")
+rowdataPath <- system.file("extdata/test_rowData_filtered.tsv",
+                            package="conclus")
                         
-loadColdata(file=coldataPath, columnGenes="nameInCountMatrix", header=TRUE, 
-            dec=".", sep="\t")
-
+loadRowdata(file=rowdataPath, columnGenes="gene_ID", header=TRUE, 
+            sep='\t', dec=".")
 
 }

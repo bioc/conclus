@@ -4,9 +4,8 @@
 \alias{retrieveFromGEO}
 \title{retrieveFromGEO}
 \usage{
-retrieveFromGEO <- function(matrixURL, countMatrixPath, species, 
-seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA, 
-convertToSymbols=TRUE, annoType="ENSEMBL")
+retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrixName,
+       species, convertToSymbols=TRUE, annoType="ENSEMBL")
 }
 \arguments{
 \item{matrixURL}{URL of the count matrix. The matrix must be un-normalized.}
@@ -14,18 +13,10 @@ convertToSymbols=TRUE, annoType="ENSEMBL")
 \item{countMatrixPath}{Path to the file to which the downloaded count 
 matrix will be saved.}
 
-\item{species}{Values should be 'mouse' or 'human'.}
-
 \item{seriesMatrixName}{Name of the columns meta-data file hosted on GEO.
-This name can usually be found in the 'Series Matrix File(s)' section. 
-Should not be used if colMetaDataURL is defined. Default=NA.}
+This name can usually be found in the 'Series Matrix File(s)' section.}
 
-\item{metaDataPath}{If colMetaDataURL is used, defines the path to the file 
-to which the downloaded meta-data will be saved.}
-
-\item{colMetaDataURL}{URL of the columns meta-data file hosted on GEO.
-This file can be found in 'supplementary file'.
-Should not be used if seriesMatrixName is defined. Default=NA.}
+\item{species}{Values should be 'mouse' or 'human'.}
 
 \item{convertToSymbols}{Boolean indicating if the genes IDs 
 contained in the row names of the matrix should be converted to official 
