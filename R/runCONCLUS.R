@@ -682,14 +682,21 @@
 #' @rdname runCONCLUS
 #'
 #' @examples
-#'
 #' experimentName <- "Bergiers"
-#' countMatrix <- as.matrix(read.delim(system.file(
-#' "extdata/test_countMatrix.tsv", package="conclus")))
 #' outputDirectory <- "YourOutputDirectory"
-#' columnsMetaData <- read.delim(
-#' system.file("extdata/test_colData_filtered.tsv", package="conclus"))
 #' species <- "mouse"
+#' 
+#' ## Load the count matrix
+#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+#'                             package="conclus")
+#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
+#'                                 sep='\t')
+#' 
+#' ## Load the coldata
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#'                             package="conclus")
+#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
+#'                                 header=TRUE, dec=".", sep='\t')
 #'
 #' runCONCLUS(outputDirectory, experimentName, countMatrix, species,
 #'         columnsMetaData=columnsMetaData, tSNENb=1)
