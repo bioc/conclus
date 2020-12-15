@@ -1,26 +1,26 @@
+coldataPath <- file.path(system.file("extdata", package = "conclus"),
+        "test_colData_filtered.tsv")
+load(file = system.file("extdata/expected_colData.Rdat", 
+                package="conclus"))
+
+wrongColdataNA <- expectedColData
+wrongColdataNA$cellName[1] <- NA
+colnames(wrongColdataNA)[1] <- "cell_ID"
+
 #########################  Test of loadColdata  ################################
 
 test_that("loadColdata works properly", {
     
-    
-    coldataPath <- file.path(system.file("extdata", package = "conclus"),
-                                    "test_colData_filtered.tsv")
-    load(file = system.file("extdata/expected_colData.Rdat", 
-                package="conclus"))
     expect_equal(loadColdata(file=coldataPath, columnCell="cell_ID",
                             header=TRUE, dec=".", sep='\t'),
                 expectedColData)
     
     ## Test with a NA value in the cell ID column
-    wrongColdataPath <- file.path(system.file("extdata", package = "conclus"),
-                                    "test_wrong_colData_NA.tsv")
-
     expM <- paste0("There are some NA values in the column you choose. ",
-                    "Please fill theses values or choose another column.")
-    expect_error(loadColdata(file=wrongColdataPath, columnCell="cell_ID",
-                                header=TRUE, dec=".", sep='\t'), expM)
+            "Please fill theses values or choose another column.")
+    expect_error(loadColdata(file=wrongColdataNA, columnCell="cell_ID",
+                    header=TRUE, dec=".", sep='\t'), expM)
 
-    
     ## Test with duplicates in IDs
     wrongColdataPath <- file.path(system.file("extdata", package = "conclus"),
                                     "test_wrong_colData_duplicate_id.tsv")
