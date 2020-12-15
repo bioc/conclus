@@ -1,6 +1,6 @@
 .checkLoadMatrix <- function(file, column, header, sep, dec, type){
     
-    if(!file.exists(file))
+    if(!is.data.frame(file) && file.exists(file))
         stop("'file' parameter should be a path of existing file.")
     
     if (!is.logical(header))
@@ -40,16 +40,16 @@
 #' good walk of CONCLUS.
 #' 
 #' @usage 
-#' loadColdata(file, columnCells, header, sep, dec)
+#' loadColdata(file, columnCells="cell_ID", header=TRUE, sep='\t', dec=".")
 #'             
 #' @param file Path of the coldata to load.
-#' @param columnCells Column name containing cell names/id.
+#' @param columnCells Column name containing cell names/id. Default="cell_ID".
 #' @param header Set TRUE if the first row of the table corresponds to the
-#' column names, and FALSE if it doesn't.
+#' column names, and FALSE if it doesn't. Default=TRUE.
 #' @param sep Character used in the table to separate the fields. 
-#' Usually it's ' ' ';' ',' or '\\t'.
+#' Usually it's ' ' ';' ',' or '\\t'. Default='\\t'.
 #' @param dec Character used in the table for decimal points.
-#' Usually '.' or ',' .
+#' Usually '.' or ',' . Default=".".
 #'
 #' @return The coldata with cellName column
 #' @export
@@ -63,16 +63,16 @@
 #'
 #' @importFrom utils read.delim
 #'
-loadColdata<- function(file, columnCells, header, sep, dec){
+loadColdata<- function(file, columnCells="cell_ID", header=TRUE, sep='\t', 
+        dec="."){
 
     .checkLoadMatrix(file, columnCells, header, sep, dec, type="coldata")
 
-    df <- read.delim(file=file,
-                        header=header,
-                        sep=sep,
-                        dec=dec,
-                        na.strings=c("", "NA",  "<NA>"),
-                        stringsAsFactors=FALSE)
+    if(!is.data.frame(file))
+        df <- read.delim(file=file, header=header, sep=sep, dec=dec,
+                na.strings=c("", "NA",  "<NA>"), stringsAsFactors=FALSE)
+    else
+        df <- file
     
     ## The submitted coldata should have 'cellName' column to allow the merge
     ## of this one with the coldata created by conclus in 
