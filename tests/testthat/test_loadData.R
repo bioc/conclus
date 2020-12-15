@@ -1,7 +1,6 @@
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
         package="conclus")
-columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-        header=TRUE, dec=".", sep='\t')
+columnsMetaData <- read.delim(file=coldataPath, header=TRUE)
 
 wrongColdataNA <- columnsMetaData
 wrongColdataNA$cellName[1] <- NA
