@@ -66,8 +66,8 @@
 #' loadRowdata(file=rowdataPath, type="rowdata", columnID="gene_ID")
 #' 
 #' ## CountMatrix
-#' countmatrixPath <- system.file("extdata/Bergiers_counts_matrix_filtered.tsv",
-#'                                 package = "conclus")
+#' countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+#'                                 "test_countMatrix.tsv")
 #' loadCountMatrix(file=countmatrixPath, type="countMatrix")
 #' 
 #' @importFrom utils read.delim
