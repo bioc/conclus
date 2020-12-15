@@ -37,7 +37,7 @@
 #' formats each type of data to follow the requirements of CONCLUS.
 #' 
 #' @usage 
-#' loadDataOrMatrix(file, type, columnI=NULL, header=TRUE, sep='\t', dec=".")
+#' loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".")
 #'             
 #' @param file Path to the rowData, colData or Matrix.
 #' @param type Values should be "coldata", "rowdata", or "countMatrix".
