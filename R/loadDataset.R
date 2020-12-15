@@ -1,6 +1,6 @@
 .checkLoadMatrix <- function(file, column, header, sep, dec, type){
     
-    if(!is.data.frame(file) && file.exists(file))
+    if(!is.data.frame(file) && !file.exists(file))
         stop("'file' parameter should be a path of existing file.")
     
     if (!is.logical(header))
