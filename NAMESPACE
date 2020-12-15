@@ -2,9 +2,7 @@
 
 export(DbscanCluster)
 export(TsneCluster)
-export(loadColdata)
-export(loadCountMatrix)
-export(loadRowdata)
+export(loadDataOrMatrix)
 export(retrieveFromGEO)
 export(runCONCLUS)
 export(singlecellRNAseq)
