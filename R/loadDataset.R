@@ -37,12 +37,12 @@
 #' formats each type of data to follow the requirements of CONCLUS.
 #' 
 #' @usage 
-#' loadDataOrMatrix(file, type, columnID, header=TRUE, sep='\t', dec=".")
+#' loadDataOrMatrix(file, type, columnI=NULL, header=TRUE, sep='\t', dec=".")
 #'             
 #' @param file Path to the rowData, colData or Matrix.
 #' @param type Values should be "coldata", "rowdata", or "countMatrix".
 #' @param columnID For raw amd col data, column name containing cells/genes 
-#' names/id.
+#' names/id. Default=NULL.
 #' @param header Set TRUE if the first row of the table corresponds to the
 #' column names, and FALSE if it doesn't. Default=TRUE.
 #' @param sep Character used in the table to separate the fields. 
@@ -72,7 +72,7 @@
 #' 
 #' @importFrom utils read.delim
 #'
-loadDataOrMatrix <- function(file, type, columnID, header=TRUE, sep='\t', 
+loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t', 
         dec="."){
     
     .checkLoadedData(file, columnID, header, sep, dec, type)
