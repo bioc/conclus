@@ -61,7 +61,9 @@ matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=",
 "GSE96982&format=file&file=GSE96982\%5FcountMatrix\%2Etxt\%2Egz") 
 seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
 
-result <- retrieveFromGEO(matrixURL, countMatrixPath, seriesMatrix, species)
+result <- retrieveFromGEO(matrixURL, countMatrixPath, species, 
+seriesMatrixName=seriesMatrix)
+
 countMatrix <- result[[1]]
 columnsMetaData <- result[[2]]
 
