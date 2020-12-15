@@ -4,7 +4,7 @@
 \alias{loadDataOrMatrix}
 \title{loadDataOrMatrix}
 \usage{
-loadDataOrMatrix(file, type, columnI=NULL, header=TRUE, sep='\t', dec=".")
+loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".")
 }
 \arguments{
 \item{file}{Path to the rowData, colData or Matrix.}
