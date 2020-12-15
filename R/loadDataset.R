@@ -42,7 +42,7 @@
 #' @usage 
 #' loadColdata(file, columnCells="cell_ID", header=TRUE, sep='\t', dec=".")
 #'             
-#' @param file Path of the coldata to load.
+#' @param file Path or a data.frame of the coldata to load.
 #' @param columnCells Column name containing cell names/id. Default="cell_ID".
 #' @param header Set TRUE if the first row of the table corresponds to the
 #' column names, and FALSE if it doesn't. Default=TRUE.
