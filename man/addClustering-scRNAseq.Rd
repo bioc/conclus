@@ -31,14 +31,13 @@ performance of different tools.
 ## Load the count matrix
 countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
                             package="conclus")
-countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-                                sep='\t')
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 ## Load the coldata
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
                             package="conclus")
-columnsMetaData <- loadColdata(file=coldataPath, columnCells="cell_ID",
-                                header=TRUE, dec=".", sep='\t')
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+										columnID="cell_ID")
 
 ## Load the clusters table with the new cluster to add
 clustAddTab <- read.delim(
