@@ -4,7 +4,7 @@
 \alias{loadDataOrMatrix}
 \title{loadDataOrMatrix}
 \usage{
-loadDataOrMatrix(file, type, columnID, header=TRUE, sep='\t', dec=".")
+loadDataOrMatrix(file, type, columnI=NULL, header=TRUE, sep='\t', dec=".")
 }
 \arguments{
 \item{file}{Path to the rowData, colData or Matrix.}
@@ -12,7 +12,7 @@ loadDataOrMatrix(file, type, columnID, header=TRUE, sep='\t', dec=".")
 \item{type}{Values should be "coldata", "rowdata", or "countMatrix".}
 
 \item{columnID}{For raw amd col data, column name containing cells/genes 
-names/id.}
+names/id. Default=NULL.}
 
 \item{header}{Set TRUE if the first row of the table corresponds to the
 column names, and FALSE if it doesn't. Default=TRUE.}
@@ -43,8 +43,8 @@ rowdataPath <- system.file("extdata/test_rowData_filtered.tsv",
 loadRowdata(file=rowdataPath, type="rowdata", columnID="gene_ID")
 
 ## CountMatrix
-countmatrixPath <- system.file("extdata/Bergiers_counts_matrix_filtered.tsv",
-                                package = "conclus")
+countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+                                "test_countMatrix.tsv")
 loadCountMatrix(file=countmatrixPath, type="countMatrix")
 
 }
