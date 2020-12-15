@@ -78,9 +78,14 @@ loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t',
     .checkLoadedData(file, columnID, header, sep, dec, type)
     
     if(!is.data.frame(file))
-        df <- read.delim(file=file, header=header, sep=sep, dec=dec,
-                na.strings=c("", "NA",  "<NA>"), stringsAsFactors=FALSE,
-                if(isTRUE(all.equal(type, "countMatrix"))) row.names=1)
+        if(isTRUE(all.equal(type, "countMatrix")))
+            df <- read.delim(file=file, header=header, sep=sep, dec=dec,
+                    na.strings=c("", "NA",  "<NA>"), stringsAsFactors=FALSE,
+                    row.names=1)
+        else
+            df <- read.delim(file=file, header=header, sep=sep, dec=dec,
+                    na.strings=c("", "NA",  "<NA>"), stringsAsFactors=FALSE)
+            
     else
         df <- file
     
