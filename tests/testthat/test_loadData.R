@@ -12,6 +12,11 @@ wrongColdataDup$cellName[1] <- "c2"
 wrongColDataName <- columnsMetaData
 colnames(wrongColDataName)[1] <- "cell_ID"
 
+rowdataPath <- file.path(system.file("extdata", package = "conclus"),
+        "test_rowData_filtered.tsv")
+
+
+
 #########################  Test of loadColdata  ################################
 
 test_that("loadColdata works properly", {
@@ -62,9 +67,6 @@ test_that("loadColdata works properly", {
 #########################  Test of loadRowdata  ################################
 
 test_that("loadRowdata works properly", {
-
-    rowdataPath <- file.path(system.file("extdata", package = "conclus"),
-                                    "test_rowData_filtered.tsv")
     
     load(file = system.file("extdata/expected_rowData.Rdat", 
                 package="conclus"))
