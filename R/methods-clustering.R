@@ -311,8 +311,8 @@
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
 #'                             package="conclus")
-#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-#'                                 header=TRUE, dec=".", sep='\t')
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
+#' 										columnID="cell_ID")
 #' 
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
@@ -601,8 +601,8 @@ setMethod(
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
 #'                             package="conclus")
-#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-#'                                 header=TRUE, dec=".", sep='\t')
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
+#' 										columnID="cell_ID")
 #' 
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
@@ -817,8 +817,8 @@ setMethod(
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
 #'                             package="conclus")
-#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-#'                                 header=TRUE, dec=".", sep='\t')
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+#' 										columnID="cell_ID")
 #' 
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
@@ -932,8 +932,8 @@ setMethod(
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
 #'                             package="conclus")
-#' columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-#'                                 header=TRUE, dec=".", sep='\t')
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+#' 										columnID="cell_ID")
 #' 
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
@@ -1063,8 +1063,8 @@ setMethod(
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
 #'                             package="conclus")
-#' columnsMetaData <- loadColdata(file=coldataPath, columnCells="cell_ID",
-#'                                 header=TRUE, dec=".", sep='\t')
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+#' 										columnID="cell_ID")
 #' 
 #' ## Load the clusters table with the new cluster to add
 #' clustAddTab <- read.delim(

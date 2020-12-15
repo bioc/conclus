@@ -5,6 +5,7 @@ author: "Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, and Christophe
 Lancrin"
 output:
     BiocStyle::pdf_document: default
+    extra_dependencies: ["flafter"]
 vignette: >
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteIndexEntry{conclus}
@@ -45,7 +46,9 @@ her Ph.D at the Max Planck Institute of Immunobiology and Epigenetics.
 
 Due to the stochastic aspect of tSNE, everything was generated with a random 
 seed of 42 (default parameter of `generateTSNECoordinates`) to ensure 
-reproducibility of the results.
+reproducibility of the results. Because of the evolution of biomaRt, you might 
+get slightly different figures. However, the marker genes for each cluster 
+should be the same.
 
 
 # Standard workflow
@@ -140,6 +143,14 @@ The protocol was based on 3' end RNA sequencing where each mRNA molecule is
 labeled with a unique molecular identifier (UMI) during reverse transcription 
 in every single cell.
 
+Shvartsman *et al* deleted highly abundant haemoglobins having names 
+starting with ‘Hba’ or ‘Hbb’ because they seemed to be the primary source of 
+contamination. Additionally, they excluded poorly annotated genes that did not 
+have gene symbols to improve the clusters annotation process. Finally, the 
+human cell controls were removed.
+
+### Retrieving data from GEO
+
 The code below format the count matrix and the columns meta-data. The source 
 data are downloaded from the GEO page [GSE161933](https://www.ncbi.nlm.nih.gov/
 geo/query/acc.cgi?acc=GSE161933). The URL of the count matrix and the cells 
@@ -151,13 +162,6 @@ by clicking the 'Series Matrix File(s)' link just above the count matrix. The
 function `retrieveFromGEO` used with the parameter seriesMatrixName will 
 download all series matrices present in the GEO record however only the one of 
 interest will be kept.
-
-Shvartsman *et al* deleted highly abundant haemoglobins having names 
-starting with ‘Hba’ or ‘Hbb’ because they seemed to be the primary source of 
-contamination. Additionally, they excluded poorly annotated genes that did not 
-have gene symbols to improve the clusters annotation process. Finally, the 
-human cell controls were removed.
-
 
 ```{r format_data}
 
@@ -177,14 +181,19 @@ metaDataPath=metaDataPath, colMetaDataURL=metaDataURL)
 countMatrix <- result[[1]]
 columnsMetaData <- result[[2]]
 
+## Correct the columns names to fit conclus input requirement
+## The columns should be: cellName, state, and cellBarcode
+columnsMetaData <- columnsMetaData[,c(1,3,2)]
+colnames(columnsMetaData) <- c("cellName", "state", "cellBarcode")
+
 ## Removing embryonic hemoglobins with names starting with "Hba" or "Hbb"
 idxHba <- grep("Hba", rownames(countMatrix))
 idxHbb <- grep("Hbb", rownames(countMatrix))
 countMatrix <- countMatrix[-c(idxHba, idxHbb),]
 
 ## Removing control human cells
-idxHumanPos <- which(columnsMetaData$State == "Pos Ctrl")
-idxHumanNeg <- which(columnsMetaData$State == "Neg Ctrl")
+idxHumanPos <- which(columnsMetaData$state == "Pos Ctrl")
+idxHumanNeg <- which(columnsMetaData$state == "Neg Ctrl")
 columnsMetaData <- columnsMetaData[-c(idxHumanPos, idxHumanNeg),]
 countMatrix <- countMatrix[,-c(idxHumanPos, idxHumanNeg)]
 
@@ -192,6 +201,24 @@ countMatrix <- countMatrix[,-c(idxHumanPos, idxHumanNeg)]
 idxENS <- grep("ENSMUSG", rownames(countMatrix))
 countMatrix <- countMatrix[-idxENS,]
 ```
+
+### Using local data
+
+If you executed the code above, a matrix path is stored in `countMatrixPath` 
+and a file path to the meta-data is stored in `metaDataPath`. Just indicate 
+the paths to your files in this two variables:
+
+```{r local_data, eval=FALSE}
+
+## countMatrixPath <- ""
+## metaDataPath <- ""
+
+countMatrix <- loadDataOrMatrix(countMatrixPath, type="countMatrix")
+columnsMetaData <- loadDataOrMatrix(file=metaDataPath, type="coldata", 
+                                    columnID="Cell_ID")
+
+## Filtering steps to add here
+``` 
 
 ## Test clustering
 
