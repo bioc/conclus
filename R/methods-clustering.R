@@ -305,8 +305,7 @@
 #' ## Load the count matrix
 #' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
 #'                             package="conclus")
-#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-#'                                 sep='\t')
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #' 
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
@@ -595,8 +594,7 @@ setMethod(
 #' ## Load the count matrix
 #' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
 #'                             package="conclus")
-#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-#'                                 sep='\t')
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #' 
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
@@ -811,8 +809,7 @@ setMethod(
 #' ## Load the count matrix
 #' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
 #'                             package="conclus")
-#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-#'                                 sep='\t')
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #' 
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
@@ -926,8 +923,7 @@ setMethod(
 #' ## Load the count matrix
 #' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
 #'                             package="conclus")
-#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-#'                                 sep='\t')
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #' 
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
@@ -1057,8 +1053,7 @@ setMethod(
 #' ## Load the count matrix
 #' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
 #'                             package="conclus")
-#' countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-#'                                 sep='\t')
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #' 
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
