@@ -1,4 +1,4 @@
-=#########################  Test of loadColdata  ################################
+#########################  Test of loadColdata  ################################
 
 test_that("loadColdata works properly", {
     
