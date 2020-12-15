@@ -24,7 +24,6 @@ clustWrongcells <- clustAddTab
 clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 
 ## Load expected results
-## !!! Move to a data folder
 load(file = system.file("extdata/scrLight.Rdat", package="conclus"))
 load(file = system.file("extdata/expected_normalizedMatrix.Rdat",
     package="conclus"))
@@ -110,11 +109,8 @@ pc=4
 perplexity=30
 coordinates=matrix(data=c(1,2), dimnames=list(NA,c("X", "Y")), ncol=2)
 
-tsne <- new("Tsne",
-    name=name,
-    pc=pc,
-    perplexity=perplexity,
-    coordinates=coordinates)
+tsne <- new("Tsne", name=name, pc=pc, perplexity=perplexity, 
+        coordinates=coordinates)
 
 test_that("getName works properly", {
     expect_equal(getName(tsne), name)
@@ -139,16 +135,9 @@ name <- "Clustering_1"
 minPoints <- 1.3
 epsilon <- 3
 clustering <- matrix(data=seq(4), dimnames=list(c("clust.1", "clust.2"),
-                                                c("c1", "c2")),
-                    ncol=2)
-
-
-dbscan <- new("Dbscan",
-                name=name,
-                minPoints=minPoints,
-                epsilon=epsilon,
-                clustering=clustering)
-
+                                                c("c1", "c2")), ncol=2)
+dbscan <- new("Dbscan", name=name, minPoints=minPoints, epsilon=epsilon,
+        clustering=clustering)
 
 test_that("getName works properly", {
     expect_equal(getName(dbscan), name)
