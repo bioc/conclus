@@ -57,12 +57,12 @@ NULL
 #' 
 #' ## Load the count matrix
 #' countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
-#'                                "test_countMatrix.tsv")
+#' "test_countMatrix.tsv")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#'                                
+#' 
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'            package="conclus")
+#' package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
 #'

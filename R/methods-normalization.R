@@ -278,10 +278,10 @@
                 sort = FALSE)
         
         return(rowdataMerged)
-        
-     }else
-         stop("No 'nameInCountMatrix' column in the rowdata or rowdataDF",
-                 " to perform the merge." )
+
+        }else
+            stop("No 'nameInCountMatrix' column in the rowdata or rowdataDF",
+                    " to perform the merge." )
 }
 
 
