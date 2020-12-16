@@ -217,7 +217,7 @@ countMatrix <- loadDataOrMatrix(countMatrixPath, type="countMatrix")
 columnsMetaData <- loadDataOrMatrix(file=metaDataPath, type="coldata", 
                                     columnID="Cell_ID")
 
-## Filtering steps to add here
+## Filtering steps to add here as performed above
 ``` 
 
 ## Test clustering
