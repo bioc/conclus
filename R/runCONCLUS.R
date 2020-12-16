@@ -251,7 +251,7 @@
             statePalette=statePalette, clusteringMethod=clusteringMethod,
             savePlot=savePlotClustSM, width=widthPlotClustSM, 
             height=heightPlotClustSM, returnPlot=FALSE, silentPlot=silentPlot)
-     
+
     message("## Plot clustered tSNE (step 13/13) ##")
     plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs,
             perplexities=perplexities, columnName=columnRankGenes, 

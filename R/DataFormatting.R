@@ -298,7 +298,7 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, species,
 
     ## Converting ensembl IDs to gene symbols
     if(convertToSymbols)
-       countMatrix <- .convertToSymbols(species, countMatrix, annoType)
+        countMatrix <- .convertToSymbols(species, countMatrix, annoType)
     
     idxDup <- duplicated(rownames(countMatrix))
     ldup <- length(which(idxDup))

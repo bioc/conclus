@@ -271,17 +271,17 @@
 #' @return Returns the rowData filled with the rowdataDF annotations.
 #' @noRd
 .mergeRowDataDf <- function(rowdataDF, rowdata){
-
-   if("nameInCountMatrix" %in% colnames(rowdata) && 
-    "nameInCountMatrix" %in% colnames(rowdataDF)){
-        rowdataMerged <- merge(rowdataDF, rowdata, all.x = TRUE, all.y = TRUE, 
-                            sort = FALSE)
+    
+    if("nameInCountMatrix" %in% colnames(rowdata) &&
+            "nameInCountMatrix" %in% colnames(rowdataDF)){
+        rowdataMerged <- merge(rowdataDF, rowdata, all.x = TRUE, all.y = TRUE,
+                sort = FALSE)
         
         return(rowdataMerged)
         
-   }else 
-        stop("No 'nameInCountMatrix' column in the rowdata or rowdataDF",
-                " to perform the merge." )
+     }else
+         stop("No 'nameInCountMatrix' column in the rowdata or rowdataDF",
+                 " to perform the merge." )
 }
 
 
@@ -868,9 +868,10 @@ setMethod(
             scran::computeSumFactors(sce, sizes=sizes, clusters=cl, positive=F))
         message("summary(sizeFactors(sceObject)):")
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
-
-       nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(
-            sceNorm)[SingleCellExperiment::sizeFactors(sceNorm) <= 0])
+        
+        nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(
+                        sceNorm)[
+                        SingleCellExperiment::sizeFactors(sceNorm) <= 0])
         
         if (nbrNegSFCells > 0){
             message(nbrNegSFCells, " cells with negative sizeFactors will be ",
