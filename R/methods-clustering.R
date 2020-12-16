@@ -248,7 +248,7 @@
 #'                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
 #'                 fileDist="distance_graph.pdf",
 #'                 fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE, 
-#'                  ...)
+#'                 ...)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized. See ?normaliseCountMatrix.
