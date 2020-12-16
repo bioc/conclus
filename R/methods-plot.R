@@ -458,7 +458,7 @@
 #' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
 #'                             package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' 										columnCell="cell_ID")
+#' 										columnID="cell_ID")
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
