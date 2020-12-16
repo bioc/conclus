@@ -5,23 +5,19 @@ dir.create(outputDirectory)
 experimentName <- "Bergiers"
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
             package="conclus")
-columnsMetaData <- loadColdata(file=coldataPath, columnCell="cell_ID",
-                                header=TRUE, dec=".", sep='\t')
-
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+        columnID="cell_type")
+                        
 ## Parameters for downloading from GEO
 species <- "mouse"
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
-matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE96982",
-        "&format=file&file=GSE96982%5FcountMatrix%2Etxt%2Egz")
-wrongSeriesMatrix <- "GSE132042_series_matrix.txt.gz"
 
 ## Creation of the count Matrix
 
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
                                 "test_countMatrix.tsv")
 
-countMatrix <- loadCountMatrix(file=countmatrixPath, header=TRUE, dec=".",
-                                sep='\t')
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 smallMatrix <- countMatrix[,seq_len(50)]
 wrongCountMatrix <- matrix(rep("toto", 1000), ncol = 100)
@@ -127,19 +123,6 @@ wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"),
         uniprot_gn_id=c("ID1", "ID2"))
 
 
-
-####################  Downloading from GEO  ####################
-
-
-test_that("retrieveFromGEO works properly", {
-            
-            expM <- paste0("The cell barcodes were not found in the matrix. ",
-                    "Are you sure that the count matrix and the series matrix ",
-                    "correspond?")
-            expect_error(retrieveFromGEO(matrixURL, countMatrixPath, 
-                            wrongSeriesMatrix, species, convertToSymbols=TRUE, 
-                            annoType="ENSEMBL"), expM)        
-        })
 
 
 ####################  Construction of the object  ####################
