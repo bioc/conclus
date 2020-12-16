@@ -37,7 +37,7 @@ countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
                             package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-										columnID="cell_ID")
+columnID="cell_ID")
 
 ## Load the clusters table with the new cluster to add
 clustAddTab <- read.delim(

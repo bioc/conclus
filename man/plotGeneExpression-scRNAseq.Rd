@@ -64,8 +64,8 @@ countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 ## Load the coldata
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
                             package="conclus")
-columnsMetaData <- loadColdata(file=coldataPath, type="coldata", 
-									columnID="cell_ID")
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+columnID="cell_ID")
 
 ## Create the initial object
 scr <- singlecellRNAseq(experimentName = "Bergiers",
