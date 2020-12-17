@@ -32,7 +32,7 @@ expectedCountMatrix <- as.matrix(read.delim(countmatrixPath, header=TRUE,
 test_that("loadDataOrMatrix works properly with colData", {
     
     expect_equal(loadDataOrMatrix(file=coldataPath, type="coldata", 
-                    columnID="cell_ID"), columnsMetaData)
+                    columnID="cellName"), columnsMetaData)
     
     ## Test with a NA value in the cell ID column
     expM <- paste0("There are some NA values in the column you choose. ",
