@@ -35,7 +35,7 @@ accross the previously defined clustering solutions.
 
 # Getting help
 
-Issues can be submitted directly on the Bioconductor forum using the keyword 
+Issues can be submitted directly to the Bioconductor forum using the keyword 
 'conclus' in the post title. To contact us directly write to 
 christophe.lancrin@embl.it or ilyessr@hotmail.fr. The principles of 
 this package were originally developed by Polina Pavlovich who is now doing 
@@ -109,7 +109,7 @@ consensus clustering.
 defined in the previous folder.
 
 
-Further details about how all results are generated can be found below.
+Further details about how all these results are generated can be found below.
 
 
 ## Data
@@ -137,8 +137,7 @@ VE-Cad minus. The E11.5 data are constituted of 1482 cells. After filtering
 and normalization, 1303 cells were retained.  
 
 This sc-RNA-seq experiment was performed using the SMARTer ICELL8 Single-Cell 
-System ([Click here for more info](https://www.takarabio.com/learning-centers/
-automation-systems/icell8-introduction/icell8-technology-overview)). 
+System ([Click here for more info](https://www.takarabio.com/learning-centers/automation-systems/icell8-introduction/icell8-technology-overview)). 
 The protocol was based on 3' end RNA sequencing where each mRNA molecule is 
 labeled with a unique molecular identifier (UMI) during reverse transcription 
 in every single cell.
@@ -152,16 +151,15 @@ human cell controls were removed.
 ### Retrieving data from GEO
 
 The code below format the count matrix and the columns meta-data. The source 
-data are downloaded from the GEO page [GSE161933](https://www.ncbi.nlm.nih.gov/
-geo/query/acc.cgi?acc=GSE161933). The URL of the count matrix and the cells 
-meta-data were retrieved by right-click and 'copy link adress' on the http 
-hyperlink of the supplementary file at the bottom of the page.
-If the columns metadata are not available in the supplementary file section, 
-the name of the series matrix, containing columns meta-data can be retrieved 
-by clicking the 'Series Matrix File(s)' link just above the count matrix. The 
-function `retrieveFromGEO` used with the parameter seriesMatrixName will 
-download all series matrices present in the GEO record however only the one of 
-interest will be kept.
+data are downloaded from the GEO page [GSE161933](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4923493). 
+The URL of the count matrix and the cells meta-data were retrieved by 
+right-click and 'copy link adress' on the http hyperlink of the supplementary 
+file at the bottom of the page. If the columns metadata are not available in 
+the supplementary file section, the name of the series matrix, containing 
+columns meta-data can be retrieved by clicking the 'Series Matrix File(s)' 
+link just above the count matrix. The function `retrieveFromGEO` used with the 
+parameter seriesMatrixName will download all series matrices present in the 
+GEO record however only the one of interest will be kept.
 
 ```{r format_data}
 
@@ -296,19 +294,19 @@ technical and biological noises (click [here](
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5549838/) for a complete review on
 normalization techniques).
 
-CONCLUS uses [Scran](https://bioconductor.org/packages/release/bioc/html/
-scran.html) and [Scater](http://www.bioconductor.org/packages/release/bioc/
-html/scater.html) packages for normalization. Beforehand, the 
-function will annotate genes creating *rowData* and add statistics about cells 
-into *columnsMetaData*. If you already have *columnsMetaData* and *rowData*, 
-you can give it to the function (see manual). It will keep your columns and add 
-new ones at the end. If you do not want to lose any cell after quality metrics 
-check, select *alreadyCellFiltered = TRUE*, by default it is *FALSE*. 
-Before *scran* and *scater* normalization, the function will call 
-*scran::quickCluster* (see manual for details). If you want to skip this step, 
-set *runQuickCluster = FALSE*, by default it is *TRUE*. We advice to first try 
-the analysis with this option and to set it to FALSE if no rare populations 
-are found. 
+CONCLUS uses 
+[Scran](https://bioconductor.org/packages/release/bioc/html/scran.html) and 
+[Scater](http://www.bioconductor.org/packages/release/bioc/html/scater.html) 
+packages for normalization. Beforehand, the function will annotate genes 
+creating *rowData* and add statistics about cells into *columnsMetaData*. If 
+you already have *columnsMetaData* and *rowData*, you can give it to the 
+function (see manual). It will keep your columns and add new ones at the end. 
+If you do not want to lose any cell after quality metrics check, select 
+*alreadyCellFiltered = TRUE*, by default it is *FALSE*. Before *scran* and 
+*scater* normalization, the function will call *scran::quickCluster* (see 
+manual for details). If you want to skip this step, set *runQuickCluster = 
+FALSE*, by default it is *TRUE*. We advice to first try the analysis with this 
+option and to set it to FALSE if no rare populations are found. 
 
 ```{r normalization_2, eval = FALSE}
 scr <- normaliseCountMatrix(scr, coldata=columnsMetaData)
