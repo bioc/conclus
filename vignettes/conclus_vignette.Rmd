@@ -5,7 +5,6 @@ author: "Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, and Christophe
 Lancrin"
 output:
     BiocStyle::pdf_document: default
-    extra_dependencies: ["float"]
 vignette: >
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteIndexEntry{conclus}
@@ -474,7 +473,6 @@ tSNEstate <- plotClusteredTSNE(scr, columnName="state",
 For visualizing the 5th (out of 14) tSNE cluster:
 
 ```{r plotClustered_visualization1, results="hide", fig.keep = 'none'}
-knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
 tSNEclusters[[5]]
 ```
 
@@ -487,7 +485,6 @@ could be considered as single clusters respectively.
 For visualizing the 5th (out of 14) tSNE cluster without colors:
 
 ```{r plotClustered_visualization2, results="hide", fig.keep = 'none'}
-knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
 tSNEnoColor[[5]]
 ```
 
@@ -498,7 +495,6 @@ coloring.](figures/5_tSNEnoColor.png)
 For visualizing the 5th (out of 14) tSNE cluster colored by state:
 
 ```{r plotClustered_visualization3, results="hide", fig.keep = 'none'}
-knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
 tSNEstate[[5]]
 ```
 
@@ -522,7 +518,7 @@ plotCellSimilarity(scr)
 ![cellSim Cell similarity matrix showing the conservation of clustering 
 across the 84 solutions.](figures/7_cellSimilarity.png)
 
-*CellsSimilarityMatrix* is symmetrical and its size proportional of to the 
+*CellsSimilarityMatrix* is symmetrical and its size proportional to the 
 "number of cells x number of cells". Each vertical or horizontal tiny strip is 
 a cell. Intersection shows the proportion of clustering iterations in which a 
 pair of cells was in one cluster (score between 0 and 1, between blue and 
