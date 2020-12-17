@@ -1145,7 +1145,7 @@ setMethod(
                             markersClusters,
                             expressionMatrix,
                             clusteringMethod))))
-    mat <- matrix(mat, ncol = length(levels(colDf$clusters)))
+    suppressWarnings(mat <- matrix(mat, ncol = length(levels(colDf$clusters))))
     return(mat)
 }
 
