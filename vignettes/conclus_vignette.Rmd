@@ -5,11 +5,12 @@ author: "Ilyess Rachedi, Polina Pavlovich, Nicolas Descostes, and Christophe
 Lancrin"
 output:
     BiocStyle::pdf_document: default
-    extra_dependencies: ["flafter"]
+    extra_dependencies: ["float"]
 vignette: >
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteIndexEntry{conclus}
 ---
+
 
 
 # Introduction
@@ -473,6 +474,7 @@ tSNEstate <- plotClusteredTSNE(scr, columnName="state",
 For visualizing the 5th (out of 14) tSNE cluster:
 
 ```{r plotClustered_visualization1, results="hide", fig.keep = 'none'}
+knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
 tSNEclusters[[5]]
 ```
 
@@ -485,6 +487,7 @@ could be considered as single clusters respectively.
 For visualizing the 5th (out of 14) tSNE cluster without colors:
 
 ```{r plotClustered_visualization2, results="hide", fig.keep = 'none'}
+knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
 tSNEnoColor[[5]]
 ```
 
@@ -495,6 +498,7 @@ coloring.](figures/5_tSNEnoColor.png)
 For visualizing the 5th (out of 14) tSNE cluster colored by state:
 
 ```{r plotClustered_visualization3, results="hide", fig.keep = 'none'}
+knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
 tSNEstate[[5]]
 ```
 
