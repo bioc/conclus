@@ -49,5 +49,5 @@ loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 }
 \author{
-Nicolas DESCOSTES
+Ilyess RACHEDI and Nicolas DESCOSTES
 }
