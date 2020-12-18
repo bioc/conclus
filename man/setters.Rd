@@ -107,47 +107,51 @@ setMinPoints(theObject) <- value
 setClustering(theObject) <- value
 }
 \arguments{
-\item{theObject}{A scRNA-seq object to update. See description or ?scRNAseq.}
+\item{theObject}{A scRNA-seq, Tsne or Dbscan object to update. See 
+description or ?scRNAseq, ?Tsne or ?Dbscan.}
 
-\item{value}{The value to update the slot with. See description or ?scRNAseq.}
+\item{value}{The value to update the slot with. See ?scRNAseq, ?Tsne or 
+?Dbscan.}
 }
 \value{
-setExperimentName: Update the experiment name slot with a character string.
+setExperimentName: Update the experiment name slot with a character 
+string (scRNA-seq).
 
-setCountMatrix: Update the countMatrix slot with a matrix of numeric.
+setCountMatrix: Update the countMatrix slot with a matrix of numeric 
+(scRNA-seq).
 
 setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment
-object.
+object (scRNA-seq).
 
 setSpecies: Update the species slot with a character string. Value should be
-mouse or human.
+mouse or human. Other organisms can be added on demand  (scRNA-seq).
 
 setOutputDirectory: Update the outputDirectory slot with a character string.
-Value should be a valid path.
+Value should be a valid path (scRNA-seq).
 
 setTSNEList: Update the tSNEList slot with a list of tSNE objects. See
-?Tsne-class.
+?Tsne-class (scRNA-seq).
 
 setDbscanList: Update the dbscanList slot with a list of dbscan objects. See
-?Dbscan-class.
+?Dbscan-class (scRNA-seq).
 
 setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a
-numeric matrix.
+numeric matrix (scRNA-seq).
 
 setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a
-numeric matrix.
+numeric matrix (scRNA-seq).
 
 setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with
-a numeric factor.
+a numeric factor (scRNA-seq).
 
 setMarkerGenesList: Update the markerGenesList slot with a list of data
 frame. The data frame structure should be:
 data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA),
-score = c(NA))
+score = c(NA))  (scRNA-seq).
 
 setClustersMarkers: Update the clustersMarkers slot with a data frame.
 The data frame structure should be:
-data.frame(geneName="gene1", clusters=NA)
+data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
 
 setGenesInfos: Update the genesInfos slot with a data frame.
 The data frame structure should be:
@@ -157,24 +161,25 @@ data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
                 entrezgene_description="descr",
                 gene_biotype="gene", chromosome_name="1", Symbol="symbol",
                 ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
-                uniprot_gn_id="ID")
+                uniprot_gn_id="ID"). (scRNA-seq)
 
-setPC: Update the pc slot with a vector of numeric.
+setPC: Update the pc slot with a vector of numeric (Tsne).
 
-setPerplexity: Update the perplexity slot with a vector of numeric.
+setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
 
-setCoordinates: Update the coordinates slot with a matrix of numeric.
+setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
 
-setName: Update the Tsne or Dbscan name slot with a character string.
+setName: Update the Tsne or Dbscan name slot with a character string
+ (Dbscan).
 
-setEpsilon: Update the epsilon slot with a vector of numeric.
+setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
 
-setMinPoints: Update the minPoints slot with a vector of numeric.
+setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
 
-setClustering: Update the clustering slot with a matrix of numeric.
+setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
 }
 \description{
-Update a slot of a scRNA-seq object.
+Update a slot of a scRNA-seq, Tsne or Dbscan object.
 }
 \examples{
 ## Load the count matrix
