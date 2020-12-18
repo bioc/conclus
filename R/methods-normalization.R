@@ -324,7 +324,8 @@
 #' \code{\link{AnnotationDbi}} to retrieve annotations.
 #'
 #' @param countMatrix The raw count matrix
-#' @param species The studied species
+#' @param species The studied species. Currently limited to mouse and human.
+#' Other organisms can be added on demand.
 #' @param rowdataDF rowData of class data.frame, it contains gene names of the
 #' count matrix.
 #'

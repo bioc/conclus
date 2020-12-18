@@ -27,7 +27,8 @@ NULL
 #' @param countMatrix An integer matrix representing the raw count matrix with
 #' reads or unique molecular identifiers (UMIs).
 #' @param species Character string representing the species of interest.
-#' Currently limited to "mouse" and "human".
+#' Currently limited to "mouse" and "human". Other organisms can be added on 
+#' demand.
 #' @param outputDirectory A character string of the path to the root output
 #' folder.
 #' @param tSNElist List of 'Tsne' objects representing the different tSNE

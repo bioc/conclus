@@ -160,7 +160,8 @@
 #' @usage
 #' .convertToSymbols(species, countMatrix, annoType)
 #' 
-#' @param species Values should be 'mouse' or 'human'.
+#' @param species Values should be 'mouse' or 'human'. Other organisms can be 
+#' added on demand.
 #' @param countMatrix Matrix countaining single-cell gene expression retrieved 
 #' from GEO.
 #' @param annoType Type of the genes annotations contained in the row names of 
@@ -223,7 +224,8 @@
 #' @param matrixURL URL of the count matrix. The matrix must be un-normalized.
 #' @param countMatrixPath Path to the file to which the downloaded count 
 #' matrix will be saved.
-#' @param species Values should be 'mouse' or 'human'.
+#' @param species Values should be 'mouse' or 'human'. Other organisms can be 
+#' added on demand.
 #' @param seriesMatrixName Name of the columns meta-data file hosted on GEO.
 #' This name can usually be found in the 'Series Matrix File(s)' section. 
 #' Should not be used if colMetaDataURL is defined. Default=NA.

@@ -220,7 +220,7 @@
 #' particular cluster. This association is performed by looking at upregulated
 #' genes in a particular cluster compared to the others (multiple comparisons).
 #'
-#' The function *rankGenes* performs multiple comparisons of all genes from
+#' The function rankGenes performs multiple comparisons of all genes from
 #' theObject and rank them according to a score reflecting a FDR power.
 #'
 #' For each table corresponding to a particular consensus cluster, the first
@@ -528,7 +528,8 @@ setMethod(
 #' from biomaRt.
 #'
 #' @param species Name of the species defined in the submitted object and
-#' retrieved with ?getSpecies. Current values allowed are mouse and human.
+#' retrieved with ?getSpecies. Current values allowed are mouse and human. 
+#' Other organisms can be added on demand.
 #' @param genes Markers genes retrieved from the submitted object with
 #' ?getClustersMarkers.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
@@ -566,6 +567,7 @@ setMethod(
 #'
 #' @param species Name of the species defined in the submitted object and
 #' retrieved with ?getSpecies. Current values allowed are mouse and human.
+#' Other organisms can be added on demand.
 #' @param genes Markers genes retrieved from the submitted object with
 #' ?getClustersMarkers.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
@@ -673,7 +675,7 @@ setMethod(
 #' @param cores Maximum number of jobs that CONCLUS can run in parallel.
 #' Default is 1.
 #' @param saveInfos If TRUE, save the genes infos table in the directory
-#' defined in theObject (?getOutputDirectory) and in the sub-directory
+#' defined in theObject (?getOutputDirectory), in the sub-directory
 #' 'marker_genes/saveGenesInfo'.
 #'
 #' @details

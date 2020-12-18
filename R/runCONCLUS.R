@@ -274,7 +274,7 @@
 #' @param experimentName String of the name of the experiment.
 #' @param countMatrix Matrix containing the raw counts.
 #' @param species Character string of the species of interest. Shoud be mouse or
-#' human.
+#' human. Other organisms can be added on demand.
 #' @param sizes Vector of size factors from scran::computeSumFactors() function
 #' used by ?normaliseCountMatrix.
 #' @param outputDirectory Directory to which results should be written. This
@@ -513,7 +513,7 @@
 #' @param experimentName String of the name of the experiment.
 #' @param countMatrix Matrix containing the raw counts.
 #' @param species Character string of the species of interest. Shoud be mouse or
-#' human.
+#' human. Other organisms can be added on demand.
 #' @param cores  Maximum number of jobs that CONCLUS can run in parallel. This
 #' parameter is used by ?generateTSNECoordinates, ?runDBSCAN,
 #' ?clusterCellsInternal, and ?retrieveGenesInfo. Default=1.

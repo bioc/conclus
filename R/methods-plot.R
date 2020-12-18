@@ -393,8 +393,7 @@
 
 #' plotCellSimilarity
 #'
-#' @description This function plots similarity matrix as a heatmap, so one can
-#' see similarity between parts of different clusters.
+#' @description This function plots the similarity matrix as a heatmap.
 #'
 #' @usage
 #' plotCellSimilarity(theObject, colorPalette="default",
@@ -919,7 +918,9 @@ setMethod(
 #' plotClusteredTSNE
 #'
 #' @description Plot t-SNE generated with different PCs and perplexities.
-#' It can also use a coloring scheme by clusters or states.
+#' It can also use a coloring scheme by clusters or states. The latter is 
+#' possible if a 'state' column, representing conditions, is provided in the 
+#' columns meta-data.
 #'
 #' @usage plotClusteredTSNE(theObject, colorPalette="default",
 #'             PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30, 40),
@@ -1548,8 +1549,8 @@ setMethod(
 #' taken into account in the hierarchical clustering. Default=FALSE.
 #' @param showColnames Shoud the names of the columns (clusters) be indicated on
 #' the heatmap. Default = FALSE.
-#' @param fontsize base fontsize for the plot. Default = 7.5.
-#' @param fontsizeRow fontsize for rownames. Default = 8.
+#' @param fontsize Base fontsize for the plot. Default = 7.5.
+#' @param fontsizeRow Fontsize for rownames. Default = 8.
 #' @param plotPDF If TRUE, the heatmap is saved in pdf format and in png
 #' otherwise. Default = TRUE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
@@ -1840,7 +1841,8 @@ setMethod(
 #' @param plotPDF If TRUE export tSNE in pdf format, if FALSE export it in
 #' png format. Default=TRUE.
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
-#' Default=FALSE.
+#' Default=FALSE. This is useful if one wants to only retrieve the object to 
+#' insert the figure in a grid for instance.
 #'
 #' @aliases plotGeneExpression
 #' @rdname plotGeneExpression-scRNAseq
@@ -2172,7 +2174,9 @@ setMethod(
 #' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE.
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE. This 
+#' is useful if one wants to only retrieve the object to insert the figure in 
+#' a grid for instance.
 #'
 #' @details
 #' colorPalette/statePalette -- A vector of colors for clusters/states or
@@ -2221,7 +2225,7 @@ setMethod(
 #'
 #' @return A pheatmap object of the clusters similarity matrix.
 #'
-#' @seealso alculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
+#' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
 #' plotGeneExpression plotCellSimilarity
 #'
 #' @exportMethod plotClustersSimilarity
