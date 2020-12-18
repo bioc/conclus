@@ -681,20 +681,21 @@ setMethod(
 #' @details
 #' The output dataframe is composed of the following columns:
 #'
-#' - uniprot_gn_symbol: Uniprot gene symbol.
-#' - clusters: The cluster to which the gene is associated.
-#' - external_gene_name: The complete gene name.
-#' - go_id: Gene Ontology (GO) identification number.
+#' - uniprot_gn_symbol: Uniprot gene symbol. \cr
+#' - clusters: The cluster to which the gene is associated. \cr
+#' - external_gene_name: The complete gene name. \cr
+#' - go_id: Gene Ontology (GO) identification number. \cr
 #' - mgi_description: If the species is mouse, description of the gene on MGI.
-#' - entrezgene_description: Description of the gene by Entrez database.
+#'  \cr
+#' - entrezgene_description: Description of the gene by Entrez database. \cr
 #' - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified
-#' non-coding RNA gene, or pseudogene.
-#' - chromosome_name: The chromosome on which the gene is located.
-#' - Symbol: Official gene symbol.
-#' - ensembl_gene_id: ID of the gene on the ensembl database.
-#' - mgi_id: If the species is mouse, ID of the gene on the MGI database.
-#' - entrezgene_id: ID of the gene on the entrez database.
-#' - uniprot_gn_id: ID of the gene on the uniprot database.
+#' non-coding RNA gene, or pseudogene. \cr
+#' - chromosome_name: The chromosome on which the gene is located. \cr
+#' - Symbol: Official gene symbol. \cr
+#' - ensembl_gene_id: ID of the gene on the ensembl database. \cr
+#' - mgi_id: If the species is mouse, ID of the gene on the MGI database. \cr
+#' - entrezgene_id: ID of the gene on the entrez database. \cr
+#' - uniprot_gn_id: ID of the gene on the uniprot database. \cr
 #'
 #' @aliases retrieveGenesInfo
 #'
