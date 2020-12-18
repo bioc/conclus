@@ -32,7 +32,8 @@ experiment.}
 reads or unique molecular identifiers (UMIs).}
 
 \item{species}{Character string representing the species of interest.
-Currently limited to "mouse" and "human".}
+Currently limited to "mouse" and "human". Other organisms can be added on 
+demand.}
 
 \item{outputDirectory}{A character string of the path to the root output
 folder.}

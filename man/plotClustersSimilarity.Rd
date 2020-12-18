@@ -48,7 +48,9 @@ Defaults to FALSE.}
 
 \item{heightPNG}{Height of the png. See ?png for details. Default=750.}
 
-\item{silentPlot}{If TRUE, does not plot the pheatmap. Default=FALSE.}
+\item{silentPlot}{If TRUE, does not plot the pheatmap. Default=FALSE. This 
+is useful if one wants to only retrieve the object to insert the figure in 
+a grid for instance.}
 }
 \value{
 A pheatmap object of the clusters similarity matrix.
@@ -100,7 +102,7 @@ plotClustersSimilarity(scrCSM)
 
 }
 \seealso{
-alculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
+calculateClustersSimilarity  plotClusteredTSNE plotCellHeatmap
 plotGeneExpression plotCellSimilarity
 }
 \author{

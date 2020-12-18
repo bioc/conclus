@@ -34,7 +34,7 @@ for each cluster. To this aim, each gene should be "associated" to a
 particular cluster. This association is performed by looking at upregulated
 genes in a particular cluster compared to the others (multiple comparisons).
 
-The function *rankGenes* performs multiple comparisons of all genes from
+The function rankGenes performs multiple comparisons of all genes from
 theObject and rank them according to a score reflecting a FDR power.
 
 For each table corresponding to a particular consensus cluster, the first

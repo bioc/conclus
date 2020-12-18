@@ -30,7 +30,7 @@ Default = TRUE.}
 Default is 1.}
 
 \item{saveInfos}{If TRUE, save the genes infos table in the directory
-defined in theObject (?getOutputDirectory) and in the sub-directory
+defined in theObject (?getOutputDirectory), in the sub-directory
 'marker_genes/saveGenesInfo'.}
 }
 \value{

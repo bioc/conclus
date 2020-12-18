@@ -41,7 +41,8 @@ See details.}
 png format. Default=TRUE.}
 
 \item{silentPlot}{If TRUE, the plots are not displayed on the current device.
-Default=FALSE.}
+Default=FALSE. This is useful if one wants to only retrieve the object to 
+insert the figure in a grid for instance.}
 }
 \value{
 A ggplot object of the gene expression colored tSNE.

@@ -66,7 +66,9 @@ A list of ggplot objects if returnPlot is TRUE.
 }
 \description{
 Plot t-SNE generated with different PCs and perplexities.
-It can also use a coloring scheme by clusters or states.
+It can also use a coloring scheme by clusters or states. The latter is 
+possible if a 'state' column, representing conditions, is provided in the 
+columns meta-data.
 }
 \details{
 colorPalette -- A vector of colors for clusters/states or

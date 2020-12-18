@@ -59,9 +59,9 @@ taken into account in the hierarchical clustering. Default=FALSE.}
 \item{showColnames}{Shoud the names of the columns (clusters) be indicated on
 the heatmap. Default = FALSE.}
 
-\item{fontsize}{base fontsize for the plot. Default = 7.5.}
+\item{fontsize}{Base fontsize for the plot. Default = 7.5.}
 
-\item{fontsizeRow}{fontsize for rownames. Default = 8.}
+\item{fontsizeRow}{Fontsize for rownames. Default = 8.}
 
 \item{plotPDF}{If TRUE, the heatmap is saved in pdf format and in png
 otherwise. Default = TRUE.}

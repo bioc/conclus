@@ -14,7 +14,8 @@ convertToSymbols=TRUE, annoType="ENSEMBL")
 \item{countMatrixPath}{Path to the file to which the downloaded count 
 matrix will be saved.}
 
-\item{species}{Values should be 'mouse' or 'human'.}
+\item{species}{Values should be 'mouse' or 'human'. Other organisms can be 
+added on demand.}
 
 \item{seriesMatrixName}{Name of the columns meta-data file hosted on GEO.
 This name can usually be found in the 'Series Matrix File(s)' section. 

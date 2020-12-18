@@ -69,8 +69,7 @@ are displayed. Default=FALSE.}
 A pheatmap object of the similarity heatmap if returnPlot is TRUE.
 }
 \description{
-This function plots similarity matrix as a heatmap, so one can
-see similarity between parts of different clusters.
+This function plots the similarity matrix as a heatmap.
 }
 \details{
 colorPalette/statePalette -- A vector of colors for clusters/states or
