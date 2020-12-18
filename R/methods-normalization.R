@@ -772,8 +772,9 @@
 #' 
 #' 
 #' @param theObject A scRNAseq object
-#' @param sizes  Vector of size factors from scran::computeSumFactors()
-#' function.
+#' @param sizes  Vector of size factors used by scran::computeSumFactors().
+#' It is a numeric vector of pool sizes, i.e., number of cells per pool. See 
+#' ?scran::computeSumFactors for more details.
 #' @param coldata Data frame containing cells informations. Default is NULL.
 #' @param rowdata Data frame containing genes informations. Default is NULL.
 #' @param alreadyCellFiltered Logical. If TRUE, quality check and
@@ -787,6 +788,17 @@
 #' This function uses the normalization method of the scater package. For more
 #' details about the normalization used see ?scater::normalize. The size factors
 #' used in the normalization are calculated with scran::computeSumFactors.
+#' 
+#' Beforehand, the function will annotate genes creating rowData and add 
+#' statistics about cells into columnsMetaData. If you already have 
+#' columnsMetaData and rowData, you can give it to the function (see manual). 
+#' It will keep your columns and add new ones at the end. If you do not want 
+#' to lose any cell after quality metrics check, select 
+#' alreadyCellFiltered = TRUE, by default it is FALSE. Before scater 
+#' normalization, the function will call scran::quickCluster (see manual for 
+#' details). If you want to skip this step, set runQuickCluster = FALSE, by 
+#' default it is TRUE. We advice to first try the analysis with this option 
+#' and to set it to FALSE if no rare populations are found.
 #'
 #'
 #' @rdname normaliseCountMatrix-scRNAseq

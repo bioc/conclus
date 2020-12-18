@@ -70,7 +70,7 @@
 #'                                 "test_countMatrix.tsv")
 #' loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #'
-#' @author Nicolas DESCOSTES
+#' @author Ilyess RACHEDI and Nicolas DESCOSTES
 #' @importFrom utils read.delim
 #'
 loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t', 
