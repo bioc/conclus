@@ -11,8 +11,8 @@ loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".")
 
 \item{type}{Values should be "coldata", "rowdata", or "countMatrix".}
 
-\item{columnID}{For raw amd col data, column name containing cells/genes 
-names/id. Default=NULL.}
+\item{columnID}{For row and col data, column name containing cells/genes 
+names/id. Should not be used when inporting a matrix. Default=NULL.}
 
 \item{header}{Set TRUE if the first row of the table corresponds to the
 column names, and FALSE if it doesn't. Default=TRUE.}
@@ -47,4 +47,7 @@ countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
                                 "test_countMatrix.tsv")
 loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
+}
+\author{
+Nicolas DESCOSTES
 }

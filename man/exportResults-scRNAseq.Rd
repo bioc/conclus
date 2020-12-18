@@ -21,7 +21,7 @@ giving the corresponding cluster number to each cell. The method
 ?calculateClustersSimilarity should have been run on the object. It is saved
 in the sub-directory 6_ConclusResult.}
 
-\item{saveAll}{Default=FALSE. Save all results of CONCLUS (see details). The
+\item{saveAll}{Default=FALSE. Save all results of CONCLUS. The
 last step run on the scRNASeq object should be ?retrieveGenesInfo.}
 
 \item{saveNormalizedMatrix}{Default=FALSE. Save the normalized count matrix
@@ -67,8 +67,8 @@ cluster as csv files in the sub-directory '9_genesInfos'. See
 ?retrieveGenesInfo for more details.}
 }
 \value{
-Sub-directory '1_MatrixInfo' containing the normalized matrix,
-the columns, and the rows metadata.
+Sub-directories containing the results of the different conclus 
+steps. See the 'Quick start' section of the vignette for details.
 }
 \description{
 Export all the results of Conclus to a Results sub-directory.
@@ -123,5 +123,5 @@ unlink("YourOutputDirectory", recursive=TRUE)
 
 }
 \author{
-Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+Ilyess RACHEDI and Nicolas DESCOSTES.
 }

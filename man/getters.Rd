@@ -88,51 +88,53 @@ getMinPoints(theObject)
 getClustering(theObject)
 }
 \arguments{
-\item{theObject}{A scRNA-seq object. See description or ?scRNAseq.}
+\item{theObject}{A scRNA-seq, Tsne or Dbscan object. See description or
+?scRNAseq, ?Tsne, ?Dbscan.}
 }
 \value{
-getExperimentName: Get the name of the experiment.
+getExperimentName: Get the name of the experiment (scRNA-seq).
 
-getCountMatrix: Get the count matrix.
+getCountMatrix: Get the count matrix (scRNA-seq).
 
-getSceNorm: Get the SingleCellExperiment object used.
+getSceNorm: Get the SingleCellExperiment object used (scRNA-seq).
 
-getSpecies: Get the species.
+getSpecies: Get the species (scRNA-seq).
 
-getOutputDirectory: Get the path of the output directory.
+getOutputDirectory: Get the path of the output directory (scRNA-seq).
 
-getTSNEList: Get the list of Tsne objects.
+getTSNEList: Get the list of Tsne objects (scRNA-seq).
 
-getDbscanList: Get the list of Dbscan objects.
+getDbscanList: Get the list of Dbscan objects (scRNA-seq).
 
-getCellsSimilarityMatrix: Get the cell similarity matrix.
+getCellsSimilarityMatrix: Get the cell similarity matrix (scRNA-seq).
 
-getClustersSimilarityMatrix: Get the cluster similarity matrix.
+getClustersSimilarityMatrix: Get the cluster similarity matrix (scRNA-seq).
 
-getClustersSimiliratyOrdered: Get the clusters ordered by similarity.
+getClustersSimiliratyOrdered: Get the clusters ordered by similarity 
+(scRNA-seq).
 
-getMarkerGenesList: Get the list of marker genes by clusters.
+getMarkerGenesList: Get the list of marker genes by clusters  (scRNA-seq).
 
-getClustersMarkers: Get the most significant markers by clusters.
+getClustersMarkers: Get the most significant markers by clusters (scRNA-seq).
 
-getGenesInfos: Get informations about marker genes.
+getGenesInfos: Get informations about marker genes  (scRNA-seq).
 
-getPerplexity: Get the perplexity used.
+getPerplexity: Get the perplexity used (Tsne).
 
-getPC: Get the PC used.
+getPC: Get the PC used (Tsne).
 
-getCoordinates: Get the matrix of tSNE coordinates.
+getCoordinates: Get the matrix of tSNE coordinates  (Tsne).
 
-getName: Get the name of the tSNE or Dbscan object.
+getName: Get the name of the tSNE or Dbscan object (Dbscan).
 
-getEpsilon: Get the epsilon used.
+getEpsilon: Get the epsilon used (Dbscan).
 
-getMinPoints: Get the MinPoint used.
+getMinPoints: Get the MinPoint used (Dbscan).
 
-getClustering: Get the matrix of DBSCAN clustering.
+getClustering: Get the matrix of DBSCAN clustering (Dbscan).
 }
 \description{
-Retrieve data of a slot of a scRNA-seq, Tsne or Dbscan object.
+Retrieve the data of the slots of a scRNA-seq, Tsne or Dbscan object.
 }
 \examples{
 ## Load the count matrix
@@ -157,4 +159,7 @@ countMatrix <- getCountMatrix(scr)
 species <- getSpecies(scr)
 outputDirectory <- getOutputDirectory(scr)
 
+}
+\author{
+Ilyess RACHEDI
 }

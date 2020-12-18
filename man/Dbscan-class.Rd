@@ -15,7 +15,7 @@ and is used by the method runDBSCAN.
 \item{\code{name}}{A 'character' string representing the name of the Dbscan
 clustering.}
 
-\item{\code{epsilon}}{A 'numeric' value. The epsilon is the distance to consider
+\item{\code{epsilon}}{A 'numeric' vector. The epsilon is the distance to consider
 two points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)}
 
 \item{\code{minPoints}}{A 'numeric' value. The minPoints is the minimum number
