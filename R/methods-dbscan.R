@@ -232,10 +232,10 @@
 #' @details
 #' Following the calculation of t-SNE coordinates, DBSCAN is run with a range
 #' of epsilon and MinPoints values which will yield a total of 84 clustering
-#' solutions (PCs x perplexities x MinPoints x epsilon). *minPoints* is the
+#' solutions (PCs x perplexities x MinPoints x epsilon). minPoints is the
 #' minimum cluster size which you assume to be meaningful for your experiment
-#' and *epsilon* is the radius around the cell where the algorithm will try to
-#' find *minPoints* dots. Optimal *epsilon* must lay one the knee of the k-NN
+#' and epsilon is the radius around the cell where the algorithm will try to
+#' find minPoints dots. Optimal epsilon must lay one the knee of the k-NN
 #' function as shown in the "test_clustering/distance_graph.pdf".
 #'
 #' @author

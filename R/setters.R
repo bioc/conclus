@@ -4,10 +4,12 @@
 
 
 #' @description
-#' Update a slot of a scRNA-seq object.
+#' Update a slot of a scRNA-seq, Tsne or Dbscan object.
 #'
-#' @param theObject A scRNA-seq object to update. See description or ?scRNAseq.
-#' @param value The value to update the slot with. See description or ?scRNAseq.
+#' @param theObject A scRNA-seq, Tsne or Dbscan object to update. See 
+#' description or ?scRNAseq, ?Tsne or ?Dbscan.
+#' @param value The value to update the slot with. See ?scRNAseq, ?Tsne or 
+#' ?Dbscan.
 #'
 #' @rdname setters
 #' 
@@ -43,7 +45,8 @@ NULL
 #' setExperimentName(theObject) <- value
 #'
 #' @return
-#' setExperimentName: Update the experiment name slot with a character string.
+#' setExperimentName: Update the experiment name slot with a character 
+#' string (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setExperimentName<- setExperimentName
@@ -62,7 +65,8 @@ setReplaceMethod(
 #' setCountMatrix(theObject) <- value
 #'
 #' @return
-#' setCountMatrix: Update the countMatrix slot with a matrix of numeric.
+#' setCountMatrix: Update the countMatrix slot with a matrix of numeric 
+#' (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setCountMatrix<- setCountMatrix
@@ -81,7 +85,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment
-#' object.
+#' object (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setSceNorm<- setSceNorm
@@ -101,7 +105,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setSpecies: Update the species slot with a character string. Value should be
-#' mouse or human.
+#' mouse or human. Other organisms can be added on demand  (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setSpecies<- setSpecies
@@ -121,7 +125,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setOutputDirectory: Update the outputDirectory slot with a character string.
-#' Value should be a valid path.
+#' Value should be a valid path (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setOutputDirectory<- setOutputDirectory
@@ -141,7 +145,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setTSNEList: Update the tSNEList slot with a list of tSNE objects. See
-#' ?Tsne-class.
+#' ?Tsne-class (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setTSNEList<- setTSNEList
@@ -161,7 +165,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setDbscanList: Update the dbscanList slot with a list of dbscan objects. See
-#' ?Dbscan-class.
+#' ?Dbscan-class (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setDbscanList<- setDbscanList
@@ -181,7 +185,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a
-#' numeric matrix.
+#' numeric matrix (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setCellsSimilarityMatrix<- setCellsSimilarityMatrix
@@ -201,7 +205,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a
-#' numeric matrix.
+#' numeric matrix (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setClustersSimilarityMatrix<- setClustersSimilarityMatrix
@@ -221,7 +225,7 @@ setReplaceMethod(
 #'
 #' @return
 #' setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with
-#' a numeric factor.
+#' a numeric factor (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setClustersSimiliratyOrdered<- setClustersSimiliratyOrdered
@@ -243,7 +247,7 @@ setReplaceMethod(
 #' setMarkerGenesList: Update the markerGenesList slot with a list of data
 #' frame. The data frame structure should be:
 #' data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA),
-#' score = c(NA))
+#' score = c(NA))  (scRNA-seq).
 #'
 #' @rdname setters
 #' @aliases setMarkerGenesList<- setMarkerGenesList
@@ -264,7 +268,7 @@ setReplaceMethod(
 #' @return
 #' setClustersMarkers: Update the clustersMarkers slot with a data frame.
 #' The data frame structure should be:
-#' data.frame(geneName="gene1", clusters=NA)
+#' data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
 #'
 #' @rdname setters
 #' @aliases setClustersMarkers<- setClustersMarkers
@@ -291,7 +295,7 @@ setReplaceMethod(
 #'                 entrezgene_description="descr",
 #'                 gene_biotype="gene", chromosome_name="1", Symbol="symbol",
 #'                 ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
-#'                 uniprot_gn_id="ID")
+#'                 uniprot_gn_id="ID"). (scRNA-seq)
 #'
 #' @rdname setters
 #' @aliases setGenesInfos<- setGenesInfos
@@ -326,7 +330,7 @@ setReplaceMethod(
 #' setPC(theObject) <- value
 #'
 #' @return
-#' setPC: Update the pc slot with a vector of numeric.
+#' setPC: Update the pc slot with a vector of numeric (Tsne).
 #'
 #' @rdname setters
 #' @aliases setPC<- setPC
@@ -345,7 +349,7 @@ setReplaceMethod(
 #' setPerplexity(theObject) <- value
 #'
 #' @return
-#' setPerplexity: Update the perplexity slot with a vector of numeric.
+#' setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
 #'
 #' @rdname setters
 #' @aliases setPerplexity<- setPerplexity
@@ -364,7 +368,7 @@ setReplaceMethod(
 #' setCoordinates(theObject) <- value
 #'
 #' @return
-#' setCoordinates: Update the coordinates slot with a matrix of numeric.
+#' setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
 #'
 #' @rdname setters
 #' @aliases setCoordinates<- setCoordinates
@@ -388,7 +392,8 @@ setReplaceMethod(
 #' setName(theObject) <- value
 #'
 #' @return
-#' setName: Update the Tsne or Dbscan name slot with a character string.
+#' setName: Update the Tsne or Dbscan name slot with a character string
+#'  (Dbscan).
 #'
 #' @rdname setters
 #' @aliases setName<-
@@ -407,7 +412,7 @@ setReplaceMethod(
 #' setEpsilon(theObject) <- value
 #'
 #' @return
-#' setEpsilon: Update the epsilon slot with a vector of numeric.
+#' setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
 #'
 #' @rdname setters
 #' @aliases setEpsilon<- setEpsilon
@@ -427,7 +432,7 @@ setReplaceMethod(
 #' setMinPoints(theObject) <- value
 #'
 #' @return
-#' setMinPoints: Update the minPoints slot with a vector of numeric.
+#' setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
 #'
 #' @rdname setters
 #' @aliases setMinPoints<- setMinPoints
@@ -447,7 +452,7 @@ setReplaceMethod(
 #' setClustering(theObject) <- value
 #'
 #' @return
-#' setClustering: Update the clustering slot with a matrix of numeric.
+#' setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
 #'
 #' @rdname setters
 #' @aliases setClustering<- setClustering
