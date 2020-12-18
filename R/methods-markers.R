@@ -252,14 +252,14 @@
 #' Where
 #'
 #' 1. fdrk,i is an adjusted p-value obtained by comparing expression of G in
-#' cluster k versus expression of G in cluster i.
+#' cluster k versus expression of G in cluster i. \cr
 #' 2. weightk,i is a similarity between these two groups taken from the element
-#' in the clustersSimilarityMatrix
-#' 3. nClusters is a number of consensus clusters given to the rankGenes()
+#' in the clustersSimilarityMatrix. \cr
+#' 3. nClusters is a number of consensus clusters given to the rankGenes(). \cr
 #' 4. epsilon = 10-300 is a small number which does not influence the ranking
-#' and added to avoid an error when fdr is equal to zero
-#' 5. k = [1,…,nClusters]
-#' 6. I = ([1,…,nClusters]exceptfor[k])
+#' and added to avoid an error when fdr is equal to zero. \cr
+#' 5. k = [1,…,nClusters]. \cr
+#' 6. I = ([1,…,nClusters]exceptfor[k]). \cr
 #'
 #' @aliases rankGenes
 #'
