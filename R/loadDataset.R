@@ -41,8 +41,8 @@
 #'             
 #' @param file Path to the rowData, colData or Matrix.
 #' @param type Values should be "coldata", "rowdata", or "countMatrix".
-#' @param columnID For raw amd col data, column name containing cells/genes 
-#' names/id. Default=NULL.
+#' @param columnID For row and col data, column name containing cells/genes 
+#' names/id. Should not be used when inporting a matrix. Default=NULL.
 #' @param header Set TRUE if the first row of the table corresponds to the
 #' column names, and FALSE if it doesn't. Default=TRUE.
 #' @param sep Character used in the table to separate the fields. 
@@ -69,7 +69,8 @@
 #' countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
 #'                                 "test_countMatrix.tsv")
 #' loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
+#'
+#' @author Nicolas DESCOSTES
 #' @importFrom utils read.delim
 #'
 loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t', 

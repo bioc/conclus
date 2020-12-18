@@ -97,7 +97,7 @@ Tsne <- setClass(
 #'
 #' @slot name A 'character' string representing the name of the Dbscan
 #' clustering.
-#' @slot epsilon A 'numeric' value. The epsilon is the distance to consider
+#' @slot epsilon A 'numeric' vector. The epsilon is the distance to consider
 #' two points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)
 #' @slot minPoints A 'numeric' value. The minPoints is the minimum number
 #' of points to construct a cluster.

@@ -163,13 +163,13 @@
 #' @details
 #' Generates an object of fourteen (by default) tables with tSNE coordinates.
 #' Fourteen because it will vary seven values of principal components
-#' *PCs=c(4, 6, 8, 10, 20, 40, 50)* and two values of perplexity
-#' *perplexities=c(30, 40)* in all possible combinations. The chosen values of
+#' PCs=c(4, 6, 8, 10, 20, 40, 50) and two values of perplexity
+#' perplexities=c(30, 40) in all possible combinations. The chosen values of
 #' PCs and perplexities can be changed if necessary. We found that this
 #' combination works well for sc-RNA-seq datasets with 400-2000 cells. If you
 #' have 4000-9000 cells and expect more than 15 clusters, we recommend to take
 #' more first PCs and higher perplexity, for example,
-#' *PCs=c(8, 10, 20, 40, 50, 80, 100)* and *perplexities=c(200, 240)*. For
+#' PCs=c(8, 10, 20, 40, 50, 80, 100) and perplexities=c(200, 240). For
 #' details about perplexities parameter see ‘?Rtsne’.
 #'
 #' @rdname generateTSNECoordinates-scRNAseq

@@ -616,7 +616,7 @@
 #' giving the corresponding cluster number to each cell. The method
 #' ?calculateClustersSimilarity should have been run on the object. It is saved
 #' in the sub-directory 6_ConclusResult.
-#' @param saveAll Default=FALSE. Save all results of CONCLUS (see details). The
+#' @param saveAll Default=FALSE. Save all results of CONCLUS. The
 #' last step run on the scRNASeq object should be ?retrieveGenesInfo.
 #' @param saveNormalizedMatrix Default=FALSE. Save the normalized count matrix
 #' as a csv file. It is obtained with ?normaliseCountMatrix. The matrix is saved
@@ -651,13 +651,13 @@
 #' cluster as csv files in the sub-directory '9_genesInfos'. See
 #' ?retrieveGenesInfo for more details.
 #'
-#' @return Sub-directory '1_MatrixInfo' containing the normalized matrix,
-#' the columns, and the rows metadata.
+#' @return Sub-directories containing the results of the different conclus 
+#' steps. See the 'Quick start' section of the vignette for details. 
 #'
 #' @aliases exportResults
 #'
 #' @author
-#' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
+#' Ilyess RACHEDI and Nicolas DESCOSTES.
 #'
 #' @rdname exportResults-scRNAseq
 #'

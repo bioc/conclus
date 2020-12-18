@@ -457,8 +457,9 @@ csm[1:10,1:10]
 
 CONCLUS generated 14 tSNE combining different values of PCs and perplexities. 
 Each tSNE can be visualized either using coloring reflecting the results of 
-DBScan clustering, the conditions or without colors. Here *plotClusteredTSNE*
-is used to generate all these possibilities of visualization. 
+DBScan clustering, the conditions (if the metadata contain a 'state' column) 
+or without colors. Here *plotClusteredTSNE* is used to generate all these 
+possibilities of visualization. 
 
 
 ```{r plotClustered}
