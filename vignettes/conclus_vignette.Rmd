@@ -50,6 +50,10 @@ reproducibility of the results. Because of the evolution of biomaRt, you might
 get slightly different figures. However, the marker genes for each cluster 
 should be the same.
 
+The package is currently limited to mouse and human. Other organisms can be 
+added on demand. Write to christophe.lancrin@embl.it or ilyessr@hotmail.fr. 
+Priority will be given to model organisms.
+
 
 # Standard workflow
 
