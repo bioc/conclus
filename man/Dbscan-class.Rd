@@ -31,10 +31,10 @@ clustering solution.}
     Dbscan(name = "character", epsilon = "numeric", minPoints = "numeric",
         clustering = "matrix")
 
-    name:       Empty character string or the name of the tSNE.
-    epsilon:    Empty 'numeric' representing the epsilon.
-    minPoints:  Empty 'numeric' representing the minPoints value.
-    clustering: Empty 'numeric' "matrix" or matrix of clustering.
+    name:       Empty character string or the name of the tSNE. \cr
+    epsilon:    Empty 'numeric' representing the epsilon. \cr
+    minPoints:  Empty 'numeric' representing the minPoints value. \cr
+    clustering: Empty 'numeric' "matrix" or matrix of clustering. \cr
 }
 
 \section{Accessors}{
@@ -42,10 +42,10 @@ clustering solution.}
 
     In the following snippets, x is a Dbscan object.
 
-    getName(x): Get the name of the Dbscan.
-    getEpsilon(x):    Get the epsilon used.
-    getMinPoints(x):  Get the MinPoint used.
-    getClustering(x): Get the matrix of DBSCAN clustering.
+    getName(x): Get the name of the Dbscan. \cr
+    getEpsilon(x):    Get the epsilon used. \cr
+    getMinPoints(x):  Get the MinPoint used. \cr
+    getClustering(x): Get the matrix of DBSCAN clustering. \cr
 }
 
 \section{Subsetting}{
@@ -53,10 +53,10 @@ clustering solution.}
 
     In the following snippets, x is a Dbscan object.
 
-    setName(x) <- value: Set the name of the Dbscan.
-    setEpsilon(x) <- value:    Set the epsilon used.
-    setMinPoints(x) <- value:  Set the minPoints used.
-    setClustering(x) <- value: Set the matrix of Dbscan clustering.
+    setName(x) <- value: Set the name of the Dbscan. \cr
+    setEpsilon(x) <- value:    Set the epsilon used. \cr
+    setMinPoints(x) <- value:  Set the minPoints used. \cr
+    setClustering(x) <- value: Set the matrix of Dbscan clustering. \cr
 }
 
 \seealso{
