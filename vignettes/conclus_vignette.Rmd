@@ -71,13 +71,15 @@ outputDirectory <- "./testDirectory"
 experimentName <- "Test"
 species <- "mouse"
 
-countMatrix <- as.matrix(read.delim(file.path(system.file("extdata", 
-                                package = "conclus"), "test_countMatrix.tsv"),
-                        stringsAsFactors = FALSE))
+countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+                                 "test_countMatrix.tsv")
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
-columnsMetaData <- read.delim(file.path(system.file("extdata", 
-                        package = "conclus"), "test_colData_filtered.tsv"))
- 
+coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+                            package = "conclus")                 
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+                        columnID="cellName")
+
 sceObjectCONCLUS <- runCONCLUS(outputDirectory, experimentName, countMatrix, 
         species, columnsMetaData = columnsMetaData)
 ```
