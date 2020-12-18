@@ -647,34 +647,62 @@
 #' CONCLUS is organized into the following steps:
 #'
 #' 1) Generation of multiple t-SNE plots with a range of parameters including
-#' different selection of genes extracted from PCA.
+#' different selection of genes extracted from PCA. \cr
 #' 2) Use the Density-based spatial clustering of applications with noise
 #' (DBSCAN) algorithm for idenfication of clusters in each generated t-SNE plot.
-#' 3) All DBSCAN results are combined into a cell similarity matrix.
+#' 3) All DBSCAN results are combined into a cell similarity matrix. \cr
 #' 4) The cell similarity matrix is used to define "CONSENSUS" clusters
-#' conserved accross the previously defined clustering solutions.
-#' 5) Identify marker genes for each concensus cluster.
+#' conserved accross the previously defined clustering solutions. \cr
+#' 5) Identify marker genes for each concensus cluster. cr
 #'
 #' This wrapper function performs the following steps:
 #'
-#' 1) Building the single-cell RNA-Seq object. See ?scRNAseq-class.
-#' 2) Performing the normalization. See ?normaliseCountMatrix.
-#' 3) Calculating all tSNEs. See ?generateTSNECoordinates.
-#' 4) Clustering with DbScan. See ?runDBSCAN.
-#' 5) Computing the cells similarity matrix. See ?clusterCellsInternal.
+#' 1) Building the single-cell RNA-Seq object. See ?scRNAseq-class. \cr
+#' 2) Performing the normalization. See ?normaliseCountMatrix. \cr
+#' 3) Calculating all tSNEs. See ?generateTSNECoordinates. \cr
+#' 4) Clustering with DbScan. See ?runDBSCAN. \cr
+#' 5) Computing the cells similarity matrix. See ?clusterCellsInternal. \cr
 #' 6) Computing the clusters similarity matrix. If clusToAdd is not NA, add
-#' the provided clustering. See ?calculateClustersSimilarity and ?addClustering.
-#' 7) Ranking genes. See ?rankGenes.
-#' 8) Getting marker genes. See ?retrieveTopClustersMarkers.
-#' 9) Getting genes info. See ?retrieveGenesInfo.
-#' 10) Plot the cell similarity matrix. See ?plotCellSimilarity.
-#' 11) Plot clustered tSNE. See ?plotClusteredTSNE.
-#' 12) Plot the cell heatmap. See ?plotCellHeatmap.
-#' 13) Plot the clusters similarity heatmap. See ?plotClustersSimilarity.
+#' the provided clustering. See ?calculateClustersSimilarity and 
+#' ?addClustering.  \cr
+#' 7) Ranking genes. See ?rankGenes.  \cr
+#' 8) Getting marker genes. See ?retrieveTopClustersMarkers.  \cr
+#' 9) Getting genes info. See ?retrieveGenesInfo.  \cr
+#' 10) Plot the cell similarity matrix. See ?plotCellSimilarity.  \cr
+#' 11) Plot clustered tSNE. See ?plotClusteredTSNE.  \cr
+#' 12) Plot the cell heatmap. See ?plotCellHeatmap.  \cr
+#' 13) Plot the clusters similarity heatmap. See ?plotClustersSimilarity.  \cr
 #' 14) Exporting all results to outputDirectory if exportAllResults=TRUE.
-#' See ?exportAllResults.
-#' 15) Return an object containing all the results provided by CONCLUS.
+#' See ?exportAllResults.  \cr
+#' 15) Return an object containing all the results provided by CONCLUS.  \cr
 #'
+#' If exportAllResults=TRUE, in your "outputDirectory", the sub-folder 
+#' pictures contains all tSNE with dbscan coloration (sub-folder 
+#' tSNE_pictures), the cell similarity matrix 
+#' (Test_cells_correlation_X_clusters.pdf), the cell heatmap
+#' (Test_clustersX_meanCenteredTRUE_orderClustersFALSE_orderGenesFALSE
+#' markrsPerCluster.pdf`), and the cluster similarity matrix 
+#' (`Test_clusters_similarity_10_clusters.pdf`). You will also find in the 
+#' sub-folder `Results`: 
+#' 
+#' + `1_MatrixInfo`: The normalized count matrix and its meta-data for both 
+#' rows and columns. \cr
+#' + `2_TSNECoordinates`: The tSNE coordinates for each parameter of principal
+#' components (PCs) and perplexities.  \cr
+#' + `3_dbScan`: The different clusters given by DBscan according to different
+#' parameters. Each file gives a cluster number for each cell.  \cr
+#' + `4_CellSimilarityMatrix`: The matrix underlying the cells similarity
+#' heatmap. \cr
+#' + `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity 
+#' heatmap.  \cr
+#' + `6_ConclusResult`: A table containing the result of the consensus 
+#' clustering. This table contains two columns: clusters-cells. \cr
+#' + `7_fullMarkers`: Files containing markers for each cluster, defined by the
+#' consensus clustering. \cr
+#' + `8_TopMarkers`: Files containing the top 10 markers for each cluster. \cr
+#' + `9_genesInfos`: Files containing gene information for the top markers 
+#' defined in the previous folder. \cr
+#' 
 #' @return A \code{scRNAseq} object containing the similarity matrices and the
 #' marker genes.
 #'
