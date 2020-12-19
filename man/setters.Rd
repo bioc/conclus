@@ -169,8 +169,8 @@ setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
 
 setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
 
-setName: Update the Tsne or Dbscan name slot with a character string
- (Dbscan).
+setName: Update the Tsne or Dbscan name slot with a character string 
+(Dbscan).
 
 setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
 

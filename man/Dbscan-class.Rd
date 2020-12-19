@@ -12,16 +12,17 @@ and is used by the method runDBSCAN.
 \section{Slots}{
 
 \describe{
-\item{\code{name}}{A 'character' string representing the name of the Dbscan
+\item{\code{name}}{A character string representing the name of the Dbscan
 clustering.}
 
-\item{\code{epsilon}}{A 'numeric' vector. The epsilon is the distance to consider
-two points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)}
+\item{\code{epsilon}}{A numeric vector. The epsilon is the distance to \cr
+consider two points belonging to the same cluster. 
+Default = c(1.3, 1.4, 1.5).}
 
-\item{\code{minPoints}}{A 'numeric' value. The minPoints is the minimum number
+\item{\code{minPoints}}{A numeric value. The minPoints is the minimum number
 of points to construct a cluster.}
 
-\item{\code{clustering}}{A 'matrix' that contains the result of one DBSCAN
+\item{\code{clustering}}{A matrix that contains the result of one DBSCAN
 clustering solution.}
 }}
 

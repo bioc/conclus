@@ -47,8 +47,8 @@ The output dataframe is composed of the following columns:
 - clusters: The cluster to which the gene is associated. \cr
 - external_gene_name: The complete gene name. \cr
 - go_id: Gene Ontology (GO) identification number. \cr
-- mgi_description: If the species is mouse, description of the gene on MGI.
- \cr
+- mgi_description: If the species is mouse, description of the gene 
+on MGI. \cr
 - entrezgene_description: Description of the gene by Entrez database. \cr
 - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified
 non-coding RNA gene, or pseudogene. \cr
