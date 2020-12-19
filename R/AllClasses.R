@@ -433,8 +433,8 @@ Dbscan <- setClass(
 #'     getDbscanList(x):                Get the list of Dbscan objects. \cr
 #'     getCellsSimilarityMatrix(x):     Get the cell similarity matrix. \cr
 #'     getClustersSimilarityMatrix(x):  Get the cluster similarity matrix. \cr
-#'     getClustersSimiliratyOrdered(x): Get the clusters ordered by similarity.
-#'  \cr
+#'     getClustersSimiliratyOrdered(x): Get the clusters ordered by 
+#' similarity. \cr
 #'     getMarkerGenesList(x):           Get the list of marker genes by 
 #' clusters. \cr
 #'     getClustersMarkers(x):           Get the most significant markers by
@@ -457,8 +457,8 @@ Dbscan <- setClass(
 #'     setDbscanList(x):                Set the list of Dbscan objects. \cr
 #'     setCellsSimilarityMatrix(x):     Set the cell similarity matrix. \cr
 #'     setClustersSimilarityMatrix(x):  Set the cluster similarity matrix. \cr
-#'     setClustersSimiliratyOrdered(x): Set the clusters ordered by similarity.
-#'  \cr
+#'     setClustersSimiliratyOrdered(x): Set the clusters ordered by 
+#' similarity. \cr
 #'     setMarkerGenesList(x):           Set the list of marker genes by 
 #' clusters \cr
 #'     setClustersMarkers(x):           Set the most significant markers by

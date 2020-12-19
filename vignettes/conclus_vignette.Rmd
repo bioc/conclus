@@ -76,7 +76,7 @@ experimentName <- "Test"
 species <- "mouse"
 
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
-                                 "test_countMatrix.tsv")
+                                    "test_countMatrix.tsv")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
@@ -425,7 +425,7 @@ underline that a zero in the dbscan results means that a cell was not assigned
 to any cluster. Hence, cluster numbers start from one. *clusterCellsInternal* 
 is a general method that returns an object of class scRNASeq with its 
 cellsSimilarityMatrix slot updated.
-      
+
 Note that the number of clusters is set to 10 (it was set to 11 in the 
 original study, see data section). Considering that clusters can 
 be merged afterwards (see Supervised clustering section), we advise to keep 

@@ -392,8 +392,8 @@ setReplaceMethod(
 #' setName(theObject) <- value
 #'
 #' @return
-#' setName: Update the Tsne or Dbscan name slot with a character string
-#'  (Dbscan).
+#' setName: Update the Tsne or Dbscan name slot with a character string 
+#' (Dbscan).
 #'
 #' @rdname setters
 #' @aliases setName<-
