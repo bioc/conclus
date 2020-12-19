@@ -95,13 +95,14 @@ Tsne <- setClass(
 #' @rdname Dbscan-class
 #' @aliases Dbscan Dbscan-class
 #'
-#' @slot name A 'character' string representing the name of the Dbscan
+#' @slot name A character string representing the name of the Dbscan
 #' clustering.
-#' @slot epsilon A 'numeric' vector. The epsilon is the distance to consider
-#' two points belonging to the same cluster. Default = c(1.3, 1.4, 1.5)
-#' @slot minPoints A 'numeric' value. The minPoints is the minimum number
+#' @slot epsilon A numeric vector. The epsilon is the distance to \cr
+#' consider two points belonging to the same cluster. 
+#' Default = c(1.3, 1.4, 1.5).
+#' @slot minPoints A numeric value. The minPoints is the minimum number
 #' of points to construct a cluster.
-#' @slot clustering A 'matrix' that contains the result of one DBSCAN
+#' @slot clustering A matrix that contains the result of one DBSCAN
 #' clustering solution.
 #'
 #' @section Constructor:
