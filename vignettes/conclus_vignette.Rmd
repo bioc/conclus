@@ -784,7 +784,7 @@ Here we demonstrated how to use CONCLUS and combine multiple parameters
 testing for sc-RNA-seq analysis. It allowed us to identify a rare population 
 in the data of Shvartsman *et al* and will help gaining deeper insights into 
 others. 
-  
+
 
 # Session info
 
