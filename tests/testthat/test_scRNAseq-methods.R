@@ -1,7 +1,8 @@
 ## Data
 
 outputDirectory <- "YourOutputDirectory"
-dir.create(outputDirectory)
+if(!file.exists(outputDirectory))
+    dir.create(outputDirectory, showWarnings=FALSE)
 experimentName <- "Bergiers"
 coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
             package="conclus")
