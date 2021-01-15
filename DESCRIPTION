@@ -1,32 +1,32 @@
 Package: conclus
 Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONCLUSion
-Version: 0.99.11
+Version: 0.99.12
 Authors@R: c(
     person("Ilyess", "Rachedi", email = "ilyessr@hotmail.fr", role = "cre"),
     person("Nicolas", "Descostes", email = "nicolas.descostes@embl.it", role = "aut"),
     person("Polina", " Pavlovich", email = "pavlovich@ie-freiburg.mpg.de", role = "aut"),
     person("Christophe", "Lancrin", email = "christophe.lancrin@embl.it", role = "aut"))
-Description: 
-    CONCLUS is a tool for robust clustering and positive marker features 
-    selection of single-cell RNA-seq (sc-RNA-seq) datasets. It takes advantage 
-    of a consensus clustering approach that greatly simplify sc-RNA-seq data 
-    analysis for the user. Of note, CONCLUS does not cover the preprocessing 
+Description:
+    CONCLUS is a tool for robust clustering and positive marker features
+    selection of single-cell RNA-seq (sc-RNA-seq) datasets. It takes advantage
+    of a consensus clustering approach that greatly simplify sc-RNA-seq data
+    analysis for the user. Of note, CONCLUS does not cover the preprocessing
     steps of sequencing files obtained following next-generation sequencing.
     CONCLUS is organized into the following steps:
-    Generation of multiple t-SNE plots with a range of parameters including 
-    different selection of genes extracted from PCA. Use the Density-based 
-    spatial clustering of applications with noise (DBSCAN) algorithm for 
-    idenfication of clusters in each generated t-SNE plot. All DBSCAN results 
-    are combined into a cell similarity matrix. The cell similarity matrix is 
-    used to define "CONSENSUS" clusters conserved accross the previously 
-    defined clustering solutions. Identify marker genes for each concensus 
+    Generation of multiple t-SNE plots with a range of parameters including
+    different selection of genes extracted from PCA. Use the Density-based
+    spatial clustering of applications with noise (DBSCAN) algorithm for
+    idenfication of clusters in each generated t-SNE plot. All DBSCAN results
+    are combined into a cell similarity matrix. The cell similarity matrix is
+    used to define "CONSENSUS" clusters conserved accross the previously
+    defined clustering solutions. Identify marker genes for each concensus
     cluster.
 Depends: R (>= 4.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
@@ -37,7 +37,7 @@ Suggests:
     dynamicTreeCut,
     testthat
 VignetteBuilder: knitr
-Imports: 
+Imports:
     dbscan,
     fpc,
     factoextra,
@@ -73,7 +73,7 @@ biocViews:
     Clustering,
     ATACSeq,
     Classification
-Collate: 
+Collate:
     'AllClasses.R'
     'AllGenerics.R'
     'DataFormatting.R'
@@ -92,4 +92,3 @@ Collate:
     'methods-tsne.R'
     'runCONCLUS.R'
     'setters.R'
-
