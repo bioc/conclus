@@ -76,40 +76,11 @@ and added to avoid an error when fdr is equal to zero. \cr
 6. I = ([1,…,nClusters]exceptfor[k]). \cr
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-
-## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
-
-## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-
-## Calculate clusters similarity
-scrCSM <- calculateClustersSimilarity(scrCCI)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Ranking genes
-scrS4MG <- rankGenes(scrCSM)
+scr <- rankGenes(scr)
 
 }
 \seealso{

@@ -66,8 +66,8 @@ A list of ggplot objects if returnPlot is TRUE.
 }
 \description{
 Plot t-SNE generated with different PCs and perplexities.
-It can also use a coloring scheme by clusters or states. The latter is 
-possible if a 'state' column, representing conditions, is provided in the 
+It can also use a coloring scheme by clusters or states. The latter is
+possible if a 'state' column, representing conditions, is provided in the
 columns meta-data.
 }
 \details{
@@ -77,40 +77,11 @@ to 16. If an error message is thrown, re-run the function with your own color
 vector.
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-
-## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
-
-## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-
-## Calculate clusters similarity
-scrCSM <- calculateClustersSimilarity(scrCCI)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Plot the heatmap of the similarity matrix
-plotClusteredTSNE(scrCSM)
+plotClusteredTSNE(scr)
 
 }
 \seealso{

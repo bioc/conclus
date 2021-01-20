@@ -1,10 +1,10 @@
 #' .runProcessingStep
 #'
 #' @description
-#' This internal function runs the processing steps (normalize, DBscan, 
-#' cluster cells internals, calculate clusters similarity). 
+#' This internal function runs the processing steps (normalize, DBscan,
+#' cluster cells internals, calculate clusters similarity).
 #'
-#' @param scr Object returned by the constructor singlecellRNAseq. 
+#' @param scr Object returned by the constructor singlecellRNAseq.
 #' @param sizes Vector of size factors from scran::computeSumFactors() function
 #' used by ?normaliseCountMatrix.
 #' @param rowMetaData Data frame containing genes informations. Default is NULL.
@@ -61,33 +61,33 @@
         alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
         perplexities, writeOutputTSne, epsilon, minPoints, writeOutputDbScan,
         clusterNumber, deepSplit, clusteringMethod, clusToAdd){
-    
+
     ## Processing
-    
+
     message("## Performing the normalization (step 2/13) ##")
     message("\t Note: The connection to biomaRt can take a while sometimes.")
     scrNorm <- normaliseCountMatrix(scr, sizes=sizes, rowdata=rowMetaData,
             coldata=columnsMetaData, alreadyCellFiltered=alreadyCellFiltered,
             runQuickCluster=runQuickCluster)
-    
+
     message("## Calculating all tSNEs (step 3/13) ##")
     scrTsne <- generateTSNECoordinates(scrNorm, randomSeed=randomSeed,
             cores=cores, PCs=PCs, perplexities=perplexities,
             writeOutput=writeOutputTSne)
-    
+
     message("## Clustering with DbScan (step 4/13) ##")
     scrDbscan <- runDBSCAN(scrTsne, cores=cores, epsilon=epsilon,
             minPoints=minPoints, writeOutput=writeOutputDbScan)
-    
+
     message("## Computing the cells similarity matrix (step 5/13) ##")
     scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=clusterNumber,
-            deepSplit=deepSplit, cores=cores, 
+            deepSplit=deepSplit, cores=cores,
             clusteringMethod=clusteringMethod)
-    
+
     message("## Computing the clusters similarity matrix (step 6/13) ##")
-    scrCSM <- calculateClustersSimilarity(scrCCI, 
+    scrCSM <- calculateClustersSimilarity(scrCCI,
             clusteringMethod=clusteringMethod)
-    
+
     if(!is.na(clusToAdd)){
         message("Adding the provided clustering.")
         scrCSM <- addClustering(scrCSM, clusToAdd=clusToAdd)
@@ -99,8 +99,8 @@
 #' .runMarkersStep
 #'
 #' @description
-#' This internal function runs the markers steps (rank genes, retrieves top 
-#' clusters, and retrieves genes infos). 
+#' This internal function runs the markers steps (rank genes, retrieves top
+#' clusters, and retrieves genes infos).
 #'
 #' @param scrCSM Results returned by .runProcessingStep.
 #' @param columnRankGenes Name of the column with a clustering result. See
@@ -136,20 +136,20 @@
                             nTopMarkers, removeDuplicates, writeTopMarkers,
                             cores, groupBy, orderGenes, getUniprot, saveInfos
 ){
-    
+
     message("## Ranking genes (step 7/13) ##")
     scrS4MG <- rankGenes(scrCSM, column=columnRankGenes,
             writeMarkerGenes=writeOutputRankGenes)
-    
+
     message("## Getting marker genes (step 8/13) ##")
     scrFinal <- retrieveTopClustersMarkers(scrS4MG, nTop=nTopMarkers,
             removeDuplicates=removeDuplicates, writeMarkerGenes=writeTopMarkers)
-    
+
     message("## Getting genes info (step 9/13) ##")
     message("\t Note: The connection to biomaRt can take a while sometimes.")
     scrInfos <- retrieveGenesInfo(scrFinal, cores=cores, groupBy=groupBy,
             orderGenes=orderGenes, getUniprot=getUniprot, saveInfos=saveInfos)
-    
+
     return(scrInfos)
 }
 
@@ -157,8 +157,8 @@
 #' .runPlottingStep
 #'
 #' @description
-#' This internal function runs the plotting steps (plots cells similarity, 
-#' cells heatmap, clusters similarity, and the clustered tsne). 
+#' This internal function runs the plotting steps (plots cells similarity,
+#' cells heatmap, clusters similarity, and the clustered tsne).
 #'
 #' @param scrInfos results returned by .runMarkersStep.
 #' @param colorPalette A vector of colors for clusters. This parameter is used
@@ -219,11 +219,11 @@
 #' See ?pdf for more details. Default = 5.
 #' @param tSNENb Give the number of the tSNE to plot. If NA, all tSNE solutions
 #' are plotted (14 tSNE by default). Default=NA.
-#' @param silentPlot Boolean indicating if the figures should not be output on 
+#' @param silentPlot Boolean indicating if the figures should not be output on
 #' the R graphics. Default=TRUE.
 #' @keywords internal
 #'
-#' @return Writes plots to the corresponding output folder. 
+#' @return Writes plots to the corresponding output folder.
 #' @noRd
 .runPlottingStep <- function(scrInfos, colorPalette, statePalette,
         clusteringMethod, orderClusters, writeCSM, widthCSM, heightCSM,
@@ -231,32 +231,32 @@
         savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs, perplexities,
         columnRankGenes, savePlotCTSNE, widthPlotClustTSNE, heightPlotClustTSNE,
         tSNENb, outputDirectory, silentPlot){
-    
+
     message("## Plot the cell similarity matrix (step 10/13) ##")
     plotCellSimilarity(scrInfos, colorPalette=colorPalette,
             statePalette=statePalette, clusteringMethod=clusteringMethod,
             orderClusters=orderClusters, savePlot=writeCSM, width=widthCSM,
             height=heightCSM, returnPlot=FALSE, silentPlot=silentPlot)
-    
+
     message("## Plot the cell heatmap (step 11/13) ##")
-    plotCellHeatmap(scrInfos, meanCentered=meanCentered, 
-            colorPalette=colorPalette, statePalette=statePalette, 
+    plotCellHeatmap(scrInfos, meanCentered=meanCentered,
+            colorPalette=colorPalette, statePalette=statePalette,
             clusteringMethod=clusteringMethod, orderClusters=orderClusters,
             orderGenes=orderGenesCH, savePlot=savePlotCH, width=widthCH,
-            height=heightCH, clusterCols=clusterCols, returnPlot=FALSE, 
+            height=heightCH, clusterCols=clusterCols, returnPlot=FALSE,
             silentPlot=silentPlot)
-    
+
     message("## Plot the clusters similarity heatmap (step 12/13) ##")
     plotClustersSimilarity(scrInfos, colorPalette=colorPalette,
             statePalette=statePalette, clusteringMethod=clusteringMethod,
-            savePlot=savePlotClustSM, width=widthPlotClustSM, 
+            savePlot=savePlotClustSM, width=widthPlotClustSM,
             height=heightPlotClustSM, returnPlot=FALSE, silentPlot=silentPlot)
 
     message("## Plot clustered tSNE (step 13/13) ##")
     plotClusteredTSNE(scrInfos, colorPalette=colorPalette, PCs=PCs,
-            perplexities=perplexities, columnName=columnRankGenes, 
-            savePlot=if(silentPlot) TRUE else savePlotCTSNE, 
-            width=widthPlotClustTSNE, height=heightPlotClustTSNE, 
+            perplexities=perplexities, columnName=columnRankGenes,
+            savePlot=if(silentPlot) TRUE else savePlotCTSNE,
+            width=widthPlotClustTSNE, height=heightPlotClustTSNE,
             silentPlot=silentPlot, tSNENb=tSNENb)
 }
 
@@ -267,9 +267,9 @@
 #' This internal function runs the main steps of the conclus workflow: It
 #' creates a singlecellRNAseq object; runs the processing steps (normalize,
 #' DBscan, cluster cells internals, calculate clusters similarity); runs the
-#' markers steps (rank genes, retrieves top clusters, and retrieves genes 
+#' markers steps (rank genes, retrieves top clusters, and retrieves genes
 #' infos); and runs the plotting steps (plots cells similarity, cells heatmap,
-#' clusters similarity, and the clustered tsne). 
+#' clusters similarity, and the clustered tsne).
 #'
 #' @param experimentName String of the name of the experiment.
 #' @param countMatrix Matrix containing the raw counts.
@@ -397,9 +397,9 @@
 #' are plotted (14 tSNE by default). Default=NA.
 #' @param exportAllResults If TRUE, Save all results of CONCLUS. See
 #' ?exportResults for details. Default=TRUE.
-#' @param silentPlot Boolean indicating if the figures should not be output on 
+#' @param silentPlot Boolean indicating if the figures should not be output on
 #' the R graphics. Default=TRUE.
-#' 
+#'
 #' @keywords internal
 #'
 #' @return Writes results of each step to the corresponding output folders.
@@ -409,44 +409,44 @@
         runQuickCluster, randomSeed, cores, PCs, perplexities, writeOutputTSne,
         epsilon, minPoints, writeOutputDbScan, clusterNumber, deepSplit,
         clusteringMethod,clusToAdd, columnRankGenes, writeOutputRankGenes,
-        nTopMarkers, removeDuplicates, writeTopMarkers, groupBy, orderGenes, 
+        nTopMarkers, removeDuplicates, writeTopMarkers, groupBy, orderGenes,
         getUniprot, saveInfos, colorPalette, statePalette, orderClusters,
         writeCSM, widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
         widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
-        heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
+        heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE,
         heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot){
-    
+
     if(exportAllResults){
-        
-        writeOutputTSne <- writeOutputDbScan <- writeOutputRankGenes <- 
-                writeTopMarkers <- saveInfos <- FALSE 
-        
-        savePlotCTSNE <- savePlotCH <- savePlotClustSM <- writeCSM <- TRUE   
+
+        writeOutputTSne <- writeOutputDbScan <- writeOutputRankGenes <-
+                writeTopMarkers <- saveInfos <- FALSE
+
+        savePlotCTSNE <- savePlotCH <- savePlotClustSM <- writeCSM <- TRUE
     }
-    
+
     message("## Building the single-cell RNA-Seq object (step 1/13) ##")
     scr <- singlecellRNAseq(experimentName = experimentName,
                             countMatrix     = countMatrix,
                             species         = species,
                             outputDirectory = outputDirectory)
-    
+
     scrCSM <- .runProcessingStep(scr, sizes, rowMetaData, columnsMetaData,
             alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
-            perplexities, writeOutputTSne, epsilon, minPoints, 
+            perplexities, writeOutputTSne, epsilon, minPoints,
             writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
             clusToAdd)
-    
+
     scrInfos <- .runMarkersStep(scrCSM, columnRankGenes, writeOutputRankGenes,
             nTopMarkers, removeDuplicates, writeTopMarkers, cores, groupBy,
             orderGenes, getUniprot, saveInfos)
-    
+
     .runPlottingStep(scrInfos, colorPalette, statePalette, clusteringMethod,
             orderClusters, writeCSM, widthCSM, heightCSM, meanCentered,
             orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols,
-            savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs, 
+            savePlotClustSM, widthPlotClustSM, heightPlotClustSM, PCs,
             perplexities, columnRankGenes, savePlotCTSNE, widthPlotClustTSNE,
             heightPlotClustTSNE, tSNENb, outputDirectory, silentPlot)
-    
+
     if(exportAllResults){
         message("Exporting all results to ", outputDirectory)
         exportResults(scrInfos, saveAll=TRUE)
@@ -530,7 +530,7 @@
 #' This is particularly useful when one wants to compare the clustering
 #' performance of different tools. It should be a data frame having two columns
 #' 'clusters' and 'cells'. Default=NA.
-#' @param silentPlot Boolean indicating if the figures should not be output on 
+#' @param silentPlot Boolean indicating if the figures should not be output on
 #' the R graphics. Default=TRUE.
 #' @param sizes Vector of size factors from scran::computeSumFactors() function
 #' used by ?normaliseCountMatrix.
@@ -663,7 +663,7 @@
 #' 4) Clustering with DbScan. See ?runDBSCAN. \cr
 #' 5) Computing the cells similarity matrix. See ?clusterCellsInternal. \cr
 #' 6) Computing the clusters similarity matrix. If clusToAdd is not NA, add
-#' the provided clustering. See ?calculateClustersSimilarity and 
+#' the provided clustering. See ?calculateClustersSimilarity and
 #' ?addClustering.  \cr
 #' 7) Ranking genes. See ?rankGenes.  \cr
 #' 8) Getting marker genes. See ?retrieveTopClustersMarkers.  \cr
@@ -676,16 +676,16 @@
 #' See ?exportAllResults.  \cr
 #' 15) Return an object containing all the results provided by CONCLUS.  \cr
 #'
-#' If exportAllResults=TRUE, in your "outputDirectory", the sub-folder 
-#' pictures contains all tSNE with dbscan coloration (sub-folder 
-#' tSNE_pictures), the cell similarity matrix 
+#' If exportAllResults=TRUE, in your "outputDirectory", the sub-folder
+#' pictures contains all tSNE with dbscan coloration (sub-folder
+#' tSNE_pictures), the cell similarity matrix
 #' (Test_cells_correlation_X_clusters.pdf), the cell heatmap
 #' (Test_clustersX_meanCenteredTRUE_orderClustersFALSE_orderGenesFALSE
-#' markrsPerCluster.pdf`), and the cluster similarity matrix 
-#' (`Test_clusters_similarity_10_clusters.pdf`). You will also find in the 
-#' sub-folder `Results`: 
-#' 
-#' + `1_MatrixInfo`: The normalized count matrix and its meta-data for both 
+#' markrsPerCluster.pdf`), and the cluster similarity matrix
+#' (`Test_clusters_similarity_10_clusters.pdf`). You will also find in the
+#' sub-folder `Results`:
+#'
+#' + `1_MatrixInfo`: The normalized count matrix and its meta-data for both
 #' rows and columns. \cr
 #' + `2_TSNECoordinates`: The tSNE coordinates for each parameter of principal
 #' components (PCs) and perplexities.  \cr
@@ -693,16 +693,16 @@
 #' parameters. Each file gives a cluster number for each cell.  \cr
 #' + `4_CellSimilarityMatrix`: The matrix underlying the cells similarity
 #' heatmap. \cr
-#' + `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity 
+#' + `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity
 #' heatmap.  \cr
-#' + `6_ConclusResult`: A table containing the result of the consensus 
+#' + `6_ConclusResult`: A table containing the result of the consensus
 #' clustering. This table contains two columns: clusters-cells. \cr
 #' + `7_fullMarkers`: Files containing markers for each cluster, defined by the
 #' consensus clustering. \cr
 #' + `8_TopMarkers`: Files containing the top 10 markers for each cluster. \cr
-#' + `9_genesInfos`: Files containing gene information for the top markers 
+#' + `9_genesInfos`: Files containing gene information for the top markers
 #' defined in the previous folder. \cr
-#' 
+#'
 #' @return A \code{scRNAseq} object containing the similarity matrices and the
 #' marker genes.
 #'
@@ -713,20 +713,20 @@
 #' experimentName <- "Bergiers"
 #' outputDirectory <- "YourOutputDirectory"
 #' species <- "mouse"
-#' 
+#'
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
 #'                             package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
+#'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv",
 #'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
 #'
 #' runCONCLUS(outputDirectory, experimentName, countMatrix, species,
-#'         columnsMetaData=columnsMetaData, tSNENb=1)
+#'         columnsMetaData=columnsMetaData, tSNENb=1, cores=2)
 #'
 #' ## Remove the results
 #' unlink(outputDirectory, recursive=TRUE)
@@ -767,19 +767,18 @@ runCONCLUS <- function(
     heightCH=8.5, clusterCols=FALSE,
     ## plotClustersSimilarity parameters
     savePlotClustSM=FALSE, widthPlotClustSM=7, heightPlotClustSM=5.5){
-    
+
     scrInfos <- .runAllSteps(experimentName, countMatrix, species, sizes,
             outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-            runQuickCluster, randomSeed, cores, PCs, perplexities, 
-            writeOutputTSne, epsilon, minPoints, writeOutputDbScan, 
-            clusterNumber, deepSplit, clusteringMethod, clusToAdd, 
-            columnRankGenes, writeOutputRankGenes, nTopMarkers, 
+            runQuickCluster, randomSeed, cores, PCs, perplexities,
+            writeOutputTSne, epsilon, minPoints, writeOutputDbScan,
+            clusterNumber, deepSplit, clusteringMethod, clusToAdd,
+            columnRankGenes, writeOutputRankGenes, nTopMarkers,
             removeDuplicates, writeTopMarkers, groupBy, orderGenes, getUniprot,
             saveInfos, colorPalette, statePalette, orderClusters, writeCSM,
             widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
             widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
-            heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE, 
+            heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE,
             heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot)
     return(scrInfos)
 }
-

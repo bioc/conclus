@@ -28,59 +28,17 @@ change the coloration of the t-sne. It is particularly useful to compare the
 performance of different tools.
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-columnID="cell_ID")
-
-## Load the clusters table with the new cluster to add
-clustAddTab <- read.delim(
-system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-
-## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
-
-## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-
-## Calculate clusters similarity
-scrCSM <- calculateClustersSimilarity(scrCCI)
-
-## Ranking genes
-scrS4MG <- rankGenes(scrCSM)
-
-## Getting marker genes
-scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
-
-## Getting genes info
-scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Retrieving the table indicating to which cluster each cell belongs
-clustCellsDf <- retrieveTableClustersCells(scrInfos)
+clustCellsDf <- retrieveTableClustersCells(scr)
 
 ## Replace “10” by “9” to merge 9/10
 clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
 
 ## Modifying the object to take into account the new classification
-scrUpdated <- addClustering(scrInfos, clusToAdd=clustCellsDf)
+scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
 
 
 }

@@ -122,10 +122,10 @@
         print(tSNE)
         dev.off()
     }
-    
+
     if(!silent)
         print(tSNE)
-    
+
     return(tSNE)
 }
 
@@ -173,7 +173,7 @@
                 minNeighbours=minPts)
         dev.off()
     }
-    
+
     if(plotKNN){
 
         dev.new()
@@ -226,12 +226,12 @@
         print(p)
         dev.off()
     }
-    
+
     if(!silent){
         dev.new()
         print(p)
     }
-    
+
     return(p)
 }
 
@@ -247,7 +247,7 @@
 #'                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
 #'                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
 #'                 fileDist="distance_graph.pdf",
-#'                 fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE, 
+#'                 fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE,
 #'                 ...)
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
@@ -276,7 +276,7 @@
 #' @param silent If TRUE, do not plot graphics. Default=FALSE.
 #' @param plotKNN If TRUE, output the kNN plot on graphics. Default=TRUE.
 #' @param ... Options for generating the pdf files. See ?pdf for a list.
-#' 
+#'
 #' @return A ggplot object of the tSNE and the dbscan clustering.
 #'
 #' @aliases testClustering
@@ -302,31 +302,11 @@
 #' testClustering-scRNAseq
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Test the clustering with default parameters (dbscanEpsilon=1.4, minPts=5)
-#' testClustering(scrNorm)
+#' ## Object containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Test the clustering writing pdfs to test_clustering folder
-#' testClustering(scrNorm, writeOutput=TRUE)
+#' testClustering(scr, writeOutput=TRUE)
 #'
 #' ## Removing the written results
 #' unlink("YourOutputDirectory/", recursive = TRUE)
@@ -349,11 +329,11 @@ setMethod(
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf", fileClust="test_clustering.pdf",
                 silent=FALSE, plotKNN=TRUE, ...){
-            
+
             if(!writeOutput && silent)
                 warning("writeOutput=FALSE and silent=TRUE, nothing will ",
                         "happen.", immediate. =TRUE)
-            
+
             validObject(theObject)
 
             ## Get the values from slots
@@ -368,27 +348,27 @@ setMethod(
             message("Generating TSNE.")
 
             if(writeOutput){
-                
+
                 initialisePath(dataDirectory)
                 dir.create(file.path(dataDirectory, "test_clustering"),
                         showWarnings=FALSE)
             }
-            
+
             p <- list()
-            
+
             ## 1. Generating 2D tSNE plots
             tSNE <- .getTSNEresults(expressionMatrix=Biobase::exprs(sceObject),
                     cores=cores, PCs=PCs, perplexities=perplexities,
                     randomSeed=randomSeed)
-            p[[1]] <- .printTSNE(writeOutput, dataDirectory, width, height, 
+            p[[1]] <- .printTSNE(writeOutput, dataDirectory, width, height,
                     tSNE, fileTSNE, silent, ...)
 
             ## 2. Clustering with dbscan
-            .printDist(writeOutput, dataDirectory, width, height, 
+            .printDist(writeOutput, dataDirectory, width, height,
                     tSNE, dbscanEpsilon, minPts, fileDist, plotKNN, ...)
-            p[[2]] <- .printDBScan(writeOutput, dataDirectory, width, height, 
+            p[[2]] <- .printDBScan(writeOutput, dataDirectory, width, height,
                     tSNE, dbscanEpsilon, minPts, fileClust, silent, ...)
-            
+
             return(p)
         })
 
@@ -414,10 +394,10 @@ setMethod(
 #' @noRd
 #' @return A list of similarity matrix.
 .computeSimMat <- function(clusters, simMat, clustering){
-    
+
     l <- lapply(clusters[clusters!=0],
             function(cluster, simMat, clustering){
-                
+
                 ## Get the cells in the same cluster
                 selCol <- colnames(clustering)[
                         clustering == cluster]
@@ -538,20 +518,20 @@ setMethod(
 
 
 .reinitializeObject <- function(theObject){
-    
-    setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1, 
+
+    setClustersSimilarityMatrix(theObject) <-  matrix(nrow = 1, ncol = 1,
             dimnames = list("1", "1"), data = 1)
-    setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"), 
+    setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"),
                     mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
     setClustersMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
-    setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"), 
-            clusters="1", external_gene_name="gene", go_id="GO1,GO2", 
+    setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"),
+            clusters="1", external_gene_name="gene", go_id="GO1,GO2",
             mgi_description="description", entrezgene_description="descr",
             gene_biotype="gene", chromosome_name="1", Symbol="symbol",
             ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
             uniprot_gn_id="ID")
     setClustersSimiliratyOrdered(theObject) <- factor(1)
-    
+
     return(theObject)
 }
 
@@ -591,34 +571,11 @@ setMethod(
 #' updated.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
+#' ## Object containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
+#' scr <- clusterCellsInternal(scr, clusterNumber=10, cores=2)
 #'
 #' @seealso plotCellSimilarity
 #'
@@ -806,37 +763,11 @@ setMethod(
 #' clustersSimiliratyOrdered slots updated.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+
 #' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' scr <- calculateClustersSimilarity(scr)
 #'
 #' @seealso
 #' plotClustersSimilarity
@@ -892,19 +823,19 @@ setMethod(
 ##################
 ## retrieveTableClustersCells
 ##################
-        
+
 
 
 #' retrieveTableClustersCells
 #'
 #' @description
-#' Having computed clusterCellsInternal, retrieve to what cluster each cell 
+#' Having computed clusterCellsInternal, retrieve to what cluster each cell
 #' belongs. The output data.frame can be passed to the method ?addClustering.
 #'
 #' @usage
 #' retrieveTableClustersCells(theObject)
 #'
-#' @param theObject An Object of class scRNASeq for which the cells were 
+#' @param theObject An Object of class scRNASeq for which the cells were
 #' clustered internally. See ?clusterCellsInternal.
 #'
 #' @aliases retrieveTableClustersCells
@@ -916,41 +847,15 @@ setMethod(
 #' retrieveTableClustersCells-scRNAseq
 #'
 #' @return
-#' A data frame containing two columns 'clusters' and 'cells' indicating the 
+#' A data frame containing two columns 'clusters' and 'cells' indicating the
 #' result of the consensus clustering at the cellular level.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Retrieving the table clusters-cells.
-#' cellClustDf <- retrieveTableClustersCells(scrCCI)
+#' cellClustDf <- retrieveTableClustersCells(scr)
 #'
 #' @seealso
 #' addClustering
@@ -959,31 +864,31 @@ setMethod(
 #' @importFrom SummarizedExperiment colData
 
 setMethod(
-        
+
         f = "retrieveTableClustersCells",
-        
+
         signature = "scRNAseq",
-        
+
         definition = function(theObject){
-            
+
             ## Check if the Object is valid
             validObject(theObject)
-            
+
             ## Retrieve the clustering result in theObject
             sceObject  <- getSceNorm(theObject)
             colDf <- SummarizedExperiment::colData(sceObject)
-            
+
             if(!any(names(colDf) == "clusters"))
                 stop("clusterCellsInternal should be performed before ",
                         "retrieving this information.")
-            
+
             colDf <- data.frame(clusters=colDf$clusters, cells=colDf$cellName)
-            
+
             return(colDf)
         })
 
-        
-        
+
+
 ##################
 ## addClustering
 ##################
@@ -1050,60 +955,18 @@ setMethod(
 #' An object of class scRNASeq with its column name metadata updated.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-#' columnID="cell_ID")
-#' 
-#' ## Load the clusters table with the new cluster to add
-#' clustAddTab <- read.delim(
-#' system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#'
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#' 
-#' ## Getting marker genes
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
-#'
-#' ## Getting genes info
-#' scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
-#' 
 #' ## Retrieving the table indicating to which cluster each cell belongs
-#' clustCellsDf <- retrieveTableClustersCells(scrInfos)
-#' 
+#' clustCellsDf <- retrieveTableClustersCells(scr)
+#'
 #' ## Replace “10” by “9” to merge 9/10
 #' clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
-#' 
+#'
 #' ## Modifying the object to take into account the new classification
-#' scrUpdated <- addClustering(scrInfos, clusToAdd=clustCellsDf)
-#' 
+#' scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)
+#'
 #'
 #' @exportMethod addClustering
 #' @importFrom SummarizedExperiment colData
@@ -1143,17 +1006,17 @@ setMethod(
             clNb <- length(unique(colDf$clusters))
             SummarizedExperiment::colData(sceObject)$clusters <- colDf$clusters
             setSceNorm(theObject) <- sceObject
-            
+
             ## Re-initialize values before re-computing markers
             theObject <- .reinitializeObject(theObject)
-            
+
             ## Recompute markers
             message("Computing new markers..")
             theObject <- calculateClustersSimilarity(theObject)
             theObject <- rankGenes(theObject)
-            theObject <- retrieveTopClustersMarkers(theObject, 
+            theObject <- retrieveTopClustersMarkers(theObject,
                     removeDuplicates=FALSE)
             theObject <- retrieveGenesInfo(theObject)
-            
+
             return(theObject)
         })

@@ -336,7 +336,7 @@
 #' @keywords internal
 #' @noRd
 .saveNormalizedMatrix <- function(theObject, experimentName, sceObject,
-                                    outputDir, saveNormalizedMatrix, 
+                                    outputDir, saveNormalizedMatrix,
                                     saveRowData, saveColData){
 
     if(saveNormalizedMatrix || saveRowData || saveColData){
@@ -380,7 +380,7 @@
 #' of PCs and perplexities as tsv files. These coordinates were obtained with
 #' ?generateTSNECoordinates. They are saved in the sub-directory
 #' '2_TSNECoordinates'.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveTsne <- function(theObject, outputDir, saveTsne){
@@ -407,7 +407,7 @@
 #' files. The number of clustering solutions is
 #' PCs*perplexity*epsilon*minPoints (see ?runDBSCAN, 84 solutions by default).
 #' These are saved in the sub-directory '3_dbScan'.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveDBScan <- function(theObject, outputDir, saveDBScan){
@@ -436,12 +436,12 @@
 #' @param saveCellsSimilarityMatrix Default=FALSE. Save the cells similarity
 #' matrix that was obtained with ?clusterCellsInternal. This matrix is saved in
 #' the sub-directory '4_CellSimilarityMatrix'.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveCellsSimilarityMatrix <- function(theObject, experimentName, outputDir,
                                         saveCellsSimilarityMatrix){
-    
+
     if(saveCellsSimilarityMatrix){
         outputCellSM <- file.path(outputDir,
                                     "4_CellSimilarityMatrix")
@@ -454,7 +454,7 @@
 #' .saveClustersSimilarityMatrix
 #'
 #' @description
-#' Internal function of exportResults. Save the cluster  similarity matrix 
+#' Internal function of exportResults. Save the cluster  similarity matrix
 #' in '5_ClusterSimilarityMatrix' sub-directory.
 #'
 #' @param theObject An Object of class scRNASeq for which different steps of
@@ -467,7 +467,7 @@
 #' @param saveClustersSimilarityMatrix Default=FALSE. Save the cluster
 #' similarity matrix that was obtained with ?calculateClustersSimilarity. It is
 #' saved in the sub-directory '5_ClusterSimilarityMatrix'.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveClustersSimilarityMatrix <- function(theObject, experimentName, outputDir,
@@ -485,7 +485,7 @@
 #' .saveClusteringResults
 #'
 #' @description
-#' Internal function of exportResults. Save a table cluster-cell being the 
+#' Internal function of exportResults. Save a table cluster-cell being the
 #' consensus clustering result in '6_ConclusResult' sub-directory.
 #'
 #' @param theObject An Object of class scRNASeq for which different steps of
@@ -501,7 +501,7 @@
 #' giving the corresponding cluster number to each cell. The method
 #' ?calculateClustersSimilarity should have been run on the object. It is saved
 #' in the sub-directory 6_ConclusResult.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveClusteringResults <- function(theObject, experimentName, sceObject,
@@ -519,7 +519,7 @@
 #' .saveFullMarkers
 #'
 #' @description
-#' Internal function of exportResults. Save the full markers lists 
+#' Internal function of exportResults. Save the full markers lists
 #' in '7_fullMarkers' sub-directory.
 #'
 #' @param theObject An Object of class scRNASeq for which different steps of
@@ -529,7 +529,7 @@
 #' dataDirectory is directly retrieved from the scRNASeq object.
 #' @param saveFullMarkers Default=FALSE. Save the lists of markers that were
 #' obtained with ?rankGenes to the sub-directory 7_fullMarkers.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveFullMarkers <- function(theObject, outputDir, saveFullMarkers){
@@ -545,7 +545,7 @@
 #' .saveTopMarkers
 #'
 #' @description
-#' Internal function of exportResults. Save the top markers per clusters as csv 
+#' Internal function of exportResults. Save the top markers per clusters as csv
 #' files in '8_TopMarkers' sub-directory.
 #'
 #' @param theObject An Object of class scRNASeq for which different steps of
@@ -556,11 +556,11 @@
 #' @param saveTopMarkers Default=FALSE. Save the top markers per clusters as csv
 #' files in the sub-directory '8_TopMarkers'. See ?retrieveTopClustersMarkers
 #' for more details.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveTopMarkers <- function(theObject, outputDir, saveTopMarkers){
-    
+
     if(saveTopMarkers){
         outputTop <- file.path(outputDir, "8_TopMarkers")
         .createFolder(outputTop)
@@ -584,11 +584,11 @@
 #' @param saveGenesInfos Default=FALSE. Save the genes information for each
 #' cluster as csv files in the sub-directory '9_genesInfos'. See
 #' ?retrieveGenesInfo for more details.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 .saveGenesInfos <- function(theObject, outputDir, saveGenesInfos){
-    
+
     if(saveGenesInfos){
         outputInfos <- file.path(outputDir, "9_genesInfos")
         .createFolder(outputInfos)
@@ -651,8 +651,8 @@
 #' cluster as csv files in the sub-directory '9_genesInfos'. See
 #' ?retrieveGenesInfo for more details.
 #'
-#' @return Sub-directories containing the results of the different conclus 
-#' steps. See the 'Quick start' section of the vignette for details. 
+#' @return Sub-directories containing the results of the different conclus
+#' steps. See the 'Quick start' section of the vignette for details.
 #'
 #' @aliases exportResults
 #'
@@ -663,49 +663,11 @@
 #'
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#'
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#'
-#' ## Getting marker genes
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
-#'
-#' ## Getting genes info
-#' scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Saving all results
-#' exportResults(scrInfos, saveAll=TRUE)
+#' exportResults(scr, saveAll=TRUE)
 #'
 #' ## Removing output directory
 #' unlink("YourOutputDirectory", recursive=TRUE)

@@ -67,56 +67,18 @@ cluster as csv files in the sub-directory '9_genesInfos'. See
 ?retrieveGenesInfo for more details.}
 }
 \value{
-Sub-directories containing the results of the different conclus 
+Sub-directories containing the results of the different conclus
 steps. See the 'Quick start' section of the vignette for details.
 }
 \description{
 Export all the results of Conclus to a Results sub-directory.
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-
-## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
-
-## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-
-## Calculate clusters similarity
-scrCSM <- calculateClustersSimilarity(scrCCI)
-
-## Ranking genes
-scrS4MG <- rankGenes(scrCSM)
-
-## Getting marker genes
-scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
-
-## Getting genes info
-scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Saving all results
-exportResults(scrInfos, saveAll=TRUE)
+exportResults(scr, saveAll=TRUE)
 
 ## Removing output directory
 unlink("YourOutputDirectory", recursive=TRUE)

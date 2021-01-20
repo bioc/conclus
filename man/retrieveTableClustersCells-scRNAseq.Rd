@@ -8,49 +8,23 @@
 retrieveTableClustersCells(theObject)
 }
 \arguments{
-\item{theObject}{An Object of class scRNASeq for which the cells were 
+\item{theObject}{An Object of class scRNASeq for which the cells were
 clustered internally. See ?clusterCellsInternal.}
 }
 \value{
-A data frame containing two columns 'clusters' and 'cells' indicating the 
+A data frame containing two columns 'clusters' and 'cells' indicating the
 result of the consensus clustering at the cellular level.
 }
 \description{
-Having computed clusterCellsInternal, retrieve to what cluster each cell 
+Having computed clusterCellsInternal, retrieve to what cluster each cell
 belongs. The output data.frame can be passed to the method ?addClustering.
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-
-## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
-
-## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Retrieving the table clusters-cells.
-cellClustDf <- retrieveTableClustersCells(scrCCI)
+cellClustDf <- retrieveTableClustersCells(scr)
 
 }
 \seealso{
