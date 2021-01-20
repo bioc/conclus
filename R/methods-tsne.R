@@ -54,7 +54,7 @@
 #' @return Returns a list of Tsne objects.
 #' @noRd
 .buildingTsneObjects <- function(PCs, perplexities, experimentName, TSNEres){
-    
+
 
     vec <- unlist(lapply(seq_len(length(PCs)*length(perplexities)),
                         function(i, PCA, perp){
@@ -103,15 +103,15 @@
 #' @noRd
 .writeOutputTsne <- function(theObject, PCs, perplexities, experimentName,
         TSNEres){
-    
+
     dataDirectory <- getOutputDirectory(theObject)
     initialisePath(dataDirectory)
     tSNEDirectory <- "tsnes"
     outputDir <- file.path(dataDirectory, tSNEDirectory)
-    
+
     if(!file.exists(outputDir))
         dir.create(outputDir, showWarnings=FALSE, recursive = TRUE)
-    
+
     invisible(lapply(seq_len(length(PCs)*length(perplexities)), function(i, PCA,
                             perp){
 
@@ -181,28 +181,11 @@
 #' is TRUE.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
+#' scr <- generateTSNECoordinates(scr, cores=2)
 #'
 #' @seealso
 #' normaliseCountMatrix

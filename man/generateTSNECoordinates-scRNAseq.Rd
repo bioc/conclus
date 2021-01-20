@@ -50,28 +50,11 @@ PCs=c(8, 10, 20, 40, 50, 80, 100) and perplexities=c(200, 240). For
 details about perplexities parameter see ‘?Rtsne’.
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
+scr <- generateTSNECoordinates(scr, cores=2)
 
 }
 \seealso{
