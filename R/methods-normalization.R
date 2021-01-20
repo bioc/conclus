@@ -1,33 +1,33 @@
 #' .normalizeCon
 #'
 #' @description
-#' This function is inspired from the function normalizeSCE of scater v1.12.2 
+#' This function is inspired from the function normalizeSCE of scater v1.12.2
 #' and normalize the count matrix.
 #'
-#' @param object Result of scran::computeSumFactors filtering on cells having 
+#' @param object Result of scran::computeSumFactors filtering on cells having
 #' a size factor higher than zero.
-#' ' 
+#' '
 #' @keywords internal
 #' @importFrom SummarizedExperiment assay
-#' @return A SingleCellExperiment object containing the normalized matrix in 
+#' @return A SingleCellExperiment object containing the normalized matrix in
 #' the logcounts slot.
 #' @noRd
 .normalizeCon <- function(object) {
-    
+
     cur_exprs <- SummarizedExperiment::assay(object, i = "counts")
-    col_list <-  split(cur_exprs, rep(seq_len(ncol(cur_exprs)), 
+    col_list <-  split(cur_exprs, rep(seq_len(ncol(cur_exprs)),
                     each = nrow(cur_exprs)))
     norm_exprs <- mapply(function(exprsCol, sizeFact){
-                
+
                 result <- log2((exprsCol/sizeFact)+1)
-                
-            }, col_list, SingleCellExperiment::sizeFactors(object), 
+
+            }, col_list, SingleCellExperiment::sizeFactors(object),
             SIMPLIFY=FALSE)
     norm_exprs <- do.call("cbind", norm_exprs)
-    
+
     SummarizedExperiment::assay(object, "logcounts",
             withDimnames=FALSE) <- norm_exprs
-    
+
     return(object)
 }
 
@@ -39,7 +39,7 @@
 #' species.
 #'
 #' @param species The studied species.
-#' ' 
+#' '
 #' @keywords internal
 #' @importFrom biomaRt useMart
 #' @return Returns the genome annotation name, the pattern to use to retrieve
@@ -48,25 +48,25 @@
 .defineMartVar <- function(species){
 
     if(isTRUE(all.equal(species, "human"))){
-        
+
         # suppressMessages(library(org.Hs.eg.db, warn.conflicts=FALSE))
         genomeAnnot <- org.Hs.eg.db::org.Hs.eg.db
         ensemblPattern <- "ENSG"
         dataset <- "hsapiens_gene_ensembl"
-        
+
     }else if(isTRUE(all.equal(species, "mouse"))){
-        
+
         # suppressMessages(library(org.Mm.eg.db, warn.conflicts=FALSE))
         genomeAnnot <- org.Mm.eg.db::org.Mm.eg.db
         ensemblPattern <- "ENSMUSG"
         dataset <-"mmusculus_gene_ensembl"
-        
+
     }else
         stop("Species should be human or mouse: ", species, "is not ",
                 "currently supported.")
-    
+
     ensembl <- .tryUseMart(biomart="ensembl", dataset)
-    
+
     return(list(genomeAnnot, ensemblPattern, ensembl))
 }
 
@@ -80,23 +80,23 @@
 #' @param countMatrix The raw count matrix
 #' @param ensemblPattern Expression used to retrieve the ensembl IDs.
 #' @param genomeAnnot Bioconductor package name to be used with biomaRt.
-#' 
+#'
 #' @keywords internal
 #' @importFrom AnnotationDbi keys
 #' @return Returns the number of lines of count matrix having a gene symbol.
 #' @noRd
 .testMattrixNames <- function(countMatrix, ensemblPattern, genomeAnnot){
-    
+
     allnames <- rownames(countMatrix)
     lengthEnsemblGenes <- length(grep(ensemblPattern, allnames))
     lengthSymbols <- length(intersect(AnnotationDbi::keys(genomeAnnot,
                             keytype = "SYMBOL"), allnames))
-    
+
     if(isTRUE(all.equal(lengthEnsemblGenes, 0)) &&
             isTRUE(all.equal(lengthSymbols, 0)))
         stop("The row names of the matrix neither contain ensembl genes or",
                 "official gene symbols.")
-    
+
     return(lengthSymbols)
 }
 
@@ -109,23 +109,23 @@
 #' @param ensemblGenes Row names of the counts matrix having an ensembl ID.
 #' @param ensemblPattern Expression used to retrieve the ensembl IDs.
 #' @param genomeAnnot Bioconductor package name to be used with biomaRt.
-#' 
+#'
 #' @keywords internal
 #' @importFrom AnnotationDbi keys select
 #' @return Returns the rowData with ensembl IDs completed with symbols and gene
 #' name.
 #' @noRd
 .annotateEnsembl <- function(ensemblGenes, ensemblPattern, genomeAnnot){
-    
+
     message("Annotating ",length(ensemblGenes), " genes containing ",
             ensemblPattern, " pattern.")
-    
+
     ## If none of ENSEMBL genes are in database, set to NA
     lengthEnsInDb <- length(intersect(AnnotationDbi::keys(genomeAnnot,
                             keytype="ENSEMBL"), ensemblGenes))
-    
+
     if(!isTRUE(all.equal(lengthEnsInDb, 0))){
-        
+
         rowdataEnsembl <- AnnotationDbi::select(genomeAnnot,
                 keys = ensemblGenes, keytype = "ENSEMBL",
                 columns = c("SYMBOL", "GENENAME"), multiVals="first")
@@ -134,9 +134,9 @@
     }else
         rowdataEnsembl <- data.frame(ENSEMBL=ensemblGenes, SYMBOL = NA,
                 GENENAME=NA)
-    
+
     rowdataEnsembl$nameInCountMatrix <- ensemblGenes
-    
+
     return(rowdataEnsembl)
 }
 
@@ -149,17 +149,17 @@
 #' @param genomeAnnot Bioconductor package name to be used with biomaRt.
 #' @param symbolGenes Names of the rows of the count matrix having a gene symbol
 #' as name instead of an ensembl ID.
-#' 
+#'
 #' @keywords internal
 #' @importFrom AnnotationDbi select
 #' @return Returns the rowData with symbols completed with ensembl IDs and gene
 #' name.
 #' @noRd
 .annotateSymbols <- function(symbolGenes, genomeAnnot){
-    
+
     message("Annotating ", length(symbolGenes),
             " genes considering them as SYMBOLs.")
-    
+
     rowdataSymbol <- AnnotationDbi::select(genomeAnnot,
             keys=symbolGenes,
             keytype="SYMBOL",
@@ -168,7 +168,7 @@
             multiVals="first")
     rowdataSymbol <- rowdataSymbol[!duplicated(rowdataSymbol$SYMBOL),]
     rowdataSymbol$nameInCountMatrix <- symbolGenes
-    
+
     return(rowdataSymbol)
 }
 
@@ -185,25 +185,25 @@
 #' instead of an ensembl ID.
 #' @param symbolGenes Names of the rows of the count matrix having a gene symbol
 #' as name instead of an ensembl ID.
-#' 
+#'
 #' @keywords internal
 #' @return Returns the rowData annotated with the sub-functions considering
 #' ensembl IDs or symbols.
 #' @noRd
-.annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot, 
+.annotateRowData <- function(ensemblGenes, ensemblPattern, genomeAnnot,
         lengthSymbols, symbolGenes){
-    
+
     if(!isTRUE(all.equal(length(ensemblGenes), 0)))
-        rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern, 
+        rowdataEnsembl <- .annotateEnsembl(ensemblGenes, ensemblPattern,
                 genomeAnnot)
     else
         rowdataEnsembl <- NULL
-    
+
     if(!isTRUE(all.equal(lengthSymbols, 0)))
         rowdataSymbol <- .annotateSymbols(symbolGenes, genomeAnnot)
     else
         rowdataSymbol <- NULL
-    
+
     rowdata <- base::rbind(rowdataSymbol, rowdataEnsembl)
     return(rowdata)
 }
@@ -212,7 +212,7 @@
 #' .retrieveGenesInfoBiomart
 #'
 #' @description
-#' This function retrieves the ensembl_gene_id, go_id, name_1006, 
+#' This function retrieves the ensembl_gene_id, go_id, name_1006,
 #' chromosome_name, and gene_biotype for each gene retrieved from the count
 #' matrix.
 #'
@@ -220,24 +220,24 @@
 #' .defineMartVar.
 #' @param rowdata rowData of class data.frame, it contains gene names of the
 #' count matrix.
-#' 
+#'
 #' @keywords internal
 #' @importFrom biomaRt getBM
 #' @return Returns the rowData filled with the bioMart annotations.
 #' @noRd
 .retrieveGenesInfoBiomart <- function(ensembl, rowdata){
-    
-    attributes <- c("ensembl_gene_id", "go_id", "name_1006", "chromosome_name", 
+
+    attributes <- c("ensembl_gene_id", "go_id", "name_1006", "chromosome_name",
                     "gene_biotype")
-    
+
     res <- .tryGetBM(attributes, ensembl)
-    
+
     tmp <- res[!duplicated(res$ensembl_gene_id),]
-    
+
     rowdata <- merge(rowdata, tmp[c("ensembl_gene_id", "chromosome_name",
                             "gene_biotype")], by.x = "ENSEMBL",
             by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
-    
+
     rowdataGO <- merge(rowdata, res[c("ensembl_gene_id",
                             "go_id", "name_1006")], by.x = "ENSEMBL",
             by.y = "ensembl_gene_id", all.x = TRUE, all.y = FALSE, sort = FALSE)
@@ -251,7 +251,7 @@
     rowdataGO <- rowdataGO[!duplicated(rowdataGO$ENSEMBL),]
     rowdata <- merge(rowdata, rowdataGO[c("nameInCountMatrix", "go_id",
                             "name_1006")], by.x = "nameInCountMatrix",
-            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE, 
+            by.y = "nameInCountMatrix", all.x = TRUE, all.y = TRUE,
             sort = FALSE)
     return(rowdata)
 }
@@ -265,18 +265,18 @@
 #' @param rowdataDF rowData of class data.frame, it contains gene names of the
 #' count matrix.
 #' @param Data frame containing annotations retrieved from biomaRt.
-#' 
+#'
 #' @keywords internal
 #'
 #' @return Returns the rowData filled with the rowdataDF annotations.
 #' @noRd
 .mergeRowDataDf <- function(rowdataDF, rowdata){
-    
+
     if("nameInCountMatrix" %in% colnames(rowdata) &&
             "nameInCountMatrix" %in% colnames(rowdataDF)){
         rowdataMerged <- merge(rowdataDF, rowdata, all.x = TRUE, all.y = TRUE,
                 sort = FALSE)
-        
+
         return(rowdataMerged)
 
         }else
@@ -291,25 +291,25 @@
 #' This function merge the coldata created by CONCLUS with  the coldata
 #' provided by the user if he has entered it.
 #'
-#' @param coldataDF Data frame provided by the user containing information 
+#' @param coldataDF Data frame provided by the user containing information
 #' about cells.
-#' @param coldata Data frame created by CONCLUS containing information 
+#' @param coldata Data frame created by CONCLUS containing information
 #' about cells.
-#' 
+#'
 #' @keywords internal
 #'
 #' @return Returns the final coldata
-#' @noRd       
+#' @noRd
 .mergeColDataDf <- function(coldataDF, coldata){
 
-    if("cellName" %in% colnames(coldata) && 
+    if("cellName" %in% colnames(coldata) &&
         "cellName" %in% colnames(coldataDF)){
-            coldataMerged <- merge(coldataDF, coldata, all.x = TRUE, 
+            coldataMerged <- merge(coldataDF, coldata, all.x = TRUE,
                                     all.y = TRUE, sort = FALSE)
-        
+
         return(coldataMerged)
-        
-    }else 
+
+    }else
         stop("No 'cellName' column in the coldata or coldataDF",
                 " to perform the merge." )
 
@@ -340,15 +340,15 @@
     ensemblPattern <- martResult[[2]]
     ensembl <- martResult[[3]]
     lengthSymbols <- .testMattrixNames(countMatrix, ensemblPattern, genomeAnnot)
-    
+
     ensemblGenes <- rownames(countMatrix)[grep(ensemblPattern,
                     rownames(countMatrix))]
     symbolGenes <- rownames(countMatrix)[!grepl(ensemblPattern,
                     rownames(countMatrix))]
 
-    rowdata <- .annotateRowData(ensemblGenes, ensemblPattern, genomeAnnot, 
+    rowdata <- .annotateRowData(ensemblGenes, ensemblPattern, genomeAnnot,
             lengthSymbols, symbolGenes)
-        
+
     ## Filtering duplicated symbols
     (multSym <- rowdata$SYMBOL[!is.na(rowdata$SYMBOL) &
                                 duplicated(rowdata$SYMBOL)])
@@ -358,10 +358,10 @@
                 paste0(rowdata$SYMBOL[rowdata$SYMBOL %in% multSym],
                         rowdata$ENSEMBL[rowdata$SYMBOL %in% multSym]))
     rowdata <- .retrieveGenesInfoBiomart(ensembl, rowdata)
-    
+
     if(!is.null(rowdataDF))
         rowdata <- .mergeRowDataDf(rowdataDF, rowdata)
-        
+
     rownames(rowdata) <- rowdata$nameInCountMatrix
     rowdata <- rowdata[rownames(countMatrix),]
     rowdata$SYMBOL[(S4Vectors::isEmpty(rowdata$SYMBOL)) |
@@ -414,7 +414,7 @@
         }
         vec <- as.numeric(colData[ ,columnName] <=  as.numeric(threshold))
     }
-    
+
     return(vec)
 }
 
@@ -445,13 +445,13 @@
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
     message("Running filterCells.")
-    
+
     countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
         stop("None of your cells has at least 100 genes expressed. Since the ",
             "filtering keeps only those cells, nothing will be kept. ",
             "Please check the count matrix.")
-    
+
     colData <- colData[colnames(countMatrix), ]
     mb <- MoreBetter
     mw <- MoreWorse
@@ -545,7 +545,7 @@
 #' @noRd
 #' @return The updated columns meta-data.
 .addGenesInfoCell <- function(coldata, countMatrix){
-    
+
     coldata <- dplyr::mutate(coldata, genesNum=NA, genesSum=NA, oneUMI=NA)
     coldata$genesSum <- colSums(countMatrix)
     coldata$genesNum <- vapply(colnames(countMatrix), .fillGenesNumColumn,
@@ -556,7 +556,7 @@
             oneUMIper =100 * coldata$oneUMI / coldata$genesNum)
     return(coldata)
 }
-        
+
 #' .addCellsInfo
 #'
 #' @description
@@ -578,7 +578,7 @@
             stringsAsFactors = FALSE)
 
     ### add info about all genes in a cell
-    coldata <- .addGenesInfoCell(coldata, countMatrix) 
+    coldata <- .addGenesInfoCell(coldata, countMatrix)
     ### add info about mitochondrial and protein-coding genes
     coldata <- dplyr::mutate(coldata, mtGenes = NA, mtSum = NA, codGenes = NA,
             codSum=NA)
@@ -605,7 +605,7 @@
             codPer = 100*coldata$codGenes/coldata$genesNum,
             sumMtPer = 100*coldata$mtSum/coldata$genesSum,
             sumCodPer = 100*coldata$codSum/coldata$genesSum)
-    
+
     if (!is.null(coldataDF))
         coldata <- .mergeColDataDf(coldataDF, coldata)
 
@@ -699,38 +699,38 @@
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @return A single cell experiment object
 .filterSCE <- function(alreadyCellFiltered, countMatrix, coldata, rowdata){
-            
+
 
     if(!alreadyCellFiltered){
-        
+
         filterCellsResult <- .filterCells(countMatrix, coldata)
         countMatrix <- filterCellsResult[[1]]
         coldata <- filterCellsResult[[2]]
     }
-    
+
     if(isTRUE(nrow(coldata) == 0))
-        stop("There are no more cells after filtering. Maybe the ", 
+        stop("There are no more cells after filtering. Maybe the ",
             "count matrix does not contain enough informative cells. ",
             "Please check the count matrix.")
-    
+
     filterGenesResult <- .filterGenes(countMatrix, rowdata)
     countMatrix <- filterGenesResult[[1]]
     rowdata <- filterGenesResult[[2]]
-    
+
     if(isTRUE(nrow(rowdata) == 0))
         stop("There are no more genes after filtering. Maybe the count matrix ",
             "contains only genes which are less than in 10 cells or more than ",
             "all-10 cells. Please check the count matrix.")
-    
+
     stopifnot(all(rownames(countMatrix) == rownames(rowdata)))
-    stopifnot(all(colnames(countMatrix) == rownames(coldata))) 
+    stopifnot(all(colnames(countMatrix) == rownames(coldata)))
     sce <- SingleCellExperiment::SingleCellExperiment(assays=list(
                     counts=as.matrix(countMatrix)),
             colData=coldata,
             rowData=rowdata)
-    
+
     return(sce)
-    
+
 }
 
 
@@ -746,13 +746,13 @@
 #' @keywords internal
 #' @noRd
 .checkRowAndColdata <- function(countMatrix, rowdata, coldata){
-    
-    if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata), 
+
+    if(!is.null(rowdata) && !isTRUE(all.equal(nrow(rowdata),
                                                 nrow(countMatrix))))
         stop("The provided row metadata should contain the same number ",
                 "of rows than the matrix.")
-    
-    if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata), 
+
+    if(!is.null(coldata) && !isTRUE(all.equal(nrow(coldata),
                                             ncol(countMatrix))))
         stop("The provided col metadata should contain the same number ",
                 "of rows than the matrix number of columns.")
@@ -766,15 +766,15 @@
 #' informations) to filter the count matrix. It also normalizes by using
 #' deconvolution with size factors.
 #'
-#' @usage 
+#' @usage
 #' normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
 #'                     coldata=NULL, alreadyCellFiltered=FALSE,
 #'                     runQuickCluster=TRUE)
-#' 
-#' 
+#'
+#'
 #' @param theObject A scRNAseq object
 #' @param sizes  Vector of size factors used by scran::computeSumFactors().
-#' It is a numeric vector of pool sizes, i.e., number of cells per pool. See 
+#' It is a numeric vector of pool sizes, i.e., number of cells per pool. See
 #' ?scran::computeSumFactors for more details.
 #' @param coldata Data frame containing cells informations. Default is NULL.
 #' @param rowdata Data frame containing genes informations. Default is NULL.
@@ -789,16 +789,16 @@
 #' This function uses the normalization method of the scater package. For more
 #' details about the normalization used see ?scater::normalize. The size factors
 #' used in the normalization are calculated with scran::computeSumFactors.
-#' 
-#' Beforehand, the function will annotate genes creating rowData and add 
-#' statistics about cells into columnsMetaData. If you already have 
-#' columnsMetaData and rowData, you can give it to the function (see manual). 
-#' It will keep your columns and add new ones at the end. If you do not want 
-#' to lose any cell after quality metrics check, select 
-#' alreadyCellFiltered = TRUE, by default it is FALSE. Before scater 
-#' normalization, the function will call scran::quickCluster (see manual for 
-#' details). If you want to skip this step, set runQuickCluster = FALSE, by 
-#' default it is TRUE. We advice to first try the analysis with this option 
+#'
+#' Beforehand, the function will annotate genes creating rowData and add
+#' statistics about cells into columnsMetaData. If you already have
+#' columnsMetaData and rowData, you can give it to the function (see manual).
+#' It will keep your columns and add new ones at the end. If you do not want
+#' to lose any cell after quality metrics check, select
+#' alreadyCellFiltered = TRUE, by default it is FALSE. Before scater
+#' normalization, the function will call scran::quickCluster (see manual for
+#' details). If you want to skip this step, set runQuickCluster = FALSE, by
+#' default it is TRUE. We advice to first try the analysis with this option
 #' and to set it to FALSE if no rare populations are found.
 #'
 #'
@@ -817,24 +817,24 @@
 #'
 #' @examples
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
 #'                             package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
+#'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv",
 #'                             package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
-#' 
+#'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
 #'                 countMatrix     = countMatrix,
 #'                 species         = "mouse",
 #'                 outputDirectory = "YourOutputDirectory")
-#'                 
+#'
 #' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' scr <- normaliseCountMatrix(scr, coldata = columnsMetaData)
 #'
 #' @exportMethod normaliseCountMatrix
 #' @importFrom methods validObject
@@ -858,19 +858,19 @@ setMethod(
                 runQuickCluster)
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
-        
+
         .checkRowAndColdata(countMatrix, rowdata, coldata)
-        
+
         rowdata <- .annotateGenes(countMatrix, species = species,
                 rowdataDF = rowdata)
         coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
                 coldataDF = coldata)
         sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
-                                
+
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
-                
+
         if(runQuickCluster)
             cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
         else
@@ -881,21 +881,19 @@ setMethod(
             scran::computeSumFactors(sce, sizes=sizes, clusters=cl, positive=F))
         message("summary(sizeFactors(sceObject)):")
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
-        
+
         nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(
                         sceNorm)[
                         SingleCellExperiment::sizeFactors(sceNorm) <= 0])
-        
+
         if (nbrNegSFCells > 0){
             message(nbrNegSFCells, " cells with negative sizeFactors will be ",
                     "deleted before the downstream analysis.")
-            sceNorm <- sceNorm[, 
+            sceNorm <- sceNorm[,
                     SingleCellExperiment::sizeFactors(sceNorm) > 0]
         }
-            
+
         sceNorm <- .normalizeCon(sceNorm)
         setSceNorm(theObject) <- sceNorm
         return(theObject)
     })
-
-

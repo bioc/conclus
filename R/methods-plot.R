@@ -128,7 +128,7 @@
 #' .checkParamCellSimilaritySub
 #'
 #' @description Check parameters of plotCellSimilarity
-#' 
+#'
 #' @param showColnames pheatmap parameter. Boolean specifying if column names
 #' are displayed. Default=FALSE.
 #' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
@@ -145,31 +145,31 @@
 #' @noRd
 .checkParamCellSimilaritySub <- function(showColnames, fontsize, fontsizeRow,
         widthPNG, heightPNG, silentPlot, returnPlot, savePlot){
-    
+
     ## Verify showColnames
     if (!is.logical(showColnames))
         stop("showColnames should be a boolean.")
-    
+
     ## Verify fontsize
     if (!is.numeric(fontsize))
         stop("fontsize should be a numeric.")
-    
+
     ## Verify fontsizeRow
     if (!is.numeric(fontsizeRow))
         stop("fontsizeRow should be a numeric.")
-    
+
     ## Verify widthPNG
     if (!is.numeric(widthPNG))
         stop("widthPNG should be a numeric.")
-    
+
     ## Verify heightPNG
     if (!is.numeric(heightPNG))
         stop("heightPNG should be a numeric.")
-    
+
     ## Verify silentPlot
     if (!is.logical(silentPlot))
         stop("silentPlot should be a boolean.")
-    
+
     if(silentPlot && !returnPlot && !savePlot)
         stop("You do not plot, neither save the heatmap or return the object.",
                 " Nothing will happen. You should either plot the results, ",
@@ -267,7 +267,7 @@
 #'
 #' @description
 #' Orders the clusters to generate a cell similarity pheatmap.
-#' 
+#'
 #' @param orderClusters If TRUE, clusters in the similarity matrix of cells will
 #' be ordered by name. Default = FALSE.
 #' @param colDf A data frame with information about cells.
@@ -286,10 +286,10 @@
 #' @noRd
 #' @return The update cellsSimilarityMatrix (if orderClusters is TRUE) and the
 #' booleans clusterCols and clusterRows.
-.plotCellSimilarityOrderClusters <- function(orderClusters, colDf, 
+.plotCellSimilarityOrderClusters <- function(orderClusters, colDf,
         expressionMatrix, clusteringMethod, cellsSimilarityMatrix, clusterCols,
         clusterRows){
-    
+
     if(orderClusters){
         # Ordering expressionMatrixrix
         newOrder <- lapply(levels(colDf$clusters), function(cluster){
@@ -299,14 +299,14 @@
         cellsSimilarityMatrix <- cellsSimilarityMatrix[newOrder, newOrder]
         clusterCols <- FALSE
         clusterRows <- FALSE
-        
+
     } else {
         distanceMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
         clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
         clusterCols <- clusteringTree
         clusterRows <- clusteringTree
     }
-    
+
     return(list(cellsSimilarityMatrix, clusterCols, clusterRows))
 }
 
@@ -315,7 +315,7 @@
 #'
 #' @description
 #' Generate a cell similarity pheatmap.
-#' 
+#'
 #' @param colDf A data frame with information about cells.
 #' @param colorPalette A vector of colors for clusters. Default = "default",
 #' see details.
@@ -355,14 +355,14 @@
 #' @keywords internal
 #' @noRd
 #' @return A pheatmap object.
-.plotCellSimilarityHeatmap <- function(colDf, colorPalette, statePalette, 
-        cellsSimilarityMatrix, showColnames, showRowNames, fontsizeRow, 
-        clusterCols, clusterRows, fontsize, silentPlot, savePlot, theObject, 
+.plotCellSimilarityHeatmap <- function(colDf, colorPalette, statePalette,
+        cellsSimilarityMatrix, showColnames, showRowNames, fontsizeRow,
+        clusterCols, clusterRows, fontsize, silentPlot, savePlot, theObject,
         onefile, width, height, widthPNG, heightPNG, plotPDF){
-    
+
     annotationColors <- .generateAnnotationColors(colDf, colorPalette,
             statePalette)
-    
+
     columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
                     "state"), c("clusters"))
     annotationCol <- as.data.frame(colDf[columnsToPlot])
@@ -370,7 +370,7 @@
     nbRow <- nrow(cellsSimilarityMatrix)
     mainTitle <- paste0("Cells similarity matrix ", nbCol, " columns, ",
             nbRow, " rows.")
-    
+
     pheatmapObject <- pheatmap::pheatmap(cellsSimilarityMatrix,
             show_colnames=showColnames,
             show_rownames=showRowNames,
@@ -382,11 +382,11 @@
             fontsize=fontsize,
             main=mainTitle,
             silent=silentPlot)
-    
+
     if(savePlot)
         .saveCellSim(theObject, onefile, colDf, width, height, widthPNG,
                 heightPNG, plotPDF, pheatmapObject)
-    
+
     return(pheatmapObject)
 }
 
@@ -448,40 +448,11 @@
 #' @rdname plotCellSimilarity-scRNAseq
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap of the similarity matrix
-#' plotCellSimilarity(scrCSM)
+#' plotCellSimilarity(scr)
 #'
 #' @return A pheatmap object of the similarity heatmap if returnPlot is TRUE.
 #'
@@ -523,20 +494,20 @@ setMethod(
         colDf <- SummarizedExperiment::colData(sceObject)
 
         ## Ordering clusters
-        result <- .plotCellSimilarityOrderClusters(orderClusters, colDf, 
-                expressionMatrix, clusteringMethod, cellsSimilarityMatrix, 
+        result <- .plotCellSimilarityOrderClusters(orderClusters, colDf,
+                expressionMatrix, clusteringMethod, cellsSimilarityMatrix,
                 clusterCols, clusterRows)
         cellsSimilarityMatrix <- result[[1]]
         clusterCols <- result[[2]]
         clusterRows <- result[[3]]
-        
+
         ## Plotting the cell similarity heatmap
-        pheatmapObject <- .plotCellSimilarityHeatmap(colDf, colorPalette, 
+        pheatmapObject <- .plotCellSimilarityHeatmap(colDf, colorPalette,
                 statePalette, cellsSimilarityMatrix, showColnames, showRowNames,
-                fontsizeRow, clusterCols, clusterRows, fontsize, silentPlot, 
-                savePlot, theObject, onefile, width, height, widthPNG, 
+                fontsizeRow, clusterCols, clusterRows, fontsize, silentPlot,
+                savePlot, theObject, onefile, width, height, widthPNG,
                 heightPNG, plotPDF)
-        
+
         if(returnPlot)
             return(pheatmapObject)
     })
@@ -689,34 +660,34 @@ setMethod(
 #'
 #' @keywords internal
 #' @noRd
-.checkParamPlotTSNESub <- function(plotPDF, widthPNG, heightPNG, silentPlot, 
+.checkParamPlotTSNESub <- function(plotPDF, widthPNG, heightPNG, silentPlot,
         returnPlot, savePlot, tSNENb, PCs, perplexities){
-    
+
     ## Verify plotPDF
     if(!is.logical(plotPDF))
         stop("plotPDF should be a boolean.")
-    
+
     ## Verify widthPNG
     if (!is.numeric(widthPNG))
         stop("widthPNG should be a numeric.")
-    
+
     ## Verify heightPNG
     if (!is.numeric(heightPNG))
         stop("heightPNG should be a numeric.")
-    
+
     ## Verify silentPlot
     if (!is.logical(silentPlot))
         stop("silentPlot should be a boolean.")
-    
-    
+
+
     if(silentPlot && !returnPlot && !savePlot)
         stop("You do not plot, neither save the heatmap or return the object.",
                 " Nothing will happen. You should either plot the results, ",
                 "return the object or save the heatmap.")
-    
+
     if(!is.na(tSNENb) && !is.numeric(tSNENb))
         stop("tSNENb should be a numeric.")
-    
+
     if(!is.na(tSNENb) && (tSNENb > (length(PCs)*length(perplexities))))
         stop("The chosen tSNENb should be smaller than PCs x perplexities.")
 }
@@ -808,7 +779,7 @@ setMethod(
     if (!is.logical(savePlot))
         stop("savePlot should be a boolean.")
 
-    .checkParamPlotTSNESub(plotPDF, widthPNG, heightPNG, silentPlot, 
+    .checkParamPlotTSNESub(plotPDF, widthPNG, heightPNG, silentPlot,
             returnPlot, savePlot, tSNENb, PCs, perplexities)
 }
 
@@ -865,7 +836,7 @@ setMethod(
 
 #' .plotAndSaveTSNE
 #'
-#' @description 
+#' @description
 #' Plots and/or save the tSNE.
 #'
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
@@ -888,14 +859,14 @@ setMethod(
 #' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#' @param outputdir Directory to write the tSNE to and retrieved from 
+#' @param outputdir Directory to write the tSNE to and retrieved from
 #' .createTSNEDir.
-#' 
+#'
 #' @importFrom grDevices dev.new
 #' @noRd
-.plotAndSaveTSNE <- function(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList, 
+.plotAndSaveTSNE <- function(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList,
         plotPDF, width, height, onefile, widthPNG, heightPNG, outputdir){
-    
+
     ## Plotting tSNE
     if(!silentPlot){
         if(is.na(tSNENb))
@@ -908,7 +879,7 @@ setMethod(
         else
             print(tSNEplots[[tSNENb]])
     }
-    
+
     ## Saving tSNEs
     if(savePlot)
         .saveTSNEPlot(tSNEList, tSNEplots, plotPDF, width, height, onefile,
@@ -918,8 +889,8 @@ setMethod(
 #' plotClusteredTSNE
 #'
 #' @description Plot t-SNE generated with different PCs and perplexities.
-#' It can also use a coloring scheme by clusters or states. The latter is 
-#' possible if a 'state' column, representing conditions, is provided in the 
+#' It can also use a coloring scheme by clusters or states. The latter is
+#' possible if a 'state' column, representing conditions, is provided in the
 #' columns meta-data.
 #'
 #' @usage plotClusteredTSNE(theObject, colorPalette="default",
@@ -973,40 +944,11 @@ setMethod(
 #' vector.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap of the similarity matrix
-#' plotClusteredTSNE(scrCSM)
+#' plotClusteredTSNE(scr)
 #'
 #' @return A list of ggplot objects if returnPlot is TRUE.
 #'
@@ -1063,9 +1005,9 @@ setMethod(
         tSNEplots <- .computePlotList(tSNEList, sceObject, columnName,
                 colorPalette)
 
-        .plotAndSaveTSNE(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList, 
+        .plotAndSaveTSNE(silentPlot, tSNENb, tSNEplots, savePlot, tSNEList,
                 plotPDF, width, height, onefile, widthPNG, heightPNG, outputdir)
-        
+
         if(returnPlot)
             return(tSNEplots)
 
@@ -1165,7 +1107,7 @@ setMethod(
 #'
 #' @noRd
 .callOrderCells <- function(colDf, expressionMatrix, clusteringMethod){
-    
+
     vec <-  unname(unlist(lapply(levels(colDf$clusters), function(cluster)
         .orderCellsInCluster(cluster, colDf,
                             expressionMatrix,
@@ -1230,42 +1172,42 @@ setMethod(
 #'
 #' @keywords internal
 #' @noRd
-.checkParamSubFunction <- function(clusterCols, showColnames, plotPDF, 
-        fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, 
+.checkParamSubFunction <- function(clusterCols, showColnames, plotPDF,
+        fontsize, fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot,
         savePlot){
-    
+
     ## Verify clusterCols
     if(!is.logical(clusterCols))
         stop("clusterCols should be a boolean.")
-    
+
     ## Verify showColnames
     if(!is.logical(showColnames))
         stop("showColnames should be a boolean.")
-    
+
     ## Verify plotPDF
     if(!is.logical(plotPDF))
         stop("plotPDF should be a boolean.")
-    
+
     ## Verify fontsize
     if(!is.numeric(fontsize))
         stop("fontsize should be a numeric.")
-    
+
     ## Verify fontsizeRow
     if(!is.numeric(fontsizeRow))
         stop("fontsizeRow should be a numeric.")
-    
+
     ## Verify widthPNG
     if(!is.numeric(widthPNG))
         stop("widthPNG should be a numeric.")
-    
+
     ## Verify heightPNG
     if(!is.numeric(heightPNG))
         stop("heightPNG should be a numeric.")
-    
+
     ## Verify silentPlot
     if (!is.logical(silentPlot))
         stop("silentPlot should be a boolean.")
-    
+
     if(silentPlot && !returnPlot && !savePlot)
         stop("You do not plot, neither save the heatmap or return the object.",
                 " Nothing will happen. You should either plot the results, ",
@@ -1355,7 +1297,7 @@ setMethod(
     if(!is.logical(onefile))
         stop("onefile should be a boolean.")
 
-    .checkParamSubFunction(clusterCols, showColnames, plotPDF, fontsize, 
+    .checkParamSubFunction(clusterCols, showColnames, plotPDF, fontsize,
             fontsizeRow, widthPNG, heightPNG, silentPlot, returnPlot, savePlot)
 }
 
@@ -1363,7 +1305,7 @@ setMethod(
 
 #' .orderClustersForHeatmap
 #'
-#' @description 
+#' @description
 #' Centers the values of the matrix according to the mean if meanCentered is
 #' TRUE and orders the cells using a hierarchical clustering.
 #'
@@ -1379,56 +1321,56 @@ setMethod(
 #' See ?hclust for a list of method. Default = "ward.D2".
 #' @param orderGenes Boolean, should the heatmap be structured by gene.
 #' Default = FALSE.
-#' 
+#'
 #' @importFrom Biobase exprs
 #' @importFrom stats hclust
 #' @keywords internal
 #' @noRd
-.orderClustersForHeatmap <- function(sceObject, markersClusters, 
+.orderClustersForHeatmap <- function(sceObject, markersClusters,
         meanCentered, orderClusters, colDf, clusteringMethod, orderGenes){
-    
+
     exprsTmp <- Biobase::exprs(sceObject)
     rowTmp <- rownames(exprsTmp)
     expressionMatrix <- exprsTmp[rowTmp %in% markersClusters$geneName, ]
-    
+
     if(meanCentered){
         meanRows <- rowSums(expressionMatrix) / ncol(expressionMatrix)
         expressionMatrix <- expressionMatrix - meanRows
     }
-    
-    
+
+
     if(orderClusters){
-        
+
         # Ordering expressionMatrixrix
         newOrder <- .callOrderCells(colDf, expressionMatrix,
                 clusteringMethod)
         expressionMatrix <- expressionMatrix[, newOrder]
         clusterCols <- FALSE
-        
+
         if(orderGenes){
-            
+
             newOrder <- .callOrderGenes(colDf, markersClusters,
                     expressionMatrix, clusteringMethod)
             expressionMatrix <- expressionMatrix[newOrder, ]
             clusterRows <- FALSE
         }
-        
+
     }else{
-        
+
         distanceMatrix <- dist(t(expressionMatrix))
         clusterCols <- hclust(distanceMatrix, method="ward.D2")
     }
-    
+
     if(!orderGenes)
         clusterRows <- hclust(dist(expressionMatrix), method="ward.D2")
-    
+
     return(list(expressionMatrix, clusterCols, clusterRows))
 }
 
 
 #' .plotCellH
 #'
-#' @description 
+#' @description
 #' This function plots heatmap with marker genes on rows and clustered cells
 #' on columns.
 #'
@@ -1436,7 +1378,7 @@ setMethod(
 #' @param colorPalette A vector of colors for clusters. Default = "default",
 #' See details.
 #' @param statePalette A vector of colors for states or conditions. See details.
-#' @param expressionMatrix 
+#' @param expressionMatrix The count matrix retrieved with ?Biobase::exprs.
 #' @param showColnames Shoud the names of the columns (clusters) be indicated on
 #' the heatmap. Default = FALSE.
 #' @param fontsizeRow fontsize for rownames. Default = 8.
@@ -1461,23 +1403,23 @@ setMethod(
 #' @param theObject A scRNAseq object with the cluster similarity matrix
 #' obtained with ?calculateClustersSimilarity method and the top markers
 #' obtained with ?retrieveTopClustersMarkers.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 #' @return The pheatmap object of the clustering.
 .plotCellH <- function(colDf, colorPalette, statePalette, expressionMatrix,
-        showColnames, fontsizeRow, clusterCols, clusterRows, fontsize, 
+        showColnames, fontsizeRow, clusterCols, clusterRows, fontsize,
         silentPlot, savePlot, plotPDF, fileName, width, height, onefile,
         widthPNG, heightPNG, theObject){
-    
+
     annotationColors <- .generateAnnotationColors(colDf, colorPalette,
             statePalette)
-    
+
     columnsToPlot <- switch(is.null(colDf$state) + 1, c("clusters",
                     "state"), c("clusters"))
-    
+
     if(is.null(colDf$clusters)){
-        
+
         annCol <- switch(is.null(colDf$state) + 1,
                 as.data.frame(colDf["state"]), NA)
         annColors <- switch(is.null(colDf$state) + 1,
@@ -1486,7 +1428,7 @@ setMethod(
         annCol <- as.data.frame(colDf[columnsToPlot])
         annColors <- annotationColors
     }
-    
+
     color <- colorRampPalette(c("#023b84", "#4b97fc", "#c9d9ef", "#FEE395",
                     "#F4794E", "#D73027", "#a31008", "#7a0f09"))(100)
     pheatmapObject <- pheatmap::pheatmap(expressionMatrix,
@@ -1494,14 +1436,14 @@ setMethod(
             annotation_colors=annColors, fontsize_row=fontsizeRow,
             cluster_cols=clusterCols, cluster_rows=clusterRows,
             color=color, fontsize=fontsize, silent=silentPlot)
-    
-    
+
+
     if(savePlot)
         .saveHeatmap(theObject, plotPDF, fileName, width, height, onefile,
                 widthPNG, heightPNG, pheatmapObject)
-    
+
     return(pheatmapObject)
-    
+
 }
 
 
@@ -1569,46 +1511,11 @@ setMethod(
 #' @rdname plotCellHeatmap
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#'
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#'
-#' ## Retrieve the top 10 markers per cluster
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap with marker genes
-#' plotCellHeatmap(scrFinal)
+#' plotCellHeatmap(scr)
 #'
 #' @seealso calculateClustersSimilarity  plotClusteredTSNE plotCellSimilarity
 #' plotGeneExpression plotClustersSimilarity
@@ -1658,15 +1565,15 @@ setMethod(
 
 
         # plots correlation between clusters
-        results <- .orderClustersForHeatmap(sceObject, markersClusters, 
-                meanCentered, orderClusters, colDf, clusteringMethod, 
+        results <- .orderClustersForHeatmap(sceObject, markersClusters,
+                meanCentered, orderClusters, colDf, clusteringMethod,
                 orderGenes)
         expressionMatrix <- results[[1]]
         clusterCols <- results[[2]]
         clusterRows <- results[[3]]
-        
-        pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette, 
-                expressionMatrix, showColnames, fontsizeRow, clusterCols, 
+
+        pheatmapObject <- .plotCellH(colDf, colorPalette, statePalette,
+                expressionMatrix, showColnames, fontsizeRow, clusterCols,
                 clusterRows, fontsize, silentPlot, savePlot, plotPDF, fileName,
                 width, height, onefile, widthPNG, heightPNG, theObject)
 
@@ -1779,36 +1686,36 @@ setMethod(
 #' @keywords internal
 #' @noRd
 .saveAndPlotGeneExpression <- function(theObject, tSNECoords, pointSize, alpha,
-        palette, limits, geneName, savePlot, clustersNumber, tSNEpicture, 
+        palette, limits, geneName, savePlot, clustersNumber, tSNEpicture,
         plotPDF, width, height, silentPlot){
-    
+
     ggres <- ggplot2::ggplot(tSNECoords, aes(x=tSNECoords[,1],
                             y=tSNECoords[,2], color=expression)) +
             geom_point(size=I(pointSize), alpha=alpha) + theme_bw() +
             scale_colour_gradientn(
                     colours=alpha(colorRampPalette(palette)(100), 0.8),
                     limits=limits) + ggtitle(geneName)
-    
+
     if(savePlot){
-        
+
         dataDirectory  <- getOutputDirectory(theObject)
         experimentName <- getExperimentName(theObject)
         subdir <- file.path(dataDirectory, "pictures")
         fileName <- paste(experimentName, "tSNE", clustersNumber,
                 "clusters", geneName, "tSNEpicture",
                 tSNEpicture, "_alpha", alpha,sep="_")
-        
+
         if(!file.exists(subdir))
             dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
-        
+
         ggsave(filename= paste0(fileName, if(plotPDF) ".pdf" else ".png"),
                 plot=ggres, device= if(plotPDF) "pdf" else "png",
                 path=subdir, width= width, height = height)
     }
-    
+
     if(!silentPlot)
         print(ggres)
-    
+
     return(ggres)
 }
 
@@ -1841,7 +1748,7 @@ setMethod(
 #' @param plotPDF If TRUE export tSNE in pdf format, if FALSE export it in
 #' png format. Default=TRUE.
 #' @param silentPlot If TRUE, the plots are not displayed on the current device.
-#' Default=FALSE. This is useful if one wants to only retrieve the object to 
+#' Default=FALSE. This is useful if one wants to only retrieve the object to
 #' insert the figure in a grid for instance.
 #'
 #' @aliases plotGeneExpression
@@ -1855,46 +1762,11 @@ setMethod(
 #' @return A ggplot object of the gene expression colored tSNE.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-#' columnID="cell_ID")
-#'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#'
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#'
-#' ## Retrieve top clusters markers
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates=FALSE)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## t-SNE plot colored by expression of a  given gene.
-#' plotGeneExpression(scrFinal, getClustersMarkers(scrFinal)[1,1])
+#' plotGeneExpression(scr, getClustersMarkers(scr)[1,1])
 #'
 #' @seealso retrieveTopClustersMarkers plotCellSimilarity plotCellHeatmap
 #' plotClusteredTSNE plotClustersSimilarity
@@ -1944,10 +1816,10 @@ setMethod(
         if(isTRUE(all.equal(length(limits), 1)))
             limits <- c(min(tSNECoords$expression), max(tSNECoords$expression))
 
-        ggres <- .saveAndPlotGeneExpression(theObject, tSNECoords, pointSize, 
-                alpha, palette, limits, geneName, savePlot, clustersNumber, 
+        ggres <- .saveAndPlotGeneExpression(theObject, tSNECoords, pointSize,
+                alpha, palette, limits, geneName, savePlot, clustersNumber,
                 tSNEpicture, plotPDF, width, height, silentPlot)
-        
+
         if(returnPlot)
             return(ggres)
     })
@@ -2055,9 +1927,9 @@ setMethod(
 #' @importFrom stats hclust
 #' @noRd
 #' @return The clusters numbers and the pheatmap object.
-.pheatmapClusterSim  <- function(theObject, clusteringMethod, colorPalette, 
+.pheatmapClusterSim  <- function(theObject, clusteringMethod, colorPalette,
         statePalette, fontsize, silentPlot){
-    
+
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(theObject)
     colDf <- SummarizedExperiment::colData(getSceNorm(theObject))
     clusters <- colDf$clusters
@@ -2066,10 +1938,10 @@ setMethod(
     clusteringTree <- hclust(distanceMatrix, method=clusteringMethod)
     colDataSimilarity <- data.frame(clusters=clustersNames)
     rownames(colDataSimilarity) <- colDataSimilarity$clusters
-    
+
     annotationColors <- .generateAnnotationColors(colDf, colorPalette,
             statePalette)
-    
+
     pheatmapObject <- pheatmap::pheatmap(clustersSimilarityMatrix,
             annotation_col=colDataSimilarity,
             annotation_colors=annotationColors,
@@ -2078,7 +1950,7 @@ setMethod(
             fontsize=fontsize,
             main="Clusters similarity matrix",
             silent=silentPlot)
-    
+
     return(list(clusters, pheatmapObject))
 }
 
@@ -2103,9 +1975,9 @@ setMethod(
 #' Defaults to FALSE.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#' @param pheatmapObject Object returned by the pheatmap function in 
+#' @param pheatmapObject Object returned by the pheatmap function in
 #' .pheatmapClusterSim.
-#' 
+#'
 #' @importFrom grDevices pdf
 #' @importFrom grDevices png
 #' @importFrom grDevices dev.off
@@ -2113,21 +1985,21 @@ setMethod(
 #' @noRd
 .savePlotClustersSim <- function(savePlot, theObject, clusters, plotPDF, width,
         height, onefile, widthPNG, heightPNG, pheatmapObject){
-    
+
     if(savePlot){
-        
+
         dataDirectory   <- getOutputDirectory(theObject)
         experimentName  <- getExperimentName(theObject)
         clustersNumber <- length(unique(clusters))
         subdir <- file.path(dataDirectory, "pictures")
-        
+
         if(!file.exists(subdir))
             dir.create(subdir, showWarnings=FALSE, recursive = TRUE)
-        
+
         fileName <- paste(experimentName,"clusters_similarity",
                 clustersNumber, "clusters", sep="_")
         filePath <- file.path(subdir, fileName)
-        
+
         if(plotPDF)
             pdf(file=paste0(filePath, ".pdf"), width=width, height=height,
                     onefile=onefile)
@@ -2174,8 +2046,8 @@ setMethod(
 #' @param fontsize pheatmap parameter. Base fontsize for the plot. Default=7.5.
 #' @param widthPNG Width of the png. See ?png for details. Default=800.
 #' @param heightPNG Height of the png. See ?png for details. Default=750.
-#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE. This 
-#' is useful if one wants to only retrieve the object to insert the figure in 
+#' @param silentPlot If TRUE, does not plot the pheatmap. Default=FALSE. This
+#' is useful if one wants to only retrieve the object to insert the figure in
 #' a grid for instance.
 #'
 #' @details
@@ -2188,40 +2060,11 @@ setMethod(
 #' @rdname plotClustersSimilarity
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot similarity matrix as a heatmap
-#' plotClustersSimilarity(scrCSM)
+#' plotClustersSimilarity(scr)
 #'
 #' @return A pheatmap object of the clusters similarity matrix.
 #'
@@ -2262,12 +2105,12 @@ setMethod(
         result <- .pheatmapClusterSim(theObject, clusteringMethod, colorPalette,
                 statePalette, fontsize, silentPlot)
         clusters <- result[[1]]
-        pheatmapObject <- result[[2]]                        
-        
+        pheatmapObject <- result[[2]]
+
         ## Save plot
-        .savePlotClustersSim(savePlot, theObject, clusters, plotPDF, width, 
+        .savePlotClustersSim(savePlot, theObject, clusters, plotPDF, width,
                 height, onefile, widthPNG, heightPNG, pheatmapObject)
-        
+
         if(returnPlot)
             return(pheatmapObject)
     })

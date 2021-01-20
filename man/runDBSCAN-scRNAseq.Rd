@@ -45,28 +45,11 @@ find minPoints dots. Optimal epsilon must lay one the knee of the k-NN
 function as shown in the "test_clustering/distance_graph.pdf".
 }
 \examples{
-experimentName <- "Bergiers"
-countMatrix <- loadDataOrMatrix(system.file("extdata/test_countMatrix.tsv", 
-package="conclus"), type="countMatrix")
-outputDirectory <- "YourOutputDirectory"
-columnsMetaData <- loadDataOrMatrix(system.file(
-"extdata/test_colData_filtered.tsv", package="conclus"), type="coldata", 
-columnID="cellName") 
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = experimentName,
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = outputDirectory)
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
+scr <- runDBSCAN(scr, cores=2)
 
 }
 \seealso{

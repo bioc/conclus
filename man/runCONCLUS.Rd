@@ -81,7 +81,7 @@ This is particularly useful when one wants to compare the clustering
 performance of different tools. It should be a data frame having two columns
 'clusters' and 'cells'. Default=NA.}
 
-\item{silentPlot}{Boolean indicating if the figures should not be output on 
+\item{silentPlot}{Boolean indicating if the figures should not be output on
 the R graphics. Default=TRUE.}
 
 \item{sizes}{Vector of size factors from scran::computeSumFactors() function
@@ -262,7 +262,7 @@ This wrapper function performs the following steps:
 4) Clustering with DbScan. See ?runDBSCAN. \cr
 5) Computing the cells similarity matrix. See ?clusterCellsInternal. \cr
 6) Computing the clusters similarity matrix. If clusToAdd is not NA, add
-the provided clustering. See ?calculateClustersSimilarity and 
+the provided clustering. See ?calculateClustersSimilarity and
 ?addClustering.  \cr
 7) Ranking genes. See ?rankGenes.  \cr
 8) Getting marker genes. See ?retrieveTopClustersMarkers.  \cr
@@ -275,16 +275,16 @@ the provided clustering. See ?calculateClustersSimilarity and
 See ?exportAllResults.  \cr
 15) Return an object containing all the results provided by CONCLUS.  \cr
 
-If exportAllResults=TRUE, in your "outputDirectory", the sub-folder 
-pictures contains all tSNE with dbscan coloration (sub-folder 
-tSNE_pictures), the cell similarity matrix 
+If exportAllResults=TRUE, in your "outputDirectory", the sub-folder
+pictures contains all tSNE with dbscan coloration (sub-folder
+tSNE_pictures), the cell similarity matrix
 (Test_cells_correlation_X_clusters.pdf), the cell heatmap
 (Test_clustersX_meanCenteredTRUE_orderClustersFALSE_orderGenesFALSE
-markrsPerCluster.pdf`), and the cluster similarity matrix 
-(`Test_clusters_similarity_10_clusters.pdf`). You will also find in the 
-sub-folder `Results`: 
+markrsPerCluster.pdf`), and the cluster similarity matrix
+(`Test_clusters_similarity_10_clusters.pdf`). You will also find in the
+sub-folder `Results`:
 
-+ `1_MatrixInfo`: The normalized count matrix and its meta-data for both 
++ `1_MatrixInfo`: The normalized count matrix and its meta-data for both
 rows and columns. \cr
 + `2_TSNECoordinates`: The tSNE coordinates for each parameter of principal
 components (PCs) and perplexities.  \cr
@@ -292,14 +292,14 @@ components (PCs) and perplexities.  \cr
 parameters. Each file gives a cluster number for each cell.  \cr
 + `4_CellSimilarityMatrix`: The matrix underlying the cells similarity
 heatmap. \cr
-+ `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity 
++ `5_ClusterSimilarityMatrix`: The matrix underlying the clusters similarity
 heatmap.  \cr
-+ `6_ConclusResult`: A table containing the result of the consensus 
++ `6_ConclusResult`: A table containing the result of the consensus
 clustering. This table contains two columns: clusters-cells. \cr
 + `7_fullMarkers`: Files containing markers for each cluster, defined by the
 consensus clustering. \cr
 + `8_TopMarkers`: Files containing the top 10 markers for each cluster. \cr
-+ `9_genesInfos`: Files containing gene information for the top markers 
++ `9_genesInfos`: Files containing gene information for the top markers
 defined in the previous folder. \cr
 }
 \examples{
@@ -308,18 +308,18 @@ outputDirectory <- "YourOutputDirectory"
 species <- "mouse"
 
 ## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
                             package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 ## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+coldataPath <- system.file("extdata/test_colData_filtered.tsv",
                             package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 columnID="cell_ID")
 
 runCONCLUS(outputDirectory, experimentName, countMatrix, species,
-        columnsMetaData=columnsMetaData, tSNENb=1)
+        columnsMetaData=columnsMetaData, tSNENb=1, cores=2)
 
 ## Remove the results
 unlink(outputDirectory, recursive=TRUE)

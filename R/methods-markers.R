@@ -35,52 +35,52 @@
 #' @param mat Normalized expression matrix.
 #' @param allGroups Character vector of the different clusters names.
 #' @param currentGroup cluster name currently processed in the mapply.
-#' @param tTestPval A list of p-values of a cluster comparing it to all the 
+#' @param tTestPval A list of p-values of a cluster comparing it to all the
 #' other clusters.
 #' @param currentSimMed Current column name of the cluster similarity matrix
 #' processed in the mapply.
 #' @param simMedNames Column names of the cluster similarity matrix.
 #' @keywords internal
-#' @return A list containing for each cluster the adjustted p-value of the 
+#' @return A list containing for each cluster the adjustted p-value of the
 #' t-test, the mean log 10 FDR, and the score.
 #' @noRd
-.buildTTestFDR <- function(mat, allGroups, currentGroup, tTestPval, 
+.buildTTestFDR <- function(mat, allGroups, currentGroup, tTestPval,
         currentSimMed, simMedNames){
-    
+
     tTestFDR <- data.frame(row.names=rownames(mat))
     otherGroups <- allGroups[allGroups!=currentGroup]
-    
+
     tTestFDR <- lapply(otherGroups, function(currentOther){
-                
+
                 tTestFDR[, paste0("vs_", currentOther)] <-
                         p.adjust(tTestPval[, paste0("vs_",
                                                 currentOther)],
                                 method="fdr")
                 return(tTestFDR)
             })
-    
+
     tTestFDR <- dplyr::bind_cols(tTestFDR)
     tTestFDR <- cbind(Gene=as.factor(rownames(mat)), tTestFDR)
-    
+
     submat <- as.matrix(tTestFDR[, 2:(length(otherGroups) + 1 )])
-    
+
     ## Add column mean_log10_fdr
     tTestFDR$mean_log10_fdr <- rowMeans(log10(submat + 1e-300))
-    
+
     ## Add column n_05
     tTestFDR$n_05 <- apply(submat, 1, function(x)
                 length(x[!is.na(x) & x < 0.05]))
-    
+
     ##Add column score
     weights <- currentSimMed[match(otherGroups, simMedNames)]
     tTestFDR$score <- apply(submat, 1, function(x)
                 sum(-log10(x+1e-300) * weights) / ncol(submat))
-    
+
     tTestFDR <- tTestFDR[order(tTestFDR$score, decreasing=TRUE), ]
     row.names(tTestFDR) <- NULL
-    
+
     return(tTestFDR)
-    
+
 }
 
 
@@ -161,16 +161,16 @@
                     allGroups, colLabel, simMedNames){
 
                 message(paste("Working on cluster", currentGroup))
-                
+
                 ## Create a dataframe clustering vs clustering
                 otherGroups <- allGroups[allGroups!=currentGroup]
                 tTestPval <- .buildTTestPval(otherGroups, tTestPval, colDF, mat,
                         colLabel, currentGroup)
-                
+
                 ## Apply the FDR
-                tTestFDR <- .buildTTestFDR(mat, allGroups, currentGroup, 
+                tTestFDR <- .buildTTestFDR(mat, allGroups, currentGroup,
                         tTestPval, currentSimMed, simMedNames)
-                
+
                 ## Write list if option = TRUE
                 if(writeMarkerGenes){
 
@@ -273,40 +273,11 @@
 #' An object of class scRNASeq with its markerGenesList slot updated.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
+#' scr <- rankGenes(scr)
 #'
 #' @seealso
 #' retrieveTopClustersMarkers retrieveGenesInfo
@@ -443,9 +414,9 @@ setMethod(
                     "entrezgene_description",
                     "gene_biotype",        # Feature.Type
                     "go_id" )             # Gene Ontology
-        
+
     values <- genes$geneName
-    
+
     filters <- "uniprot_gn_symbol"
 
     db1 <- .tryGetBM(attributes=attributes, ensembl=ensembl, values=values,
@@ -463,9 +434,9 @@ setMethod(
                     "ensembl_gene_id",    # Ensembl
                     "entrezgene_id", #Entrez.Gene.ID
                     "uniprot_gn_id")     # Uniprot.ID
-    
+
     values <- genes$geneName
-    
+
     filters <- "uniprot_gn_symbol"
 
     db2 <- .tryGetBM(attributes=attributes, ensembl=ensembl, values=values,
@@ -476,28 +447,28 @@ setMethod(
 
 
 #' .queryBiomart
-#' 
+#'
 #' @description
 #' Main sub-function that retrieves the uniprot gene symbol, the chromosome
 #' name, the entrez gene description, the go id, the uniprot id, the external
-#' gene name, the gene biotype, the ensembl id, and the entrez gene id from 
+#' gene name, the gene biotype, the ensembl id, and the entrez gene id from
 #' biomaRt.
 #'
 #' @param genes Markers genes retrieved from the submitted object with
 #' ?getClustersMarkers.
 #' @param ensembl An instance of biomaRt obtained with ?useEnsembl.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 #' @importFrom biomaRt getBM
 #' @return Return the information described above..
 .queryBiomart <- function(genes, ensembl){
-    
+
     database <- merge(x = .returnDB1(genes, ensembl),
             y = .returnDB2(genes, ensembl),
             by = c("uniprot_gn_symbol", "external_gene_name"),
             all.x = TRUE)
-    
+
     ## Group the GO id and the uniprot Id
     options(dplyr.summarise.inform = FALSE)
     database <- database %>% group_by(uniprot_gn_symbol,
@@ -516,25 +487,25 @@ setMethod(
                     entrezgene_id = paste(unique(entrezgene_id),
                             collapse=', '),
             )
-    
+
     return(database)
 }
 
 
 #' .groupGOandUniprotID
-#' 
+#'
 #' @description
 #' Retrieves the uniprot symbol, the external gene name, and the mgi information
 #' from biomaRt.
 #'
 #' @param species Name of the species defined in the submitted object and
-#' retrieved with ?getSpecies. Current values allowed are mouse and human. 
+#' retrieved with ?getSpecies. Current values allowed are mouse and human.
 #' Other organisms can be added on demand.
 #' @param genes Markers genes retrieved from the submitted object with
 #' ?getClustersMarkers.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
 #' @param speDBdescription NULL if species is human and 'mgi_description' if
-#' species is mouse.  
+#' species is mouse.
 #' @param ensembl An instance of biomaRt obtained with ?useEnsembl.
 #' @keywords internal
 #' @noRd
@@ -542,7 +513,7 @@ setMethod(
 #' @return Return the uniprot gene symbol, the external gene name, and the
 #' mgi information if the species is mouse.
 .groupGOandUniprotID <- function(speDbID, speDBdescription, genes, ensembl){
-    
+
     if(!(is.null(speDbID) & is.null(speDBdescription)))
         ## Query biomart for specific db according to species
         ## external_gene_name is also searched because one gene can have
@@ -559,7 +530,7 @@ setMethod(
 
 
 #' .defineDatabase
-#' 
+#'
 #' @description
 #' Core functions that aims at building a database with all information about
 #' the markers. It first selects the biomaRt instance to use according to the
@@ -572,19 +543,19 @@ setMethod(
 #' ?getClustersMarkers.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
 #' @param speDBdescription NULL if species is human and 'mgi_description' if
-#' species is mouse.  
+#' species is mouse.
 #'
 #' @keywords internal
 #' @noRd
 #' @importFrom biomaRt useEnsembl
 #' @return A database with biomaRt information.
 .defineDatabase <- function(species, genes, speDbID, speDBdescription){
-    
+
     ## Selecting the BioMart database to use
     databaseDict <- c(mouse = "mmusculus_gene_ensembl",
             human = "hsapiens_gene_ensembl")
     dataset <- databaseDict[species]
-    
+
     ensembl <- .tryUseMart(biomart="ensembl", dataset)
 
     ## Query biomart
@@ -592,60 +563,60 @@ setMethod(
 
     ## Group the GO id and the uniprot Id
     spDB <- .groupGOandUniprotID(speDbID, speDBdescription, genes, ensembl)
-    
+
     ## Merge the second column, the first already existing in the first table
     if(!is.null(spDB))
         database <- merge(x = database, all.x = TRUE, y = spDB, by =
                         c("uniprot_gn_symbol", "external_gene_name"))
-    
+
     ## Add cluster column
     database <- merge(x = database, y = genes,
             by.x = "uniprot_gn_symbol",  by.y = "geneName", all.x = TRUE)
-    
+
     ## Add Symbol column
     database <- cbind(database, Symbol = database$uniprot_gn_symbol)
-    
+
     return(database)
 }
 
 #' .orderCol
-#' 
+#'
 #' @description
-#' Re-organize the columns of the table (database) containing the biomaRt 
+#' Re-organize the columns of the table (database) containing the biomaRt
 #' retrieved information.
 #'
 #' @param speDBdescription NULL if species is human and 'mgi_description' if
-#' species is mouse.  
+#' species is mouse.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
 #' @param database Table containing the biomaRt retrieved information.
 #' @param orderGenes If "initial" then the order of genes will not be changed.
 #' The other option is "alphabetical". Default = "initial".
 #' @param genes Markers genes retrieved from the submitted object with
 #' ?getClustersMarkers.
-#' 
+#'
 #' @keywords internal
 #' @noRd
 #'
 #' @return The re-ordered database if orderGenes is set to 'initial'.
 .orderCol <- function(speDBdescription, speDbID, database, orderGenes, genes){
-    
+
     colnamesOrder <- c("uniprot_gn_symbol", "clusters",
             "external_gene_name", "go_id", speDBdescription,
             "entrezgene_description", "gene_biotype", "chromosome_name",
             "Symbol", "ensembl_gene_id", speDbID, "entrezgene_id",
             "uniprot_gn_id")
-    
+
     result  <- database[, colnamesOrder]
-    
+
     if(isTRUE(all.equal(orderGenes, "initial"))){
         desiredOrder <- genes$geneName
         result <- merge(list(uniprot_gn_symbol = unique(desiredOrder)),
                 result, sort = FALSE)
         rownames(result) <- seq_len(nrow(result))
     }
-    
+
     return(result)
-    
+
 }
 
 
@@ -685,7 +656,7 @@ setMethod(
 #' - clusters: The cluster to which the gene is associated. \cr
 #' - external_gene_name: The complete gene name. \cr
 #' - go_id: Gene Ontology (GO) identification number. \cr
-#' - mgi_description: If the species is mouse, description of the gene 
+#' - mgi_description: If the species is mouse, description of the gene
 #' on MGI. \cr
 #' - entrezgene_description: Description of the gene by Entrez database. \cr
 #' - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified
@@ -706,46 +677,11 @@ setMethod(
 #' An object of class scRNASeq with its genesInfos slot updated.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#'
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
-#'
-#' ## Getting marker genes
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Getting genes info
-#' scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+#' scr <- retrieveGenesInfo(scr, cores=2)
 #'
 #' @seealso
 #' rankGenes retrieveTopClustersMarkers
@@ -777,15 +713,15 @@ setMethod(
                 speDBdescription <- "mgi_description"
             }else
                 speDbID <- speDBdescription <- spDB <- NULL
-                
-            
-            database <- .defineDatabase(species, genes, speDbID, 
+
+
+            database <- .defineDatabase(species, genes, speDbID,
                     speDBdescription)
-                        
+
             ## Order the data frames colums to be abe to bind them
             result <- .orderCol(speDBdescription, speDbID, database, orderGenes,
                     genes)
-            
+
             rm(database)
             biomartCacheClear()
 
@@ -901,43 +837,11 @@ setMethod(
 #' is TRUE and return a scRNASeq object with its clustersMarkers slot updated.
 #'
 #' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-#' columnID="cell_ID")
-#' 
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' ## Normalize and filter the raw counts matrix
-#' scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-#'
-#' ## Compute the tSNE coordinates
-#' scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-#'
-#' ## Perform the clustering with dbScan
-#' scrDbscan <- runDBSCAN(scrTsne, cores=2)
-#'
-#' ## Compute the cell similarity matrix
-#' scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-#'
-#' ## Calculate clusters similarity
-#' scrCSM <- calculateClustersSimilarity(scrCCI)
-#'
-#' ## Ranking genes
-#' scrS4MG <- rankGenes(scrCSM)
+#' ## Object scr containing the results of previous steps
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Retrieve the top 10 markers per cluster
-#' scrFinal <- retrieveTopClustersMarkers(scrS4MG)
+#' scr <- retrieveTopClustersMarkers(scr)
 #'
 #' @seealso
 #' retrieveGenesInfo

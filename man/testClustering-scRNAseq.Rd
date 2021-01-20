@@ -9,7 +9,7 @@ testClustering(theObject, dbscanEpsilon=1.4, minPts=5,
                 perplexities=30, PCs=4, randomSeed=42, width=7, height=7,
                 cores=2, writeOutput=FALSE, fileTSNE="test_tSNE.pdf",
                 fileDist="distance_graph.pdf",
-                fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE, 
+                fileClust="test_clustering.pdf", silent=FALSE, plotKNN=TRUE,
                 ...)
 }
 \arguments{
@@ -77,31 +77,11 @@ be saved where one corresponds to the "distance_graph.pdf", another one to
 "test_tSNE.pdf", and the last one will be saved as "test_clustering.pdf".
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Test the clustering with default parameters (dbscanEpsilon=1.4, minPts=5)
-testClustering(scrNorm)
+## Object containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Test the clustering writing pdfs to test_clustering folder
-testClustering(scrNorm, writeOutput=TRUE)
+testClustering(scr, writeOutput=TRUE)
 
 ## Removing the written results
 unlink("YourOutputDirectory/", recursive = TRUE)

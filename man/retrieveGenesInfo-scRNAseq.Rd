@@ -47,7 +47,7 @@ The output dataframe is composed of the following columns:
 - clusters: The cluster to which the gene is associated. \cr
 - external_gene_name: The complete gene name. \cr
 - go_id: Gene Ontology (GO) identification number. \cr
-- mgi_description: If the species is mouse, description of the gene 
+- mgi_description: If the species is mouse, description of the gene
 on MGI. \cr
 - entrezgene_description: Description of the gene by Entrez database. \cr
 - gene_biotype: protein coding gene, lincRNA gene, miRNA gene, unclassified
@@ -60,46 +60,11 @@ non-coding RNA gene, or pseudogene. \cr
 - uniprot_gn_id: ID of the gene on the uniprot database. \cr
 }
 \examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-## Normalize and filter the raw counts matrix
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
-
-## Compute the tSNE coordinates
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
-
-## Perform the clustering with dbScan
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
-
-## Compute the cell similarity matrix
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=10, cores=2)
-
-## Calculate clusters similarity
-scrCSM <- calculateClustersSimilarity(scrCCI)
-
-## Ranking genes
-scrS4MG <- rankGenes(scrCSM)
-
-## Getting marker genes
-scrFinal <- retrieveTopClustersMarkers(scrS4MG, removeDuplicates = FALSE)
+## Object scr containing the results of previous steps
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Getting genes info
-scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+scr <- retrieveGenesInfo(scr, cores=2)
 
 }
 \seealso{
