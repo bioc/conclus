@@ -726,7 +726,7 @@
 #' columnID="cell_ID")
 #'
 #' runCONCLUS(outputDirectory, experimentName, countMatrix, species,
-#'         columnsMetaData=columnsMetaData, tSNENb=1, cores=2)
+#'         columnsMetaData=columnsMetaData, tSNENb=1, numberCluster=4, cores=2)
 #'
 #' ## Remove the results
 #' unlink(outputDirectory, recursive=TRUE)

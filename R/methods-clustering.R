@@ -575,7 +575,7 @@ setMethod(
 #' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Compute the cell similarity matrix
-#' scr <- clusterCellsInternal(scr, clusterNumber=10, cores=2)
+#' scr <- clusterCellsInternal(scr, clusterNumber=4, cores=2)
 #'
 #' @seealso plotCellSimilarity
 #'
@@ -961,8 +961,8 @@ setMethod(
 #' ## Retrieving the table indicating to which cluster each cell belongs
 #' clustCellsDf <- retrieveTableClustersCells(scr)
 #'
-#' ## Replace “10” by “9” to merge 9/10
-#' clustCellsDf$clusters[which(clustCellsDf$clusters == 10)] <- 9
+#' ## Replace “4” by “3” to merge 3/4
+#' clustCellsDf$clusters[which(clustCellsDf$clusters == 4)] <- 3
 #'
 #' ## Modifying the object to take into account the new classification
 #' scrUpdated <- addClustering(scr, clusToAdd=clustCellsDf)

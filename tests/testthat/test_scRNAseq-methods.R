@@ -60,7 +60,7 @@ sceNorm <- getSceNorm(scrNorm)
 
 ## Performing tSNE
 
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 tsneList <- getTSNEList(scrTsne)
 tsneListWrong <- tsneList
 setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
@@ -68,7 +68,7 @@ newList <- list(1, 2, 3)
 
 ## Running DbScan
 
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=2)
 dbscanList <- getDbscanList(scrDbscan)
 clusteringList <- lapply(dbscanList, getClustering)
 dbscanListWrong <- dbscanList
@@ -112,16 +112,19 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
-wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2"),
-        clusters=c("1", "3"), external_gene_name=c("gene1", "gene2"),
-        go_id=c("GO1,GO2", "GO1,GO3"),
-        mgi_description=c("description1", "description2"),
-        entrezgene_description=c("description1", "description2"),
-        gene_biotype=c("coding", "coding"), chromosome_name=c("1", "2"),
-        Symbol=c("symbol1", "symbol2"), ensembl_gene_id=c("ENS1","ENS2"),
-        mgi_id=c("MGI1", "MGI2"), entrezgene_id=c("1", "2"),
-        uniprot_gn_id=c("ID1", "ID2"))
+scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
+wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2", "symbol3"),
+        clusters=c("1", "2", "3"),
+        external_gene_name=c("gene1", "gene2", "gene2"),
+        go_id=c("GO1,GO2", "GO1,GO3", "GO1,GO4"),
+        mgi_description=c("descrip1", "descrip2", "descrip3"),
+        entrezgene_description=c("descrip1", "descrip2", "descrip3"),
+        gene_biotype=c("coding", "coding", "coding"),
+        chromosome_name=c("1", "2", "3"),
+        Symbol=c("symbol1", "symbol2", "symbol3"),
+        ensembl_gene_id=c("ENS1","ENS2", "ENS3"),
+        mgi_id=c("MGI1", "MGI2", "MGI3"), entrezgene_id=c("1", "2", "3"),
+        uniprot_gn_id=c("ID1", "ID2", "ID2"))
 
 
 
@@ -343,8 +346,8 @@ test_that("Errors are thrown when creating scr", {
                      markgenlist = list()), regexp = expM)
 
              expM <- paste0("'markerGenesList' should contain as many ",
-                     "dataframes as clusters found. Number of dataframes :9 ",
-                     "and the number of cluters found is :10.")
+                     "dataframes as clusters found. Number of dataframes :1 ",
+                     "and the number of cluters found is :2.")
              expect_error(singlecellRNAseq(experimentName = experimentName,
                      countMatrix     = countMatrix,
                      species         = "mouse",
@@ -354,10 +357,11 @@ test_that("Errors are thrown when creating scr", {
 
              expM <- paste0("clusterMarkers should have the same number of ",
                      "clusters than the number of clusters found. Nb clusters ",
-                     "for markers: 2. Nb of clusters: 10")
+                     "for markers: 3. Nb of clusters: 2")
              expect_error(setClustersMarkers(scrFinal) <- data.frame(
-                             geneName= c("gene1", "gene2"), clusters=c(1,2)),
-                     expM)
+                             geneName= c("gene1", "gene2", "gene3"),
+                              clusters=c(1,2,3)),
+                        expM)
 
              expM <- paste0("The clusterMarkers data frame should have the ",
                      "columns 'geneName' and 'clusters'")
@@ -392,7 +396,7 @@ test_that("Errors are thrown when creating scr", {
 
             expM <- paste0("genesInfos should have the same number of clusters",
                     " than the number of clusters found. Nb clusters for ",
-                    "genesInfos: 2. Nb of clusters: 10")
+                    "genesInfos: 3. Nb of clusters: 2")
             expect_error(setGenesInfos(scrInfos) <- wrongInfo, expM)
 
         })
@@ -515,7 +519,7 @@ test_that("Tsne works properly", {
                     "'generateTSNECoordinates' function doesn't have its ",
                     "'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
                     " on the object before.")
-            expect_error(generateTSNECoordinates(scr, cores=5),
+            expect_error(generateTSNECoordinates(scr, cores=2),
                         regexp=expM)
 })
 
@@ -563,14 +567,14 @@ test_that("Dbscan works properly", {
             "'runDBSCAN' function doesn't have its 'sceNorm'",
             "slot updated. Please use 'normaliseCountMatrix'",
             "on the object before.")
-            expect_error(runDBSCAN(scr, cores=5),
+            expect_error(runDBSCAN(scr, cores=2),
                          regexp=expM)
 
             expM <- paste("The 'scRNAseq' object that you're using with",
                           "'runDBSCAN' function doesn't have its 'tSNEList'",
                           "slot updated. Please use 'generateTSNECoordinates'",
                           "on the object before.")
-            expect_error(runDBSCAN(scrNorm, cores=5),
+            expect_error(runDBSCAN(scrNorm, cores=2),
                          regexp=expM)
 })
 
@@ -1099,7 +1103,7 @@ test_that("retrieveTopClustersMarkers method works properly", {
             expect_error(retrieveTopClustersMarkers(scrDbscan),expM)
 
             expM <- paste0("Something wrong with number of clusters. It is ",
-                    "supposed to be equal to : 10. Current number: 1. Did you",
+                    "supposed to be equal to : 2. Current number: 1. Did you",
                     " use 'calculateClustersSimilarity' and 'rankGenes'?")
             expect_error(retrieveTopClustersMarkers(scrCCI), expM)
             expect_error(retrieveTopClustersMarkers(scrCSM), expM)
