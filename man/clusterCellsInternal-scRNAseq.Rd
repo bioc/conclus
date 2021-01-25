@@ -38,7 +38,7 @@ matrix of cells.
 load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Compute the cell similarity matrix
-scr <- clusterCellsInternal(scr, clusterNumber=10, cores=2)
+scr <- clusterCellsInternal(scr, clusterNumber=4, cores=2)
 
 }
 \seealso{
