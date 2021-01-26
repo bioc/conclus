@@ -4,40 +4,40 @@
 \alias{retrieveFromGEO}
 \title{retrieveFromGEO}
 \usage{
-retrieveFromGEO(matrixURL, countMatrixPath, species, 
-seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA, 
+retrieveFromGEO(matrixURL, countMatrixPath, species,
+seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA,
 convertToSymbols=TRUE, annoType="ENSEMBL")
 }
 \arguments{
 \item{matrixURL}{URL of the count matrix. The matrix must be un-normalized.}
 
-\item{countMatrixPath}{Path to the file to which the downloaded count 
+\item{countMatrixPath}{Path to the file to which the downloaded count
 matrix will be saved.}
 
-\item{species}{Values should be 'mouse' or 'human'. Other organisms can be 
+\item{species}{Values should be 'mouse' or 'human'. Other organisms can be
 added on demand.}
 
 \item{seriesMatrixName}{Name of the columns meta-data file hosted on GEO.
-This name can usually be found in the 'Series Matrix File(s)' section. 
+This name can usually be found in the 'Series Matrix File(s)' section.
 Should not be used if colMetaDataURL is defined. Default=NA.}
 
-\item{metaDataPath}{If colMetaDataURL is used, defines the path to the file 
+\item{metaDataPath}{If colMetaDataURL is used, defines the path to the file
 to which the downloaded meta-data will be saved.}
 
 \item{colMetaDataURL}{URL of the columns meta-data file hosted on GEO.
 This file can be found in 'supplementary file'.
 Should not be used if seriesMatrixName is defined. Default=NA.}
 
-\item{convertToSymbols}{Boolean indicating if the genes IDs 
-contained in the row names of the matrix should be converted to official 
-genes symbols. Default: TRUE. To choose the type of IDs contained in the 
+\item{convertToSymbols}{Boolean indicating if the genes IDs
+contained in the row names of the matrix should be converted to official
+genes symbols. Default: TRUE. To choose the type of IDs contained in the
 count matrix, see the annoType parameter just below.}
 
-\item{annoType}{Type of the genes annotations contained in the row names of 
+\item{annoType}{Type of the genes annotations contained in the row names of
 the count Matrix. Default: "ENSEMBL". See details.}
 }
 \value{
-A list. The first element contains the count matrix and the second element 
+A list. The first element contains the count matrix and the second element
 contains the columns meta-data.
 }
 \description{
@@ -45,11 +45,11 @@ This function retrieves the count matrix and columns meta-data from GEO.
 They are formatted to be suitable inputs for conclus.
 }
 \details{
-The conversion (TRUE by default) of the row genes IDs (ENSEMBL by default) 
-to official genes symbols is done with the function 'bitr' of the 
-'clusterProfiler' package. To see a list of all possible values to pass to 
-the annoType parameter use 'keytypes' method on "org.Mm.eg.db" (for mouse) 
-or "org.Hs.eg.db" (for human). For example, copy/paste in a R terminal: 
+The conversion (TRUE by default) of the row genes IDs (ENSEMBL by default)
+to official genes symbols is done with the function 'bitr' of the
+'clusterProfiler' package. To see a list of all possible values to pass to
+the annoType parameter use 'keytypes' method on "org.Mm.eg.db" (for mouse)
+or "org.Hs.eg.db" (for human). For example, copy/paste in a R terminal:
 library(org.Mm.eg.db);keytypes(org.Mm.eg.db)
 }
 \examples{
@@ -59,10 +59,10 @@ species <- "mouse"
 
 countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
 matrixURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/download/?acc=",
-"GSE96982&format=file&file=GSE96982\%5FcountMatrix\%2Etxt\%2Egz") 
+"GSE96982&format=file&file=GSE96982\%5FcountMatrix\%2Etxt\%2Egz")
 seriesMatrix <- "GSE96982-GPL19057_series_matrix.txt.gz"
 
-result <- retrieveFromGEO(matrixURL, countMatrixPath, species, 
+result <- retrieveFromGEO(matrixURL, countMatrixPath, species,
 seriesMatrixName=seriesMatrix)
 
 countMatrix <- result[[1]]
