@@ -107,17 +107,17 @@ setMinPoints(theObject) <- value
 setClustering(theObject) <- value
 }
 \arguments{
-\item{theObject}{A scRNA-seq, Tsne or Dbscan object to update. See 
+\item{theObject}{A scRNA-seq, Tsne or Dbscan object to update. See
 description or ?scRNAseq, ?Tsne or ?Dbscan.}
 
-\item{value}{The value to update the slot with. See ?scRNAseq, ?Tsne or 
+\item{value}{The value to update the slot with. See ?scRNAseq, ?Tsne or
 ?Dbscan.}
 }
 \value{
-setExperimentName: Update the experiment name slot with a character 
+setExperimentName: Update the experiment name slot with a character
 string (scRNA-seq).
 
-setCountMatrix: Update the countMatrix slot with a matrix of numeric 
+setCountMatrix: Update the countMatrix slot with a matrix of numeric
 (scRNA-seq).
 
 setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment
@@ -169,7 +169,7 @@ setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
 
 setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
 
-setName: Update the Tsne or Dbscan name slot with a character string 
+setName: Update the Tsne or Dbscan name slot with a character string
 (Dbscan).
 
 setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
@@ -183,12 +183,12 @@ Update a slot of a scRNA-seq, Tsne or Dbscan object.
 }
 \examples{
 ## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
                             package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 ## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+coldataPath <- system.file("extdata/test_colData_filtered.tsv",
                             package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 columnID="cell_ID")
@@ -198,9 +198,9 @@ scr <- singlecellRNAseq(experimentName = "Bergiers",
                 countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = "YourOutputDirectory")
-                
+
 setExperimentName(scr) <- "newName"
-setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(150)]
+setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(50)]
 setSpecies(scr) <- "human"
 setOutputDirectory(scr) <- "newPath"
 
