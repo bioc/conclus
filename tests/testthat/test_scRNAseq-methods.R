@@ -60,7 +60,7 @@ sceNorm <- getSceNorm(scrNorm)
 
 ## Performing tSNE
 
-scrTsne <- generateTSNECoordinates(scrNorm, cores=5)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
 tsneList <- getTSNEList(scrTsne)
 tsneListWrong <- tsneList
 setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
@@ -68,7 +68,7 @@ newList <- list(1, 2, 3)
 
 ## Running DbScan
 
-scrDbscan <- runDBSCAN(scrTsne, cores=5)
+scrDbscan <- runDBSCAN(scrTsne, cores=2)
 dbscanList <- getDbscanList(scrDbscan)
 clusteringList <- lapply(dbscanList, getClustering)
 dbscanListWrong <- dbscanList
@@ -112,7 +112,7 @@ setTSNEList(scrFinalWrong) <- list(new("Tsne"))
 
 ## Getting genes info
 
-scrInfos <- retrieveGenesInfo(scrFinal, cores=5)
+scrInfos <- retrieveGenesInfo(scrFinal, cores=2)
 wrongInfo <- data.frame(uniprot_gn_symbol=c("symbol1", "symbol2", "symbol3"),
         clusters=c("1", "2", "3"),
         external_gene_name=c("gene1", "gene2", "gene2"),
@@ -519,7 +519,7 @@ test_that("Tsne works properly", {
                     "'generateTSNECoordinates' function doesn't have its ",
                     "'sceNorm' slot updated. Please use 'normaliseCountMatrix'",
                     " on the object before.")
-            expect_error(generateTSNECoordinates(scr, cores=5),
+            expect_error(generateTSNECoordinates(scr, cores=2),
                         regexp=expM)
 })
 
@@ -567,14 +567,14 @@ test_that("Dbscan works properly", {
             "'runDBSCAN' function doesn't have its 'sceNorm'",
             "slot updated. Please use 'normaliseCountMatrix'",
             "on the object before.")
-            expect_error(runDBSCAN(scr, cores=5),
+            expect_error(runDBSCAN(scr, cores=2),
                          regexp=expM)
 
             expM <- paste("The 'scRNAseq' object that you're using with",
                           "'runDBSCAN' function doesn't have its 'tSNEList'",
                           "slot updated. Please use 'generateTSNECoordinates'",
                           "on the object before.")
-            expect_error(runDBSCAN(scrNorm, cores=5),
+            expect_error(runDBSCAN(scrNorm, cores=2),
                          regexp=expM)
 })
 
