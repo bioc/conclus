@@ -6,36 +6,36 @@
 #' @description
 #' Update a slot of a scRNA-seq, Tsne or Dbscan object.
 #'
-#' @param theObject A scRNA-seq, Tsne or Dbscan object to update. See 
+#' @param theObject A scRNA-seq, Tsne or Dbscan object to update. See
 #' description or ?scRNAseq, ?Tsne or ?Dbscan.
-#' @param value The value to update the slot with. See ?scRNAseq, ?Tsne or 
+#' @param value The value to update the slot with. See ?scRNAseq, ?Tsne or
 #' ?Dbscan.
 #'
 #' @rdname setters
-#' 
+#'
 #' @examples
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
 #'                             package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
+#'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv",
 #'                             package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
-#' 
+#'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
 #'                 countMatrix     = countMatrix,
 #'                 species         = "mouse",
 #'                 outputDirectory = "YourOutputDirectory")
-#'                 
+#'
 #' setExperimentName(scr) <- "newName"
-#' setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(150)]
+#' setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(50)]
 #' setSpecies(scr) <- "human"
 #' setOutputDirectory(scr) <- "newPath"
-#' 
+#'
 #' @title setters
 #' @name setters
 NULL
@@ -45,7 +45,7 @@ NULL
 #' setExperimentName(theObject) <- value
 #'
 #' @return
-#' setExperimentName: Update the experiment name slot with a character 
+#' setExperimentName: Update the experiment name slot with a character
 #' string (scRNA-seq).
 #'
 #' @rdname setters
@@ -65,7 +65,7 @@ setReplaceMethod(
 #' setCountMatrix(theObject) <- value
 #'
 #' @return
-#' setCountMatrix: Update the countMatrix slot with a matrix of numeric 
+#' setCountMatrix: Update the countMatrix slot with a matrix of numeric
 #' (scRNA-seq).
 #'
 #' @rdname setters
@@ -392,7 +392,7 @@ setReplaceMethod(
 #' setName(theObject) <- value
 #'
 #' @return
-#' setName: Update the Tsne or Dbscan name slot with a character string 
+#' setName: Update the Tsne or Dbscan name slot with a character string
 #' (Dbscan).
 #'
 #' @rdname setters
