@@ -703,9 +703,14 @@
 
     if(!alreadyCellFiltered){
 
+        nbCellsBefore <- nrow(coldata)
         filterCellsResult <- .filterCells(countMatrix, coldata)
         countMatrix <- filterCellsResult[[1]]
         coldata <- filterCellsResult[[2]]
+        nbCellsAfter <- nrow(coldata)
+        message("Number of cells removed after filtering: ",
+                nbCellsBefore - nbCellsAfter)
+        message("Number of cells remaining after filtering: ", nbCellsAfter)
     }
 
     if(isTRUE(nrow(coldata) == 0))
@@ -713,9 +718,15 @@
             "count matrix does not contain enough informative cells. ",
             "Please check the count matrix.")
 
+    nbGenesBefore <- nrow(rowdata)
     filterGenesResult <- .filterGenes(countMatrix, rowdata)
     countMatrix <- filterGenesResult[[1]]
     rowdata <- filterGenesResult[[2]]
+    nbGenesAfter <- nrow(rowdata)
+
+    message("Number of genes removed after filtering: ",
+            nbGenesBefore - nbGenesAfter)
+    message("Number of genes remaining after filtering: ", nbGenesAfter)
 
     if(isTRUE(nrow(rowdata) == 0))
         stop("There are no more genes after filtering. Maybe the count matrix ",
@@ -758,6 +769,39 @@
                 "of rows than the matrix number of columns.")
 }
 
+
+#' .quickClusterScran
+#'
+#' @description
+#' This function uses quickCluster of scran package to assign clusters to
+#' cells. When the data is too small, the PC of internal function of
+#' quickCluster can be too big. In this case, the function is restarted
+#' with 'd=NA' paramater. In this way, no dimensionality reduction is
+#' performed and the gene expression values are directly used in clustering.
+#'
+#' @param sce Single Cell experiment object
+#'
+#' @keywords internal
+#' @noRd
+.quickClusterScran <- function(sce){
+
+    cl <- tryCatch(
+
+        scran::quickCluster(sce),
+
+        warning = function(w){
+
+                    m <- paste("You're computing too large a percentage of",
+                        "total singular values, use a standard svd instead.")
+
+                    if(grepl(m, w$message) && ncol(sce) < 200 )
+                        scran::quickCluster(sce, d=NA)
+                },
+
+        error=function(e) NULL)
+
+    return(cl)
+}
 
 #' normaliseCountMatrix
 #'
@@ -861,10 +905,10 @@ setMethod(
 
         .checkRowAndColdata(countMatrix, rowdata, coldata)
 
-        rowdata <- .annotateGenes(countMatrix, species = species,
-                rowdataDF = rowdata)
-        coldata <- .addCellsInfo(countMatrix, rowdataDF = rowdata,
-                coldataDF = coldata)
+        rowdata <- .annotateGenes(countMatrix, species=species,
+                    rowdataDF=rowdata)
+        coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata,
+                    coldataDF=coldata)
         sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
 
         # normalization
@@ -872,7 +916,7 @@ setMethod(
                 " number of cells.")
 
         if(runQuickCluster)
-            cl <- tryCatch(scran::quickCluster(sce), error=function(e) NULL)
+            cl <- .quickClusterScran(sce)
         else
             cl <- NULL
 
