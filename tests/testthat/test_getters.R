@@ -2,31 +2,23 @@
 
 outputDirectory <- "YourOutputDirectory"
 experimentName <- "Bergiers"
-columnsMetaData <- read.delim(
-    system.file("extdata/test_colData_filtered.tsv",
-        package="conclus"))
 
-## Creation of the count Matrix
+## Load the coldata
+coldataPath <- system.file("extdata/unit_tests_colData.tsv", package="conclus")
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
+                                    columnID="cell_type")
 
-countMatrix <- as.matrix(read.delim(
-    system.file("extdata/test_countMatrix.tsv",
-        package="conclus")))
+## Load the count Matrix
+countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+                            "unit_tests_countMatrix.tsv")
 
-smallMatrix <- countMatrix[, 1:50]
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
-## Retrieve the clustering to add
-clustAddTab <- read.delim(
-    system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
-clustAddTabColThree <- cbind(clustAddTab, mock=rep(1, nrow(clustAddTab)))
-clustWrongName <- clustAddTab
-colnames(clustWrongName) <- c("test", "test")
-clustWrongcells <- clustAddTab
-clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 
 ## Load expected results
-load(file = system.file("extdata/scrLight.Rdat", package="conclus"))
-load(file = system.file("extdata/expected_normalizedMatrix.Rdat",
-    package="conclus"))
+load(file = system.file("extdata/unit_tests_scrLight.Rdat", package="conclus"))
+load(file = system.file("extdata/unit_tests_expected_normalizedMatrix.Rdat",
+                        package="conclus"))
 
 
 ## Construction of the object
