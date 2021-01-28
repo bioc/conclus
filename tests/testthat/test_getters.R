@@ -77,8 +77,8 @@ test_that("getClustersSimilarityMatrix works properly", {
     expect_equal(getClustersSimilarityMatrix(scr), mat)
 })
 
-test_that("getClustersSimiliratyOrdered works properly", {
-    expect_equal(getClustersSimiliratyOrdered(scr), factor(1))
+test_that("getClustersSimilarityOrdered works properly", {
+    expect_equal(getClustersSimilarityOrdered(scr), factor(1))
 })
 
 test_that("getMarkerGenesList works properly", {
@@ -109,7 +109,7 @@ pc=4
 perplexity=30
 coordinates=matrix(data=c(1,2), dimnames=list(NA,c("X", "Y")), ncol=2)
 
-tsne <- new("Tsne", name=name, pc=pc, perplexity=perplexity, 
+tsne <- new("Tsne", name=name, pc=pc, perplexity=perplexity,
         coordinates=coordinates)
 
 test_that("getName works properly", {
@@ -154,5 +154,3 @@ test_that("getEpsilon works properly", {
 test_that("getClustering works properly", {
     expect_equivalent(getClustering(dbscan), clustering)
 })
-
-
