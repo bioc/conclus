@@ -20,7 +20,7 @@
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/example_colData_.tsv",
+#' coldataPath <- system.file("extdata/example_colData.tsv",
 #'                             package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
