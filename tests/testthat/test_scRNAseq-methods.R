@@ -4,8 +4,7 @@ outputDirectory <- "YourOutputDirectory"
 if(!file.exists(outputDirectory))
     dir.create(outputDirectory, showWarnings=FALSE)
 experimentName <- "Bergiers"
-coldataPath <- system.file("extdata/test_colData_filtered.tsv",
-            package="conclus")
+coldataPath <- system.file("extdata/unit_tests_colData.tsv", package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
         columnID="cell_type")
 
@@ -16,23 +15,23 @@ countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
 ## Creation of the count Matrix
 
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
-                                "test_countMatrix.tsv")
+                                "unit_tests_countMatrix.tsv")
 
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
-smallMatrix <- countMatrix[,seq_len(50)]
 wrongCountMatrix <- matrix(rep("toto", 1000), ncol = 100)
 wrongNamesCountMatrix <- matrix(seq(10000), ncol = 100)
 wrongColsCountMatrix <- wrongNamesCountMatrix
 rownames(wrongColsCountMatrix) <- paste0(rep("id_", 100) , seq(100))
 
-badCountMatrix <- countMatrix[1:100, 1:100]
+badCountMatrix <- countMatrix[, 1:10]
 badCountMatrix[badCountMatrix > 0] <- 1
 
 
 ## Retrieve the clustering to add
 clustAddTab <- read.delim(
-        system.file("extdata/Bergiers_clusters_table.tsv", package="conclus"))
+        system.file("extdata/unit_tests_Bergiers_clusters_table.tsv",
+                    package="conclus"))
 clustAddTabColThree <- cbind(clustAddTab, mock=rep(1, nrow(clustAddTab)))
 clustWrongName <- clustAddTab
 colnames(clustWrongName) <- c("test", "test")
@@ -40,8 +39,8 @@ clustWrongcells <- clustAddTab
 clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 
 ## Load expected results
-load(file = system.file("extdata/scrLight.Rdat", package="conclus"))
-load(file = system.file("extdata/expected_normalizedMatrix.Rdat",
+load(file = system.file("extdata/unit_tests_scrLight.Rdat", package="conclus"))
+load(file = system.file("extdata/unit_tests_expected_normalizedMatrix.Rdat",
                 package="conclus"))
 
 
@@ -60,7 +59,9 @@ sceNorm <- getSceNorm(scrNorm)
 
 ## Performing tSNE
 
-scrTsne <- generateTSNECoordinates(scrNorm, cores=2)
+scrTsne <- generateTSNECoordinates(scrNorm, cores=2, perplexities=c(2,3),
+                                    PCs =c(3,4,5,6,7,8,9))
+
 tsneList <- getTSNEList(scrTsne)
 tsneListWrong <- tsneList
 setCoordinates(tsneListWrong[[1]]) <- getCoordinates(tsneList[[1]])[1:10,]
@@ -68,7 +69,7 @@ newList <- list(1, 2, 3)
 
 ## Running DbScan
 
-scrDbscan <- runDBSCAN(scrTsne, cores=2)
+scrDbscan <- runDBSCAN(scrTsne, cores=2, epsilon=c(60, 70, 80), minPoints=c(2,3))
 dbscanList <- getDbscanList(scrDbscan)
 clusteringList <- lapply(dbscanList, getClustering)
 dbscanListWrong <- dbscanList
@@ -96,7 +97,7 @@ colnames(wrongCCIchar) <-  c("c1", "c2", "c3")
 
 scrCSM <- calculateClustersSimilarity(scrCCI)
 csm <- getClustersSimilarityMatrix(scrCSM)
-orderedCLusters <- getClustersSimiliratyOrdered(scrCSM)
+orderedCLusters <- getClustersSimilarityOrdered(scrCSM)
 
 ## Ranking genes
 
@@ -158,22 +159,6 @@ test_that("Errors are thrown when creating scr", {
                     "correct.")
             expect_error(singlecellRNAseq(experimentName  = "My experiment",
                             countMatrix     = countMatrix,
-                            species         = "mouse",
-                            outputDirectory = outputDirectory), regexp = expM)
-
-            expM <- paste0("Not enough cells in the count matrix. There ",
-                    "Should be at leat 100 cells. The current count matrix ",
-                    "contains 1 cells.\n")
-            expect_error(singlecellRNAseq(experimentName  = experimentName,
-                            countMatrix     = matrix(),
-                            species         = "mouse",
-                            outputDirectory = outputDirectory), regexp = expM)
-
-            expM <- paste0("Not enough cells in the count matrix. There Should",
-                    " be at leat 100 cells. The current count matrix contains ",
-                    "50 cells.\n")
-            expect_error(singlecellRNAseq(experimentName  = experimentName,
-                            countMatrix     = smallMatrix,
                             species         = "mouse",
                             outputDirectory = outputDirectory), regexp = expM)
 
