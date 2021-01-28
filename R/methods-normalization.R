@@ -446,7 +446,7 @@
                         MoreWorse=c("sumMtPer")){
     message("Running filterCells.")
 
-    countMatrix <- countMatrix[, colSums(countMatrix) > genesSumThr]
+    countMatrix <- countMatrix[, colSums(countMatrix) >= genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
         stop("None of your cells has at least 100 genes expressed. Since the ",
             "filtering keeps only those cells, nothing will be kept. ",
@@ -861,12 +861,12 @@
 #'
 #' @examples
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
+#' countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
 #'                             package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv",
+#' coldataPath <- system.file("extdata/example_colData_.tsv",
 #'                             package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")

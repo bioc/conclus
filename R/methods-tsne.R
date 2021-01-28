@@ -182,7 +182,7 @@
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Compute the tSNE coordinates
 #' scr <- generateTSNECoordinates(scr, cores=2)

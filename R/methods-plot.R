@@ -449,7 +449,7 @@
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap of the similarity matrix
 #' plotCellSimilarity(scr)
@@ -945,7 +945,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap of the similarity matrix
 #' plotClusteredTSNE(scr)
@@ -1512,7 +1512,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap with marker genes
 #' plotCellHeatmap(scr)
@@ -1763,7 +1763,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## t-SNE plot colored by expression of a  given gene.
 #' plotGeneExpression(scr, getClustersMarkers(scr)[1,1])
@@ -2061,7 +2061,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot similarity matrix as a heatmap
 #' plotClustersSimilarity(scr)

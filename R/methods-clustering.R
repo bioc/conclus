@@ -303,7 +303,7 @@
 #'
 #' @examples
 #' ## Object containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Test the clustering writing pdfs to test_clustering folder
 #' testClustering(scr, writeOutput=TRUE)
@@ -572,7 +572,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Compute the cell similarity matrix
 #' scr <- clusterCellsInternal(scr, clusterNumber=4, cores=2)
@@ -764,7 +764,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 
 #' ## Calculate clusters similarity
 #' scr <- calculateClustersSimilarity(scr)
@@ -852,7 +852,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Retrieving the table clusters-cells.
 #' cellClustDf <- retrieveTableClustersCells(scr)
@@ -956,7 +956,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 #'
 #' ## Retrieving the table indicating to which cluster each cell belongs
 #' clustCellsDf <- retrieveTableClustersCells(scr)
