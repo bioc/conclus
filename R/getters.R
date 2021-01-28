@@ -10,30 +10,30 @@
 #' ?scRNAseq, ?Tsne, ?Dbscan.
 #'
 #' @rdname getters
-#' 
+#'
 #' @examples
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+#' countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
 #'                             package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#' 
+#'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+#' coldataPath <- system.file("extdata/test_colData_filtered.tsv",
 #'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
-#' 
+#'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
 #'                 countMatrix     = countMatrix,
 #'                 species         = "mouse",
 #'                 outputDirectory = "YourOutputDirectory")
-#'                 
+#'
 #' experimentName <- getExperimentName(scr)
 #' countMatrix <- getCountMatrix(scr)
 #' species <- getSpecies(scr)
 #' outputDirectory <- getOutputDirectory(scr)
-#' 
+#'
 #' @name getters
 #' @title getters
 #' @author Ilyess RACHEDI
@@ -201,18 +201,18 @@ setMethod(
 
 
 #' @usage
-#' getClustersSimiliratyOrdered(theObject)
+#' getClustersSimilarityOrdered(theObject)
 #'
 #' @return
-#' getClustersSimiliratyOrdered: Get the clusters ordered by similarity 
+#' getClustersSimilarityOrdered: Get the clusters ordered by similarity
 #' (scRNA-seq).
 #'
 #' @rdname getters
-#' @aliases getClustersSimiliratyOrdered
+#' @aliases getClustersSimilarityOrdered
 #'
-#' @exportMethod getClustersSimiliratyOrdered
+#' @exportMethod getClustersSimilarityOrdered
 setMethod(
-        f = "getClustersSimiliratyOrdered",
+        f = "getClustersSimilarityOrdered",
         signature = "scRNAseq",
         definition = function(theObject){
             return(theObject@clustersSimiliratyOrdered)
@@ -414,6 +414,3 @@ setMethod(
     definition = function(theObject){
         return(theObject@clustering)
     })
-
-
-

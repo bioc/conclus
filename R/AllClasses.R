@@ -16,8 +16,8 @@
 #'
 #' @slot name A 'character' string representing the name of the tSNE
 #'             coordinates.
-#' @slot pc A 'numeric' value representing the number of principal 
-#'         components used by CONCLUS to perfom a PCA before 
+#' @slot pc A 'numeric' value representing the number of principal
+#'         components used by CONCLUS to perfom a PCA before
 #'         calculating the tSNE.
 #' @slot perplexity  A 'numeric' vector. Default: c(30, 40)
 #' @slot coordinates A 'numeric' matrix that contains the coordinates
@@ -25,7 +25,7 @@
 #'
 #' @details
 #'     Tsne is a vector of principal components (PC) and perplexity that are
-#' the parameters necessary to reduce the dimensionality of the data in the 
+#' the parameters necessary to reduce the dimensionality of the data in the
 #' the form of a t-distributed stochastic neighbor embedding (t-SNE).
 #' For details about perplexities parameter see ‘?Rtsne’.
 #'
@@ -98,7 +98,7 @@ Tsne <- setClass(
 #' @slot name A character string representing the name of the Dbscan
 #' clustering.
 #' @slot epsilon A numeric vector. The epsilon is the distance to \cr
-#' consider two points belonging to the same cluster. 
+#' consider two points belonging to the same cluster.
 #' Default = c(1.3, 1.4, 1.5).
 #' @slot minPoints A numeric value. The minPoints is the minimum number
 #' of points to construct a cluster.
@@ -163,13 +163,13 @@ Dbscan <- setClass(
 
 
 .testExperimentNameSlot <- function(object){
-    
+
     experimentName <- getExperimentName(object)
-    
+
     if(isTRUE(all.equal(length(experimentName),0)) ||
             isTRUE(all.equal(experimentName,"")))
         stop("'experimentName' slot is empty. Please fill it.")
-    
+
     if(!is.character(experimentName) | grepl(" ", experimentName))
         stop("Experiment name should contain a single string ",
                 "describing the experiment, '", experimentName,
@@ -178,107 +178,102 @@ Dbscan <- setClass(
 
 
 .testCountMatrixSlot <- function(object){
-    
+
     countMatrix <- getCountMatrix(object)
-    
-    if(ncol(countMatrix) < 100)
-        stop("Not enough cells in the count matrix. There ",
-                "Should be at leat 100 cells. ", "The current count matrix ",
-                "contains ", ncol(countMatrix), " cells.\n")
-    
+
     if(isFALSE(is.numeric(countMatrix)))
         stop("The count matrix is empty or does not contain whole numbers. ",
                 "Please check your count matrix.\n")
-    
+
     if(isFALSE(is.character(rownames(countMatrix))))
         stop("The name of the lines should be character class. ",
                 "Please check your count matrix.\n")
-    
+
     if(isFALSE(is.character(colnames(countMatrix))))
         stop("The name of the columns should be character class. ",
-                "Please check your count matrix.\n")    
+                "Please check your count matrix.\n")
 }
 
 .testsceNormSlot <- function(object){
-    
+
     sceNorm <- getSceNorm(object)
-    
+
     if(!is(sceNorm, "SingleCellExperiment"))
         stop("Normalized count matrix should be a SingleCellExperiment ",
                 "object and not a '", is(sceNorm), "'.")
 }
 
 .testSpeciesSlot <- function(object){
-    
+
     species <- getSpecies(object)
-    
+
     if(isTRUE(all.equal(length(species), 0)))
         stop("The species is empty. Please fill it.")
-    
+
     if (!is.element(species, c("mouse","human")))
         stop("species should be 'mouse' or 'human'. '", species,
                 "' is currently not supported.\n")
-    
+
 }
 
 .testOutputDirectorySlot <- function(object){
-    
+
     outputDirectory <- getOutputDirectory(object)
-    
+
     if (isTRUE(all.equal(length(outputDirectory), 0)) ||
             isTRUE(all.equal(outputDirectory, "")))
         stop("'outputDirectory' slot is empty. Please fill it.")
-    
+
     if(!is.character(outputDirectory) | grepl(" ", outputDirectory))
         stop("'outputDirectory' should be a conform folder path:",
                 "'", outputDirectory, "' is not.")
 }
 
 .testtSNEListSlot <- function(object){
-    
+
     tSNEList <- getTSNEList(object)
-    
+
     if(isTRUE(all.equal(length(tSNEList), 0)))
         stop("tSNEList is empty. This should be a list of tSNE objects.\n")
-    
+
     if(isFALSE(all(vapply(tSNEList, is, class2 = "Tsne",
                             FUN.VALUE = logical(1)))))
         stop("tSNEList should be a list of Tsne objects.")
-    
+
     invisible(checkList(tSNEList, getCoordinates, "Tsne"))
 }
 
 .testDbscanSlot <- function(object){
-    
+
     dbscanList <- getDbscanList(object)
-    
+
     if(isTRUE(all.equal(length(dbscanList), 0)))
         stop("dbscanList is empty. This should be a list of dbScan ",
                 "objects.\n")
-    
+
     if(isFALSE(all(
-                    vapply(dbscanList, is, class2 = "Dbscan", 
+                    vapply(dbscanList, is, class2 = "Dbscan",
                             FUN.VALUE = logical(1)))))
         stop("dbscanList should be a list of Dbscan objects.")
-    
-    
+
+
     invisible(checkList(dbscanList, getClustering, "Dbscan"))
 }
 
 .testCellsSimilarityMatrixSlot <- function(object){
-    
+
     cellsSimilarityMatrix <- getCellsSimilarityMatrix(object)
-    
+
     if(is.null(rownames(cellsSimilarityMatrix)) ||
             is.null(colnames(cellsSimilarityMatrix)))
         stop("'cellsSimilarityMatrix' should have column and row names ",
                 "corresponding to cell names.")
-    
+
     if(isFALSE(identical(colnames(cellsSimilarityMatrix),
                     rownames(cellsSimilarityMatrix))))
         stop("'cellsSimilarityMatrix' should be a square matrix with ",
                 "identical names in rows and columns.")
-    
+
     if(isFALSE(all(
                     vapply(cellsSimilarityMatrix, is, class2 = "numeric",
                             FUN.VALUE = logical(1)))))
@@ -286,19 +281,19 @@ Dbscan <- setClass(
 }
 
 .testClustersSimilarityMatrixSlot <- function(object){
-    
+
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(object)
-    
+
     if(is.null(rownames(clustersSimilarityMatrix)) ||
             is.null(colnames(clustersSimilarityMatrix)))
         stop("'clustersSimilarityMatrix' should have column and row names ",
                 "corresponding to cluster names.")
-    
+
     if(isFALSE(identical(colnames(clustersSimilarityMatrix),
                     rownames(clustersSimilarityMatrix))))
         stop("'clustersSimilarityMatrix' should be a square matrix with ",
                 "identical names in rows and colums.")
-    
+
     if(isFALSE(all(
                     vapply(clustersSimilarityMatrix, is, class2 = "numeric",
                             FUN.VALUE = logical(1)))))
@@ -307,14 +302,14 @@ Dbscan <- setClass(
 }
 
 .testClustersSimiliratyOrderedSlot <- function(object){
-    
-    clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(object)
+
+    clustersSimiliratyOrdered <- getClustersSimilarityOrdered(object)
     clustersSimilarityMatrix <- getClustersSimilarityMatrix(object)
-    
+
     if(isTRUE(all.equal(nrow(clustersSimiliratyOrdered), 0)) &&
             isTRUE(all.equal(ncol(clustersSimiliratyOrdered), 0)))
         stop("'clustersSimiliratyOrdered' is empty. It should be a matrix.")
-    
+
     if (all(!clustersSimiliratyOrdered %in%
                     rownames(clustersSimilarityMatrix)))
         stop("'clustersSimiliratyOrdered' slot should contain the same ",
@@ -322,43 +317,43 @@ Dbscan <- setClass(
 }
 
 .testGetMarkerGenesListSlot <- function(object){
-    
+
     markerGenesList <- getMarkerGenesList(object)
-    clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(object)
-    
+    clustersSimiliratyOrdered <- getClustersSimilarityOrdered(object)
+
     if(isTRUE(all.equal(length(markerGenesList), 0)))
         stop("markerGenesList is empty. This should be a list of dataframe")
-    
+
     invisible(checkMarkerGenesList(markerGenesList,
                     clustersSimiliratyOrdered))
 }
 
 
 .testClustersMarkersSlot <- function(object){
-    
+
     clusterMarkers <- getClustersMarkers(object)
-    clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(object)
-    
+    clustersSimiliratyOrdered <- getClustersSimilarityOrdered(object)
+
     if(isTRUE(all.equal(length(clusterMarkers), 0)))
         stop("clusterMarkers is empty. This should be a dataframe")
-    
+
     invisible(checkClusterMarkers(clusterMarkers,
                     clustersSimiliratyOrdered))
 }
 
 
 .testGenesInfosSlot <- function(object){
-    
+
     genesInfos <- getGenesInfos(object)
-    clustersSimiliratyOrdered <- getClustersSimiliratyOrdered(object)
+    clustersSimiliratyOrdered <- getClustersSimilarityOrdered(object)
     species <- getSpecies(object)
-    
+
     if(isTRUE(all.equal(length(genesInfos), 0)))
         stop("genesInfos is empty. This should be a dataframe")
-    
+
     invisible(checkGenesInfos(genesInfos, species,
                     clustersSimiliratyOrdered))
-    
+
 }
 
 
@@ -376,20 +371,20 @@ Dbscan <- setClass(
 #' colData giving informations about cells and the rowData giving
 #' informations about genes. It also contains the normalized count matrix.
 #' @slot species 'character' string representing the species of interest.
-#' Currently limited to "mouse" and "human". Other organisms can be 
+#' Currently limited to "mouse" and "human". Other organisms can be
 #' added on demand.
 #' @slot outputDirectory A 'character' string of the path to the root
 #' output folder.
 #' @slot tSNEList List of 'Tsne' objects representing the different tSNE
 #' coordinates generated by CONCLUS.
-#' @slot dbscanList List of 'Dbscan' objects representing the different 
+#' @slot dbscanList List of 'Dbscan' objects representing the different
 #' Dbscan clustering generated by CONCLUS.
 #' @slot cellsSimilarityMatrix A numeric Matrix defining how many times
 #' two cells have been associated to the same cluster across the 84
 #' solutions (by default) of clustering.
 #' @slot clustersSimilarityMatrix A numeric matrix comparing the
 #' robustness of the consensus clusters.
-#' @slot clustersSimiliratyOrdered A factor representing the clusters 
+#' @slot clustersSimiliratyOrdered A factor representing the clusters
 #' ordered by similarity.
 #' @slot markerGenesList List of data.frames. Each data frame contains
 #' the ranked genes of one cluster.
@@ -410,11 +405,11 @@ Dbscan <- setClass(
 #'
 #' countMatrix:     Matrix containing the raw counts.
 #'
-#' species:         'character' string representing the species of interest. 
-#'                 Shoud be mouse or human. Other organisms can be added on 
+#' species:         'character' string representing the species of interest.
+#'                 Shoud be mouse or human. Other organisms can be added on
 #'                 demand.
 #'
-#' outputDirectory: 'character' string representing the path to the output 
+#' outputDirectory: 'character' string representing the path to the output
 #' directory.
 #'
 #'
@@ -424,18 +419,18 @@ Dbscan <- setClass(
 #'
 #'     getExperimentName(x):            Get the name of the experiment. \cr
 #'     getCountMatrix(x):               Get the count matrix. \cr
-#'     getSceNorm(x):                   Get the SingleCellExperiment object 
+#'     getSceNorm(x):                   Get the SingleCellExperiment object
 #' used  \cr
 #'     getSpecies(x):                   Get the species. \cr
-#'     getOutputDirectory(x):           Get the path of the output directory. 
+#'     getOutputDirectory(x):           Get the path of the output directory.
 #' \cr
 #'     getTSNEList(x):                  Get the list of Tsne objects. \cr
 #'     getDbscanList(x):                Get the list of Dbscan objects. \cr
 #'     getCellsSimilarityMatrix(x):     Get the cell similarity matrix. \cr
 #'     getClustersSimilarityMatrix(x):  Get the cluster similarity matrix. \cr
-#'     getClustersSimiliratyOrdered(x): Get the clusters ordered by 
+#'     getClustersSimilarityOrdered(x): Get the clusters ordered by
 #' similarity. \cr
-#'     getMarkerGenesList(x):           Get the list of marker genes by 
+#'     getMarkerGenesList(x):           Get the list of marker genes by
 #' clusters. \cr
 #'     getClustersMarkers(x):           Get the most significant markers by
 #'                                     clusters into a data.frame. \cr
@@ -448,18 +443,18 @@ Dbscan <- setClass(
 #'
 #'     setExperimentName(x):            Set the name of the experiment. \cr
 #'     setCountMatrix(x):               Set the count matrix. \cr
-#'     setSceNorm(x):                   Set the SingleCellExperiment object 
+#'     setSceNorm(x):                   Set the SingleCellExperiment object
 #' used. \cr
 #'     setSpecies(x):                   Set the species. \cr
-#'     setOutputDirectory(x):           Set the path of the output directory. 
+#'     setOutputDirectory(x):           Set the path of the output directory.
 #' \cr
 #'     setTSNEList(x):                  Set the list of Tsne objects. \cr
 #'     setDbscanList(x):                Set the list of Dbscan objects. \cr
 #'     setCellsSimilarityMatrix(x):     Set the cell similarity matrix. \cr
 #'     setClustersSimilarityMatrix(x):  Set the cluster similarity matrix. \cr
-#'     setClustersSimiliratyOrdered(x): Set the clusters ordered by 
+#'     setClustersSimiliratyOrdered(x): Set the clusters ordered by
 #' similarity. \cr
-#'     setMarkerGenesList(x):           Set the list of marker genes by 
+#'     setMarkerGenesList(x):           Set the list of marker genes by
 #' clusters \cr
 #'     setClustersMarkers(x):           Set the most significant markers by
 #'                                     clusters. \cr
@@ -523,8 +518,8 @@ scRNAseq <- setClass(
         .testCellsSimilarityMatrixSlot(object)
         .testClustersSimilarityMatrixSlot(object)
         .testClustersSimiliratyOrderedSlot(object)
-        .testGetMarkerGenesListSlot(object)        
-        .testClustersMarkersSlot(object)        
+        .testGetMarkerGenesListSlot(object)
+        .testClustersMarkersSlot(object)
         .testGenesInfosSlot(object)
     }
 )

@@ -106,7 +106,7 @@
 #' @usage
 #' .filteringAndOrdering(countMatrix, columnsMetaData)
 #'
-#' @param countMatrix Matrix containing single-cell gene expression retrieved 
+#' @param countMatrix Matrix containing single-cell gene expression retrieved
 #' from GEO.
 #' @param columnsMetaData Corresponding meta-data of the columns/cells of the
 #' count matrix.

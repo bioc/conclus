@@ -342,10 +342,10 @@ setGeneric(
 
 setGeneric(
 
-    name = "getClustersSimiliratyOrdered",
+    name = "getClustersSimilarityOrdered",
 
     def = function(theObject){
-        standardGeneric("getClustersSimiliratyOrdered")
+        standardGeneric("getClustersSimilarityOrdered")
     },
     signature = "theObject")
 

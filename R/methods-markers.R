@@ -880,7 +880,7 @@ setMethod(
             if(removeDuplicates){
 
                 test <- markersClusters[!duplicated(markersClusters$geneName), ]
-                clustSimOrdered <- getClustersSimiliratyOrdered(theObject)
+                clustSimOrdered <- getClustersSimilarityOrdered(theObject)
                 nbClustMark <- length(unique(test$clusters))
                 nbClust <- length(clustSimOrdered)
 
