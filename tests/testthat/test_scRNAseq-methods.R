@@ -26,7 +26,10 @@ rownames(wrongColsCountMatrix) <- paste0(rep("id_", 100) , seq(100))
 
 badCountMatrix <- countMatrix[, 1:10]
 badCountMatrix[badCountMatrix > 0] <- 1
-
+## Matrix to have 0 gene after genes filtering
+badCountMatrix2 <- countMatrix
+badCountMatrix2[1,] <- 100
+badCountMatrix2[2:20,] <- 0
 
 ## Retrieve the clustering to add
 clustAddTab <- read.delim(
@@ -452,13 +455,15 @@ test_that("Normalization works properly", {
                 species         = "mouse"),
                 coldata=data.frame()), regexp=expM)
 
+
             expM <- paste0("There are no more genes after filtering. Maybe",
                             " the count matrix contains only genes which are",
                             " less than in 10 cells or more than ",
                             "all-10 cells. Please check the count matrix.")
+
             expect_error(normaliseCountMatrix(singlecellRNAseq(
                                 experimentName = experimentName,
-                                countMatrix     = countMatrix[1:100, 1:100] - 1,
+                                countMatrix     = badCountMatrix2,
                                 outputDirectory = outputDirectory,
                                 species         = "mouse")),
                         regexp=expM)
