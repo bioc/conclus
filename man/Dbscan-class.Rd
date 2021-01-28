@@ -16,7 +16,7 @@ and is used by the method runDBSCAN.
 clustering.}
 
 \item{\code{epsilon}}{A numeric vector. The epsilon is the distance to \cr
-consider two points belonging to the same cluster. 
+consider two points belonging to the same cluster.
 Default = c(1.3, 1.4, 1.5).}
 
 \item{\code{minPoints}}{A numeric value. The minPoints is the minimum number

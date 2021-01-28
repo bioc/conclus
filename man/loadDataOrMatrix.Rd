@@ -11,13 +11,13 @@ loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".")
 
 \item{type}{Values should be "coldata", "rowdata", or "countMatrix".}
 
-\item{columnID}{For row and col data, column name containing cells/genes 
+\item{columnID}{For row and col data, column name containing cells/genes
 names/id. Should not be used when inporting a matrix. Default=NULL.}
 
 \item{header}{Set TRUE if the first row of the table corresponds to the
 column names, and FALSE if it doesn't. Default=TRUE.}
 
-\item{sep}{Character used in the table to separate the fields. 
+\item{sep}{Character used in the table to separate the fields.
 Usually it's ' ' ';' ',' or '\\t'. Default='\\t'.}
 
 \item{dec}{Character used in the table for decimal points.
@@ -27,14 +27,14 @@ Usually '.' or ',' . Default=".".}
 The formatted row, col data or the matrix.
 }
 \description{
-This function allows to import the coldata, rowData or the countMatrix. It 
+This function allows to import the coldata, rowData or the countMatrix. It
 formats each type of data to follow the requirements of CONCLUS.
 }
 \examples{
 
 ## ColData
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
-                            package = "conclus")                 
+coldataPath <- system.file("extdata/test_colData_filtered.tsv",
+                            package = "conclus")
 loadDataOrMatrix(file=coldataPath, type="coldata", columnID="cell_ID")
 
 ## RowData

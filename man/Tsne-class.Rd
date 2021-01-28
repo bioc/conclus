@@ -11,7 +11,7 @@ and is used by the method generateTSNECoordinates.
 }
 \details{
 Tsne is a vector of principal components (PC) and perplexity that are
-the parameters necessary to reduce the dimensionality of the data in the 
+the parameters necessary to reduce the dimensionality of the data in the
 the form of a t-distributed stochastic neighbor embedding (t-SNE).
 For details about perplexities parameter see ‘?Rtsne’.
 }
@@ -21,8 +21,8 @@ For details about perplexities parameter see ‘?Rtsne’.
 \item{\code{name}}{A 'character' string representing the name of the tSNE
 coordinates.}
 
-\item{\code{pc}}{A 'numeric' value representing the number of principal 
-components used by CONCLUS to perfom a PCA before 
+\item{\code{pc}}{A 'numeric' value representing the number of principal
+components used by CONCLUS to perfom a PCA before
 calculating the tSNE.}
 
 \item{\code{perplexity}}{A 'numeric' vector. Default: c(30, 40)}

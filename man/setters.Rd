@@ -183,12 +183,12 @@ Update a slot of a scRNA-seq, Tsne or Dbscan object.
 }
 \examples{
 ## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv",
+countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
                             package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 ## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv",
+coldataPath <- system.file("extdata/example_colData_.tsv",
                             package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 columnID="cell_ID")

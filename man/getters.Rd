@@ -20,8 +20,8 @@
 \alias{getCellsSimilarityMatrix}
 \alias{getClustersSimilarityMatrix,scRNAseq-method}
 \alias{getClustersSimilarityMatrix}
-\alias{getClustersSimiliratyOrdered,scRNAseq-method}
-\alias{getClustersSimiliratyOrdered}
+\alias{getClustersSimilarityOrdered,scRNAseq-method}
+\alias{getClustersSimilarityOrdered}
 \alias{getMarkerGenesList,scRNAseq-method}
 \alias{getMarkerGenesList}
 \alias{getClustersMarkers,scRNAseq-method}
@@ -63,7 +63,7 @@ getCellsSimilarityMatrix(theObject)
 
 getClustersSimilarityMatrix(theObject)
 
-getClustersSimiliratyOrdered(theObject)
+getClustersSimilarityOrdered(theObject)
 
 getMarkerGenesList(theObject)
 
@@ -110,7 +110,7 @@ getCellsSimilarityMatrix: Get the cell similarity matrix (scRNA-seq).
 
 getClustersSimilarityMatrix: Get the cluster similarity matrix (scRNA-seq).
 
-getClustersSimiliratyOrdered: Get the clusters ordered by similarity 
+getClustersSimilarityOrdered: Get the clusters ordered by similarity
 (scRNA-seq).
 
 getMarkerGenesList: Get the list of marker genes by clusters  (scRNA-seq).
@@ -138,14 +138,14 @@ Retrieve the data of the slots of a scRNA-seq, Tsne or Dbscan object.
 }
 \examples{
 ## Load the count matrix
-countmatrixPath <- system.file("extdata/test_countMatrix.tsv", 
+countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
                             package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 ## Load the coldata
-coldataPath <- system.file("extdata/test_colData_filtered.tsv", 
+coldataPath <- system.file("extdata/example_colData_.tsv",
                             package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata", 
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 columnID="cell_ID")
 
 ## Create the initial object
@@ -153,7 +153,7 @@ scr <- singlecellRNAseq(experimentName = "Bergiers",
                 countMatrix     = countMatrix,
                 species         = "mouse",
                 outputDirectory = "YourOutputDirectory")
-                
+
 experimentName <- getExperimentName(scr)
 countMatrix <- getCountMatrix(scr)
 species <- getSpecies(scr)

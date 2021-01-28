@@ -58,7 +58,7 @@ of expression of a selected gene.
 }
 \examples{
 ## Object scr containing the results of previous steps
-load(system.file("extdata/scrFull.Rdat", package="conclus"))
+load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
 
 ## t-SNE plot colored by expression of a  given gene.
 plotGeneExpression(scr, getClustersMarkers(scr)[1,1])
