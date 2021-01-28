@@ -38,7 +38,7 @@ coldataPath <- system.file("extdata/example_colData.tsv",
 loadDataOrMatrix(file=coldataPath, type="coldata", columnID="cell_ID")
 
 ## RowData
-rowdataPath <- system.file("extdata/unit_tests_rowData_filtered.tsv",
+rowdataPath <- system.file("extdata/unit_tests_rowData.tsv",
                             package="conclus")
 loadDataOrMatrix(file=rowdataPath, type="rowdata", columnID="gene_ID")
 
