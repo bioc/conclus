@@ -49,9 +49,9 @@ NULL
 #' string (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setExperimentName
+#' @aliases "setExperimentName<-" setExperimentName
 #'
-#' @exportMethod setExperimentName
+#' @exportMethod "setExperimentName<-"
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -69,8 +69,8 @@ setReplaceMethod(
 #' (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setCountMatrix
-#' @exportMethod setCountMatrix
+#' @aliases "setCountMatrix<-" setCountMatrix
+#' @exportMethod "setCountMatrix<-"
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -88,8 +88,8 @@ setReplaceMethod(
 #' object (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setSceNorm
-#' @exportMethod setSceNorm
+#' @aliases "setSceNorm<-" setSceNorm
+#' @exportMethod "setSceNorm<-"
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -108,8 +108,8 @@ setReplaceMethod(
 #' mouse or human. Other organisms can be added on demand  (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setSpecies
-#' @exportMethod setSpecies
+#' @aliases "setSpecies<-" setSpecies
+#' @exportMethod "setSpecies<-"
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -128,8 +128,8 @@ setReplaceMethod(
 #' Value should be a valid path (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setOutputDirectory
-#' @exportMethod setOutputDirectory
+#' @aliases "setOutputDirectory<-" setOutputDirectory
+#' @exportMethod "setOutputDirectory<-"
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -148,8 +148,8 @@ setReplaceMethod(
 #' ?Tsne-class (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setTSNEList
-#' @exportMethod setTSNEList
+#' @aliases "setTSNEList<-" setTSNEList
+#' @exportMethod "setTSNEList<-"
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -168,8 +168,8 @@ setReplaceMethod(
 #' ?Dbscan-class (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setDbscanList
-#' @exportMethod setDbscanList
+#' @aliases "setDbscanList<-" setDbscanList
+#' @exportMethod "setDbscanList<-"
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -188,8 +188,8 @@ setReplaceMethod(
 #' numeric matrix (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setCellsSimilarityMatrix
-#' @exportMethod setCellsSimilarityMatrix
+#' @aliases "setCellsSimilarityMatrix<-" setCellsSimilarityMatrix
+#' @exportMethod "setCellsSimilarityMatrix<-"
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -208,8 +208,8 @@ setReplaceMethod(
 #' numeric matrix (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setClustersSimilarityMatrix
-#' @exportMethod setClustersSimilarityMatrix
+#' @aliases "setClustersSimilarityMatrix<-" setClustersSimilarityMatrix
+#' @exportMethod "setClustersSimilarityMatrix<-"
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -228,8 +228,8 @@ setReplaceMethod(
 #' a numeric factor (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setClustersSimiliratyOrdered
-#' @exportMethod setClustersSimiliratyOrdered
+#' @aliases "setClustersSimiliratyOrdered<-" setClustersSimiliratyOrdered
+#' @exportMethod "setClustersSimiliratyOrdered<-"
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -250,8 +250,8 @@ setReplaceMethod(
 #' score = c(NA))  (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setMarkerGenesList
-#' @exportMethod setMarkerGenesList
+#' @aliases "setMarkerGenesList<-" setMarkerGenesList
+#' @exportMethod "setMarkerGenesList<-"
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -271,8 +271,8 @@ setReplaceMethod(
 #' data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
 #'
 #' @rdname setters
-#' @aliases setClustersMarkers
-#' @exportMethod setClustersMarkers
+#' @aliases "setClustersMarkers<-" setClustersMarkers
+#' @exportMethod "setClustersMarkers<-"
 setReplaceMethod(
         f="setClustersMarkers",
         signature="scRNAseq",
@@ -298,8 +298,8 @@ setReplaceMethod(
 #'                 uniprot_gn_id="ID"). (scRNA-seq)
 #'
 #' @rdname setters
-#' @aliases setGenesInfos
-#' @exportMethod setGenesInfos
+#' @aliases "setGenesInfos<-" setGenesInfos
+#' @exportMethod "setGenesInfos<-"
 setReplaceMethod(
         f="setGenesInfos",
         signature="scRNAseq",
@@ -333,8 +333,8 @@ setReplaceMethod(
 #' setPC: Update the pc slot with a vector of numeric (Tsne).
 #'
 #' @rdname setters
-#' @aliases setPC
-#' @exportMethod setPC
+#' @aliases "setPC<-" setPC
+#' @exportMethod "setPC<-"
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -352,8 +352,8 @@ setReplaceMethod(
 #' setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
 #'
 #' @rdname setters
-#' @aliases setPerplexity
-#' @exportMethod setPerplexity
+#' @aliases "setPerplexity<-" setPerplexity
+#' @exportMethod "setPerplexity<-"
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -371,8 +371,8 @@ setReplaceMethod(
 #' setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
 #'
 #' @rdname setters
-#' @aliases setCoordinates
-#' @exportMethod setCoordinates
+#' @aliases "setCoordinates<-" setCoordinates
+#' @exportMethod "setCoordinates<-"
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -396,9 +396,9 @@ setReplaceMethod(
 #' (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setName<-
+#' @aliases "setName<-"
 #'
-#' @exportMethod setName
+#' @exportMethod "setName<-"
 setReplaceMethod(
         f = "setName",
         signature = c("Dbscan"),
@@ -415,9 +415,9 @@ setReplaceMethod(
 #' setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setEpsilon
+#' @aliases "setEpsilon<-" setEpsilon
 #'
-#' @exportMethod setEpsilon
+#' @exportMethod "setEpsilon<-"
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -435,9 +435,9 @@ setReplaceMethod(
 #' setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setMinPoints
+#' @aliases "setMinPoints<-" setMinPoints
 #'
-#' @exportMethod setMinPoints
+#' @exportMethod "setMinPoints<-"
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -455,9 +455,9 @@ setReplaceMethod(
 #' setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setClustering
+#' @aliases "setClustering<-" setClustering
 #'
-#' @exportMethod setClustering
+#' @exportMethod "setClustering<-"
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
