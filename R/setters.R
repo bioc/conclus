@@ -49,7 +49,8 @@ NULL
 #' string (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setExperimentName<-
+#' @aliases setExperimentName<- setExperimentName
+#'
 #' @exportMethod setExperimentName<-
 setReplaceMethod(
     f = "setExperimentName",
@@ -68,7 +69,7 @@ setReplaceMethod(
 #' (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setCountMatrix<-
+#' @aliases setCountMatrix setCountMatrix<-
 #' @exportMethod setCountMatrix<-
 setReplaceMethod(
     f = "setCountMatrix",
@@ -87,7 +88,7 @@ setReplaceMethod(
 #' object (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setSceNorm<-
+#' @aliases setSceNorm<- setSceNorm
 #' @exportMethod setSceNorm<-
 setReplaceMethod(
     f = "setSceNorm",
@@ -107,7 +108,7 @@ setReplaceMethod(
 #' mouse or human. Other organisms can be added on demand  (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setSpecies<-
+#' @aliases setSpecies<- setSpecies
 #' @exportMethod setSpecies<-
 setReplaceMethod(
     f = "setSpecies",
@@ -127,7 +128,7 @@ setReplaceMethod(
 #' Value should be a valid path (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setOutputDirectory<-
+#' @aliases setOutputDirectory<- setOutputDirectory
 #' @exportMethod setOutputDirectory<-
 setReplaceMethod(
     f = "setOutputDirectory",
@@ -147,7 +148,7 @@ setReplaceMethod(
 #' ?Tsne-class (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setTSNEList<-
+#' @aliases setTSNEList<- setTSNEList
 #' @exportMethod setTSNEList<-
 setReplaceMethod(
     f = "setTSNEList",
@@ -167,7 +168,7 @@ setReplaceMethod(
 #' ?Dbscan-class (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setDbscanList<-
+#' @aliases setDbscanList<- setDbscanList
 #' @exportMethod setDbscanList<-
 setReplaceMethod(
     f = "setDbscanList",
@@ -187,7 +188,7 @@ setReplaceMethod(
 #' numeric matrix (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setCellsSimilarityMatrix<-
+#' @aliases setCellsSimilarityMatrix<- setCellsSimilarityMatrix
 #' @exportMethod setCellsSimilarityMatrix<-
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
@@ -207,7 +208,7 @@ setReplaceMethod(
 #' numeric matrix (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setClustersSimilarityMatrix<-
+#' @aliases setClustersSimilarityMatrix<- setClustersSimilarityMatrix
 #' @exportMethod setClustersSimilarityMatrix<-
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
@@ -227,7 +228,7 @@ setReplaceMethod(
 #' a numeric factor (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setClustersSimiliratyOrdered<-
+#' @aliases setClustersSimiliratyOrdered<- setClustersSimiliratyOrdered
 #' @exportMethod setClustersSimiliratyOrdered<-
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
@@ -249,7 +250,7 @@ setReplaceMethod(
 #' score = c(NA))  (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setMarkerGenesList<-
+#' @aliases setMarkerGenesList<- setMarkerGenesList
 #' @exportMethod setMarkerGenesList<-
 setReplaceMethod(
     f = "setMarkerGenesList",
@@ -270,7 +271,7 @@ setReplaceMethod(
 #' data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
 #'
 #' @rdname setters
-#' @aliases setClustersMarkers<-
+#' @aliases setClustersMarkers<- setClustersMarkers
 #' @exportMethod setClustersMarkers<-
 setReplaceMethod(
         f="setClustersMarkers",
@@ -297,7 +298,7 @@ setReplaceMethod(
 #'                 uniprot_gn_id="ID"). (scRNA-seq)
 #'
 #' @rdname setters
-#' @aliases setGenesInfos<-
+#' @aliases setGenesInfos<- setGenesInfos
 #' @exportMethod setGenesInfos<-
 setReplaceMethod(
         f="setGenesInfos",
@@ -332,7 +333,7 @@ setReplaceMethod(
 #' setPC: Update the pc slot with a vector of numeric (Tsne).
 #'
 #' @rdname setters
-#' @aliases setPC<-
+#' @aliases setPC<- setPC
 #' @exportMethod setPC<-
 setReplaceMethod(
     f = "setPC",
@@ -351,7 +352,7 @@ setReplaceMethod(
 #' setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
 #'
 #' @rdname setters
-#' @aliases setPerplexity<-
+#' @aliases setPerplexity<- setPerplexity
 #' @exportMethod setPerplexity<-
 setReplaceMethod(
     f = "setPerplexity",
@@ -370,7 +371,7 @@ setReplaceMethod(
 #' setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
 #'
 #' @rdname setters
-#' @aliases setCoordinates<-
+#' @aliases setCoordinates<- setCoordinates
 #' @exportMethod setCoordinates<-
 setReplaceMethod(
     f = "setCoordinates",
@@ -414,7 +415,7 @@ setReplaceMethod(
 #' setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setEpsilon<-
+#' @aliases setEpsilon<- setEpsilon
 #'
 #' @exportMethod setEpsilon<-
 setReplaceMethod(
@@ -434,7 +435,7 @@ setReplaceMethod(
 #' setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setMinPoints<-
+#' @aliases setMinPoints<- setMinPoints
 #'
 #' @exportMethod setMinPoints<-
 setReplaceMethod(
@@ -454,7 +455,7 @@ setReplaceMethod(
 #' setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
 #'
 #' @rdname setters
-#' @aliases setClustering<-
+#' @aliases setClustering<- setClustering
 #'
 #' @exportMethod setClustering<-
 setReplaceMethod(
