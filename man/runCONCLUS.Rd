@@ -319,7 +319,7 @@ columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 columnID="cell_ID")
 
 runCONCLUS(outputDirectory, experimentName, countMatrix, species,
-            columnsMetaData, tSNENb=1, clusterNumber=2, cores=2)
+        columnsMetaData=columnsMetaData, tSNENb=1)
 
 ## Remove the results
 unlink(outputDirectory, recursive=TRUE)
