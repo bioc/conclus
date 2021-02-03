@@ -13,29 +13,6 @@
 #' ?Dbscan.
 #'
 #'
-#' @examples
-#' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
-#'                             package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-#'
-#' ## Load the coldata
-#' coldataPath <- system.file("extdata/example_colData.tsv",
-#'                             package="conclus")
-#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
-#'
-#' ## Create the initial object
-#' scr <- singlecellRNAseq(experimentName = "Bergiers",
-#'                 countMatrix     = countMatrix,
-#'                 species         = "mouse",
-#'                 outputDirectory = "YourOutputDirectory")
-#'
-#' setExperimentName(scr) <- "newName"
-#' setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(100)]
-#' setSpecies(scr) <- "human"
-#' setOutputDirectory(scr) <- "newPath"
-#'
 #' @name setters
 #' @encoding UTF-8
 #' @docType methods
@@ -60,10 +37,31 @@
 #' setEpsilon<-
 #' setMinPoints<-
 #' setClustering<-
+#' setExperimentName<-,scRNAseq-method
+#' setCountMatrix<-,scRNAseq-method
+#' setSpecies<-,scRNAseq-method
+#' setOutputDirectory<-,scRNAseq-method
+#' setSceNorm<-,scRNAseq-method
+#' setTSNEList<-,scRNAseq-method
+#' setDbscanList<-,scRNAseq-method
+#' setCellsSimilarityMatrix<-,scRNAseq-method
+#' setClustersSimilarityMatrix<-,scRNAseq-method
+#' setClustersSimiliratyOrdered<-,scRNAseq-method
+#' setMarkerGenesList<-,scRNAseq-method
+#' setClustersMarkers<-,scRNAseq-method
+#' setGenesInfos<-,scRNAseq-method
+#' setName<-,Tsne-method
+#' setPC<-,Tsne-method
+#' setPerplexity<-,Tsne-method
+#' setCoordinates<-,Tsne-method
+#' setName<-,Dbscan-method
+#' setEpsilon<-,Dbscan-method
+#' setMinPoints<-,Dbscan-method
+#' setClustering<-,Dbscan-method
 #'
 #' @usage
 #' setExperimentName(theObject) <- value
-#' setCountMatrix(theObject)(theObject) <- value
+#' setCountMatrix(theObject) <- value
 #' setSpecies(theObject) <- value
 #' setOutputDirectory(theObject) <- value
 #' setSceNorm(theObject) <- value
@@ -75,6 +73,7 @@
 #' setMarkerGenesList(theObject) <- value
 #' setClustersMarkers(theObject) <- value
 #' setGenesInfos(theObject) <- value
+#' setName(theObject) <- value
 #' setPC(theObject) <- value
 #' setPerplexity(theObject) <- value
 #' setCoordinates(theObject) <- value
@@ -128,6 +127,29 @@
 #' setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
 #' setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
 #' setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
+#'
+#' @examples
+#' ## Load the count matrix
+#' countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
+#'                             package="conclus")
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+#'
+#' ## Load the coldata
+#' coldataPath <- system.file("extdata/example_colData.tsv",
+#'                             package="conclus")
+#' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
+#' columnID="cell_ID")
+#'
+#' ## Create the initial object
+#' scr <- singlecellRNAseq(experimentName = "Bergiers",
+#'                 countMatrix     = countMatrix,
+#'                 species         = "mouse",
+#'                 outputDirectory = "YourOutputDirectory")
+#'
+#' setExperimentName(scr) <- "newName"
+#' setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(100)]
+#' setSpecies(scr) <- "human"
+#' setOutputDirectory(scr) <- "newPath"
 NULL
 
 

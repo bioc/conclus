@@ -24,10 +24,31 @@
 \alias{setEpsilon<-}
 \alias{setMinPoints<-}
 \alias{setClustering<-}
+\alias{setExperimentName<-,scRNAseq-method}
+\alias{setCountMatrix<-,scRNAseq-method}
+\alias{setSpecies<-,scRNAseq-method}
+\alias{setOutputDirectory<-,scRNAseq-method}
+\alias{setSceNorm<-,scRNAseq-method}
+\alias{setTSNEList<-,scRNAseq-method}
+\alias{setDbscanList<-,scRNAseq-method}
+\alias{setCellsSimilarityMatrix<-,scRNAseq-method}
+\alias{setClustersSimilarityMatrix<-,scRNAseq-method}
+\alias{setClustersSimiliratyOrdered<-,scRNAseq-method}
+\alias{setMarkerGenesList<-,scRNAseq-method}
+\alias{setClustersMarkers<-,scRNAseq-method}
+\alias{setGenesInfos<-,scRNAseq-method}
+\alias{setName<-,Tsne-method}
+\alias{setPC<-,Tsne-method}
+\alias{setPerplexity<-,Tsne-method}
+\alias{setCoordinates<-,Tsne-method}
+\alias{setName<-,Dbscan-method}
+\alias{setEpsilon<-,Dbscan-method}
+\alias{setMinPoints<-,Dbscan-method}
+\alias{setClustering<-,Dbscan-method}
 \title{setters}
 \usage{
 setExperimentName(theObject) <- value
-setCountMatrix(theObject)(theObject) <- value
+setCountMatrix(theObject) <- value
 setSpecies(theObject) <- value
 setOutputDirectory(theObject) <- value
 setSceNorm(theObject) <- value
@@ -39,6 +60,7 @@ setClustersSimiliratyOrdered(theObject) <- value
 setMarkerGenesList(theObject) <- value
 setClustersMarkers(theObject) <- value
 setGenesInfos(theObject) <- value
+setName(theObject) <- value
 setPC(theObject) <- value
 setPerplexity(theObject) <- value
 setCoordinates(theObject) <- value
@@ -125,5 +147,4 @@ setExperimentName(scr) <- "newName"
 setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(100)]
 setSpecies(scr) <- "human"
 setOutputDirectory(scr) <- "newPath"
-
 }
