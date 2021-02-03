@@ -38,6 +38,7 @@
 #'
 #' @title setters
 #' @name setters
+#' @encoding UTF-8
 NULL
 
 
@@ -69,7 +70,7 @@ setReplaceMethod(
 #' (scRNA-seq).
 #'
 #' @rdname setters
-#' @aliases setCountMatrix setCountMatrix<-
+#' @aliases setCountMatrix<- setCountMatrix
 #' @exportMethod setCountMatrix<-
 setReplaceMethod(
     f = "setCountMatrix",
