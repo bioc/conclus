@@ -39,6 +39,7 @@
 #' @title setters
 #' @name setters
 #' @encoding UTF-8
+#' @docType methods
 NULL
 
 
@@ -52,7 +53,7 @@ NULL
 #' @rdname setters
 #' @aliases setExperimentName<- setExperimentName
 #'
-#' @exportMethod setExperimentName<-
+#' @exportMethod
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -71,7 +72,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setCountMatrix<- setCountMatrix
-#' @exportMethod setCountMatrix<-
+#' @exportMethod
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -90,7 +91,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setSceNorm<- setSceNorm
-#' @exportMethod setSceNorm<-
+#' @exportMethod
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -110,7 +111,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setSpecies<- setSpecies
-#' @exportMethod setSpecies<-
+#' @exportMethod
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -130,7 +131,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setOutputDirectory<- setOutputDirectory
-#' @exportMethod setOutputDirectory<-
+#' @exportMethod
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -150,7 +151,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setTSNEList<- setTSNEList
-#' @exportMethod setTSNEList<-
+#' @exportMethod
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -170,7 +171,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setDbscanList<- setDbscanList
-#' @exportMethod setDbscanList<-
+#' @exportMethod
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -190,7 +191,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setCellsSimilarityMatrix<- setCellsSimilarityMatrix
-#' @exportMethod setCellsSimilarityMatrix<-
+#' @exportMethod
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -210,7 +211,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setClustersSimilarityMatrix<- setClustersSimilarityMatrix
-#' @exportMethod setClustersSimilarityMatrix<-
+#' @exportMethod
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -230,7 +231,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setClustersSimiliratyOrdered<- setClustersSimiliratyOrdered
-#' @exportMethod setClustersSimiliratyOrdered<-
+#' @exportMethod
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -252,7 +253,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setMarkerGenesList<- setMarkerGenesList
-#' @exportMethod setMarkerGenesList<-
+#' @exportMethod
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -273,7 +274,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setClustersMarkers<- setClustersMarkers
-#' @exportMethod setClustersMarkers<-
+#' @exportMethod
 setReplaceMethod(
         f="setClustersMarkers",
         signature="scRNAseq",
@@ -300,7 +301,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setGenesInfos<- setGenesInfos
-#' @exportMethod setGenesInfos<-
+#' @exportMethod
 setReplaceMethod(
         f="setGenesInfos",
         signature="scRNAseq",
@@ -335,7 +336,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setPC<- setPC
-#' @exportMethod setPC<-
+#' @exportMethod
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -354,7 +355,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setPerplexity<- setPerplexity
-#' @exportMethod setPerplexity<-
+#' @exportMethod
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -373,7 +374,7 @@ setReplaceMethod(
 #'
 #' @rdname setters
 #' @aliases setCoordinates<- setCoordinates
-#' @exportMethod setCoordinates<-
+#' @exportMethod
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -399,7 +400,7 @@ setReplaceMethod(
 #' @rdname setters
 #' @aliases setName<-
 #'
-#' @exportMethod setName<-
+#' @exportMethod
 setReplaceMethod(
         f = "setName",
         signature = c("Dbscan"),
@@ -418,7 +419,7 @@ setReplaceMethod(
 #' @rdname setters
 #' @aliases setEpsilon<- setEpsilon
 #'
-#' @exportMethod setEpsilon<-
+#' @exportMethod
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -438,7 +439,7 @@ setReplaceMethod(
 #' @rdname setters
 #' @aliases setMinPoints<- setMinPoints
 #'
-#' @exportMethod setMinPoints<-
+#' @exportMethod
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -458,7 +459,7 @@ setReplaceMethod(
 #' @rdname setters
 #' @aliases setClustering<- setClustering
 #'
-#' @exportMethod setClustering<-
+#' @exportMethod
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
