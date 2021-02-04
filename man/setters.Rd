@@ -181,27 +181,3 @@ setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
 \description{
 Update a slot of a scRNA-seq, Tsne or Dbscan object.
 }
-\examples{
-## Load the count matrix
-countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
-                            package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
-
-## Load the coldata
-coldataPath <- system.file("extdata/example_colData.tsv",
-                            package="conclus")
-columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-columnID="cell_ID")
-
-## Create the initial object
-scr <- singlecellRNAseq(experimentName = "Bergiers",
-                countMatrix     = countMatrix,
-                species         = "mouse",
-                outputDirectory = "YourOutputDirectory")
-
-setExperimentName(scr) <- "newName"
-setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(100)]
-setSpecies(scr) <- "human"
-setOutputDirectory(scr) <- "newPath"
-
-}
