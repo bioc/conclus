@@ -3,65 +3,26 @@
 \name{setters}
 \alias{setters}
 \alias{setExperimentName<-,scRNAseq-method}
-\alias{setExperimentName<-}
-\alias{setExperimentName}
 \alias{setCountMatrix<-,scRNAseq-method}
-\alias{setCountMatrix}
-\alias{setCountMatrix<-}
 \alias{setSceNorm<-,scRNAseq-method}
-\alias{setSceNorm<-}
-\alias{setSceNorm}
 \alias{setSpecies<-,scRNAseq-method}
-\alias{setSpecies<-}
-\alias{setSpecies}
 \alias{setOutputDirectory<-,scRNAseq-method}
-\alias{setOutputDirectory<-}
-\alias{setOutputDirectory}
 \alias{setTSNEList<-,scRNAseq-method}
-\alias{setTSNEList<-}
-\alias{setTSNEList}
 \alias{setDbscanList<-,scRNAseq-method}
-\alias{setDbscanList<-}
-\alias{setDbscanList}
 \alias{setCellsSimilarityMatrix<-,scRNAseq-method}
-\alias{setCellsSimilarityMatrix<-}
-\alias{setCellsSimilarityMatrix}
 \alias{setClustersSimilarityMatrix<-,scRNAseq-method}
-\alias{setClustersSimilarityMatrix<-}
-\alias{setClustersSimilarityMatrix}
 \alias{setClustersSimiliratyOrdered<-,scRNAseq-method}
-\alias{setClustersSimiliratyOrdered<-}
-\alias{setClustersSimiliratyOrdered}
 \alias{setMarkerGenesList<-,scRNAseq-method}
-\alias{setMarkerGenesList<-}
-\alias{setMarkerGenesList}
 \alias{setClustersMarkers<-,scRNAseq-method}
-\alias{setClustersMarkers<-}
-\alias{setClustersMarkers}
 \alias{setGenesInfos<-,scRNAseq-method}
-\alias{setGenesInfos<-}
-\alias{setGenesInfos}
 \alias{setName<-,Tsne-method}
 \alias{setPC<-,Tsne-method}
-\alias{setPC<-}
-\alias{setPC}
 \alias{setPerplexity<-,Tsne-method}
-\alias{setPerplexity<-}
-\alias{setPerplexity}
 \alias{setCoordinates<-,Tsne-method}
-\alias{setCoordinates<-}
-\alias{setCoordinates}
 \alias{setName<-,Dbscan-method}
-\alias{setName<-}
 \alias{setEpsilon<-,Dbscan-method}
-\alias{setEpsilon<-}
-\alias{setEpsilon}
 \alias{setMinPoints<-,Dbscan-method}
-\alias{setMinPoints<-}
-\alias{setMinPoints}
 \alias{setClustering<-,Dbscan-method}
-\alias{setClustering<-}
-\alias{setClustering}
 \title{setters}
 \usage{
 setExperimentName(theObject) <- value
@@ -180,4 +141,28 @@ setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
 }
 \description{
 Update a slot of a scRNA-seq, Tsne or Dbscan object.
+}
+\examples{
+## Load the count matrix
+countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
+                            package="conclus")
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+
+## Load the coldata
+coldataPath <- system.file("extdata/example_colData.tsv",
+                            package="conclus")
+columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
+columnID="cell_ID")
+
+## Create the initial object
+scr <- singlecellRNAseq(experimentName = "Bergiers",
+                countMatrix     = countMatrix,
+                species         = "mouse",
+                outputDirectory = "YourOutputDirectory")
+
+setExperimentName(scr) <- "newName"
+setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(100)]
+setSpecies(scr) <- "human"
+setOutputDirectory(scr) <- "newPath"
+
 }
