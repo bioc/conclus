@@ -2,8 +2,7 @@
 ########################  Setters for scRNAseq class  ##########################
 ################################################################################
 
-#' @title setters
-#'
+
 #' @description
 #' Update a slot of a scRNA-seq, Tsne or Dbscan object.
 #'
@@ -12,121 +11,7 @@
 #' @param value The value to update the slot with. See ?scRNAseq, ?Tsne or
 #' ?Dbscan.
 #'
-#'
-#' @name setters
-#' @encoding UTF-8
-#' @docType methods
-#' @aliases
-#' setExperimentName<-
-#' setCountMatrix<-
-#' setSpecies<-
-#' setOutputDirectory<-
-#' setSceNorm<-
-#' setTSNEList<-
-#' setDbscanList<-
-#' setCellsSimilarityMatrix<-
-#' setClustersSimilarityMatrix<-
-#' setClustersSimiliratyOrdered<-
-#' setMarkerGenesList<-
-#' setClustersMarkers<-
-#' setGenesInfos<-
-#' setPC<-
-#' setPerplexity<-
-#' setCoordinates<-
-#' setName<-
-#' setEpsilon<-
-#' setMinPoints<-
-#' setClustering<-
-#' setExperimentName<-,scRNAseq-method
-#' setCountMatrix<-,scRNAseq-method
-#' setSpecies<-,scRNAseq-method
-#' setOutputDirectory<-,scRNAseq-method
-#' setSceNorm<-,scRNAseq-method
-#' setTSNEList<-,scRNAseq-method
-#' setDbscanList<-,scRNAseq-method
-#' setCellsSimilarityMatrix<-,scRNAseq-method
-#' setClustersSimilarityMatrix<-,scRNAseq-method
-#' setClustersSimiliratyOrdered<-,scRNAseq-method
-#' setMarkerGenesList<-,scRNAseq-method
-#' setClustersMarkers<-,scRNAseq-method
-#' setGenesInfos<-,scRNAseq-method
-#' setName<-,Tsne-method
-#' setPC<-,Tsne-method
-#' setPerplexity<-,Tsne-method
-#' setCoordinates<-,Tsne-method
-#' setName<-,Dbscan-method
-#' setEpsilon<-,Dbscan-method
-#' setMinPoints<-,Dbscan-method
-#' setClustering<-,Dbscan-method
-#'
-#' @usage
-#' setExperimentName(theObject) <- value
-#' setCountMatrix(theObject) <- value
-#' setSpecies(theObject) <- value
-#' setOutputDirectory(theObject) <- value
-#' setSceNorm(theObject) <- value
-#' setTSNEList(theObject) <- value
-#' setDbscanList(theObject) <- value
-#' setCellsSimilarityMatrix(theObject) <- value
-#' setClustersSimilarityMatrix(theObject) <- value
-#' setClustersSimiliratyOrdered(theObject) <- value
-#' setMarkerGenesList(theObject) <- value
-#' setClustersMarkers(theObject) <- value
-#' setGenesInfos(theObject) <- value
-#' setName(theObject) <- value
-#' setPC(theObject) <- value
-#' setPerplexity(theObject) <- value
-#' setCoordinates(theObject) <- value
-#' setName(theObject) <- value
-#' setEpsilon(theObject) <- value
-#' setMinPoints(theObject) <- value
-#' setClustering(theObject) <- value
-#'
-#' @return
-#' setExperimentName: Update the experiment name slot with a character
-#' string (scRNA-seq).
-#' setCountMatrix: Update the countMatrix slot with a matrix of numeric
-#' (scRNA-seq).
-#' setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment
-#' object (scRNA-seq).
-#' setSpecies: Update the species slot with a character string. Value should be
-#' mouse or human. Other organisms can be added on demand  (scRNA-seq).
-#' setOutputDirectory: Update the outputDirectory slot with a character string.
-#' Value should be a valid path (scRNA-seq).
-#' setTSNEList: Update the tSNEList slot with a list of tSNE objects. See
-#' ?Tsne-class (scRNA-seq).
-#' setDbscanList: Update the dbscanList slot with a list of dbscan objects. See
-#' ?Dbscan-class (scRNA-seq).
-#' setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a
-#' numeric matrix (scRNA-seq).
-#' setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a
-#' numeric matrix (scRNA-seq).
-#' setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with
-#' a numeric factor (scRNA-seq).
-#' setMarkerGenesList: Update the markerGenesList slot with a list of data
-#' frame. The data frame structure should be:
-#' data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA),
-#' score = c(NA))  (scRNA-seq).
-#' setClustersMarkers: Update the clustersMarkers slot with a data frame.
-#' The data frame structure should be:
-#' data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
-#' setGenesInfos: Update the genesInfos slot with a data frame.
-#' The data frame structure should be:
-#' data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
-#'                 external_gene_name="gene", go_id="GO1,GO2",
-#'                 mgi_description="description",
-#'                 entrezgene_description="descr",
-#'                 gene_biotype="gene", chromosome_name="1", Symbol="symbol",
-#'                 ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
-#'                 uniprot_gn_id="ID"). (scRNA-seq)
-#' setPC: Update the pc slot with a vector of numeric (Tsne).
-#' setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
-#' setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
-#' setName: Update the Tsne or Dbscan name slot with a character string
-#' (Dbscan).
-#' setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
-#' setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
-#' setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
+#' @rdname setters
 #'
 #' @examples
 #' ## Load the count matrix
@@ -150,11 +35,23 @@
 #' setCountMatrix(scr) <- countMatrix[seq_len(15), seq_len(100)]
 #' setSpecies(scr) <- "human"
 #' setOutputDirectory(scr) <- "newPath"
+#'
+#' @title setters
+#' @name setters
 NULL
 
 
-
-#' @export
+#' @usage
+#' setExperimentName(theObject) <- value
+#'
+#' @return
+#' setExperimentName: Update the experiment name slot with a character
+#' string (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setExperimentName<- setExperimentName
+#'
+#' @exportMethod setExperimentName<-
 setReplaceMethod(
     f = "setExperimentName",
     signature = "scRNAseq",
@@ -164,9 +61,16 @@ setReplaceMethod(
         return(theObject)
     })
 
-
-
-#' @export
+#' @usage
+#' setCountMatrix(theObject) <- value
+#'
+#' @return
+#' setCountMatrix: Update the countMatrix slot with a matrix of numeric
+#' (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setCountMatrix setCountMatrix<-
+#' @exportMethod setCountMatrix<-
 setReplaceMethod(
     f = "setCountMatrix",
     signature = "scRNAseq",
@@ -176,9 +80,16 @@ setReplaceMethod(
         return(theObject)
     })
 
-
-
-#' @export
+#' @usage
+#' setSceNorm(theObject) <- value
+#'
+#' @return
+#' setSceNorm: Update the normalized countMatrix slot with SingleCellExperiment
+#' object (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setSceNorm<- setSceNorm
+#' @exportMethod setSceNorm<-
 setReplaceMethod(
     f = "setSceNorm",
     signature = "scRNAseq",
@@ -189,8 +100,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setSpecies(theObject) <- value
+#'
+#' @return
+#' setSpecies: Update the species slot with a character string. Value should be
+#' mouse or human. Other organisms can be added on demand  (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setSpecies<- setSpecies
+#' @exportMethod setSpecies<-
 setReplaceMethod(
     f = "setSpecies",
     signature = "scRNAseq",
@@ -201,8 +120,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setOutputDirectory(theObject) <- value
+#'
+#' @return
+#' setOutputDirectory: Update the outputDirectory slot with a character string.
+#' Value should be a valid path (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setOutputDirectory<- setOutputDirectory
+#' @exportMethod setOutputDirectory<-
 setReplaceMethod(
     f = "setOutputDirectory",
     signature = "scRNAseq",
@@ -213,8 +140,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setTSNEList(theObject) <- value
+#'
+#' @return
+#' setTSNEList: Update the tSNEList slot with a list of tSNE objects. See
+#' ?Tsne-class (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setTSNEList<- setTSNEList
+#' @exportMethod setTSNEList<-
 setReplaceMethod(
     f = "setTSNEList",
     signature = "scRNAseq",
@@ -225,8 +160,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setDbscanList(theObject) <- value
+#'
+#' @return
+#' setDbscanList: Update the dbscanList slot with a list of dbscan objects. See
+#' ?Dbscan-class (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setDbscanList<- setDbscanList
+#' @exportMethod setDbscanList<-
 setReplaceMethod(
     f = "setDbscanList",
     signature = "scRNAseq",
@@ -237,8 +180,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setCellsSimilarityMatrix(theObject) <- value
+#'
+#' @return
+#' setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a
+#' numeric matrix (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setCellsSimilarityMatrix<- setCellsSimilarityMatrix
+#' @exportMethod setCellsSimilarityMatrix<-
 setReplaceMethod(
     f = "setCellsSimilarityMatrix",
     signature = "scRNAseq",
@@ -249,8 +200,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setClustersSimilarityMatrix(theObject) <- value
+#'
+#' @return
+#' setClustersSimilarityMatrix: Update the clustersSimilarityMatrix slot with a
+#' numeric matrix (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setClustersSimilarityMatrix<- setClustersSimilarityMatrix
+#' @exportMethod setClustersSimilarityMatrix<-
 setReplaceMethod(
     f = "setClustersSimilarityMatrix",
     signature = "scRNAseq",
@@ -261,8 +220,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setClustersSimiliratyOrdered(theObject) <- value
+#'
+#' @return
+#' setClustersSimiliratyOrdered: Update the clustersSimilarityOrdered slot with
+#' a numeric factor (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setClustersSimiliratyOrdered<- setClustersSimiliratyOrdered
+#' @exportMethod setClustersSimiliratyOrdered<-
 setReplaceMethod(
     f = "setClustersSimiliratyOrdered",
     signature = "scRNAseq",
@@ -273,8 +240,18 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setMarkerGenesList(theObject) <- value
+#'
+#' @return
+#' setMarkerGenesList: Update the markerGenesList slot with a list of data
+#' frame. The data frame structure should be:
+#' data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA),
+#' score = c(NA))  (scRNA-seq).
+#'
+#' @rdname setters
+#' @aliases setMarkerGenesList<- setMarkerGenesList
+#' @exportMethod setMarkerGenesList<-
 setReplaceMethod(
     f = "setMarkerGenesList",
     signature = "scRNAseq",
@@ -285,8 +262,17 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setClustersMarkers(theObject) <- value
+#'
+#' @return
+#' setClustersMarkers: Update the clustersMarkers slot with a data frame.
+#' The data frame structure should be:
+#' data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
+#'
+#' @rdname setters
+#' @aliases setClustersMarkers<- setClustersMarkers
+#' @exportMethod setClustersMarkers<-
 setReplaceMethod(
         f="setClustersMarkers",
         signature="scRNAseq",
@@ -297,8 +283,23 @@ setReplaceMethod(
         })
 
 
-
-#' @export
+#' @usage
+#' setGenesInfos(theObject) <- value
+#'
+#' @return
+#' setGenesInfos: Update the genesInfos slot with a data frame.
+#' The data frame structure should be:
+#' data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
+#'                 external_gene_name="gene", go_id="GO1,GO2",
+#'                 mgi_description="description",
+#'                 entrezgene_description="descr",
+#'                 gene_biotype="gene", chromosome_name="1", Symbol="symbol",
+#'                 ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
+#'                 uniprot_gn_id="ID"). (scRNA-seq)
+#'
+#' @rdname setters
+#' @aliases setGenesInfos<- setGenesInfos
+#' @exportMethod setGenesInfos<-
 setReplaceMethod(
         f="setGenesInfos",
         signature="scRNAseq",
@@ -315,7 +316,7 @@ setReplaceMethod(
 ################################################################################
 
 
-#' @export
+#' @rdname setters
 setReplaceMethod(
         f = "setName",
         signature = c("Tsne"),
@@ -325,8 +326,15 @@ setReplaceMethod(
             return(theObject)
         })
 
-
-#' @export
+#' @usage
+#' setPC(theObject) <- value
+#'
+#' @return
+#' setPC: Update the pc slot with a vector of numeric (Tsne).
+#'
+#' @rdname setters
+#' @aliases setPC<- setPC
+#' @exportMethod setPC<-
 setReplaceMethod(
     f = "setPC",
     signature = "Tsne",
@@ -337,8 +345,15 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setPerplexity(theObject) <- value
+#'
+#' @return
+#' setPerplexity: Update the perplexity slot with a vector of numeric (Tsne).
+#'
+#' @rdname setters
+#' @aliases setPerplexity<- setPerplexity
+#' @exportMethod setPerplexity<-
 setReplaceMethod(
     f = "setPerplexity",
     signature = "Tsne",
@@ -349,8 +364,15 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setCoordinates(theObject) <- value
+#'
+#' @return
+#' setCoordinates: Update the coordinates slot with a matrix of numeric (Tsne).
+#'
+#' @rdname setters
+#' @aliases setCoordinates<- setCoordinates
+#' @exportMethod setCoordinates<-
 setReplaceMethod(
     f = "setCoordinates",
     signature = "Tsne",
@@ -366,8 +388,17 @@ setReplaceMethod(
 ###########################  Setters for Dbscan class  #########################
 ################################################################################
 
-
-#' @export
+#' @usage
+#' setName(theObject) <- value
+#'
+#' @return
+#' setName: Update the Tsne or Dbscan name slot with a character string
+#' (Dbscan).
+#'
+#' @rdname setters
+#' @aliases setName<-
+#'
+#' @exportMethod setName<-
 setReplaceMethod(
         f = "setName",
         signature = c("Dbscan"),
@@ -377,8 +408,16 @@ setReplaceMethod(
             return(theObject)
         })
 
-
-#' @export
+#' @usage
+#' setEpsilon(theObject) <- value
+#'
+#' @return
+#' setEpsilon: Update the epsilon slot with a vector of numeric (Dbscan).
+#'
+#' @rdname setters
+#' @aliases setEpsilon<- setEpsilon
+#'
+#' @exportMethod setEpsilon<-
 setReplaceMethod(
     f = "setEpsilon",
     signature = "Dbscan",
@@ -389,8 +428,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setMinPoints(theObject) <- value
+#'
+#' @return
+#' setMinPoints: Update the minPoints slot with a vector of numeric (Dbscan).
+#'
+#' @rdname setters
+#' @aliases setMinPoints<- setMinPoints
+#'
+#' @exportMethod setMinPoints<-
 setReplaceMethod(
     f = "setMinPoints",
     signature = "Dbscan",
@@ -401,8 +448,16 @@ setReplaceMethod(
     })
 
 
-
-#' @export
+#' @usage
+#' setClustering(theObject) <- value
+#'
+#' @return
+#' setClustering: Update the clustering slot with a matrix of numeric (Dbscan).
+#'
+#' @rdname setters
+#' @aliases setClustering<- setClustering
+#'
+#' @exportMethod setClustering<-
 setReplaceMethod(
     f = "setClustering",
     signature = "Dbscan",
