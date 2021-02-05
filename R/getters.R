@@ -47,7 +47,7 @@ NULL
 #' getExperimentName: Get the name of the experiment (scRNA-seq).
 #'
 #' @rdname getters
-#' @aliases getExperimentName
+#' @aliases getExperimentName getExperimentName<-
 #'
 #' @exportMethod getExperimentName
 setMethod(
