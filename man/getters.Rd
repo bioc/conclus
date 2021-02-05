@@ -4,6 +4,7 @@
 \alias{getters}
 \alias{getExperimentName,scRNAseq-method}
 \alias{getExperimentName}
+\alias{getExperimentName<-}
 \alias{getCountMatrix,scRNAseq-method}
 \alias{getCountMatrix}
 \alias{getSceNorm,scRNAseq-method}
