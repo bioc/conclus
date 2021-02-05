@@ -36,8 +36,10 @@
 #' setOutputDirectory(scr) <- "newPath"
 #'
 #' @name setters
+#' @rdname setters
+#' @author Ilyess RACHEDI
 NULL
-#> NULL
+
 
 #' @usage
 #' setExperimentName(theObject) <- value
