@@ -729,7 +729,7 @@
 #' ## adjusted to your dataset.
 #' scr <- runCONCLUS(outputDirectory, experimentName, countMatrix, species,
 #'         columnsMetaData=columnsMetaData, perplexities=c(2,3), tSNENb=1,
-#'         PCs =c(4,5,6,7,8,9,10)), epsilon=c(380, 390, 400), minPoints=c(2,3))
+#'         PCs=c(4,5,6,7,8,9,10), epsilon=c(380, 390, 400), minPoints=c(2,3))
 #'
 #' ## Remove the results
 #' unlink(outputDirectory, recursive=TRUE)

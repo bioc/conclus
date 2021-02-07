@@ -320,9 +320,9 @@ columnID="cell_ID")
 ## These parameters are tweaked to fit our example data and reduce
 ## computing time, please consider using the default parameters or
 ## adjusted to your dataset.
-runCONCLUS(outputDirectory, experimentName, countMatrix, species,
+scr <- runCONCLUS(outputDirectory, experimentName, countMatrix, species,
         columnsMetaData=columnsMetaData, perplexities=c(2,3), tSNENb=1,
-        PCs =c(4,5,6,7,8,9,10)), epsilon=c(380, 390, 400), minPoints=c(2,3))
+        PCs=c(4,5,6,7,8,9,10), epsilon=c(380, 390, 400), minPoints=c(2,3))
 
 ## Remove the results
 unlink(outputDirectory, recursive=TRUE)
