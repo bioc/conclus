@@ -35,7 +35,7 @@ matrix of cells.
 }
 \examples{
 ## Object containing the results of previous steps
-load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Compute the cell similarity matrix
 scr <- clusterCellsInternal(scr, clusterNumber=4, cores=2)

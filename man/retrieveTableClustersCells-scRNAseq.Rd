@@ -21,7 +21,7 @@ belongs. The output data.frame can be passed to the method ?addClustering.
 }
 \examples{
 ## Object scr containing the results of previous steps
-load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Retrieving the table clusters-cells.
 cellClustDf <- retrieveTableClustersCells(scr)

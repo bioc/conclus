@@ -715,18 +715,21 @@
 #' species <- "mouse"
 #'
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
-#'                             package="conclus")
+#' countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/example_colData.tsv",
-#'                             package="conclus")
+#' coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 #' columnID="cell_ID")
 #'
-#' runCONCLUS(outputDirectory, experimentName, countMatrix, species,
-#'         columnsMetaData=columnsMetaData, tSNENb=1)
+#' ## Use runCONCLUS
+#' ## These parameters are tweaked to fit our example data and reduce
+#' ## computing time, please consider using the default parameters or
+#' ## adjusted to your dataset.
+#' scr <- runCONCLUS(outputDirectory, experimentName, countMatrix, species,
+#'         columnsMetaData=columnsMetaData, perplexities=c(2,3), tSNENb=1,
+#'         PCs =c(4,5,6,7,8,9,10)), epsilon=c(380, 390, 400), minPoints=c(2,3))
 #'
 #' ## Remove the results
 #' unlink(outputDirectory, recursive=TRUE)

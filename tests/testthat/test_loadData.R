@@ -1,6 +1,6 @@
 ## Prepare col data
 
-coldataPath <- system.file("extdata/unit_tests_colData.tsv", package="conclus")
+coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 columnsMetaData <- read.delim(file=coldataPath, header=TRUE)
 wrongColdataNA <- columnsMetaData
 wrongColdataNA$cellName[1] <- NA
@@ -12,9 +12,9 @@ colnames(wrongColDataName)[1] <- "cell_ID"
 
 ## Prepare row data
 rowdataPath <- file.path(system.file("extdata", package = "conclus"),
-        "unit_tests_rowData.tsv")
+        "rowData.tsv")
 rowMetaData <- read.delim(file=rowdataPath, header=TRUE)
-load(file = system.file("extdata/unit_tests_expected_rowData.Rdat",
+load(file = system.file("extdata/expected_rowData.Rdat",
                         package="conclus"))
 wrongRowMetaDataNA <- rowMetaData
 wrongRowMetaDataNA$gene_ID[476] <- NA
@@ -23,7 +23,7 @@ wrongRowMetaDataDup$gene_ID[1] <- "Tspan32"
 
 ## Prepare count matrix
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
-        "unit_tests_countMatrix.tsv")
+                                "countMatrix.tsv")
 expectedCountMatrix <- as.matrix(read.delim(countmatrixPath, header=TRUE,
                 row.names=1))
 

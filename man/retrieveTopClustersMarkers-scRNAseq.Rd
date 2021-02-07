@@ -30,7 +30,7 @@ This function retrieves the top N marker genes for each cluster.
 }
 \examples{
 ## Object scr containing the results of previous steps
-load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Retrieve the top 10 markers per cluster
 scr <- retrieveTopClustersMarkers(scr)

@@ -182,10 +182,14 @@
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Compute the tSNE coordinates
-#' scr <- generateTSNECoordinates(scr, cores=2)
+#' ## These parameters are tweaked to fit our example data and reduce
+#' ## computing time, please consider using the default parameters or
+#' ## adjusted to your dataset.
+#' scr <- generateTSNECoordinates(scr, perplexities=c(2,3),
+#'                                 PCs =c(4,5,6,7,8,9,10), cores=2)
 #'
 #' @seealso
 #' normaliseCountMatrix

@@ -33,18 +33,15 @@ formats each type of data to follow the requirements of CONCLUS.
 \examples{
 
 ## ColData
-coldataPath <- system.file("extdata/example_colData.tsv",
-                            package="conclus")
+coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 loadDataOrMatrix(file=coldataPath, type="coldata", columnID="cell_ID")
 
 ## RowData
-rowdataPath <- system.file("extdata/unit_tests_rowData.tsv",
-                            package="conclus")
+rowdataPath <- system.file("extdata/rowData.tsv",  package="conclus")
 loadDataOrMatrix(file=rowdataPath, type="rowdata", columnID="gene_ID")
 
 ## Count matrix
-countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
-                            package="conclus")
+countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 

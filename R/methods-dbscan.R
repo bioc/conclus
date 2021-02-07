@@ -251,10 +251,13 @@
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Perform the clustering with dbScan
-#' scr <- runDBSCAN(scr, cores=2)
+#' ## These parameters are tweaked to fit our example data and reduce
+#' ## computing time, please consider using the default parameters or
+#' ## adjusted to your dataset.
+#' scr <- runDBSCAN(scr, epsilon=c(380, 390, 400), minPoints=c(2,3), cores=2)
 #'
 #' @exportMethod runDBSCAN
 #'

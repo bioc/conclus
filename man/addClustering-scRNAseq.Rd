@@ -29,7 +29,7 @@ performance of different tools.
 }
 \examples{
 ## Object scr containing the results of previous steps
-load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Retrieving the table indicating to which cluster each cell belongs
 clustCellsDf <- retrieveTableClustersCells(scr)

@@ -78,7 +78,7 @@ be saved where one corresponds to the "distance_graph.pdf", another one to
 }
 \examples{
 ## Object containing the results of previous steps
-load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Test the clustering writing pdfs to test_clustering folder
 testClustering(scr, writeOutput=TRUE)

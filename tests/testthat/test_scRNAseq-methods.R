@@ -4,7 +4,7 @@ outputDirectory <- "YourOutputDirectory"
 if(!file.exists(outputDirectory))
     dir.create(outputDirectory, showWarnings=FALSE)
 experimentName <- "Bergiers"
-coldataPath <- system.file("extdata/unit_tests_colData.tsv", package="conclus")
+coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
         columnID="cell_type")
 
@@ -15,7 +15,7 @@ countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
 ## Creation of the count Matrix
 
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
-                                "unit_tests_countMatrix.tsv")
+                                "countMatrix.tsv")
 
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
@@ -32,9 +32,8 @@ badCountMatrix2[1,] <- 100
 badCountMatrix2[2:20,] <- 0
 
 ## Retrieve the clustering to add
-clustAddTab <- read.delim(
-        system.file("extdata/unit_tests_Bergiers_clusters_table.tsv",
-                    package="conclus"))
+clustAddTab <- read.delim(system.file("extdata/clusters_table.tsv",
+                                        package="conclus"))
 clustAddTabColThree <- cbind(clustAddTab, mock=rep(1, nrow(clustAddTab)))
 clustWrongName <- clustAddTab
 colnames(clustWrongName) <- c("test", "test")
@@ -42,8 +41,8 @@ clustWrongcells <- clustAddTab
 clustWrongcells$cells <- paste0("test", clustWrongcells$cells)
 
 ## Load expected results
-load(file = system.file("extdata/unit_tests_scrLight.Rdat", package="conclus"))
-load(file = system.file("extdata/unit_tests_expected_normalizedMatrix.Rdat",
+load(file = system.file("extdata/scrLight.Rdat", package="conclus"))
+load(file = system.file("extdata/expected_normalizedMatrix.Rdat",
                 package="conclus"))
 
 
@@ -63,7 +62,7 @@ sceNorm <- getSceNorm(scrNorm)
 ## Performing tSNE
 
 scrTsne <- generateTSNECoordinates(scrNorm, cores=2, perplexities=c(2,3),
-                                    PCs =c(3,4,5,6,7,8,9))
+                                    PCs =c(4,5,6,7,8,9,10))
 
 tsneList <- getTSNEList(scrTsne)
 tsneListWrong <- tsneList
@@ -72,7 +71,8 @@ newList <- list(1, 2, 3)
 
 ## Running DbScan
 
-scrDbscan <- runDBSCAN(scrTsne, cores=2, epsilon=c(60, 70, 80), minPoints=c(2,3))
+scrDbscan <- runDBSCAN(scrTsne, cores=2, epsilon=c(380, 390, 400),
+                        minPoints=c(2,3))
 dbscanList <- getDbscanList(scrDbscan)
 clusteringList <- lapply(dbscanList, getClustering)
 dbscanListWrong <- dbscanList

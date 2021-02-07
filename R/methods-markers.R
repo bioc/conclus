@@ -274,7 +274,7 @@
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Ranking genes
 #' scr <- rankGenes(scr)
@@ -678,7 +678,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Getting genes info
 #' scr <- retrieveGenesInfo(scr, cores=2)
@@ -838,7 +838,7 @@ setMethod(
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
-#' load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+#' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Retrieve the top 10 markers per cluster
 #' scr <- retrieveTopClustersMarkers(scr)

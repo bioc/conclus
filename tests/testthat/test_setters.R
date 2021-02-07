@@ -4,20 +4,20 @@ outputDirectory <- "YourOutputDirectory"
 experimentName <- "Bergiers"
 
 ## Load the coldata
-coldataPath <- system.file("extdata/unit_tests_colData.tsv", package="conclus")
+coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
                                     columnID="cell_type")
 
 ## Load the count Matrix
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
-                                "unit_tests_countMatrix.tsv")
+                                "countMatrix.tsv")
 
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 
 
 ## Load expected results
-load(file = system.file("extdata/unit_tests_scrLight.Rdat", package="conclus"))
-load(file = system.file("extdata/unit_tests_expected_normalizedMatrix.Rdat",
+load(file = system.file("extdata/scrLight.Rdat", package="conclus"))
+load(file = system.file("extdata/expected_normalizedMatrix.Rdat",
                         package="conclus"))
 
 

@@ -79,7 +79,7 @@ vector.
 }
 \examples{
 ## Object scr containing the results of previous steps
-load(system.file("extdata/example_scrFull.Rdat", package="conclus"))
+load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Plot the heatmap of the similarity matrix
 plotCellSimilarity(scr)

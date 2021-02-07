@@ -13,15 +13,13 @@
 #'
 #' @examples
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/example_countMatrix.tsv",
-#'                             package="conclus")
+#' countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
 #' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
 #'
 #' ## Load the coldata
-#' coldataPath <- system.file("extdata/example_colData.tsv",
-#'                             package="conclus")
+#' coldataPath <- system.file("extdata/example_colData.tsv", package="conclus")
 #' columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-#' columnID="cell_ID")
+#'                                     columnID="cell_ID")
 #'
 #' ## Create the initial object
 #' scr <- singlecellRNAseq(experimentName = "Bergiers",
