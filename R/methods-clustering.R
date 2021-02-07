@@ -306,7 +306,11 @@
 #' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Test the clustering writing pdfs to test_clustering folder
-#' testClustering(scr, writeOutput=TRUE)
+#' ## These parameters are tweaked to fit our example data and reduce
+#' ## computing time, please consider using the default parameters or
+#' ## adjusted to your dataset.
+#' testClustering(scr, dbscanEpsilon=380, minPts=2, perplexities=2, PCs=4,
+#'                 writeOutput=TRUE)
 #'
 #' ## Removing the written results
 #' unlink("YourOutputDirectory/", recursive = TRUE)
