@@ -723,7 +723,6 @@ setMethod(
                     genes)
 
             rm(database)
-            biomartCacheClear()
 
             setGenesInfos(theObject) <- result
 
