@@ -194,7 +194,7 @@ createDirectory <- function(dataDirectory, directory){
     repeat{
     message("# Attempt ", c, "/5 # ",
             "Connection to Ensembl ... ")
-    ensembl <- try(useMart(biomart, dataset=dataset), silent=TRUE)
+    ensembl <- try(useMart(biomart, dataset=dataset), silent=FALSE)
 
     if(isTRUE(is(ensembl, "try-error"))){
         c <- c + 1
@@ -241,10 +241,10 @@ createDirectory <- function(dataDirectory, directory){
 
 
     if (is.null(values) && is.null(filters))
-        res <- try(getBM(attributes=attributes, mart=ensembl), silent=TRUE)
+        res <- try(getBM(attributes=attributes, mart=ensembl), silent=FALSE)
     else
         res <- try(getBM(attributes=attributes, mart=ensembl, values=values,
-                            filters=filters), silent=TRUE)
+                            filters=filters), silent=FALSE)
 
     if(isTRUE(is(res, "try-error"))){
         c <- c + 1
