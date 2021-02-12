@@ -201,9 +201,11 @@ createDirectory <- function(dataDirectory, directory){
         error_type <- attr(ensembl, "condition")
         message(error_type$message)
 
-        if(c > 5)
-            stop("There is a problem of connexion to Ensembl for ",
-                "now. Please retry later.")
+        if(c > 5){
+            stop(error_type$message)
+            # stop("There is a problem of connexion to Ensembl for ",
+            #         "now. Please retry later.")
+        }
 
     }else{
         message("Connected with success.")
@@ -251,9 +253,11 @@ createDirectory <- function(dataDirectory, directory){
         error_type <- attr(res, "condition")
         message(error_type$message)
 
-        if(c > 5)
-            stop("There is a problem of connexion to Ensembl for ",
-                "now. Please retry later.")
+        if(c > 5){
+            stop(error_type$message)
+            # stop("There is a problem of connexion to Ensembl for ",
+            #         "now. Please retry later.")
+        }
 
     }else{
         message("Information retrieved with success.")
