@@ -83,7 +83,8 @@ createDirectory <- function(dataDirectory, directory){
     PCAData <- prcomp(t(expressionMatrix))$x
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
-
+    options(cores=cores)
+    
     tSNECoordinates <- foreach::foreach(
                     PCAGetTSNEresults=rep(PCs, length(perplexities)),
                     perpGetTSNEresults=rep(perplexities, each=length(PCs)),
@@ -184,7 +185,7 @@ createDirectory <- function(dataDirectory, directory){
 #' @keywords internal
 #'
 #' @return A Mart object.
-#' @importFrom biomaRt useMart
+#' @importFrom biomaRt useEnsembl
 #' @noRd
 
 .tryUseMart <- function(biomart="ensembl", dataset){
@@ -223,7 +224,7 @@ createDirectory <- function(dataDirectory, directory){
 #' connection problem.
 #'
 #' @param attributes A vector of attributes you want to retrieve.
-#' @param ensembl Object of class Mart, created with  useMart or useEnsembl
+#' @param ensembl Object of class Mart, created with  useEnsembl or useEnsembl
 #' function
 #' @param values Values of the filter/
 #' @param filters Filters used in the query.

@@ -29,6 +29,7 @@
 
     myCluster <- parallel::makeCluster(cores, type="PSOCK")
     doParallel::registerDoParallel(myCluster)
+    options(cores=cores)
     dbscanResults <- foreach::foreach(iMkDbscan=rep(rep(
                                     seq_len(length(tSNEList)),
                                     each=length(minPoints)), length(epsilon)),
