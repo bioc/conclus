@@ -1,6 +1,6 @@
 Package: conclus
 Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONCLUSion
-Version: 0.99.321
+Version: 0.99.322
 Authors@R: c(
     person("Ilyess", "Rachedi", email = "ilyessr@hotmail.fr", role = "cre"),
     person("Nicolas", "Descostes", email = "nicolas.descostes@embl.it", role = "aut"),
@@ -21,7 +21,7 @@ Description:
     used to define "CONSENSUS" clusters conserved accross the previously
     defined clustering solutions. Identify marker genes for each concensus
     cluster.
-Depends: R (>= 4.1)
+Depends: R (>= 4.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
