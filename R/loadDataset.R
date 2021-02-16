@@ -33,8 +33,8 @@
 .checkCountMatrix <- function(df){
     if(ncol(df) < 100)
         stop("Not enough cells in the count matrix. There ",
-             "should be at leat 100 cells. ", "The current count matrix ",
-             "contains ", ncol(df), " cells.\n")
+            "should be at leat 100 cells. ", "The current count matrix ",
+            "contains ", ncol(df), " cells.\n")
     
 }
 
@@ -99,7 +99,6 @@ loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t',
         else
             df <- read.delim(file=file, header=header, sep=sep, dec=dec,
                     na.strings=c("", "NA",  "<NA>"), stringsAsFactors=FALSE)
-
     else
         df <- file
     
