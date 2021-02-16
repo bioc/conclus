@@ -38,41 +38,41 @@ test_that("loadDataOrMatrix works properly with colData", {
     expM <- paste0("There are some NA values in the column you choose. ",
             "Please fill theses values or choose another column.")
     expect_error(loadDataOrMatrix(file=wrongColdataNA, type="coldata",
-                    columnID="cell_ID"), expM)
+                                  columnID="cell_ID"), regexp=expM)
 
     ## Test with duplicates in IDs
     expM <- ("IDs should be unique. Please check the selected column.")
     expect_error(loadDataOrMatrix(file=wrongColdataDup, type="coldata",
-                    columnID="cell_ID"), expM)
+                                   columnID="cell_ID"), regexp=expM)
 
     expM <- "'file' parameter should be a path of existing file."
     expect_error(loadDataOrMatrix(file="coldata", type="coldata", columnID=1),
-            regexp = expM)
+           regexp=expM)
 
     expM <- "There is no column 'cellName' in the submitted data"
     expect_error(loadDataOrMatrix(file=wrongColDataName, type="coldata",
-                    columnID="cellName"), regexp = expM)
+                    columnID="cellName"), regexp=expM)
 
     expM <- paste0("'columnCells' parameter should be the name of",
                     " the column containing cell names/id")
     expect_error(loadDataOrMatrix(file=columnsMetaData, type="coldata",
-                    columnID=10), regexp = expM)
+                    columnID=10), regexp=expM)
 
     expM <- paste("'header' parameter should be a boolean. Set TRUE if the",
                 "first row of the table corresponds to the column names,",
                 "and FALSE if it doesn't.")
     expect_error(loadDataOrMatrix(file=columnsMetaData, type="coldata",
-                    columnID="cell_ID", header="yes"), regexp = expM)
+                    columnID="cell_ID", header="yes"), regexp=expM)
 
     expM <- paste("'dec' parameter should be the character used in the table",
                     "for decimal points, usually '.' or ',' .")
     expect_error(loadDataOrMatrix(file=columnsMetaData, type="coldata",
-                    columnID="cell_ID", dec=" "), regexp = expM)
+                    columnID="cell_ID", dec=" "), regexp=expM)
 
     expM <- paste("'sep' parameter should be the character used in the table",
                 "to separate the fields. Usually it's ' ' ';' ',' or '\t'.")
     expect_error(loadDataOrMatrix(file=columnsMetaData, type="coldata",
-                    columnID="cell_ID", sep='+'), regexp = expM)
+                    columnID="cell_ID", sep='+'), regexp=expM)
 })
 
 
@@ -101,6 +101,15 @@ test_that("loadDataOrMatrix works properly with row data", {
 
 test_that("loadDataOrMatrix works properly with a count matrix", {
 
-    expect_equal(loadDataOrMatrix(file=countmatrixPath, type="countMatrix"),
-                expectedCountMatrix)
+    expect_equal(loadDataOrMatrix(file=countmatrixPath, type="countMatrix", 
+                                    ignoreCellNumber=TRUE), expectedCountMatrix)
+    
+    ## Test with small matrix 
+    expM <- paste0("Not enough cells in the count matrix. There ",
+                   "should be at leat 100 cells. The current count matrix ",
+                   "contains 20 cells.\n")
+    expect_error(loadDataOrMatrix(file=countmatrixPath, type="countMatrix", 
+                 ignoreCellNumber=FALSE), expM)
+
+
 })

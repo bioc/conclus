@@ -8,16 +8,13 @@ coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
         columnID="cell_type")
 
-## Parameters for downloading from GEO
-species <- "mouse"
-countMatrixPath <- file.path(outputDirectory, "countmatrix.txt")
-
 ## Creation of the count Matrix
 
-countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+countMatrixPath <- file.path(system.file("extdata", package = "conclus"),
                                 "countMatrix.tsv")
 
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+countMatrix <- loadDataOrMatrix(file=countMatrixPath, type="countMatrix",
+                                ignoreCellNumber=TRUE)
 
 wrongCountMatrix <- matrix(rep("toto", 1000), ncol = 100)
 wrongNamesCountMatrix <- matrix(seq(10000), ncol = 100)

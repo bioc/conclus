@@ -12,7 +12,8 @@ columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
                                 "countMatrix.tsv")
 
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix", 
+                                ignoreCellNumber=TRUE)
 
 
 ## Load expected results
