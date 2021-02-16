@@ -81,7 +81,7 @@ vector.
 load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## Plot the heatmap of the similarity matrix
-plotClusteredTSNE(scr)
+plotClusteredTSNE(scr, tSNENb=1)
 
 }
 \seealso{

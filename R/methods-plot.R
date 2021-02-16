@@ -948,7 +948,7 @@ setMethod(
 #' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## Plot the heatmap of the similarity matrix
-#' plotClusteredTSNE(scr)
+#' plotClusteredTSNE(scr, tSNENb=1)
 #'
 #' @return A list of ggplot objects if returnPlot is TRUE.
 #'

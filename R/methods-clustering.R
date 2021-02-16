@@ -310,7 +310,7 @@
 #' ## computing time, please consider using the default parameters or
 #' ## adjusted to your dataset.
 #' testClustering(scr, dbscanEpsilon=380, minPts=2, perplexities=2, PCs=4,
-#'                 writeOutput=TRUE)
+#'                 silent=TRUE)
 #'
 #' ## Removing the written results
 #' unlink("YourOutputDirectory/", recursive = TRUE)
