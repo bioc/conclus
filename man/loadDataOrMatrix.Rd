@@ -4,7 +4,8 @@
 \alias{loadDataOrMatrix}
 \title{loadDataOrMatrix}
 \usage{
-loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".")
+loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".",
+                    ignoreCellNumber=FALSE)
 }
 \arguments{
 \item{file}{Path to the rowData, colData or Matrix.}
@@ -22,6 +23,11 @@ Usually it's ' ' ';' ',' or '\\t'. Default='\\t'.}
 
 \item{dec}{Character used in the table for decimal points.
 Usually '.' or ',' . Default=".".}
+
+\item{ignoreCellNumber}{CONCLUS needs a large number of cells to collect
+statistics, so we recommend using CONCLUS if you have at least 100 cells.
+If you still want to use a count matrix with a number of cells inferior 
+to 100 cells, set ignoreCellNumber=TRUE. Default=FALSE.}
 }
 \value{
 The formatted row, col data or the matrix.
@@ -42,7 +48,8 @@ loadDataOrMatrix(file=rowdataPath, type="rowdata", columnID="gene_ID")
 
 ## Count matrix
 countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix",
+                                ignoreCellNumber=TRUE)
 
 
 }

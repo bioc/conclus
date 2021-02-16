@@ -13,8 +13,9 @@
 #'
 #' @examples
 #' ## Load the count matrix
-#' countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+#' countMatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
+#' countMatrix <- loadDataOrMatrix(file=countMatrixPath, type="countMatrix",
+#'                                 ignoreCellNumber=TRUE)
 #'
 #' ## Load the coldata
 #' coldataPath <- system.file("extdata/colData.tsv", package="conclus")

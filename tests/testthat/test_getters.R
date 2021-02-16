@@ -9,10 +9,11 @@ columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
                                     columnID="cell_type")
 
 ## Load the count Matrix
-countmatrixPath <- file.path(system.file("extdata", package = "conclus"),
+countMatrixPath <- file.path(system.file("extdata", package = "conclus"),
                             "countMatrix.tsv")
 
-countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+countMatrix <- loadDataOrMatrix(file=countMatrixPath, type="countMatrix",
+                                ignoreCellNumber=TRUE)
 
 
 ## Load expected results

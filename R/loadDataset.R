@@ -1,4 +1,4 @@
-.checkLoadedData <- function(file, column, header, sep, dec, type){
+.checkLoadedDataParams <- function(file, column, header, sep, dec, type){
 
     if(!is.data.frame(file) && !file.exists(file))
         stop("'file' parameter should be a path of existing file.")
@@ -30,6 +30,15 @@
 }
 
 
+.checkCountMatrix <- function(df){
+    if(ncol(df) < 100)
+        stop("Not enough cells in the count matrix. There ",
+             "should be at leat 100 cells. ", "The current count matrix ",
+             "contains ", ncol(df), " cells.\n")
+    
+}
+
+
 #' loadDataOrMatrix
 #'
 #' @description
@@ -37,7 +46,8 @@
 #' formats each type of data to follow the requirements of CONCLUS.
 #'
 #' @usage
-#' loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".")
+#' loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".",
+#'                     ignoreCellNumber=FALSE)
 #'
 #' @param file Path to the rowData, colData or Matrix.
 #' @param type Values should be "coldata", "rowdata", or "countMatrix".
@@ -49,7 +59,11 @@
 #' Usually it's ' ' ';' ',' or '\\t'. Default='\\t'.
 #' @param dec Character used in the table for decimal points.
 #' Usually '.' or ',' . Default=".".
-#'
+#' @param ignoreCellNumber  CONCLUS needs a large number of cells to collect
+#' statistics, so we recommend using CONCLUS if you have at least 100 cells.
+#' If you still want to use a count matrix with a number of cells inferior 
+#' to 100 cells, set ignoreCellNumber=TRUE. Default=FALSE.
+#' 
 #' @return The formatted row, col data or the matrix.
 #' @export loadDataOrMatrix
 #'
@@ -65,16 +79,17 @@
 #'
 #' ## Count matrix
 #' countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
-#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix")
+#' countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix",
+#'                                 ignoreCellNumber=TRUE)
 #'
 #'
 #' @author Ilyess RACHEDI and Nicolas DESCOSTES
 #' @importFrom utils read.delim
 #'
 loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t',
-        dec="."){
+        dec=".", ignoreCellNumber=FALSE){
 
-    .checkLoadedData(file, columnID, header, sep, dec, type)
+    .checkLoadedDataParams(file, columnID, header, sep, dec, type)
 
     if(!is.data.frame(file))
         if(isTRUE(all.equal(type, "countMatrix")))
@@ -87,7 +102,10 @@ loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t',
 
     else
         df <- file
-
+    
+    if (isFALSE(ignoreCellNumber) &&  isTRUE(all.equal(type, "countMatrix"))) 
+        .checkCountMatrix(df)
+    
     if(isTRUE(all.equal(type, "coldata")))
         refColName <- "cellName"
     else if(isTRUE(all.equal(type, "rowdata")))
@@ -96,9 +114,7 @@ loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t',
         return(as.matrix(df))
 
     if(isFALSE(refColName %in% colnames(df))){
-
         if(isTRUE(columnID %in% colnames(df))){
-
             if(isFALSE(any(is.na(df[, columnID])))){
                 ## Change the column name
                 names(df)[names(df) == columnID] <- refColName
