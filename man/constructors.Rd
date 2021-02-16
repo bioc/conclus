@@ -100,7 +100,7 @@ outputDirectory <- "YourOutputDirectory"
 ## Load the count matrix
 countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix", 
-                                ignoreCellNumber=T)
+                                ignoreCellNumber=TRUE)
 
 ## Load the coldata
 coldataPath <- system.file("extdata/colData.tsv", package="conclus")
