@@ -83,7 +83,6 @@ createDirectory <- function(dataDirectory, directory){
     PCAData <- prcomp(t(expressionMatrix))$x
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
-    options(cores=cores)
     
     tSNECoordinates <- foreach::foreach(
                     PCAGetTSNEresults=rep(PCs, length(perplexities)),
