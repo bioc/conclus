@@ -26,7 +26,7 @@
 #' @noRd
 .mkDbscan <- function(tSNEList, cores=cores, epsilon=c(1.3, 1.4, 1.5),
         minPoints=c(3, 4)){
-    cores <- detectCores(logical=TRUE) - 1
+    cores <- parallel::detectCores(logical=TRUE) - 1
     myCluster <- parallel::makeCluster(cores, type="PSOCK")
     doParallel::registerDoParallel(myCluster)
     dbscanResults <- foreach::foreach(iMkDbscan=rep(rep(
