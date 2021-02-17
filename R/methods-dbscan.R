@@ -24,9 +24,9 @@
 #' @importFrom fpc dbscan
 #' @return Returns a matrix of the combinations of dbscan results
 #' @noRd
-.mkDbscan <- function(tSNEList, cores=2, epsilon=c(1.3, 1.4, 1.5),
+.mkDbscan <- function(tSNEList, cores=cores, epsilon=c(1.3, 1.4, 1.5),
         minPoints=c(3, 4)){
-
+    cores <- detectCores(logical=TRUE) - 1
     myCluster <- parallel::makeCluster(cores, type="PSOCK")
     doParallel::registerDoParallel(myCluster)
     dbscanResults <- foreach::foreach(iMkDbscan=rep(rep(

@@ -81,6 +81,7 @@ createDirectory <- function(dataDirectory, directory){
         randomSeed){
 
     PCAData <- prcomp(t(expressionMatrix))$x
+    cores <- detectCores(logical=TRUE) - 1
     myCluster <- parallel::makeCluster(cores, type = "PSOCK")
     doParallel::registerDoParallel(myCluster)
     
