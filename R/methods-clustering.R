@@ -390,27 +390,44 @@ setMethod(
 #' the resulting list (l), there is one matrix for each cluster number.
 #'
 #' @param clusters Unique list of clusters names.
-#' @param simMat Empty matrix containing only 0 that will be filled by the
-#' function.
 #' @param clustering dbscan clustering results.
 #'
 #' @keywords internal
 #' @noRd
 #' @return A list of similarity matrix.
-.computeSimMat <- function(clusters, simMat, clustering){
+.computeSimMat <- function(clusters, clustering){
 
+    ## Get the number of cells in the current clustering
+    nrow <- ncol(clustering)
+    ncol <- ncol(clustering)
+
+    ## Create a square matrix containing only 0 that will be filled by the
+    ## function
+    simMat <- matrix(0, ncol=ncol, nrow=nrow)
+    colnames(simMat) <- colnames(clustering)
+    rownames(simMat) <- colnames(clustering)
+
+    ## Cluster 0 is not taken into account because it corresponds to cells that
+    ## do not belong to any other clusters.
     l <- lapply(clusters[clusters!=0],
-            function(cluster, simMat, clustering){
+                
+        function(cluster, simMat, clustering){
 
-                ## Get the cells in the same cluster
-                selCol <- colnames(clustering)[
-                        clustering == cluster]
-                ## Add +1 for each cell seen in the same cluster
-                simMat[rownames(simMat) %in% selCol,
-                        colnames(simMat) %in% selCol] <- 1
-                return(simMat)
-            }, simMat, clustering)
-    return(l)
+            ## Get the cells in the same cluster
+            cellsSameCluster <- colnames(clustering)[clustering == cluster]
+            
+            ## Change '0' to '1' for each cell seen in the same cluster.
+            ## '0'  does not mean that they belong to any cluster but to 
+            ## different clusters. Remember that  the cells not belonging to any
+            ## clusters had the cluster number zero and were previously removed.
+            simMat[cellsSameCluster, cellsSameCluster] <- 1
+
+           return(simMat)
+
+        }, simMat, clustering)
+    
+   return(l)
+
 }
 
 
@@ -438,43 +455,42 @@ setMethod(
     ## This foreach gives, for each dbscan result, a matrix containing 1 and
     ## 0. 1 means that a pair of cells was allocated to one cluster,
     ## 0 means that the pair of cells was allocated to no cluster.
+    ## '.combine' parameter sums the similarity matrices into one
+    ##  giving how many times a pair of cells was clustered together 
+    ## across all the dbscan solution.
 
     myCluster <- parallel::makeCluster(cores, type="PSOCK")
     doParallel::registerDoParallel(myCluster)
-    simMatsList <- foreach::foreach(iMkSimMat=seq_len(length(dbscanList)),
-                    .export=c("getClustering", ".computeSimMat")) %dopar% {
+    simMat <- foreach::foreach(iMkSimMat=seq_len(length(dbscanList)),
+                    .export=c("getClustering", ".computeSimMat"),
+                    .combine = "+") %dopar% {
 
-                ## Get the clustering
+                ## Get the clustering solution of one dbscan
                 clustering <- getClustering(dbscanList[[iMkSimMat]])
-
-                ## Get the number of cells in the current clustering
-                nrow <- ncol(clustering)
-                ncol <- ncol(clustering)
-
-                ## Create a square matrix
-                simMat <- matrix(0, ncol=ncol, nrow=nrow)
-                colnames(simMat) <- colnames(clustering)
-                rownames(simMat) <- colnames(clustering)
 
                 ## Get cluster assignments
                 clusters <- unique(as.vector(clustering))
-                l <- .computeSimMat(clusters, simMat, clustering)
+                
+                ## Get list of similarity matrices, its size corresponds
+                ## to the cluster number - 1 (cluster 0 is eliminated) of 
+                ## the current dbscan of the foreach
+                l <- .computeSimMat(clusters, clustering)
 
-                ## Sum all the matrix to have a single one showing cells
-                ## that were allocated to one cluster (1) and cells that were
-                ## not allocated to one cluster (0).
+                ## For one clustering, we sum all the matrices into one showing 
+                ## pairs of cells that were allocated to the same cluster (1) 
+                ## and cells that were not allocated to the same  cluster (0). 
+                ## This represents the solution of one dbscan (the current one
+                ## executed by the foreach).
                 simMat <- Reduce("+", l)}
+    
     parallel::stopCluster(myCluster)
 
-    ## Sum the similiratity matrices to obtain a single one giving howw many
-    ## times a pair of cells was clustered together accross all the dbscan
-    ## parameters
-    simMat <- Reduce('+', simMatsList)
     simMat <- simMat / length(dbscanList)
     stopifnot(isSymmetric(simMat))
 
     return(simMat)
 }
+
 
 .checkClusteringMethod <- function(clusteringMethod){
 
