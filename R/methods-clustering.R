@@ -422,11 +422,11 @@ setMethod(
             ## clusters had the cluster number zero and were previously removed.
             simMat[cellsSameCluster, cellsSameCluster] <- 1
 
-           return(simMat)
+            return(simMat)
 
         }, simMat, clustering)
     
-   return(l)
+    return(l)
 
 }
 
