@@ -52,7 +52,7 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 
 ## Performing the normalization
 
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData, info=F)
+scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData, info=FALSE)
 sceNorm <- getSceNorm(scrNorm)
 
 
