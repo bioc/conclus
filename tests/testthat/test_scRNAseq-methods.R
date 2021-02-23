@@ -52,7 +52,7 @@ scr <- singlecellRNAseq(experimentName = experimentName,
 
 ## Performing the normalization
 
-scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+scrNorm <- normaliseCountMatrix(scr, coldata = columnsMetaData, info=F)
 sceNorm <- getSceNorm(scrNorm)
 
 
@@ -414,6 +414,9 @@ test_that("Normalization works properly", {
             expM <- "'runQuickCluster' parameter should be a boolean."
             expect_error(normaliseCountMatrix(scr, runQuickCluster="test"),
                     regexp=expM)
+            
+            expM <- "'info' parameter should be a boolean."
+            expect_error(normaliseCountMatrix(scr, info="test"), regexp=expM)
 
             expM <- paste0("species should be 'mouse' or 'human'. ",
                     "'melanogaster' is currently not supported.")
@@ -446,11 +449,11 @@ test_that("Normalization works properly", {
             expM <- paste0("The provided col metadata should contain the ",
                     "same number of rows than the matrix number of columns.")
             expect_error(normaliseCountMatrix(singlecellRNAseq(
-                experimentName = experimentName,
-                countMatrix     = badCountMatrix,
-                outputDirectory = outputDirectory,
-                species         = "mouse"),
-                coldata=data.frame()), regexp=expM)
+                                            experimentName = experimentName,
+                                            countMatrix     = badCountMatrix,
+                                            outputDirectory = outputDirectory,
+                                            species         = "mouse"),
+                        coldata=data.frame(), info=FALSE), regexp=expM)
 
 
             expM <- paste0("There are no more genes after filtering. Maybe",
@@ -459,10 +462,11 @@ test_that("Normalization works properly", {
                             "all-10 cells. Please check the count matrix.")
 
             expect_error(normaliseCountMatrix(singlecellRNAseq(
-                                experimentName = experimentName,
-                                countMatrix     = badCountMatrix2,
-                                outputDirectory = outputDirectory,
-                                species         = "mouse")),
+                                            experimentName = experimentName,
+                                            countMatrix     = badCountMatrix2,
+                                            outputDirectory = outputDirectory,
+                                            species         = "mouse"),
+                                info=FALSE),
                         regexp=expM)
 })
 

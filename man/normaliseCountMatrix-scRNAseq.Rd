@@ -7,7 +7,7 @@
 \usage{
 normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
                     coldata=NULL, alreadyCellFiltered=FALSE,
-                    runQuickCluster=TRUE)
+                    runQuickCluster=TRUE, info=TRUE)
 }
 \arguments{
 \item{theObject}{A scRNAseq object}
@@ -27,6 +27,11 @@ filtering will not be applied.}
 be applied. It usually improves the normalization for medium-size count
 matrices. However, it is not recommended for datasets with less than 200
 cells and may take too long for datasets with more than 10000 cells.}
+
+\item{info}{Logical. If TRUE, additional annotations like ensembl_gene_id,
+go_id, name_1006, chromosome_name and gene_biotype are added to the 
+row data, for all the genes from the count matrix with ENSEMBL IDs or 
+SYMBOL ID. Default: TRUE.}
 }
 \value{
 Returns a scRNASeq object with its sceNorm slot updated. This slot
@@ -73,7 +78,7 @@ scr <- singlecellRNAseq(experimentName = "Bergiers",
                 outputDirectory = "YourOutputDirectory")
 
 ## Normalize and filter the raw counts matrix
-scr <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+scr <- normaliseCountMatrix(scr, coldata = columnsMetaData, info=FALSE)
 
 }
 \author{

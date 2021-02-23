@@ -328,12 +328,16 @@
 #' Other organisms can be added on demand.
 #' @param rowdataDF rowData of class data.frame, it contains gene names of the
 #' count matrix.
-#'
+#' @param info Logical. If TRUE, additional annotations like ensembl_gene_id,
+#' go_id, name_1006, chromosome_name and gene_biotype are added to the 
+#' row data, for all the genes from the count matrix with ENSEMBL IDs or 
+#' SYMBOL ID. Default: TRUE.
+#' 
 #' @keywords internal
 #'
 #' @return Returns the rowData filled with annotations
 #' @noRd
-.annotateGenes <- function(countMatrix, species, rowdataDF){
+.annotateGenes <- function(countMatrix, species, rowdataDF, info){
 
     martResult <- .defineMartVar(species)
     genomeAnnot <- martResult[[1]]
@@ -357,7 +361,9 @@
     (rowdata$SYMBOL[rowdata$SYMBOL %in% multSym] <-
                 paste0(rowdata$SYMBOL[rowdata$SYMBOL %in% multSym],
                         rowdata$ENSEMBL[rowdata$SYMBOL %in% multSym]))
-    rowdata <- .retrieveGenesInfoBiomart(ensembl, rowdata)
+    
+    if(isTRUE(info))
+        rowdata <- .retrieveGenesInfoBiomart(ensembl, rowdata)
 
     if(!is.null(rowdataDF))
         rowdata <- .mergeRowDataDf(rowdataDF, rowdata)
@@ -659,11 +665,14 @@
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
-#'
+#' @param info Logical. If TRUE, additional annotations like ensembl_gene_id,
+#' go_id, name_1006, chromosome_name and gene_biotype are added to the 
+#' row data, for all the genes from the count matrix with ENSEMBL IDs or 
+#' SYMBOL ID. Default: TRUE.
 #' @keywords internal
 #' @noRd
 .checkParamNorm <- function(sizes, rowdata, coldata, alreadyCellFiltered,
-        runQuickCluster){
+        runQuickCluster, info){
 
     if(!is.numeric(sizes))
         stop("'sizes' parameter should be a vector of numeric values.")
@@ -679,6 +688,9 @@
 
     if (!is.logical(runQuickCluster))
         stop("'runQuickCluster' parameter should be a boolean.")
+    
+    if (!is.logical(info))
+        stop("'info' parameter should be a boolean.")
 }
 
 
@@ -691,8 +703,8 @@
 #' @param alreadyCellFiltered Logical. If TRUE, quality check and
 #' filtering will not be applied.
 #' @param countMatrix Class matrix representing the genes expression.
-#' @param rowdata Data frame containing genes informations. Default is NULL.
-#' @param coldata Data frame containing cells informations. Default is NULL.
+#' @param rowdata Data frame containing genes informations.
+#' @param coldata Data frame containing cells informations.
 #'
 #' @keywords internal
 #' @noRd
@@ -813,7 +825,7 @@
 #' @usage
 #' normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
 #'                     coldata=NULL, alreadyCellFiltered=FALSE,
-#'                     runQuickCluster=TRUE)
+#'                     runQuickCluster=TRUE, info=TRUE)
 #'
 #'
 #' @param theObject A scRNAseq object
@@ -828,7 +840,11 @@
 #' be applied. It usually improves the normalization for medium-size count
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
-#'
+#' @param info Logical. If TRUE, additional annotations like ensembl_gene_id,
+#' go_id, name_1006, chromosome_name and gene_biotype are added to the 
+#' row data, for all the genes from the count matrix with ENSEMBL IDs or 
+#' SYMBOL ID. Default: TRUE.
+#' 
 #' @details
 #' This function uses the normalization method of the scater package. For more
 #' details about the normalization used see ?scater::normalize. The size factors
@@ -877,7 +893,7 @@
 #'                 outputDirectory = "YourOutputDirectory")
 #'
 #' ## Normalize and filter the raw counts matrix
-#' scr <- normaliseCountMatrix(scr, coldata = columnsMetaData)
+#' scr <- normaliseCountMatrix(scr, coldata = columnsMetaData, info=FALSE)
 #'
 #' @exportMethod normaliseCountMatrix
 #' @importFrom methods validObject
@@ -893,19 +909,19 @@ setMethod(
 
     definition = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
                             coldata=NULL, alreadyCellFiltered=FALSE,
-                            runQuickCluster=TRUE){
+                            runQuickCluster=TRUE, info=TRUE){
 
         validObject(theObject)
 
         .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
-                runQuickCluster)
+                runQuickCluster, info)
         countMatrix <- getCountMatrix(theObject)
         species <- getSpecies(theObject)
 
         .checkRowAndColdata(countMatrix, rowdata, coldata)
 
         rowdata <- .annotateGenes(countMatrix, species=species,
-                    rowdataDF=rowdata)
+                    rowdataDF=rowdata, info=info)
         coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata,
                     coldataDF=coldata)
         sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)

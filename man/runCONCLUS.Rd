@@ -12,7 +12,7 @@ runCONCLUS(
 
         ## Normalisation parameters
         sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
-        alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
+        alreadyCellFiltered=FALSE, runQuickCluster=TRUE, info=TRUE,
 
         ## tSNE parameters
         randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50),
@@ -102,6 +102,11 @@ be applied. It usually improves the normalization for medium-size count
 matrices. However, it is not recommended for datasets with less than 200
 cells and may take too long for datasets with more than 10000 cells.
 Default=TRUE. See ?normaliseCountMatrix.}
+
+\item{info}{Logical. If TRUE, additional annotations like ensembl_gene_id,
+go_id, name_1006, chromosome_name and gene_biotype are added to the 
+row data, for all the genes from the count matrix with ENSEMBL IDs or 
+SYMBOL ID. Default: TRUE.}
 
 \item{randomSeed}{Default is 42. Seeds used to generate the tSNE. See
 ?generateTSNECoordinates.}

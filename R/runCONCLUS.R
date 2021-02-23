@@ -19,6 +19,10 @@
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
 #' Default=TRUE. See ?normaliseCountMatrix.
+#' @param info Logical. If TRUE, additional annotations like ensembl_gene_id,
+#' go_id, name_1006, chromosome_name and gene_biotype are added to the 
+#' row data, for all the genes from the count matrix with ENSEMBL IDs or 
+#' SYMBOL ID. Default: TRUE.
 #' @param randomSeed Default is 42. Seeds used to generate the tSNE. See
 #' ?generateTSNECoordinates.
 #' @param cores  Maximum number of jobs that CONCLUS can run in parallel. This
@@ -58,7 +62,7 @@
 #' @return Writes results of each step to the corresponding output folders.
 #' @noRd
 .runProcessingStep <- function(scr, sizes, rowMetaData, columnsMetaData,
-        alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
+        alreadyCellFiltered, runQuickCluster, info, randomSeed, cores, PCs,
         perplexities, writeOutputTSne, epsilon, minPoints, writeOutputDbScan,
         clusterNumber, deepSplit, clusteringMethod, clusToAdd){
 
@@ -68,7 +72,7 @@
     message("\t Note: The connection to biomaRt can take a while sometimes.")
     scrNorm <- normaliseCountMatrix(scr, sizes=sizes, rowdata=rowMetaData,
             coldata=columnsMetaData, alreadyCellFiltered=alreadyCellFiltered,
-            runQuickCluster=runQuickCluster)
+            runQuickCluster=runQuickCluster, info=info)
 
     message("## Calculating all tSNEs (step 3/13) ##")
     scrTsne <- generateTSNECoordinates(scrNorm, randomSeed=randomSeed,
@@ -291,6 +295,10 @@
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
 #' Default=TRUE. See ?normaliseCountMatrix.
+#' @param info Logical. If TRUE, additional annotations like ensembl_gene_id,
+#' go_id, name_1006, chromosome_name and gene_biotype are added to the 
+#' row data, for all the genes from the count matrix with ENSEMBL IDs or 
+#' SYMBOL ID. Default: TRUE.
 #' @param randomSeed Default is 42. Seeds used to generate the tSNE. See
 #' ?generateTSNECoordinates.
 #' @param cores  Maximum number of jobs that CONCLUS can run in parallel. This
@@ -406,15 +414,16 @@
 #' @noRd
 .runAllSteps <- function(experimentName, countMatrix, species, sizes,
         outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-        runQuickCluster, randomSeed, cores, PCs, perplexities, writeOutputTSne,
-        epsilon, minPoints, writeOutputDbScan, clusterNumber, deepSplit,
-        clusteringMethod,clusToAdd, columnRankGenes, writeOutputRankGenes,
-        nTopMarkers, removeDuplicates, writeTopMarkers, groupBy, orderGenes,
-        getUniprot, saveInfos, colorPalette, statePalette, orderClusters,
-        writeCSM, widthCSM, heightCSM, meanCentered, orderGenesCH, savePlotCH,
-        widthCH, heightCH, clusterCols, savePlotClustSM, widthPlotClustSM,
-        heightPlotClustSM, savePlotCTSNE, widthPlotClustTSNE,
-        heightPlotClustTSNE, tSNENb, exportAllResults, silentPlot){
+        runQuickCluster, info, randomSeed, cores, PCs, perplexities, 
+        writeOutputTSne, epsilon, minPoints, writeOutputDbScan, clusterNumber,
+        deepSplit, clusteringMethod, clusToAdd, columnRankGenes,
+        writeOutputRankGenes, nTopMarkers, removeDuplicates, writeTopMarkers,
+        groupBy, orderGenes, getUniprot, saveInfos, colorPalette, statePalette,
+        orderClusters, writeCSM, widthCSM, heightCSM, meanCentered, 
+        orderGenesCH, savePlotCH, widthCH, heightCH, clusterCols, 
+        savePlotClustSM, widthPlotClustSM, heightPlotClustSM, savePlotCTSNE,
+        widthPlotClustTSNE, heightPlotClustTSNE, tSNENb, exportAllResults,
+        silentPlot){
 
     if(exportAllResults){
 
@@ -431,7 +440,7 @@
                             outputDirectory = outputDirectory)
 
     scrCSM <- .runProcessingStep(scr, sizes, rowMetaData, columnsMetaData,
-            alreadyCellFiltered, runQuickCluster, randomSeed, cores, PCs,
+            alreadyCellFiltered, runQuickCluster, info, randomSeed, cores, PCs,
             perplexities, writeOutputTSne, epsilon, minPoints,
             writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
             clusToAdd)
@@ -470,7 +479,7 @@
 #'
 #'         ## Normalisation parameters
 #'         sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
-#'         alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
+#'         alreadyCellFiltered=FALSE, runQuickCluster=TRUE, info=TRUE,
 #'
 #'         ## tSNE parameters
 #'         randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50),
@@ -546,6 +555,10 @@
 #' matrices. However, it is not recommended for datasets with less than 200
 #' cells and may take too long for datasets with more than 10000 cells.
 #' Default=TRUE. See ?normaliseCountMatrix.
+#' @param info Logical. If TRUE, additional annotations like ensembl_gene_id,
+#' go_id, name_1006, chromosome_name and gene_biotype are added to the 
+#' row data, for all the genes from the count matrix with ENSEMBL IDs or 
+#' SYMBOL ID. Default: TRUE.
 #' @param randomSeed Default is 42. Seeds used to generate the tSNE. See
 #' ?generateTSNECoordinates.
 #' @param PCs Vector of first principal components. For example, to take ranges
@@ -747,7 +760,7 @@ runCONCLUS <- function(
     clusToAdd=NA, silentPlot=TRUE,
     ## Normalisation parameters
     sizes=c(20,40,60,80,100), rowMetaData=NULL, columnsMetaData = NULL,
-    alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
+    alreadyCellFiltered=FALSE, runQuickCluster=TRUE, info=TRUE,
     ## tSNE parameters
     randomSeed = 42, PCs=c(4, 6, 8, 10, 20, 40, 50), perplexities=c(30,40),
     writeOutputTSne = FALSE,
@@ -775,7 +788,7 @@ runCONCLUS <- function(
 
     scrInfos <- .runAllSteps(experimentName, countMatrix, species, sizes,
             outputDirectory, rowMetaData, columnsMetaData, alreadyCellFiltered,
-            runQuickCluster, randomSeed, cores, PCs, perplexities,
+            runQuickCluster, info, randomSeed, cores, PCs, perplexities,
             writeOutputTSne, epsilon, minPoints, writeOutputDbScan,
             clusterNumber, deepSplit, clusteringMethod, clusToAdd,
             columnRankGenes, writeOutputRankGenes, nTopMarkers,
