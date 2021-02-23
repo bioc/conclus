@@ -17,7 +17,7 @@
 .retrieveMatrix <- function(matrixURL, countMatrixPath){
 
     message("Downloading the count matrix.")
-    download.file(matrixURL, countMatrixPath)
+    download.file(matrixURL, countMatrixPath, timeout=120)
     countMatrix <- as.matrix(read.table(countMatrixPath, header=TRUE,
                     row.names=1, stringsAsFactors = FALSE))
     return(countMatrix)
@@ -45,7 +45,7 @@
 .retrieveColMetaDataFromURL <- function(colMetaDataURL, metaDataPath){
 
     message("Downloading the columns meta-data.")
-    download.file(colMetaDataURL, metaDataPath)
+    download.file(colMetaDataURL, metaDataPath, timeout=120)
     metadata <- read.delim(metaDataPath, header=TRUE, stringsAsFactors=FALSE)
 
     if(!isTRUE(all.equal(colnames(metadata), c("cellName", "state",
