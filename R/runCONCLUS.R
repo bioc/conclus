@@ -426,7 +426,6 @@
         silentPlot){
 
     if(exportAllResults){
-
         writeOutputTSne <- writeOutputDbScan <- writeOutputRankGenes <-
                 writeTopMarkers <- saveInfos <- FALSE
 
@@ -441,7 +440,7 @@
 
     scrCSM <- .runProcessingStep(scr, sizes, rowMetaData, columnsMetaData,
             alreadyCellFiltered, runQuickCluster, info, randomSeed, cores, PCs,
-            perplexities, writeOutputTSne, epsilon, minPoints,
+            perplexities, writeOutputTSne, epsilon, minPoints, 
             writeOutputDbScan, clusterNumber, deepSplit, clusteringMethod,
             clusToAdd)
 
