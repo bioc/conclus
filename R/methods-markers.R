@@ -688,7 +688,6 @@ setMethod(
 #'
 #' @exportMethod retrieveGenesInfo
 #' @importFrom dplyr group_by %>% summarise
-#' @importFrom biomaRt biomartCacheClear
 #'
 #' @author
 #' Ilyess RACHEDI, based on code by Polina PAVLOVICH and Nicolas DESCOSTES.
