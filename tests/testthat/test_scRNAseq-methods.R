@@ -1,12 +1,12 @@
 ## Data
 
-outputDirectory <- "YourOutputDirectory"
+outputDirectory <- tempdir()
 if(!file.exists(outputDirectory))
     dir.create(outputDirectory, showWarnings=FALSE)
-experimentName <- "Bergiers"
+experimentName <- "LightExperience"
 coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-        columnID="cell_type")
+                                    columnID="cell_ID")
 
 ## Creation of the count Matrix
 
@@ -140,9 +140,7 @@ test_that("scr is created properly", {
              expect_identical(getCountMatrix(scrLight), getCountMatrix(scr))
 
              expect_identical(getSpecies(scrLight), getSpecies(scr))
-
-             expect_identical(getOutputDirectory(scrLight),
-                     getOutputDirectory(scr))
+            
          })
 
 
@@ -1252,3 +1250,6 @@ test_that("addClustering works properly",{
             expect_error(addClustering(scrInfos,
                             clusToAdd=clustWrongcells), expM)
         })
+
+
+
