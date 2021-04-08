@@ -1,4 +1,4 @@
-Changes in version 0.99.336 (2021-04-08)
+Changes in version 0.99.338 (2021-04-08)
 ----------------------------------------
 
 + Submission to Bioconductor
@@ -41,3 +41,4 @@ Changes in version 0.99.336 (2021-04-08)
   - Used tempdir() for output directory
   - Specified other parameters in the first example of runCONCLUS for the very small dataset
   - Replaced old paths by new ones
+  
