@@ -13,7 +13,8 @@ loadDataOrMatrix(file, type, columnID=NULL, header=TRUE, sep='\t', dec=".",
 \item{type}{Values should be "coldata", "rowdata", or "countMatrix".}
 
 \item{columnID}{For row and col data, column name containing cells/genes
-names/id. Should not be used when inporting a matrix. Default=NULL.}
+names/id. Should be the same names of genes or cells that in the count
+matrix. Should not be used when importing a matrix. Default=NULL.}
 
 \item{header}{Set TRUE if the first row of the table corresponds to the
 column names, and FALSE if it doesn't. Default=TRUE.}

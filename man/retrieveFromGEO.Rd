@@ -70,5 +70,5 @@ columnsMetaData <- result[[2]]
 
 }
 \author{
-Nicolas DESCOSTES
+Nicolas DESCOSTES & Ilyess RACHEDI
 }
