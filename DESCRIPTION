@@ -64,7 +64,8 @@ Imports:
     Rtsne,
     GEOquery,
     clusterProfiler,
-    stringr
+    stringr,
+    tools
 biocViews:
     Software,
     Technology,
