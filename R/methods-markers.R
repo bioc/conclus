@@ -159,8 +159,9 @@
 
     result <- mapply(function(currentGroup, currentSimMed, mat,
                     allGroups, colLabel, simMedNames){
-
-                message(paste("Working on cluster", currentGroup))
+                
+                msg <- paste("Working on cluster", currentGroup)
+                message(msg)
 
                 ## Create a dataframe clustering vs clustering
                 otherGroups <- allGroups[allGroups!=currentGroup]

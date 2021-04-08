@@ -632,17 +632,18 @@ setMethod(
 
             distMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
             clusteringTree <- hclust(distMatrix, method=clusteringMethod)
-
+            
             if(clusterNumber == 0){
-                message(paste0("Assigning cells to clusters. DeepSplit = ",
-                                deepSplit))
+                msg <- paste("Assigning cells to clusters. DeepSplit =", 
+                                deepSplit)
+                message(msg)
                 clusters <- unname(dynamicTreeCut::cutreeDynamic(clusteringTree,
                                 distM=as.matrix(distMatrix),
                                 verbose=0,
                                 deepSplit=deepSplit))
             } else {
-                message(paste0("Assigning cells to ", clusterNumber,
-                                " clusters."))
+                msg <- paste("Assigning cells to", clusterNumber, "clusters.")
+                message(msg)
                 clusters <- cutree(clusteringTree, k=clusterNumber)
             }
 

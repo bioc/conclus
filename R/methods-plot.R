@@ -220,9 +220,12 @@
     clusters <- colData(getSceNorm(theObject))$clusters
     nbrClusters <- length(unique(clusters))
 
-    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
-        stop(paste("You have to calculate the cluster similarity matrix",
-            "before plotting."))
+    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters))){
+        err <- paste("You have to calculate the cluster similarity matrix",
+                    "before plotting.")
+        stop(err)
+    }
+
 
     ## Verify orderClusters
     if (!is.logical(orderClusters))
@@ -741,9 +744,11 @@ setMethod(
     clusters <- colData(getSceNorm(theObject))$clusters
     nbrClusters <- length(unique(clusters))
 
-    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
-        stop(paste("You have to calculate the cluster similarity matrix",
-            "before plotting."))
+    if (!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters))){
+        err <- paste("You have to calculate the cluster similarity matrix",
+                    "before plotting.")
+        stop(err)
+    }
 
     ## Verify PCs
     if(!is.numeric(PCs))
@@ -1257,9 +1262,11 @@ setMethod(
         height, markersClusters, onefile, clusterCols, showColnames,
         fontsize, fontsizeRow, plotPDF, widthPNG, heightPNG, silentPlot){
 
-    if(!isTRUE((nrow(markersClusters) > 1)))
-        stop(paste("You have to calculate the cluster markers before plotting.",
-                    "Please see retrieveTopClustersMarkers method."))
+    if(!isTRUE((nrow(markersClusters) > 1))){
+        err <- paste("You have to calculate the cluster markers before",
+                    "plotting. Please see retrieveTopClustersMarkers method.")
+        stop(err)
+    }
 
     ## Verify fileName
     if(!is.character(fileName) || grepl("/", fileName , fixed = TRUE))
@@ -1622,10 +1629,12 @@ setMethod(
 
     ## Verify the geneName
     markers <- getClustersMarkers(theObject)$geneName
-    if(!geneName %in% markers)
-        stop(paste("geneName should be a marker founded by ",
-                "retrieveTopClustersMarkers method'. Please see the",
-                "documentation about retrieveTopClustersMarkers method."))
+    if(!geneName %in% markers){
+        err <- paste("geneName should be a marker founded by ",
+                    "retrieveTopClustersMarkers method'. Please see the",
+                    "documentation about retrieveTopClustersMarkers method.")
+        stop(err)
+    }
 
     ## Verify returnPlot
     if (!is.logical(returnPlot))
@@ -1865,9 +1874,11 @@ setMethod(
     clusters <- colData(getSceNorm(theObject))$clusters
     nbrClusters <- length(unique(clusters))
 
-    if(!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters)))
-        stop(paste("You have to calculate the cluster similarity matrix",
-            "before plotting."))
+    if(!isTRUE((ncol(clustersSimilarityMatrix) == nbrClusters))){
+        err <- paste("You have to calculate the cluster similarity matrix",
+                    "before plotting.")
+        stop(err)
+    }
 
     ## Verify returnPlot
     if(!is.logical(returnPlot)) stop("returnPlot should be a boolean.")
