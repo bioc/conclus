@@ -310,7 +310,7 @@
 #' ## computing time, please consider using the default parameters or
 #' ## adjusted to your dataset.
 #' testClustering(scr, dbscanEpsilon=380, minPts=2, perplexities=2, PCs=4,
-#'                 silent=TRUE)
+#'                 silent=TRUE, writeOutput=TRUE)
 #'
 #' ## Removing the written results
 #' unlink("YourOutputDirectory/", recursive = TRUE)
@@ -804,7 +804,7 @@ setMethod(
 
         signature = "scRNAseq",
 
-        definition = function(theObject, clusteringMethod = "ward.D2"){
+        definition = function(theObject, clusteringMethod="ward.D2"){
 
             ## Check if the Object is valid
             validObject(theObject)
