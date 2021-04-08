@@ -230,7 +230,8 @@
     attributes <- c("ensembl_gene_id", "go_id", "name_1006", "chromosome_name",
                     "gene_biotype")
 
-    res <- .tryGetBM(attributes, ensembl)
+    genes <- rowdata$ENSEMBL
+    res <- .tryGetBM(attributes, ensembl, values=genes, "ensembl_gene_id")
 
     tmp <- res[!duplicated(res$ensembl_gene_id),]
 
@@ -337,7 +338,7 @@
 #'
 #' @return Returns the rowData filled with annotations
 #' @noRd
-.annotateGenes <- function(countMatrix, species, rowdataDF, info){
+.annotateGenes <- function(countMatrix, species, rowdataDF, info=TRUE){
 
     martResult <- .defineMartVar(species)
     genomeAnnot <- martResult[[1]]
@@ -407,18 +408,20 @@
 .createReportTable <- function(columnName, colData, mb, mw){
 
     quan <- quantile(colData[, colnames(colData) == columnName])
+    
     if (columnName %in% mb) {
-        threshold <- 2.5*quan[2] - 1.5*quan[4]
+        threshold <- 2.5 * quan[2] - 1.5 * quan[4]
         if (threshold < 0){
-            threshold <- (quan[1]+quan[2]) / 2
+            threshold <- (quan[1] + quan[2]) / 2
             }
         vec <- as.numeric(colData[ ,columnName] >=  as.numeric(threshold))
+        
     } else if (columnName %in% mw) {
-        threshold <- 2.5*quan[4] - 1.5*quan[2]
+        threshold <- 2.5 * quan[4] - 1.5 * quan[2]
         if (threshold > quan[5]){
-            threshold <- (quan[3]+quan[4]) / 2
+            threshold <- (quan[3] + quan[4]) / 2
         }
-        vec <- as.numeric(colData[ ,columnName] <=  as.numeric(threshold))
+        vec <- as.numeric(colData[, columnName] <=  as.numeric(threshold))
     }
 
     return(vec)
@@ -450,8 +453,8 @@
 .filterCells <- function(countMatrix, colData, genesSumThr=100,
                         MoreBetter=c("genesNum", "sumCodPer", "genesSum"),
                         MoreWorse=c("sumMtPer")){
+    
     message("Running filterCells.")
-
     countMatrix <- countMatrix[, colSums(countMatrix) >= genesSumThr]
     if (isTRUE(all.equal(ncol(countMatrix), 0)))
         stop("None of your cells has at least 100 genes expressed. Since the ",
@@ -474,11 +477,11 @@
 
     ### add columns with filtering score and verdict ###
     reportTable <- dplyr::mutate(reportTable, score=NA)
-    reportTable$score <- rowSums(reportTable[,colnames(reportTable) %in%
+    reportTable$score <- rowSums(reportTable[, colnames(reportTable) %in%
                                                 c(mb,mw)])
     reportTable <- dplyr::mutate(reportTable, filterPassed=NA)
-    reportTable$filterPassed[reportTable$score >= length(mb)+length(mw)] <- 1
-    reportTable$filterPassed[reportTable$score < length(mb)+length(mw)] <- 0
+    reportTable$filterPassed[reportTable$score >= length(mb) + length(mw)] <- 1
+    reportTable$filterPassed[reportTable$score <  length(mb) + length(mw)] <- 0
 
     ### add filtering verdict to colData ###
     colData <- dplyr::mutate(colData, filterPassed=NA)
@@ -492,8 +495,8 @@
     rownames(colData) <- colData$cellName
     colData <- colData[colnames(countMatrix), ]
     stopifnot(all(rownames(colData) == colnames(countMatrix)))
-    countMatrix <- countMatrix[,colData$filterPassed == 1]
-    colData <- colData[colData$filterPassed == 1,]
+    countMatrix <- countMatrix[, colData$filterPassed == 1]
+    colData <- colData[colData$filterPassed == 1, ]
 
     return(list(countMatrix, colData))
 }
@@ -586,8 +589,8 @@
     ### add info about all genes in a cell
     coldata <- .addGenesInfoCell(coldata, countMatrix)
     ### add info about mitochondrial and protein-coding genes
-    coldata <- dplyr::mutate(coldata, mtGenes = NA, mtSum = NA, codGenes = NA,
-            codSum=NA)
+    coldata <- dplyr::mutate(coldata, mtGenes=NA, mtSum=NA, codGenes=NA, 
+                                codSum=NA)
 
     for(i in seq_len(ncol(countMatrix))){
 
@@ -607,10 +610,10 @@
     }
 
     coldata <- dplyr::mutate(coldata,
-            mtPer = 100*coldata$mtGenes/coldata$genesNum,
-            codPer = 100*coldata$codGenes/coldata$genesNum,
-            sumMtPer = 100*coldata$mtSum/coldata$genesSum,
-            sumCodPer = 100*coldata$codSum/coldata$genesSum)
+            mtPer=100 * coldata$mtGenes / coldata$genesNum,
+            codPer=100 * coldata$codGenes / coldata$genesNum,
+            sumMtPer=100 * coldata$mtSum / coldata$genesSum,
+            sumCodPer=100 * coldata$codSum / coldata$genesSum)
 
     if (!is.null(coldataDF))
         coldata <- .mergeColDataDf(coldataDF, coldata)
@@ -922,6 +925,7 @@ setMethod(
 
         rowdata <- .annotateGenes(countMatrix, species=species,
                     rowdataDF=rowdata, info=info)
+
         coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata,
                     coldataDF=coldata)
         sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
