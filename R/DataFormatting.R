@@ -1,3 +1,78 @@
+#' conclusCacheClear
+#'
+#' @description
+#' This function deletes the cache of conclus.
+#'
+#' @usage
+#' conclusCacheClear()
+#' 
+#' @return Nothing, it deletes the cache of conclus.
+#'
+#' @aliases conclusCacheClear
+#' @rdname conclusCacheClear
+#' 
+#' @examples 
+#' cache <- tools::R_user_dir("conclus", which="cache")
+#' bfc <- BiocFileCache::BiocFileCache(cache, ask = FALSE)
+#' 
+#' conclusCacheClear()
+#' 
+#' @details
+#' This function don't return anything. It deletes the current contents
+#' of the cache.
+#'
+#' @import BiocFileCache
+#' @importFrom  tools R_user_dir
+#' @author Ilyess RACHEDI & Nicolas DESCOSTES
+#'
+#' @export conclusCacheClear
+conclusCacheClear <- function() {
+    cache <- Sys.getenv(x = "CONCLUS_CACHE", 
+                        unset = tools::R_user_dir("conclus", which="cache"))
+    bfc <- BiocFileCache::BiocFileCache(cache, ask = FALSE)
+    removebfc(bfc, ask = FALSE)
+}
+
+
+
+#' .checkCache
+#'
+#' @description
+#' Check before download if the data is one the cache. If it is, the cached 
+#' file is copied the destination where it should have been downloaded.
+#'
+#' @usage
+#' .checkCache(bfc, name, dataPath=NULL
+#' 
+#' @param bfc BiocFileCache object corresponding to the cache of CONCLUS
+#' @param name ID (string) of the data extract from the url or series.
+#' @param dataPath Path where the file must be downloaded
+#' 
+#' @return Path of the file in the cache if it exists, instead NULL.
+#' @keywords internal
+#' @noRd
+#' @import BiocFileCache
+.checkCache <- function(bfc, name, dataPath=NULL){
+
+    rname <- bfcquery(bfc, name, field="rname")
+    
+    ## The cache exists and the path of the data is into it.
+    if(isTRUE(as.logical(nrow(rname)))){
+        cacheDataPath <- bfcrpath(bfc, rnames=name)
+        
+        if(file.exists(cacheDataPath)){
+            if(!is.null(dataPath))
+                ## The data is copied from the cache to the destination
+                file.copy(cacheDataPath, dataPath, overwrite=TRUE) 
+            return(cacheDataPath)
+        }
+    }
+    
+    return(NULL)
+}
+
+
+
 #' .retrieveMatrix
 #'
 #' @description
@@ -9,17 +84,31 @@
 #' @param matrixURL URL of the count matrix. The matrix must be un-normalized.
 #' @param countMatrixPath Path to the file to which the downloaded count
 #' matrix will be saved.
-#'
+#' @param bfc BiocFileCache object corresponding to the cache of CONCLUS
+#' 
 #' @return The count matrix as a matrix.
 #' @keywords internal
 #' @noRd
 #' @importFrom utils download.file
-.retrieveMatrix <- function(matrixURL, countMatrixPath){
+#' @import BiocFileCache
+.retrieveMatrix <- function(bfc, matrixURL, countMatrixPath){
 
-    message("Downloading the count matrix.")
-    download.file(matrixURL, countMatrixPath, timeout=120)
-    countMatrix <- as.matrix(read.table(countMatrixPath, header=TRUE,
-                    row.names=1, stringsAsFactors = FALSE))
+    name <- gsub("http.+file=", "", matrixURL)
+    cacheDataPath <- .checkCache(bfc, name, countMatrixPath)
+    
+    if(is.null(cacheDataPath)){
+        ## The count matrix isn't in the cache
+        message("Downloading the count matrix.")
+        download.file(matrixURL, countMatrixPath, timeout=120)
+        add <- bfcadd(bfc, name, countMatrixPath, action="copy")
+        
+        countMatrix <- as.matrix(read.table(countMatrixPath, header=TRUE, 
+                                            row.names=1, 
+                                            stringsAsFactors=FALSE))
+    }else 
+        countMatrix <- as.matrix(read.table(cacheDataPath, header=TRUE, 
+                                        row.names=1, stringsAsFactors=FALSE))
+
     return(countMatrix)
 
 }
@@ -31,27 +120,39 @@
 #' Download and read the columns meta-data from a URL
 #'
 #' @usage
-#' .retrieveColMetaDataFromURL(colMetaDataURL, metaDataPath)
-#'
+#' .retrieveColMetaDataFromURL(bfc, colMetaDataURL, metaDataPath)
+#' 
+#' @param bfc BiocFileCache object corresponding to the cache of CONCLUS
 #' @param colMetaDataURL URL of the meta-data. The columns should be cell ID,
 #' cell barcode and state.
 #' @param metaDataPath Path to the file to which the columns meta-data will be
 #' saved.
-#'
+#' 
 #' @return The columns meta-data as a dataframe.
 #' @keywords internal
 #' @noRd
 #' @importFrom utils download.file
-.retrieveColMetaDataFromURL <- function(colMetaDataURL, metaDataPath){
+#' @import BiocFileCache
+.retrieveColMetaDataFromURL <- function(bfc, colMetaDataURL, metaDataPath){
 
-    message("Downloading the columns meta-data.")
-    download.file(colMetaDataURL, metaDataPath, timeout=120)
-    metadata <- read.delim(metaDataPath, header=TRUE, stringsAsFactors=FALSE)
+    name <- gsub("http.+file=", "", colMetaDataURL)
+    cacheDataPath <- .checkCache(bfc, name, metaDataPath)
+
+    if(is.null(cacheDataPath)){
+        message("Downloading the columns meta-data.")
+        download.file(colMetaDataURL, metaDataPath, timeout=120)
+        add <- bfcadd(bfc, name, metaDataPath, action="copy")
+        metadata <- read.delim(metaDataPath, header=TRUE, 
+                                stringsAsFactors=FALSE)
+
+    }else 
+        metadata <- read.table(cacheDataPath, header=TRUE, 
+                                stringsAsFactors=FALSE, sep="\t")
 
     if(!isTRUE(all.equal(colnames(metadata), c("cellName", "state",
-                            "cellBarcode"))))
+                        "cellBarcode"))))
         warning("The columns of the cells meta-data should be: cellName, ",
-                "state, and cellBarcode. Please correct the dataframe.")
+                "state, and cellBarcode. Please correct the dataframe.")   
 
     return(metadata)
 }
@@ -67,6 +168,7 @@
 #'
 #' @param seriesMatrixName Name of the columns meta-data file hosted on GEO.
 #' This name can usually be found in the 'Series Matrix File(s)' section.
+#' @param bfc BiocFileCache object corresponding to the cache of CONCLUS
 #'
 #' @details
 #' The method GEOquery::getGEO downloads all the series matrices of the GEO
@@ -79,22 +181,36 @@
 #' @importFrom stringr str_extract
 #' @importFrom GEOquery getGEO
 #' @importFrom methods as
-.retrieveColMetaDataFromSeries <- function(seriesMatrixName){
+#' @importFrom  tools R_user_dir
+#' @import BiocFileCache
+.retrieveColMetaDataFromSeries <- function(bfc, seriesMatrixName){
 
-    message("Downloading the columns meta-data.")
-    GEOnb <- stringr::str_extract(seriesMatrixName, "GSE[0-9]+")
-    gpl <- GEOquery::getGEO(GEOnb, GSEMatrix=TRUE)
-
-    if(!any(names(gpl) == seriesMatrixName))
-        stop("The series matrix was not found. If the columns meta-data ",
-                "are provided as supplementary file, please use the ",
-                "colMetaDataURL parameter.")
-
-    gpl <- gpl[[seriesMatrixName]]
-    gpl <- methods::as(gpl, "data.frame")
-    columnsMetaData <- data.frame(state=gpl$sampletype.ch1,
-            cellBarcode=gpl$wellbarcode.ch1)
-
+    name <- tools::file_path_sans_ext(seriesMatrixName)
+    metaDataCachePath <- .checkCache(bfc, name)
+    
+    if(is.null(metaDataCachePath)){
+            
+        message("Downloading the columns meta-data.")
+        GEOnb <- stringr::str_extract(seriesMatrixName, "GSE[0-9]+")
+        gpl <- GEOquery::getGEO(GEOnb, GSEMatrix=TRUE)
+    
+        if(!any(names(gpl) == seriesMatrixName))
+            stop("The series matrix was not found. If the columns meta-data ",
+                    "are provided as supplementary file, please use the ",
+                    "colMetaDataURL parameter.")
+    
+        gpl <- gpl[[seriesMatrixName]]
+        gpl <- methods::as(gpl, "data.frame")
+        columnsMetaData <- data.frame(state=gpl$sampletype.ch1,
+                cellBarcode=gpl$wellbarcode.ch1)
+        
+        ## Save on the cache
+        savepath <- bfcnew(bfc, name, ext=".RData")
+        save(columnsMetaData, file=savepath)
+        
+    }else 
+            load(metaDataCachePath)
+    
     return(columnsMetaData)
 }
 
@@ -271,10 +387,11 @@
 #'
 #' countMatrix <- result[[1]]
 #' columnsMetaData <- result[[2]]
-#'
+#' 
 #' @author
-#' Nicolas DESCOSTES
-#'
+#' Nicolas DESCOSTES & Ilyess RACHEDI
+#' 
+#' @importFrom  tools R_user_dir
 #' @export retrieveFromGEO
 retrieveFromGEO <- function(matrixURL, countMatrixPath, species,
         seriesMatrixName=NA, metaDataPath=NA, colMetaDataURL=NA,
@@ -283,13 +400,16 @@ retrieveFromGEO <- function(matrixURL, countMatrixPath, species,
     if(is.na(seriesMatrixName) && is.na(colMetaDataURL))
         stop("You should define at least seriesMatrixName or colMetaDataURL")
 
+    cachePath <- tools::R_user_dir("conclus", which="cache")
+    bfc <- BiocFileCache::BiocFileCache(cachePath, ask=FALSE)
+    
     ## Retrieving the count matrix and columns meta-data
-    countMatrix <- .retrieveMatrix(matrixURL, countMatrixPath)
+    countMatrix <- .retrieveMatrix(bfc, matrixURL, countMatrixPath)
 
     if(!is.na(seriesMatrixName))
-        columnsMetaData <- .retrieveColMetaDataFromSeries(seriesMatrixName)
+        columnsMetaData <- .retrieveColMetaDataFromSeries(bfc, seriesMatrixName)
     else
-        columnsMetaData <- .retrieveColMetaDataFromURL(colMetaDataURL,
+        columnsMetaData <- .retrieveColMetaDataFromURL(bfc, colMetaDataURL,
                 metaDataPath)
 
     ## Filtering, ordering and adding cells names
