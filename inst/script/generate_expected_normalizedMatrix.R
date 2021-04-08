@@ -34,5 +34,5 @@ scrNorm <- normaliseCountMatrix(scrLight, coldata=columnsMetaData, info=FALSE)
 expectedNormalizedMatrix <- getSceNorm(scrNorm)
 
 ## Save the object
-save(expectedNormalizedMatrix, 
-    file="inst/extdata/expected_normalizedMatrix.Rdat")
+file <- "inst/extdata/expected_normalizedMatrix.Rdat"
+save(expectedNormalizedMatrix, file=file)
