@@ -226,7 +226,6 @@
         stop(err)
     }
 
-
     ## Verify orderClusters
     if (!is.logical(orderClusters))
         stop("orderClusters should be a boolean.")
@@ -262,7 +261,6 @@
     .checkParamCellSimilaritySub(showColnames, fontsize, fontsizeRow, widthPNG,
             heightPNG, silentPlot, returnPlot, savePlot)
 }
-
 
 
 
@@ -751,16 +749,14 @@ setMethod(
     }
 
     ## Verify PCs
-    if(!is.numeric(PCs))
-        stop("'PCs' parameter should be a vector of numeric.")
+    if(!is.numeric(PCs)) stop("'PCs' parameter should be a vector of numeric.")
 
     ## Verify perplexities
     if(!is.numeric(perplexities))
         stop("'perplexities' parameter should be a vector of numeric.")
 
     ## Verify returnPlot
-    if (!is.logical(returnPlot))
-        stop("returnPlot should be a boolean.")
+    if (!is.logical(returnPlot)) stop("returnPlot should be a boolean.")
 
     ## Verify columnName
     if(!isTRUE(all.equal(columnName, "clusters")) &&
@@ -769,20 +765,16 @@ setMethod(
         stop("columnName should be: clusters, noColor, or state.")
 
     ## Verify width
-    if (!is.numeric(width))
-        stop("width should be a numeric.")
+    if (!is.numeric(width)) stop("width should be a numeric.")
 
     ## Verify height
-    if (!is.numeric(height))
-        stop("height should be a numeric.")
+    if (!is.numeric(height)) stop("height should be a numeric.")
 
     ## Verify onefile
-    if (!is.logical(onefile))
-        stop("onefile should be a boolean.")
+    if (!is.logical(onefile)) stop("onefile should be a boolean.")
 
     ## Verify savePlot
-    if (!is.logical(savePlot))
-        stop("savePlot should be a boolean.")
+    if (!is.logical(savePlot)) stop("savePlot should be a boolean.")
 
     .checkParamPlotTSNESub(plotPDF, widthPNG, heightPNG, silentPlot,
             returnPlot, savePlot, tSNENb, PCs, perplexities)
