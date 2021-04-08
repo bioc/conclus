@@ -6,7 +6,7 @@ experimentName <- "Bergiers"
 ## Load the coldata
 coldataPath <- system.file("extdata/colData.tsv", package="conclus")
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
-                                    columnID="cell_type")
+                                    columnID="cell_ID")
 
 ## Load the count Matrix
 countMatrixPath <- file.path(system.file("extdata", package = "conclus"),
