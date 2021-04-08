@@ -477,7 +477,7 @@ or without colors. Here *plotClusteredTSNE* is used to generate all these
 possibilities of visualization.
 
 
-```{r plotClustered, eval=FALSE}
+```{r plotClustered}
 tSNEclusters <- plotClusteredTSNE(scr, columnName="clusters",
                 returnPlot=TRUE, silentPlot=TRUE)
 
@@ -490,7 +490,7 @@ tSNEstate <- plotClusteredTSNE(scr, columnName="state",
 
 For visualizing the 5th (out of 14) tSNE cluster:
 
-```{r plotClustered_visualization1, results="hide", fig.keep = 'none', eval=FALSE}
+```{r plotClustered_visualization1, results="hide", fig.keep = 'none'}
 tSNEclusters[[5]]
 ```
 
@@ -504,7 +504,7 @@ could be considered as single clusters respectively.
 
 For visualizing the 5th (out of 14) tSNE cluster without colors:
 
-```{r plotClustered_visualization2, results="hide", fig.keep = 'none', eval=FALSE}
+```{r plotClustered_visualization2, results="hide", fig.keep = 'none'}
 tSNEnoColor[[5]]
 ```
 
@@ -514,7 +514,7 @@ coloring.](figures/5_tSNEnoColor.png){width="364px" height="365px"}
 
 For visualizing the 5th (out of 14) tSNE cluster colored by state:
 
-```{r plotClustered_visualization3, results="hide", fig.keep = 'none', eval=FALSE}
+```{r plotClustered_visualization3, results="hide", fig.keep = 'none'}
 tSNEstate[[5]]
 ```
 
@@ -660,7 +660,7 @@ in a t-SNE plot. It can be useful to inspect the specificity of top markers.
 Cluster 8 was identified as being a liver-like rare population. Below are
 examples of the expression of its marker genes:
 
-```{r plotGeneExpression1, eval=FALSE}
+```{r plotGeneExpression1}
 plotGeneExpression(scr, "Maob", tSNEpicture=5)
 ```
 
@@ -668,7 +668,7 @@ plotGeneExpression(scr, "Maob", tSNEpicture=5)
 8.](figures/11_Maob_cluster8.png){width="363px" height="362px"}
 
 
-```{r plotGeneExpression2, eval=FALSE}
+```{r plotGeneExpression2}
 plotGeneExpression(scr, "Pcbd1", tSNEpicture=5)
 ```
 
@@ -677,7 +677,7 @@ plotGeneExpression(scr, "Pcbd1", tSNEpicture=5)
 
 
 
-```{r plotGeneExpression3, eval=FALSE}
+```{r plotGeneExpression3}
 plotGeneExpression(scr, "Serpinf2", tSNEpicture=5)
 ```
 
@@ -685,7 +685,7 @@ plotGeneExpression(scr, "Serpinf2", tSNEpicture=5)
 8.](figures/13_Serpinf2_cluster8.png){width="360px" height="363px"}
 
 
-```{r plotGeneExpression4, eval=FALSE}
+```{r plotGeneExpression4}
 plotGeneExpression(scr, "Cldn1", tSNEpicture=5)
 ```
 
@@ -772,7 +772,7 @@ plotCellHeatmap(scrUpdated, orderClusters=TRUE, orderGenes=TRUE)
 ![Updated cells heatmap with merged 1/2 and
 9/10.](figures/16_updatedCellHeatmap.png)
 
-```{r addClusteringManually_visualization4, results="hide", fig.keep = 'none', eval=FALSE}
+```{r addClusteringManually_visualization4, results="hide", fig.keep = 'none'}
 tSNEclusters <- plotClusteredTSNE(scrUpdated, columnName="clusters",
                                     returnPlot=TRUE, silentPlot=TRUE)
 tSNEclusters[[5]]
@@ -786,7 +786,7 @@ The cell heatmap above shows that Col1a1 is a good marker of cluster 1 and
 that Cdk8 is a good marker of cluster 9 (at the bottom). One can visualize
 them in the t-SNE plots below.
 
-```{r replot1, eval=FALSE}
+```{r replot1}
 plotGeneExpression(scrUpdated, "Col1a1", tSNEpicture=5)
 ```
 
@@ -794,7 +794,7 @@ plotGeneExpression(scrUpdated, "Col1a1", tSNEpicture=5)
 2)](figures/18_Col1a1_cluster2.png){width="359px" height="364px"}
 
 
-```{r replot2, eval=FALSE}
+```{r replot2}
 plotGeneExpression(scrUpdated, "Cdk8", tSNEpicture=5)
 ```
 
