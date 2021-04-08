@@ -1,4 +1,4 @@
-.checkLoadedDataParams <- function(file, column, header, sep, dec, type){
+.checkLoadedDataParams <- function(file, columnID, header, sep, dec, type){
 
     if(!is.data.frame(file) && !file.exists(file))
         stop("'file' parameter should be a path of existing file.")
@@ -20,11 +20,11 @@
         stop("'type' parameter should be the string 'coldata' 'rowdata' ",
                 "or 'countMatrix'. ")
 
-    if(!is.character(column) && isTRUE(type == "coldata"))
+    if(!is.character(columnID) && isTRUE(type == "coldata"))
         stop("'columnCells' parameter should be the name of the column",
             " containing cell names/id")
 
-    if(!is.character(column) && isTRUE(type == "rowdata"))
+    if(!is.character(columnID) && isTRUE(type == "rowdata"))
         stop("'columnGenes' parameter should be the name of the column",
                 " containing gene SYMBOLS. ")
 }
@@ -52,7 +52,8 @@
 #' @param file Path to the rowData, colData or Matrix.
 #' @param type Values should be "coldata", "rowdata", or "countMatrix".
 #' @param columnID For row and col data, column name containing cells/genes
-#' names/id. Should not be used when inporting a matrix. Default=NULL.
+#' names/id. Should be the same names of genes or cells that in the count
+#' matrix. Should not be used when importing a matrix. Default=NULL.
 #' @param header Set TRUE if the first row of the table corresponds to the
 #' column names, and FALSE if it doesn't. Default=TRUE.
 #' @param sep Character used in the table to separate the fields.
@@ -112,22 +113,19 @@ loadDataOrMatrix <- function(file, type, columnID=NULL, header=TRUE, sep='\t',
     else
         return(as.matrix(df))
 
+    if(isFALSE(columnID %in% colnames(df)))
+        stop("There is no column '", columnID, "' in the submitted ", "data")
+    
+    if(isTRUE(any(is.na(df[, columnID]))))
+        stop("There are some NA values in the column you choose. ",
+            "Please fill theses values or choose another column.")
+    
     if(isFALSE(refColName %in% colnames(df))){
-        if(isTRUE(columnID %in% colnames(df))){
-            if(isFALSE(any(is.na(df[, columnID])))){
-                ## Change the column name
-                names(df)[names(df) == columnID] <- refColName
-                ## Re-order the columns
-                df <- df[, c(refColName,
-                                colnames(df)[!colnames(df) %in% refColName])]
-            }else
-                stop("There are some NA values in the column you choose. ",
-                        "Please fill theses values or choose another column.")
-
-        }else
-            stop("There is no column '", columnID, "' in the submitted ",
-                    "data")
-    }
+        ## Change the column name
+        names(df)[names(df) == columnID] <- refColName
+        ## Re-order the columns
+        df <- df[, c(refColName, colnames(df)[!colnames(df) %in% refColName])]
+        }
 
     if(length(unique(df[, refColName])) != nrow(df))
         stop("IDs should be unique. Please check the selected column.")
