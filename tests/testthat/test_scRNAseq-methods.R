@@ -10,7 +10,7 @@ columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
 
 ## Creation of the count Matrix
 
-countMatrixPath <- file.path(system.file("extdata", package = "conclus"),
+countMatrixPath <- file.path(system.file("extdata", package="conclus"),
                                 "countMatrix.tsv")
 
 countMatrix <- loadDataOrMatrix(file=countMatrixPath, type="countMatrix",
