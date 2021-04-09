@@ -16,6 +16,10 @@ This function deletes the cache of conclus.
 This function don't return anything. It deletes the current contents
 of the cache.
 }
+\examples{
+NULL
+
+}
 \author{
 Ilyess RACHEDI & Nicolas DESCOSTES
 }
