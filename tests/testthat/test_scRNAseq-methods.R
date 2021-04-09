@@ -1092,7 +1092,7 @@ test_that("retrieveTopClustersMarkers method works properly", {
             expect_error(retrieveTopClustersMarkers(scrDbscan),expM)
 
             expM <- paste0("Something wrong with number of clusters. It is ",
-                    "supposed to be equal to : 2. Current number: 1. Did you",
+                    "supposed to be equal to : 4. Current number: 1. Did you",
                     " use 'calculateClustersSimilarity' and 'rankGenes'?")
             expect_error(retrieveTopClustersMarkers(scrCCI), expM)
             expect_error(retrieveTopClustersMarkers(scrCSM), expM)
