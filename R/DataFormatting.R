@@ -15,6 +15,9 @@
 #' @details
 #' This function don't return anything. It deletes the current contents
 #' of the cache.
+#' 
+#' @examples 
+#' NULL
 #'
 #' @import BiocFileCache
 #' @importFrom  tools R_user_dir
