@@ -78,8 +78,8 @@ setClustering(dbscanListWrong[[1]]) <-
 
 ## Running cluster cells internal
 
-scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber = 2,
-        deepSplit = 4, cores = 2, clusteringMethod = "ward.D2")
+scrCCI <- clusterCellsInternal(scrDbscan, clusterNumber=4, deepSplit=4, cores=2,
+                                clusteringMethod="ward.D2")
 cci <- getCellsSimilarityMatrix(scrCCI)
 scrCCiwrong <- scrCCI
 setCellsSimilarityMatrix(scrCCiwrong) <-  matrix(data=1, nrow=1, ncol=1,
