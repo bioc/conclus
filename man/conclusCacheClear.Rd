@@ -16,13 +16,6 @@ This function deletes the cache of conclus.
 This function don't return anything. It deletes the current contents
 of the cache.
 }
-\examples{
-cache <- tools::R_user_dir("conclus", which="cache")
-bfc <- BiocFileCache::BiocFileCache(cache, ask = FALSE)
-
-conclusCacheClear()
-
-}
 \author{
 Ilyess RACHEDI & Nicolas DESCOSTES
 }

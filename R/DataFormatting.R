@@ -11,11 +11,6 @@
 #' @aliases conclusCacheClear
 #' @rdname conclusCacheClear
 #' 
-#' @examples 
-#' cache <- tools::R_user_dir("conclus", which="cache")
-#' bfc <- BiocFileCache::BiocFileCache(cache, ask = FALSE)
-#' 
-#' conclusCacheClear()
 #' 
 #' @details
 #' This function don't return anything. It deletes the current contents
@@ -23,6 +18,7 @@
 #'
 #' @import BiocFileCache
 #' @importFrom  tools R_user_dir
+#' 
 #' @author Ilyess RACHEDI & Nicolas DESCOSTES
 #'
 #' @export conclusCacheClear
