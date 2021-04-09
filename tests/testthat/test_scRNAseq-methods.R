@@ -340,7 +340,7 @@ test_that("Errors are thrown when creating scr", {
 
              expM <- paste0("clusterMarkers should have the same number of ",
                      "clusters than the number of clusters found. Nb clusters ",
-                     "for markers: 3. Nb of clusters: 2")
+                     "for markers: 3. Nb of clusters: 4")
              expect_error(setClustersMarkers(scrFinal) <- data.frame(
                              geneName= c("gene1", "gene2", "gene3"),
                               clusters=c(1,2,3)),
@@ -379,7 +379,7 @@ test_that("Errors are thrown when creating scr", {
 
             expM <- paste0("genesInfos should have the same number of clusters",
                     " than the number of clusters found. Nb clusters for ",
-                    "genesInfos: 3. Nb of clusters: 2")
+                    "genesInfos: 3. Nb of clusters: 4")
             expect_error(setGenesInfos(scrInfos) <- wrongInfo, expM)
 
         })
