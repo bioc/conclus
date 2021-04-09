@@ -18,7 +18,7 @@ countMatrix <- loadDataOrMatrix(file=countMatrixPath, type="countMatrix",
 ## Running CONCLUS
 scr <- runCONCLUS(outputDirectory=tempdir(),
                     experimentName="LightExperience", countMatrix=countMatrix,
-                    species="mouse", tSNENb=1, clusterNumber=4, cores=1,
+                    species="mouse", tSNENb=1, clusterNumber=4, cores=2,
                     epsilon=c(380, 390, 400), minPoints=c(2,3), 
                     PCs =c(4,5,6,7,8,9,10), perplexities=c(2,3))
 
