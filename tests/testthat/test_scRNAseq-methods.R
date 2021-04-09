@@ -329,8 +329,8 @@ test_that("Errors are thrown when creating scr", {
                      markgenlist = list()), regexp = expM)
 
              expM <- paste0("'markerGenesList' should contain as many ",
-                     "dataframes as clusters found. Number of dataframes :1 ",
-                     "and the number of cluters found is :2.")
+                     "dataframes as clusters found. Number of dataframes :3 ",
+                     "and the number of cluters found is :4.")
              expect_error(singlecellRNAseq(experimentName = experimentName,
                      countMatrix     = countMatrix,
                      species         = "mouse",
