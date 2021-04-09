@@ -1,4 +1,4 @@
-Changes in version 0.99.338 (2021-04-08)
+Changes in version 0.99.339 (2021-04-08)
 ----------------------------------------
 
 + Submission to Bioconductor
