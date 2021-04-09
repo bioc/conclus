@@ -36,3 +36,5 @@ expectedNormalizedMatrix <- getSceNorm(scrNorm)
 ## Save the object
 file <- "inst/extdata/expected_normalizedMatrix.Rdat"
 save(expectedNormalizedMatrix, file=file)
+
+
