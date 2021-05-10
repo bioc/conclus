@@ -152,6 +152,14 @@ test_that("setDbscanList works properly", {
 })
 
 
+test_that("setSuggestedClustersNumber works properly", {
+    ## Setting with correct value
+    k <- 10
+    setSuggestedClustersNumber(scr) <- k
+    expect_equal(k, getSuggestedClustersNumber(scr))
+})
+
+
 test_that("cellsSimilarityMatrix works properly", {
     ## Setting with correct matrix
     newCCI <- matrix(ncol=3, nrow=3, data=seq(9))

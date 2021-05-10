@@ -60,6 +60,10 @@ test_that("getDbscanList works properly", {
     expect_equal(getDbscanList(scr), list(new("Dbscan")))
 })
 
+test_that("getSuggestedClustersNumber works properly", {
+    expect_equal(getSuggestedClustersNumber(scr), 1)
+})
+
 test_that("getCellsSimilarityMatrix works properly", {
     mat <- matrix(nrow = 1, ncol = 1, dimnames = list("c1", "c1"), data = 1)
     expect_equal(getCellsSimilarityMatrix(scr), mat)
