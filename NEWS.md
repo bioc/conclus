@@ -42,3 +42,14 @@ Changes in version 0.99.343 (2021-04-09)
   - Specified other parameters in the first example of runCONCLUS for the very small dataset
   - Replaced old paths by new ones
   
+  
+  
+Changes in version 0.99.344 (2021-05-09)
+----------------------------------------
++ Made the following significant changes
+  - Added an internal function .retrieveClustersNumberK to suggest the
+  clusters number to use in lusterCellsInternal().
+  - Added suggestedClustersNumber slot in scRNAseq class to retrieve this 
+  suggested clusters number.
+  - Added accessors getSuggestedClustersNumber and setSuggestedClustersNumber.
+  - Updated all the objects used in examples and tests to have this slot.
