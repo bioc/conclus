@@ -321,6 +321,19 @@ setGeneric(
     signature = "theObject")
 
 
+
+setGeneric(
+
+    name = "getSuggestedClustersNumber",
+
+    def = function(theObject){
+        standardGeneric("getSuggestedClustersNumber")
+    },
+    signature = "theObject")
+
+
+
+
 setGeneric(
 
     name = "getCellsSimilarityMatrix",
@@ -555,6 +568,17 @@ setGeneric(
 
     def = function(theObject, value){
         standardGeneric("setDbscanList<-")
+    },
+    signature = "theObject")
+
+
+
+setGeneric(
+
+    name = "setSuggestedClustersNumber<-",
+
+    def = function(theObject, value){
+        standardGeneric("setSuggestedClustersNumber<-")
     },
     signature = "theObject")
 
