@@ -203,6 +203,52 @@
 }
 
 
+
+#' .retrieveClustersNumberK
+#'
+#' @description
+#' Use the list of dbscan object to find which clusters number would be the 
+#' most suitable
+#'
+#' @param dbscanList List of dbscan solutions retrieved with getDbscanList.
+#'
+#' @keywords internal
+#' @return Suggested clusters number to use in clusterCellsInternal().
+#' @noRd
+.retrieveClustersNumberK <- function(dbscanList){
+
+    ## Get for each dbscan the cluster number, represented by the highest number
+    ## in the clustering
+    l <- sapply(dbscanList, function(obj){
+    max(obj@clustering)})
+
+    ## Put the result in a decreasing table
+    tab <- sort(decreasing = T, table(l))
+    mat <- rbind(as.numeric(names(tab)), tab)
+    rownames(mat) <- c("Number of clusters k :", "Count :")
+    colnames(mat) <- seq(tab)
+
+    msg <- paste("The following matrix shows how many times a number of",
+                "clusters 'k' has been found among the dbscan solutions :\n")
+    cat(msg)
+    print(mat)
+    
+    cat("\nStatistics about number of clusters 'k' among dbscan solutions:\n")
+    print(summary(l))
+    
+    ## k is the clusters number the most represented.
+    k <- tab[1] 
+    k <- as.integer(names(k))
+    # median_k <- round(median(l))
+    
+    msg <- paste0("\nSuggested clusters number to use in clusterCellsInternal() : " , 
+        "clusterNumber=", k, " .")
+    cat(msg)
+    
+    return(k)
+}
+
+
 #' runDBSCAN
 #'
 #' @description
@@ -305,6 +351,10 @@ setMethod(
                     dbscanResults)
 
             setDbscanList(theObject) <- dbscanList
-
+            
+            ## Get a suggested clusters number to use
+            k <- .retrieveClustersNumberK(dbscanList)
+            setSuggestedClustersNumber(theObject) <- k
+            
             return(theObject)
         })
