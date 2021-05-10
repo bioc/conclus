@@ -16,6 +16,8 @@
 \alias{getTSNEList}
 \alias{getDbscanList,scRNAseq-method}
 \alias{getDbscanList}
+\alias{getSuggestedClustersNumber,scRNAseq-method}
+\alias{getSuggestedClustersNumber}
 \alias{getCellsSimilarityMatrix,scRNAseq-method}
 \alias{getCellsSimilarityMatrix}
 \alias{getClustersSimilarityMatrix,scRNAseq-method}
@@ -58,6 +60,8 @@ getOutputDirectory(theObject)
 getTSNEList(theObject)
 
 getDbscanList(theObject)
+
+getSuggestedClustersNumber(theObject)
 
 getCellsSimilarityMatrix(theObject)
 
@@ -105,6 +109,8 @@ getOutputDirectory: Get the path of the output directory (scRNA-seq).
 getTSNEList: Get the list of Tsne objects (scRNA-seq).
 
 getDbscanList: Get the list of Dbscan objects (scRNA-seq).
+
+getSuggestedClustersNumber: Get the suggested clusters number (scRNA-seq).
 
 getCellsSimilarityMatrix: Get the cell similarity matrix (scRNA-seq).
 

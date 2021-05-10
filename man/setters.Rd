@@ -23,6 +23,9 @@
 \alias{setDbscanList<-,scRNAseq-method}
 \alias{setDbscanList<-}
 \alias{setDbscanList}
+\alias{setSuggestedClustersNumber<-,scRNAseq-method}
+\alias{setSuggestedClustersNumber<-}
+\alias{setSuggestedClustersNumber}
 \alias{setCellsSimilarityMatrix<-,scRNAseq-method}
 \alias{setCellsSimilarityMatrix<-}
 \alias{setCellsSimilarityMatrix}
@@ -77,6 +80,8 @@ setOutputDirectory(theObject) <- value
 setTSNEList(theObject) <- value
 
 setDbscanList(theObject) <- value
+
+setSuggestedClustersNumber(theObject) <- value
 
 setCellsSimilarityMatrix(theObject) <- value
 
@@ -134,6 +139,8 @@ setTSNEList: Update the tSNEList slot with a list of tSNE objects. See
 
 setDbscanList: Update the dbscanList slot with a list of dbscan objects. See
 ?Dbscan-class (scRNA-seq).
+
+setSuggestedClustersNumber: Update the suggestedClustersNumber slot.
 
 setCellsSimilarityMatrix: Update the cellsSimilarityMatrix slot with a
 numeric matrix (scRNA-seq).
