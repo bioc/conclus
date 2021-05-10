@@ -180,6 +180,25 @@ setReplaceMethod(
 
 
 #' @usage
+#' setSuggestedClustersNumber(theObject) <- value
+#'
+#' @return
+#' setSuggestedClustersNumber: Update the suggestedClustersNumber slot.
+#'
+#' @rdname setters
+#' @aliases setSuggestedClustersNumber<- setSuggestedClustersNumber
+#' @exportMethod setSuggestedClustersNumber<-
+setReplaceMethod(
+    f = "setSuggestedClustersNumber",
+    signature = "scRNAseq",
+    definition = function(theObject, value){
+        theObject@suggestedClustersNumber <- value
+        validObject(theObject)
+        return(theObject)
+    })
+
+
+#' @usage
 #' setCellsSimilarityMatrix(theObject) <- value
 #'
 #' @return

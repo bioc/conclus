@@ -163,6 +163,26 @@ setMethod(
         return(theObject@dbscanList)
     })
 
+
+
+#' @usage
+#' getSuggestedClustersNumber(theObject)
+#'
+#' @return
+#' getSuggestedClustersNumber: Get the suggested clusters number (scRNA-seq).
+#'
+#' @rdname getters
+#' @aliases getSuggestedClustersNumber
+#'
+#' @exportMethod getSuggestedClustersNumber
+setMethod(
+    f = "getSuggestedClustersNumber",
+    signature = "scRNAseq",
+    definition = function(theObject){
+        return(theObject@suggestedClustersNumber)
+    })
+
+
 #' @usage
 #' getCellsSimilarityMatrix(theObject)
 #'
