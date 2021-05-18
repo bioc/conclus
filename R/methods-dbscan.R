@@ -213,7 +213,9 @@
 #' @param dbscanList List of dbscan solutions retrieved with getDbscanList.
 #'
 #' @keywords internal
-#' @return Suggested clusters number to use in clusterCellsInternal().
+#' @return Suggested clusters number to use in clusterCellsInternal(), 
+#' corresponding to the median value of the found clusters number among the
+#' dbscan solutions.
 #' @noRd
 .retrieveClustersNumberK <- function(dbscanList){
 
@@ -237,15 +239,15 @@
     print(summary(l))
     
     ## k is the clusters number the most represented.
-    k <- tab[1] 
-    k <- as.integer(names(k))
-    # median_k <- round(median(l))
+    # k <- tab[1] 
+    # k <- as.integer(names(k))
+    median_k <- round(median(l))
     
     msg <- paste0("\nSuggested clusters number to use in clusterCellsInternal() : " , 
-        "clusterNumber=", k, " .")
+        "clusterNumber=", median_k, ".")
     cat(msg)
     
-    return(k)
+    return(median_k)
 }
 
 
