@@ -44,7 +44,7 @@ Changes in version 0.99.343 (2021-04-09)
   
   
   
-Changes in version 0.99.344 (2021-08-31)
+Changes in version 1.1.001 (2021-08-31)
 ----------------------------------------
 + Made the following significant changes
   - Added an internal function .retrieveClustersNumberK to suggest the
