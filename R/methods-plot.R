@@ -759,9 +759,9 @@ setMethod(
     if (!is.logical(returnPlot)) stop("returnPlot should be a boolean.")
 
     ## Verify columnName
-    if(!isTRUE(all.equal(columnName, "clusters")) &&
-        !isTRUE(all.equal(columnName, "noColor")) &&
-        !isTRUE(all.equal(columnName, "state")))
+    if(!isTRUE(all.equal(tolower(columnName), "clusters")) &&
+        !isTRUE(all.equal(tolower(columnName), "noColor")) &&
+        !isTRUE(all.equal(tolower(columnName), "state")))
         stop("columnName should be: clusters, noColor, or state.")
 
     ## Verify width
