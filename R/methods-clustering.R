@@ -520,7 +520,7 @@ setMethod(
                 " slot updated. Please use 'runDBSCAN' on the object before.")
 
     ## Check the cluster number
-    if(!is.numeric(clusterNumber))
+    if(!is.numeric(clusterNumber) && !is.null(clusterNumber))
         stop("'clusterNumber' parameter should be a numeric.")
 
     ## Check the deepSplit
@@ -543,7 +543,7 @@ setMethod(
             dimnames = list("1", "1"), data = 1)
     setMarkerGenesList(theObject) <- list(data.frame(Gene = c("gene1"),
                     mean_log10_fdr = c(NA), n_05 = c(NA), score = c(NA)))
-    setClustersMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
+    setTopMarkers(theObject) <- data.frame(geneName="gene1", clusters=NA)
     setGenesInfos(theObject) <- data.frame(uniprot_gn_symbol=c("symbol"),
             clusters="1", external_gene_name="gene", go_id="GO1,GO2",
             mgi_description="description", entrezgene_description="descr",
@@ -569,8 +569,8 @@ setMethod(
 #' @param theObject An Object of class scRNASeq for which the count matrix was
 #' normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 #' ?generateTSNECoordinates), and dbScan was run (see ?runDBSCAN),
-#' @param clusterNumber Exact number of cluster. Default = 0 that will determine
-#' the number of clusters automatically.
+#' @param clusterNumber Exact number of cluster. Default = NULL that will 
+#' determine the number of clusters automatically.
 #' @param deepSplit Intuitive level of clustering depth. Options are 1, 2, 3, 4.
 #' Default = 4
 #' @param cores Maximum number of jobs that CONCLUS can run in parallel.
@@ -613,7 +613,8 @@ setMethod(
 
         signature = "scRNAseq",
 
-        definition = function(theObject, clusterNumber=0, deepSplit=4, cores=2,
+        definition = function(theObject, clusterNumber=NULL, deepSplit=4, 
+                cores=2,
                 clusteringMethod="ward.D2"){
 
             ## Check if the Object is valid
@@ -633,19 +634,12 @@ setMethod(
             distMatrix <- as.dist(sqrt((1-cellsSimilarityMatrix)/2))
             clusteringTree <- hclust(distMatrix, method=clusteringMethod)
             
-            if(clusterNumber == 0){
-                msg <- paste("Assigning cells to clusters. DeepSplit =", 
-                                deepSplit)
-                message(msg)
-                clusters <- unname(dynamicTreeCut::cutreeDynamic(clusteringTree,
-                                distM=as.matrix(distMatrix),
-                                verbose=0,
-                                deepSplit=deepSplit))
-            } else {
-                msg <- paste("Assigning cells to", clusterNumber, "clusters.")
-                message(msg)
-                clusters <- cutree(clusteringTree, k=clusterNumber)
-            }
+            if(is.null(clusterNumber))
+                clusterNumber <- getSuggestedClustersNumber(theObject)
+
+            msg <- paste("Assigning cells to", clusterNumber, "clusters.")
+            message(msg)
+            clusters <- cutree(clusteringTree, k=clusterNumber)
 
             SummarizedExperiment::colData(sceObject)$clusters <-
                     factor(clusters)
@@ -1035,9 +1029,8 @@ setMethod(
             message("Computing new markers..")
             theObject <- calculateClustersSimilarity(theObject)
             theObject <- rankGenes(theObject)
-            theObject <- retrieveTopClustersMarkers(theObject,
-                    removeDuplicates=FALSE)
+            theObject <- retrieveTopClustersMarkers(theObject)
             theObject <- retrieveGenesInfo(theObject)
-
+            
             return(theObject)
         })
