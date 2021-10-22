@@ -1,3 +1,35 @@
+.removeNoSymbol <- function(sceNorm){
+    norm_mat <- SingleCellExperiment::logcounts(sceNorm)
+    cm <- SingleCellExperiment::counts(sceNorm)
+    rd <- SingleCellExperiment::rowData(sceNorm)
+    cd <- SingleCellExperiment::colData(sceNorm)
+    
+    ## Remove SYMBOL genes on the count matrix
+    genesToRemove <- rownames(subset(rd[, c("ENSEMBL", "SYMBOL")], 
+                                is.na(SYMBOL)))
+    
+    
+    norm_mat <- norm_mat[!(row.names(norm_mat) %in% genesToRemove), ] # For the SCE object 
+    rowDataFiltered <- rd[!(row.names(rd) %in% genesToRemove), ] # For the SCE object 
+    countMatrixSCEFiltered <- cm[!(row.names(cm) %in% genesToRemove), ] # For the SCE object
+    
+    
+    ## Removing embryonic hemoglobins with names starting with "Hba" or "Hbb"
+    idxHb <- grep('^Hb[ab]', rownames(rowDataFiltered), value=TRUE)
+    
+    norm_mat <- norm_mat[!(row.names(norm_mat) %in% idxHb), ] 
+    rowDataFiltered <- rowDataFiltered[!(row.names(rowDataFiltered) %in% idxHb), ]
+    countMatrixSCEFiltered <- countMatrixSCEFiltered[!(row.names(countMatrixSCEFiltered) %in% idxHb), ]
+    
+    newSceNorm <- SingleCellExperiment(list(counts=countMatrixSCEFiltered,
+                                            logcounts=norm_mat),
+                                       rowData=rowDataFiltered,
+                                       colData=cd)
+    message("Genes with no SYMBOL IDs removed.")
+    return(newSceNorm)
+}
+
+
 #' .normalizeCon
 #'
 #' @description
@@ -41,6 +73,7 @@
 #' @param species The studied species.
 #' '
 #' @keywords internal
+#' @import org.Mm.eg.db org.Hs.eg.db
 #' @importFrom biomaRt useMart
 #' @return Returns the genome annotation name, the pattern to use to retrieve
 #' ensembl IDs and the biomaRt database.
@@ -912,7 +945,8 @@ setMethod(
 
     definition = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
                             coldata=NULL, alreadyCellFiltered=FALSE,
-                            runQuickCluster=TRUE, info=TRUE){
+                            runQuickCluster=TRUE, info=TRUE, 
+                            removeNoSymbol=FALSE){
 
         validObject(theObject)
 
@@ -957,6 +991,13 @@ setMethod(
         }
 
         sceNorm <- .normalizeCon(sceNorm)
+        if(removeNoSymbol == TRUE)
+            sceNorm <- .removeNoSymbol(sceNorm)
+        
+        ## Put SYMBOL names in rownames
+        rownames(sceNorm) <- rowData(sceNorm)$SYMBOL
+
         setSceNorm(theObject) <- sceNorm
+        
         return(theObject)
     })
