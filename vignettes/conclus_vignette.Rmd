@@ -589,8 +589,7 @@ scr <- rankGenes(scr)
 ```
 
 ```{r rankGenes_result}
-markers <- getMarkerGenesList(scr)
-head(markers[[1]])
+markers <- getMarkerGenesList(scr, cluster=1)
 ```
 
 The top 10 markers by cluster (default) can be selected with:
@@ -598,7 +597,7 @@ The top 10 markers by cluster (default) can be selected with:
 
 ```{r topMarkers_result}
 scr <- retrieveTopClustersMarkers(scr, removeDuplicates=TRUE)
-topMarkers <- getClustersMarkers(scr)
+topMarkers <- getTopMarkers(scr)
 topMarkers
 ```
 
