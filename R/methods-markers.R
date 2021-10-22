@@ -409,8 +409,8 @@ setMethod(
 
 .returnDB1 <- function(genes, ensembl){
 
-    attributes <- c("uniprot_gn_symbol",  # geneName
-                    "external_gene_name", # Complete name,
+    attributes <- c("external_gene_name", # Complete name,
+                    "uniprot_gn_symbol",  # geneName
                     "description",        # Description
                     "entrezgene_description",
                     "gene_biotype",        # Feature.Type
@@ -418,8 +418,9 @@ setMethod(
 
     values <- genes$geneName
 
-    filters <- "uniprot_gn_symbol"
-
+    filters <- "external_gene_name"
+    
+    
     db1 <- .tryGetBM(attributes=attributes, ensembl=ensembl, values=values,
                 filters=filters)
 
@@ -429,8 +430,8 @@ setMethod(
 
 .returnDB2 <- function(genes, ensembl){
 
-    attributes <- c("uniprot_gn_symbol",  # geneName
-                    "external_gene_name", # Complete name,
+    attributes <- c("external_gene_name", # Complete name,
+                    "uniprot_gn_symbol",  # geneName
                     "chromosome_name",    # Chromosome name
                     "ensembl_gene_id",    # Ensembl
                     "entrezgene_id", #Entrez.Gene.ID
@@ -438,7 +439,7 @@ setMethod(
 
     values <- genes$geneName
 
-    filters <- "uniprot_gn_symbol"
+    filters <- "external_gene_name"
 
     db2 <- .tryGetBM(attributes=attributes, ensembl=ensembl, values=values,
                 filters=filters)
@@ -456,7 +457,7 @@ setMethod(
 #' biomaRt.
 #'
 #' @param genes Markers genes retrieved from the submitted object with
-#' ?getClustersMarkers.
+#' ?getTopMarkers.
 #' @param ensembl An instance of biomaRt obtained with ?useEnsembl.
 #'
 #' @keywords internal
@@ -467,20 +468,18 @@ setMethod(
 
     database <- merge(x = .returnDB1(genes, ensembl),
             y = .returnDB2(genes, ensembl),
-            by = c("uniprot_gn_symbol", "external_gene_name"),
+            by = c("external_gene_name", "uniprot_gn_symbol"),
             all.x = TRUE)
 
     ## Group the GO id and the uniprot Id
     options(dplyr.summarise.inform = FALSE)
-    database <- database %>% group_by(uniprot_gn_symbol,
+    database <- database %>% group_by(external_gene_name, uniprot_gn_symbol,
                     chromosome_name, entrezgene_description) %>%
-            summarise(go_id = paste(unique(go_id), collapse=', '),
+            summarise(go_id = gsub("^, ", "", (x=paste(unique(go_id), collapse=', '))),
                     uniprot_gn_id = paste(unique(uniprot_gn_id),
                             collapse=', '),
                     description = paste(unique(description),
                             collapse=', '),
-                    external_gene_name = paste(
-                            unique(external_gene_name), collapse=', '),
                     gene_biotype = paste(unique(gene_biotype),
                             collapse=', '),
                     ensembl_gene_id = paste(unique(ensembl_gene_id),
@@ -503,7 +502,7 @@ setMethod(
 #' retrieved with ?getSpecies. Current values allowed are mouse and human.
 #' Other organisms can be added on demand.
 #' @param genes Markers genes retrieved from the submitted object with
-#' ?getClustersMarkers.
+#' ?getTopMarkers.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
 #' @param speDBdescription NULL if species is human and 'mgi_description' if
 #' species is mouse.
@@ -520,11 +519,11 @@ setMethod(
         ## external_gene_name is also searched because one gene can have
         ## several external_gene_name and so several speDbID and
         ## speDBdescription
-        spDB <- getBM(attributes=c("uniprot_gn_symbol",  # geneName
-                        "external_gene_name", speDbID,
+        spDB <- getBM(attributes=c("external_gene_name", "uniprot_gn_symbol",  # geneName
+                        speDbID,
                         speDBdescription),
                 values=genes$geneName,
-                filters = "uniprot_gn_symbol",
+                filters = "external_gene_name",
                 mart=ensembl)
     return(spDB)
 }
@@ -541,7 +540,7 @@ setMethod(
 #' retrieved with ?getSpecies. Current values allowed are mouse and human.
 #' Other organisms can be added on demand.
 #' @param genes Markers genes retrieved from the submitted object with
-#' ?getClustersMarkers.
+#' ?getTopMarkers.
 #' @param speDbID NULL if species is human and 'mgi_id' if species is mouse.
 #' @param speDBdescription NULL if species is human and 'mgi_description' if
 #' species is mouse.
@@ -566,16 +565,17 @@ setMethod(
     spDB <- .groupGOandUniprotID(speDbID, speDBdescription, genes, ensembl)
 
     ## Merge the second column, the first already existing in the first table
+
     if(!is.null(spDB))
         database <- merge(x = database, all.x = TRUE, y = spDB, by =
-                        c("uniprot_gn_symbol", "external_gene_name"))
+                        c("external_gene_name", "uniprot_gn_symbol"))
 
     ## Add cluster column
     database <- merge(x = database, y = genes,
-            by.x = "uniprot_gn_symbol",  by.y = "geneName", all.x = TRUE)
+            by.x = "external_gene_name",  by.y = "geneName", all.x = TRUE)
 
     ## Add Symbol column
-    database <- cbind(database, Symbol = database$uniprot_gn_symbol)
+    database <- cbind(database, Symbol = database$external_gene_name)
 
     return(database)
 }
@@ -593,7 +593,7 @@ setMethod(
 #' @param orderGenes If "initial" then the order of genes will not be changed.
 #' The other option is "alphabetical". Default = "initial".
 #' @param genes Markers genes retrieved from the submitted object with
-#' ?getClustersMarkers.
+#' ?getTopMarkers.
 #'
 #' @keywords internal
 #' @noRd
@@ -601,17 +601,17 @@ setMethod(
 #' @return The re-ordered database if orderGenes is set to 'initial'.
 .orderCol <- function(speDBdescription, speDbID, database, orderGenes, genes){
 
-    colnamesOrder <- c("uniprot_gn_symbol", "clusters",
-            "external_gene_name", "go_id", speDBdescription,
-            "entrezgene_description", "gene_biotype", "chromosome_name",
-            "Symbol", "ensembl_gene_id", speDbID, "entrezgene_id",
-            "uniprot_gn_id")
+    colnamesOrder <- c("clusters", "Symbol", "gene_biotype", 
+            "entrezgene_description", speDBdescription,
+            "chromosome_name",
+            "ensembl_gene_id", speDbID, "entrezgene_id",
+            "uniprot_gn_id", "uniprot_gn_symbol", "go_id")
 
     result  <- database[, colnamesOrder]
 
     if(isTRUE(all.equal(orderGenes, "initial"))){
         desiredOrder <- genes$geneName
-        result <- merge(list(uniprot_gn_symbol = unique(desiredOrder)),
+        result <- merge(list(Symbol = unique(desiredOrder)),
                 result, sort = FALSE)
         rownames(result) <- seq_len(nrow(result))
     }
@@ -620,12 +620,25 @@ setMethod(
 
 }
 
-
+#' .displayInfoMarkers
+#'
+#' @description
+#' This function displays the info got by retrieveGenesInfo
+#' @param InfoMarkers Information about markers get by retrieveGenesInfo
+#' @keywords internal
+#' @noRd
+.displayInfoMarkers <- function(InfoMarkers){
+    
+    print(DT::datatable(InfoMarkers, class = 'nowrap hover stripe',
+    options = list(searching = FALSE, bLengthChange = FALSE, scrollX=TRUE,
+     columnDefs = list(list(className = 'dt-center', targets=c(1:3, 8:9)),
+                        list(className="dt-left", targets=4:11)))))
+}
 #' retrieveGenesInfo
 #'
 #' @description
 #' This method retrieve information about the marker genes of each cluster
-#' querying the Ensembl database with biomaRt.
+#' querying the Ensembl database with biomaRt and display the result.
 #'
 #' @usage
 #' retrieveGenesInfo(theObject, groupBy="clusters",
@@ -675,7 +688,7 @@ setMethod(
 #' retrieveGenesInfo-scRNAseq
 #'
 #' @return
-#' An object of class scRNASeq with its genesInfos slot updated.
+#' Display a table with the info retrieved.
 #'
 #' @examples
 #' ## Object scr containing the results of previous steps
@@ -703,17 +716,16 @@ setMethod(
                 saveInfos=FALSE){
 
             species <- getSpecies(theObject)
-            genes <- getClustersMarkers(theObject)
+            genes <- getTopMarkers(theObject)
             .checkParamsretrieveGenesInfo(theObject, orderGenes, genes, species,
                     saveInfos)
-
+            
             ## Additional Special database and columns according to species
             if(isTRUE(all.equal(species, "mouse"))){
                 speDbID <- "mgi_id"
                 speDBdescription <- "mgi_description"
             }else
                 speDbID <- speDBdescription <- spDB <- NULL
-
 
             database <- .defineDatabase(species, genes, speDbID,
                     speDBdescription)
@@ -728,7 +740,8 @@ setMethod(
 
             if(saveInfos)
                 .saveGenesInfo(theObject)
-
+            
+            .displayInfoMarkers(result)
             return(theObject)
         })
 
@@ -774,14 +787,14 @@ setMethod(
 #'
 #' @param theObject An Object of class scRNASeq for which rankGenes was
 #' run. See ?rankGenes.
-#' @param markersClusters Data frame containing two columns geneName and
+#' @param topMarkers Data frame containing two columns geneName and
 #' clusters.
 #' @param nTop Number of marker genes to retrieve per cluster.
 #'
 #' @keywords internal
 #' @noRd
 
-.writeMarkersList <- function(theObject, markersClusters, nTop){
+.writeMarkersList <- function(theObject, topMarkers, nTop){
 
     ## Creating the output folder
     dataDirectory <- getOutputDirectory(theObject)
@@ -793,7 +806,7 @@ setMethod(
     message("Writing lists of markers to ", outputDir)
 
     ## Creating a list of markers per clusters
-    markersClustersList <- split(markersClusters, markersClusters$clusters)
+    markersClustersList <- split(topMarkers, topMarkers$clusters)
 
     ## Writing each element of the lists to a corresponding file
     experimentName <- getExperimentName(theObject)
@@ -808,6 +821,7 @@ setMethod(
                     }, markersClustersList, names(markersClustersList),
                     MoreArgs=list(nTop, experimentName)))
 }
+
 
 #' retrieveTopClustersMarkers
 #'
@@ -870,15 +884,16 @@ setMethod(
             geneName <- unlist(lapply(markerGenesList,
                             function(currentMarkers)
                                 currentMarkers$Gene[seq_len(nTop)]))
+            
             clusters <- rep(clusterIndexes, each=nTop)
-            markersClusters <- data.frame(geneName, clusters)
+            topMarkers <- data.frame(geneName, clusters)
 
             ## Checking if duplicates should be removed. Set to FALSE if the
             ## number of clusters after duplicate removal is not the same than
             ## the number of clusters found.
             if(removeDuplicates){
-
-                test <- markersClusters[!duplicated(markersClusters$geneName), ]
+                
+                test <- topMarkers[!duplicated(topMarkers$geneName), ]
                 clustSimOrdered <- getClustersSimilarityOrdered(theObject)
                 nbClustMark <- length(unique(test$clusters))
                 nbClust <- length(clustSimOrdered)
@@ -888,13 +903,12 @@ setMethod(
                     message("Duplicates are not removed to conserve the number",
                             " of clusters.")
                 else
-                    markersClusters <- test
+                    topMarkers <- test
             }
 
-
             if(writeMarkerGenes)
-                .writeMarkersList(theObject, markersClusters, nTop)
-
-            setClustersMarkers(theObject) <- markersClusters
+                .writeMarkersList(theObject, topMarkers, nTop)
+            
+            setTopMarkers(theObject) <- topMarkers
             return(theObject)
         })
