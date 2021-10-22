@@ -1,6 +1,6 @@
 Package: conclus
 Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONCLUSion
-Version: 1.1.002
+Version: 1.1.2
 Authors@R: c(
     person("Ilyess", "Rachedi", email = "rachedi.ilyess@gmail.com", role = "cre"),
     person("Nicolas", "Descostes", email = "nicolas.descostes@embl.it", role = "aut"),
@@ -24,19 +24,19 @@ Description:
 Depends: R (>= 4.0)
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
     S4Vectors,
     matrixStats,
-    org.Hs.eg.db,
-    org.Mm.eg.db,
     dynamicTreeCut,
     testthat
 VignetteBuilder: knitr
 Imports:
+    org.Hs.eg.db,
+    org.Mm.eg.db,
     dbscan,
     fpc,
     factoextra,
