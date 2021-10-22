@@ -96,7 +96,7 @@ checkTopMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
 
 checkGenesInfos <- function(genesInfos, species, clustersSimiliratyOrdered){
 
-    expectedColumn <- c("uniprot_gn_symbol", "clusters", "external_gene_name",
+    expectedColumn <- c("uniprot_gn_symbol", "clusters",
                         "go_id", "entrezgene_description", "gene_biotype",
                         "chromosome_name", "Symbol", "ensembl_gene_id",
                         "entrezgene_id", "uniprot_gn_id")
