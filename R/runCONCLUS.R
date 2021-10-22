@@ -320,8 +320,9 @@
 #' @param writeOutputDbScan If TRUE, write the results of the dbScan clustering
 #' to the output directory defined in theObject, in the sub-directory
 #' output_tables. Default = FALSE. Ignored if exportAllResults=TRUE.
-#' @param clusterNumber Exact number of cluster. Default = 0 that will determine
-#' the number of clusters automatically. See ?clusterCellsInternal.
+#' @param clusterNumber Exact number of cluster. Default = NULL
+#' that will determine the number of clusters automatically. 
+#' See ?clusterCellsInternal.
 #' @param deepSplit Intuitive level of clustering depth. Options are 1, 2, 3, 4.
 #' See ?clusterCellsInternal. Default = 4.
 #' @param clusteringMethod Clustering method passed to hclust() function. See
@@ -576,8 +577,9 @@
 #' @param writeOutputDbScan If TRUE, write the results of the dbScan clustering
 #' to the output directory defined in theObject, in the sub-directory
 #' output_tables. Default = FALSE. Ignored if exportAllResults=TRUE.
-#' @param clusterNumber Exact number of cluster. Default = 0 that will determine
-#' the number of clusters automatically. See ?clusterCellsInternal.
+#' @param clusterNumber Exact number of cluster. Default = NULL
+#' that will determine the number of clusters automatically. 
+#' See ?clusterCellsInternal.
 #' @param deepSplit Intuitive level of clustering depth. Options are 1, 2, 3, 4.
 #' See ?clusterCellsInternal. Default = 4.
 #' @param columnRankGenes Name of the column with a clustering result. See

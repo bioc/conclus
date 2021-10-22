@@ -72,7 +72,7 @@ checkMarkerGenesList <- function(markerGeneobjectlist,
 }
 
 
-checkClusterMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
+checkTopMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
 
 
     expectedColumn <- c("geneName", "clusters")

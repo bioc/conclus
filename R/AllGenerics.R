@@ -8,7 +8,7 @@ setGeneric(
 
     def = function(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
             coldata=NULL, alreadyCellFiltered=FALSE, runQuickCluster=TRUE,
-            info=TRUE){
+            info=TRUE, removeNoSymbol=FALSE){
             standardGeneric("normaliseCountMatrix")
     },
     signature="theObject")
@@ -58,7 +58,7 @@ setGeneric(
 
     name = "clusterCellsInternal",
 
-    def = function(theObject, clusterNumber=0, deepSplit=4, cores=2,
+    def = function(theObject, clusterNumber=NULL, deepSplit=4, cores=2,
                 clusteringMethod="ward.D2"){
         standardGeneric("clusterCellsInternal")
     },
@@ -369,7 +369,7 @@ setGeneric(
 
     name = "getMarkerGenesList",
 
-    def = function(theObject){
+    def = function(theObject, cluster="all"){
         standardGeneric("getMarkerGenesList")
     },
     signature = "theObject")
@@ -378,20 +378,14 @@ setGeneric(
 
 setGeneric(
 
-        name = "getClustersMarkers",
+        name = "getTopMarkers",
 
         def=function(theObject){
-            standardGeneric("getClustersMarkers")
+            standardGeneric("getTopMarkers")
         },
         signature = "theObject")
 
 
-setGeneric(
-    name="getGenesInfos",
-    def=function(theObject){
-        standardGeneric("getGenesInfos")
-    },
-    signature = "theObject")
 
 
 
@@ -629,23 +623,13 @@ setGeneric(
 
 setGeneric(
 
-    name = "setClustersMarkers<-",
+    name = "setTopMarkers<-",
 
     def = function(theObject, value){
-        standardGeneric("setClustersMarkers<-")
+        standardGeneric("setTopMarkers<-")
     },
     signature = "theObject")
 
-
-
-setGeneric(
-
-    name="setGenesInfos<-",
-
-    def=function(theObject, value){
-        standardGeneric("setGenesInfos<-")
-    },
-    signature = "theObject")
 
 
 
