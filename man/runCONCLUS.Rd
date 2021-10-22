@@ -133,8 +133,9 @@ Default = c(3, 4).}
 to the output directory defined in theObject, in the sub-directory
 output_tables. Default = FALSE. Ignored if exportAllResults=TRUE.}
 
-\item{clusterNumber}{Exact number of cluster. Default = 0 that will determine
-the number of clusters automatically. See ?clusterCellsInternal.}
+\item{clusterNumber}{Exact number of cluster. Default = NULL
+that will determine the number of clusters automatically. 
+See ?clusterCellsInternal.}
 
 \item{deepSplit}{Intuitive level of clustering depth. Options are 1, 2, 3, 4.
 See ?clusterCellsInternal. Default = 4.}

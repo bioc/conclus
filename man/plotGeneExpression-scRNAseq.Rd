@@ -61,7 +61,7 @@ of expression of a selected gene.
 load(system.file("extdata/scrFull.Rdat", package="conclus"))
 
 ## t-SNE plot colored by expression of a  given gene.
-plotGeneExpression(scr, getClustersMarkers(scr)[1,1])
+plotGeneExpression(scr, getTopMarkers(scr)[1,1])
 
 }
 \seealso{

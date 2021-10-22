@@ -13,8 +13,8 @@ clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=2,
 normalized (see ?normaliseCountMatrix), tSNE were calculated (see
 ?generateTSNECoordinates), and dbScan was run (see ?runDBSCAN),}
 
-\item{clusterNumber}{Exact number of cluster. Default = 0 that will determine
-the number of clusters automatically.}
+\item{clusterNumber}{Exact number of cluster. Default = NULL that will 
+determine the number of clusters automatically.}
 
 \item{deepSplit}{Intuitive level of clustering depth. Options are 1, 2, 3, 4.
 Default = 4}

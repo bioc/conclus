@@ -34,11 +34,11 @@ defined in theObject (?getOutputDirectory), in the sub-directory
 'marker_genes/saveGenesInfo'.}
 }
 \value{
-An object of class scRNASeq with its genesInfos slot updated.
+Display a table with the info retrieved.
 }
 \description{
 This method retrieve information about the marker genes of each cluster
-querying the Ensembl database with biomaRt.
+querying the Ensembl database with biomaRt and display the result.
 }
 \details{
 The output dataframe is composed of the following columns:

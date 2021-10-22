@@ -51,7 +51,7 @@ ordered by similarity.}
 \item{\code{markerGenesList}}{List of data.frames. Each data frame contains
 the ranked genes of one cluster.}
 
-\item{\code{clustersMarkers}}{A data frame containing the top 10 (by default)
+\item{\code{topMarkers}}{A data frame containing the top 10 (by default)
 marker genes of each clusters.}
 
 \item{\code{genesInfos}}{A data frame containing informations of the markers
@@ -97,7 +97,7 @@ used  \cr
 similarity. \cr
     getMarkerGenesList(x):           Get the list of marker genes by
 clusters. \cr
-    getClustersMarkers(x):           Get the most significant markers by
+    getTopMarkers(x):           Get the most significant markers by
                                     clusters into a data.frame. \cr
     getGenesInfos(x):                Get a data frame containing informations
                                     about marker genes. \cr
@@ -123,10 +123,10 @@ used. \cr
 similarity. \cr
     setMarkerGenesList(x):           Set the list of marker genes by
 clusters \cr
-    setClustersMarkers(x):           Set the most significant markers by
+    setTopMarkers(x):           Set the most significant markers by
                                     clusters. \cr
     setGenesInfos(x):                Set a data.frame containing informations
-                                    about the marker genes. \cr
+                                     about the marker genes. \cr
 }
 
 \seealso{

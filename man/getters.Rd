@@ -26,8 +26,8 @@
 \alias{getClustersSimilarityOrdered}
 \alias{getMarkerGenesList,scRNAseq-method}
 \alias{getMarkerGenesList}
-\alias{getClustersMarkers,scRNAseq-method}
-\alias{getClustersMarkers}
+\alias{getTopMarkers,scRNAseq-method}
+\alias{getTopMarkers}
 \alias{getGenesInfos,scRNAseq-method}
 \alias{getGenesInfos}
 \alias{getName,Tsne-method}
@@ -69,9 +69,9 @@ getClustersSimilarityMatrix(theObject)
 
 getClustersSimilarityOrdered(theObject)
 
-getMarkerGenesList(theObject)
+getMarkerGenesList(theObject, cluster)
 
-getClustersMarkers(theObject)
+getTopMarkers(theObject)
 
 getGenesInfos(theObject)
 
@@ -121,7 +121,7 @@ getClustersSimilarityOrdered: Get the clusters ordered by similarity
 
 getMarkerGenesList: Get the list of marker genes by clusters  (scRNA-seq).
 
-getClustersMarkers: Get the most significant markers by clusters (scRNA-seq).
+getTopMarkers: Get the most significant markers by clusters (scRNA-seq).
 
 getGenesInfos: Get informations about marker genes  (scRNA-seq).
 

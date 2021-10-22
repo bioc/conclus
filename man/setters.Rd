@@ -38,9 +38,9 @@
 \alias{setMarkerGenesList<-,scRNAseq-method}
 \alias{setMarkerGenesList<-}
 \alias{setMarkerGenesList}
-\alias{setClustersMarkers<-,scRNAseq-method}
-\alias{setClustersMarkers<-}
-\alias{setClustersMarkers}
+\alias{setTopMarkers<-,scRNAseq-method}
+\alias{setTopMarkers<-}
+\alias{setTopMarkers}
 \alias{setGenesInfos<-,scRNAseq-method}
 \alias{setGenesInfos<-}
 \alias{setGenesInfos}
@@ -91,7 +91,7 @@ setClustersSimiliratyOrdered(theObject) <- value
 
 setMarkerGenesList(theObject) <- value
 
-setClustersMarkers(theObject) <- value
+setTopMarkers(theObject) <- value
 
 setGenesInfos(theObject) <- value
 
@@ -156,7 +156,7 @@ frame. The data frame structure should be:
 data.frame(Gene = c("gene1"), mean_log10_fdr = c(NA), n_05 = c(NA),
 score = c(NA))  (scRNA-seq).
 
-setClustersMarkers: Update the clustersMarkers slot with a data frame.
+setTopMarkers: Update the topMarkers slot with a data frame.
 The data frame structure should be:
 data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
 
