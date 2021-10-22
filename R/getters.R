@@ -239,7 +239,7 @@ setMethod(
 
 
 #' @usage
-#' getMarkerGenesList(theObject)
+#' getMarkerGenesList(theObject, cluster)
 #'
 #' @return
 #' getMarkerGenesList: Get the list of marker genes by clusters  (scRNA-seq).
@@ -251,27 +251,30 @@ setMethod(
 setMethod(
     f = "getMarkerGenesList",
     signature = "scRNAseq",
-    definition = function(theObject){
+    definition = function(theObject, cluster="all"){
+        if (cluster != "all")
+            return(theObject@markerGenesList[[cluster]])
         return(theObject@markerGenesList)
     })
 
 
 #' @usage
-#' getClustersMarkers(theObject)
+#' getTopMarkers(theObject)
 #'
 #' @return
-#' getClustersMarkers: Get the most significant markers by clusters (scRNA-seq).
+#' getTopMarkers: Get the most significant markers by clusters (scRNA-seq).
 #'
 #' @rdname getters
-#' @aliases getClustersMarkers
+#' @aliases getTopMarkers
 #'
-#' @exportMethod getClustersMarkers
+#' @exportMethod getTopMarkers
 setMethod(
-    f="getClustersMarkers",
+    f="getTopMarkers",
     signature="scRNAseq",
     definition = function(theObject){
-        return(theObject@clustersMarkers)
+        return(theObject@topMarkers)
     })
+
 
 
 #' @usage

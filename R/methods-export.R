@@ -59,7 +59,7 @@
 
     if(top){
 
-        markers <- getClustersMarkers(theObject)
+        markers <- getTopMarkers(theObject)
         firstElement <- markers[1,"geneName"]
         slotName <- "clustersMarkers"
         funName <- "retrieveTopClustersMarkers"

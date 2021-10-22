@@ -281,21 +281,21 @@ setReplaceMethod(
 
 
 #' @usage
-#' setClustersMarkers(theObject) <- value
+#' setTopMarkers(theObject) <- value
 #'
 #' @return
-#' setClustersMarkers: Update the clustersMarkers slot with a data frame.
+#' setTopMarkers: Update the topMarkers slot with a data frame.
 #' The data frame structure should be:
 #' data.frame(geneName="gene1", clusters=NA). (scRNA-seq)
 #'
 #' @rdname setters
-#' @aliases setClustersMarkers<- setClustersMarkers
-#' @exportMethod setClustersMarkers<-
+#' @aliases setTopMarkers<- setTopMarkers
+#' @exportMethod setTopMarkers<-
 setReplaceMethod(
-        f="setClustersMarkers",
+        f="setTopMarkers",
         signature="scRNAseq",
         definition = function(theObject, value){
-            theObject@clustersMarkers<- value
+            theObject@topMarkers<- value
             validObject(theObject)
             return(theObject)
         })

@@ -329,31 +329,31 @@ Dbscan <- setClass(
 }
 
 
-.testClustersMarkersSlot <- function(object){
+.testTopMarkersSlot <- function(object){
 
-    clusterMarkers <- getClustersMarkers(object)
+    topMarkers <- getTopMarkers(object)
     clustersSimiliratyOrdered <- getClustersSimilarityOrdered(object)
 
-    if(isTRUE(all.equal(length(clusterMarkers), 0)))
-        stop("clusterMarkers is empty. This should be a dataframe")
+    if(isTRUE(all.equal(length(topMarkers), 0)))
+        stop("topMarkers is empty. This should be a dataframe")
 
-    invisible(checkClusterMarkers(clusterMarkers,
+    invisible(checkTopMarkers(topMarkers,
                     clustersSimiliratyOrdered))
 }
 
 
 .testGenesInfosSlot <- function(object){
-
+    
     genesInfos <- getGenesInfos(object)
     clustersSimiliratyOrdered <- getClustersSimilarityOrdered(object)
     species <- getSpecies(object)
-
+    
     if(isTRUE(all.equal(length(genesInfos), 0)))
         stop("genesInfos is empty. This should be a dataframe")
-
+    
     invisible(checkGenesInfos(genesInfos, species,
-                    clustersSimiliratyOrdered))
-
+                              clustersSimiliratyOrdered))
+    
 }
 
 
@@ -390,11 +390,11 @@ Dbscan <- setClass(
 #' ordered by similarity.
 #' @slot markerGenesList List of data.frames. Each data frame contains
 #' the ranked genes of one cluster.
-#' @slot clustersMarkers A data frame containing the top 10 (by default)
+#' @slot topMarkers A data frame containing the top 10 (by default)
 #' marker genes of each clusters.
 #' @slot genesInfos A data frame containing informations of the markers
 #' genes for each clusters.
-#'
+#' 
 #' @rdname scRNAseq-class
 #' @aliases scRNAseq-class
 #'
@@ -435,11 +435,11 @@ Dbscan <- setClass(
 #' similarity. \cr
 #'     getMarkerGenesList(x):           Get the list of marker genes by
 #' clusters. \cr
-#'     getClustersMarkers(x):           Get the most significant markers by
+#'     getTopMarkers(x):           Get the most significant markers by
 #'                                     clusters into a data.frame. \cr
 #'     getGenesInfos(x):                Get a data frame containing informations
-#'                                     about marker genes. \cr
-#'
+#'                                     about marker genes. \cr     
+#'     
 #' @section Subsetting:
 #'
 #'     In the following snippets, x is a scRNAseq object.
@@ -459,10 +459,10 @@ Dbscan <- setClass(
 #' similarity. \cr
 #'     setMarkerGenesList(x):           Set the list of marker genes by
 #' clusters \cr
-#'     setClustersMarkers(x):           Set the most significant markers by
+#'     setTopMarkers(x):           Set the most significant markers by
 #'                                     clusters. \cr
 #'     setGenesInfos(x):                Set a data.frame containing informations
-#'                                     about the marker genes. \cr
+#'                                      about the marker genes. \cr
 #'
 #' @exportClass scRNAseq
 #' @importFrom SingleCellExperiment SingleCellExperiment
@@ -485,7 +485,7 @@ scRNAseq <- setClass(
         clustersSimilarityMatrix = "matrix",
         clustersSimiliratyOrdered = "factor",
         markerGenesList = "list",
-        clustersMarkers = "data.frame",
+        topMarkers = "data.frame",
         genesInfos = "data.frame"
     ),
     prototype = list(
@@ -501,7 +501,7 @@ scRNAseq <- setClass(
         markerGenesList = list(data.frame(Gene = c("gene1"),
                                         mean_log10_fdr = c(NA),
                                         n_05 = c(NA), score = c(NA))),
-        clustersMarkers = data.frame(geneName="gene1", clusters=NA),
+        topMarkers = data.frame(geneName="gene1", clusters=NA),
 
         genesInfos = data.frame(uniprot_gn_symbol=c("symbol"), clusters="1",
                 external_gene_name="gene", go_id="GO1,GO2",
@@ -524,7 +524,7 @@ scRNAseq <- setClass(
         .testClustersSimilarityMatrixSlot(object)
         .testClustersSimiliratyOrderedSlot(object)
         .testGetMarkerGenesListSlot(object)
-        .testClustersMarkersSlot(object)
+        .testTopMarkersSlot(object)
         .testGenesInfosSlot(object)
     }
 )

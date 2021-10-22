@@ -21,7 +21,7 @@ NULL
 #' entrezgene_description="descr", gene_biotype="gene", chromosome_name="1",
 #' Symbol="symbol", ensembl_gene_id="ENS", mgi_id="MGI", entrezgene_id="1",
 #' uniprot_gn_id="ID"))
-#'
+#' 
 #' @param experimentName Character string representing the name of the
 #' experiment.
 #' @param countMatrix An integer matrix representing the raw count matrix with
@@ -48,7 +48,7 @@ NULL
 #' marker genes of each clusters.
 #' @param genesInf A data frame containing informations of the markers
 #' genes for each clusters.
-#'
+#' 
 #' @return Object of class scRNAseq
 #'
 #' @rdname constructors
@@ -105,7 +105,7 @@ singlecellRNAseq <- function(experimentName, countMatrix, species,
             clustersSimilarityMatrix=clustSimMat,
             clustersSimiliratyOrdered=clustSimOrdered,
             markerGenesList=markgenlist,
-            clustersMarkers=clustMark,
+            topMarkers=clustMark,
             genesInfos=genesInf)
 }
 

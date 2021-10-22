@@ -1549,7 +1549,7 @@ setMethod(
 
         sceObject <- getSceNorm(theObject)
         colDf <- SummarizedExperiment::colData(sceObject)
-        markersClusters <- getClustersMarkers(theObject)
+        markersClusters <- getTopMarkers(theObject)
 
         if(is.na(fileName))
             fileName <- paste0(getExperimentName(theObject), "_", "clusters",
@@ -1620,7 +1620,7 @@ setMethod(
                 " to the colnames of the expression matrix.")
 
     ## Verify the geneName
-    markers <- getClustersMarkers(theObject)$geneName
+    markers <- getTopMarkers(theObject)$geneName
     if(!geneName %in% markers){
         err <- paste("geneName should be a marker founded by ",
                     "retrieveTopClustersMarkers method'. Please see the",
@@ -1767,7 +1767,7 @@ setMethod(
 #' load(system.file("extdata/scrFull.Rdat", package="conclus"))
 #'
 #' ## t-SNE plot colored by expression of a  given gene.
-#' plotGeneExpression(scr, getClustersMarkers(scr)[1,1])
+#' plotGeneExpression(scr, getTopMarkers(scr)[1,1])
 #'
 #' @seealso retrieveTopClustersMarkers plotCellSimilarity plotCellHeatmap
 #' plotClusteredTSNE plotClustersSimilarity
