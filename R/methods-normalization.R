@@ -537,7 +537,6 @@
     countMatrix <- countMatrix[, colData$filterPassed == 1]
     colData <- colData[colData$filterPassed == 1, ]
 
-    browser()
     return(list(countMatrix, colData))
 }
 
@@ -974,7 +973,7 @@ setMethod(
                 " number of cells.")
 
         ifelse(runQuickCluster, cl <- .quickClusterScran(sce), cl <- NULL)
-        browser()
+
         # Compute sizeFactors which will be used for normalization
         sceNorm <- suppressMessages(
             scran::computeSumFactors(sce, sizes=sizes, clusters=cl, positive=F))

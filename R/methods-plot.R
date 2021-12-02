@@ -760,7 +760,7 @@ setMethod(
 
     ## Verify columnName
     if(!isTRUE(all.equal(tolower(columnName), "clusters")) &&
-        !isTRUE(all.equal(tolower(columnName), "noColor")) &&
+        !isTRUE(all.equal(tolower(columnName), "nocolor")) &&
         !isTRUE(all.equal(tolower(columnName), "state")))
         stop("columnName should be: clusters, noColor, or state.")
 
