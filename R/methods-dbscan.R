@@ -216,16 +216,17 @@
 #' @return Suggested clusters number to use in clusterCellsInternal(), 
 #' corresponding to the median value of the found clusters number among the
 #' dbscan solutions.
+#' @importFrom stats median
 #' @noRd
 .retrieveClustersNumberK <- function(dbscanList){
 
     ## Get for each dbscan the cluster number, represented by the highest number
     ## in the clustering
-    l <- sapply(dbscanList, function(obj){
-    max(obj@clustering)})
+    l <- vapply(dbscanList, function(obj){
+                max(obj@clustering)}, numeric(1))
 
     ## Put the result in a decreasing table
-    tab <- sort(decreasing = T, table(l))
+    tab <- sort(decreasing = TRUE, table(l))
     mat <- rbind(as.numeric(names(tab)), tab)
     rownames(mat) <- c("Number of clusters k :", "Count :")
     colnames(mat) <- seq(tab)
@@ -238,13 +239,10 @@
     cat("\nStatistics about number of clusters 'k' among dbscan solutions:\n")
     print(summary(l))
     
-    ## k is the clusters number the most represented.
-    # k <- tab[1] 
-    # k <- as.integer(names(k))
     median_k <- round(median(l))
     
-    msg <- paste0("\nSuggested clusters number to use in clusterCellsInternal() : " , 
-        "clusterNumber=", median_k, ".")
+    msg <- paste0("\nSuggested clusters number to use in " , 
+        "clusterCellsInternal() : clusterNumber=", median_k, ".")
     cat(msg)
     
     return(median_k)

@@ -352,7 +352,7 @@ Dbscan <- setClass(
         stop("genesInfos is empty. This should be a dataframe")
     
     invisible(checkGenesInfos(genesInfos, species,
-                              clustersSimiliratyOrdered))
+                                clustersSimiliratyOrdered))
     
 }
 
@@ -462,7 +462,7 @@ Dbscan <- setClass(
 #'     setTopMarkers(x):           Set the most significant markers by
 #'                                     clusters. \cr
 #'     setGenesInfos(x):                Set a data.frame containing informations
-#'                                      about the marker genes. \cr
+#'                                         about the marker genes. \cr
 #'
 #' @exportClass scRNAseq
 #' @importFrom SingleCellExperiment SingleCellExperiment

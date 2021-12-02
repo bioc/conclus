@@ -39,7 +39,7 @@ accross the previously defined clustering solutions.
 
 Issues can be submitted directly to the Bioconductor forum using the keyword
 'conclus' in the post title. To contact us directly write to
-christophe.lancrin@embl.it or ilyessr@hotmail.fr. The principles of
+christophe.lancrin@embl.it or rachedi.ilyess@gmail.com. The principles of
 this package were originally developed by Polina Pavlovich who is now doing
 her Ph.D at the Max Planck Institute of Immunobiology and Epigenetics.
 
@@ -53,8 +53,8 @@ get slightly different figures. However, the marker genes for each cluster
 should be the same.
 
 The package is currently limited to mouse and human. Other organisms can be
-added on demand. Write to christophe.lancrin@embl.it or ilyessr@hotmail.fr.
-Priority will be given to model organisms.
+added on demand. Write to christophe.lancrin@embl.it or 
+rachedi.ilyess@gmail.com.Priority will be given to model organisms.
 
 
 # Standard workflow
@@ -81,7 +81,7 @@ countmatrixPath <- system.file("extdata/countMatrix.tsv", package="conclus")
 countMatrix <- loadDataOrMatrix(file=countmatrixPath, type="countMatrix",
                                 ignoreCellNumber=TRUE)
 
-coldataPath <- system.file("extdata/colData.tsv", package="conclus")                 
+coldataPath <- system.file("extdata/colData.tsv", package="conclus") 
 columnsMetaData <- loadDataOrMatrix(file=coldataPath, type="coldata",
                         columnID="cell_ID")
 
