@@ -475,7 +475,8 @@ setMethod(
     options(dplyr.summarise.inform = FALSE)
     database <- database %>% group_by(external_gene_name, uniprot_gn_symbol,
                     chromosome_name, entrezgene_description) %>%
-            summarise(go_id = gsub("^, ", "", (x=paste(unique(go_id), collapse=', '))),
+            summarise(go_id = gsub("^, ", "", 
+                                    (x=paste(unique(go_id), collapse=', '))),
                     uniprot_gn_id = paste(unique(uniprot_gn_id),
                             collapse=', '),
                     description = paste(unique(description),
@@ -519,7 +520,7 @@ setMethod(
         ## external_gene_name is also searched because one gene can have
         ## several external_gene_name and so several speDbID and
         ## speDBdescription
-        spDB <- getBM(attributes=c("external_gene_name", "uniprot_gn_symbol",  # geneName
+        spDB <- getBM(attributes=c("external_gene_name", "uniprot_gn_symbol", 
                         speDbID,
                         speDBdescription),
                 values=genes$geneName,
@@ -631,9 +632,12 @@ setMethod(
     
     print(DT::datatable(InfoMarkers, class = 'nowrap hover stripe',
     options = list(searching = FALSE, bLengthChange = FALSE, scrollX=TRUE,
-     columnDefs = list(list(className = 'dt-center', targets=c(1:3, 8:9)),
-                        list(className="dt-left", targets=4:11)))))
+    columnDefs = list(list(className = 'dt-center', 
+                            targets=c(seq(3), seq(8,9))),
+                        list(className="dt-left", targets=seq(4,11))))))
 }
+
+
 #' retrieveGenesInfo
 #'
 #' @description
