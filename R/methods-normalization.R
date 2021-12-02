@@ -1,4 +1,17 @@
+#' .removeNoSymbol
+#'
+#' @description
+#' Remove genes with no SYMBOL after the normalization.
+#'
+#' @param sceNorm SingleCellExperiment object
+#'
+#' @keywords internal
+#' @importFrom SingleCellExperiment logcounts counts rowData colData
+#' @importFrom rlang .data
+#' @return SingleCellExperiment object
+#' @noRd
 .removeNoSymbol <- function(sceNorm){
+
     norm_mat <- SingleCellExperiment::logcounts(sceNorm)
     cm <- SingleCellExperiment::counts(sceNorm)
     rd <- SingleCellExperiment::rowData(sceNorm)
@@ -8,24 +21,17 @@
     genesToRemove <- rownames(subset(rd[, c("ENSEMBL", "SYMBOL")], 
                                 is.na(SYMBOL)))
     
-    
-    norm_mat <- norm_mat[!(row.names(norm_mat) %in% genesToRemove), ] # For the SCE object 
-    rowDataFiltered <- rd[!(row.names(rd) %in% genesToRemove), ] # For the SCE object 
-    countMatrixSCEFiltered <- cm[!(row.names(cm) %in% genesToRemove), ] # For the SCE object
-    
-    
-    ## Removing embryonic hemoglobins with names starting with "Hba" or "Hbb"
-    idxHb <- grep('^Hb[ab]', rownames(rowDataFiltered), value=TRUE)
-    
-    norm_mat <- norm_mat[!(row.names(norm_mat) %in% idxHb), ] 
-    rowDataFiltered <- rowDataFiltered[!(row.names(rowDataFiltered) %in% idxHb), ]
-    countMatrixSCEFiltered <- countMatrixSCEFiltered[!(row.names(countMatrixSCEFiltered) %in% idxHb), ]
+    norm_mat <- norm_mat[!(row.names(norm_mat) %in% genesToRemove), ] 
+    rowDataFiltered <- rd[!(row.names(rd) %in% genesToRemove), ] 
+    countMatrixSCEFiltered <- cm[!(row.names(cm) %in% genesToRemove), ] 
     
     newSceNorm <- SingleCellExperiment(list(counts=countMatrixSCEFiltered,
                                             logcounts=norm_mat),
-                                       rowData=rowDataFiltered,
-                                       colData=cd)
+                                        rowData=rowDataFiltered,
+                                        colData=cd)
     message("Genes with no SYMBOL IDs removed.")
+    
+    rownames(newSceNorm) <- rowData(newSceNorm)$SYMBOL
     return(newSceNorm)
 }
 
@@ -531,6 +537,7 @@
     countMatrix <- countMatrix[, colData$filterPassed == 1]
     colData <- colData[colData$filterPassed == 1, ]
 
+    browser()
     return(list(countMatrix, colData))
 }
 
@@ -834,7 +841,6 @@
 .quickClusterScran <- function(sce){
 
     cl <- tryCatch(
-
         scran::quickCluster(sce),
 
         warning = function(w){
@@ -947,9 +953,8 @@ setMethod(
                             coldata=NULL, alreadyCellFiltered=FALSE,
                             runQuickCluster=TRUE, info=TRUE, 
                             removeNoSymbol=FALSE){
-
+        
         validObject(theObject)
-
         .checkParamNorm(sizes, rowdata, coldata, alreadyCellFiltered,
                 runQuickCluster, info)
         countMatrix <- getCountMatrix(theObject)
@@ -960,43 +965,35 @@ setMethod(
         rowdata <- .annotateGenes(countMatrix, species=species,
                     rowdataDF=rowdata, info=info)
 
-        coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata,
-                    coldataDF=coldata)
+        coldata <- .addCellsInfo(countMatrix, rowdataDF=rowdata, 
+                                coldataDF=coldata)
         sce <- .filterSCE(alreadyCellFiltered, countMatrix, coldata, rowdata)
 
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
 
-        if(runQuickCluster)
-            cl <- .quickClusterScran(sce)
-        else
-            cl <- NULL
-
+        ifelse(runQuickCluster, cl <- .quickClusterScran(sce), cl <- NULL)
+        browser()
         # Compute sizeFactors which will be used for normalization
         sceNorm <- suppressMessages(
             scran::computeSumFactors(sce, sizes=sizes, clusters=cl, positive=F))
         message("summary(sizeFactors(sceObject)):")
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
 
-        nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(
-                        sceNorm)[
+        nbrNegSFCells <- length(SingleCellExperiment::sizeFactors(sceNorm)[
                         SingleCellExperiment::sizeFactors(sceNorm) <= 0])
 
         if (nbrNegSFCells > 0){
             message(nbrNegSFCells, " cells with negative sizeFactors will be ",
                     "deleted before the downstream analysis.")
-            sceNorm <- sceNorm[,
-                    SingleCellExperiment::sizeFactors(sceNorm) > 0]
+            sceNorm <- sceNorm[, SingleCellExperiment::sizeFactors(sceNorm) > 0]
         }
-
-        sceNorm <- .normalizeCon(sceNorm)
-        if(removeNoSymbol == TRUE)
-            sceNorm <- .removeNoSymbol(sceNorm)
         
         ## Put SYMBOL names in rownames
-        rownames(sceNorm) <- rowData(sceNorm)$SYMBOL
-
+        sceNorm <- .normalizeCon(sceNorm)
+        if(removeNoSymbol == TRUE) sceNorm <- .removeNoSymbol(sceNorm)
+        
         setSceNorm(theObject) <- sceNorm
         
         return(theObject)

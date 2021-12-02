@@ -53,3 +53,11 @@ Changes in version 1.1.002 (2021-08-31)
   suggested clusters number.
   - Added accessors getSuggestedClustersNumber and setSuggestedClustersNumber.
   - Updated all the objects used in examples and tests to have this slot.
+
+
+
+Changes in version 1.1.2 (2021-10-22)
+----------------------------------------
++ Made the following significant changes
+  - clusterMarkers slot become topMarkers slot, accessors names change in the same way.
+  - Add parameter removeNoSymbol in the method normalizeCountMatrix to filter genes doesn't have SYMBOL.
