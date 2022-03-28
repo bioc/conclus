@@ -72,21 +72,21 @@ checkMarkerGenesList <- function(markerGeneobjectlist,
 }
 
 
-checkTopMarkers <- function(clusterMarkers, clustersSimiliratyOrdered=NULL){
+checkTopMarkers <- function(topMarkers, clustersSimiliratyOrdered=NULL){
 
 
     expectedColumn <- c("geneName", "clusters")
 
-    if(!all(expectedColumn %in% colnames(clusterMarkers)))
-        stop("The clusterMarkers data frame should have the columns 'geneName'",
+    if(!all(expectedColumn %in% colnames(topMarkers)))
+        stop("The topMarkers data frame should have the columns 'geneName'",
                 " and 'clusters'")
 
 
-    nbClustMark <- length(unique(clusterMarkers$clusters))
+    nbClustMark <- length(unique(topMarkers$clusters))
     nbClust <- length(clustersSimiliratyOrdered)
 
-    if(nrow(clusterMarkers) > 1 && !isTRUE(all.equal(nbClust, nbClustMark)))
-        stop("clusterMarkers should have the same number of clusters than the",
+    if(nrow(topMarkers) > 1 && !isTRUE(all.equal(nbClust, nbClustMark)))
+        stop("topMarkers should have the same number of clusters than the",
                 " number of clusters found. Nb clusters for markers: ",
                 nbClustMark, ". Nb of clusters: ", nbClust, ".\n",
                 "If you use 'retrieveTopClustersMarkers', try setting ",

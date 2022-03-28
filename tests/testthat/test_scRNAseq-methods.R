@@ -338,21 +338,21 @@ test_that("Errors are thrown when creating scr", {
                      clustSimOrdered = orderedCLusters,
                      markgenlist = markers[-1]), regexp = expM)
 
-             expM <- paste0("clusterMarkers should have the same number of ",
+             expM <- paste0("topMarkers should have the same number of ",
                      "clusters than the number of clusters found. Nb clusters ",
                      "for markers: 3. Nb of clusters: 4")
-             expect_error(setClustersMarkers(scrFinal) <- data.frame(
+             expect_error(setTopMarkers(scrFinal) <- data.frame(
                              geneName= c("gene1", "gene2", "gene3"),
                               clusters=c(1,2,3)),
                         expM)
 
-             expM <- paste0("The clusterMarkers data frame should have the ",
+             expM <- paste0("The topMarkers data frame should have the ",
                      "columns 'geneName' and 'clusters'")
-             expect_error(setClustersMarkers(scrFinal) <-
+             expect_error(setTopMarkers(scrFinal) <-
                              data.frame(geneNam= rep("gene1", 10),
                                      clust=seq_len(10)), expM)
 
-             expM <- "clusterMarkers is empty. This should be a dataframe"
+             expM <- "topMarkers is empty. This should be a dataframe"
              expect_error(singlecellRNAseq(experimentName = experimentName,
                      countMatrix     = countMatrix,
                      species         = "mouse",
@@ -366,11 +366,11 @@ test_that("Errors are thrown when creating scr", {
                              outputDirectory = outputDirectory,
                              genesInf=data.frame()), expM)
 
-             expM <- paste0("The genesInfos data frame should have the columns:",
-                     " uniprot_gn_symbol;clusters;external_gene_name;go_id;",
-                     "entrezgene_description;gene_biotype;chromosome_name;",
-                     "Symbol;ensembl_gene_id;entrezgene_id;uniprot_gn_id;",
-                     "mgi_description;mgi_id")
+            expM <- paste0("The genesInfos data frame should have the columns:",
+                           " uniprot_gn_symbol;clusters;go_id;",
+                           "entrezgene_description;gene_biotype;",
+                           "chromosome_name;Symbol;ensembl_gene_id;",
+                           "entrezgene_id;uniprot_gn_id;mgi_description;mgi_id")
              expect_error(singlecellRNAseq(experimentName = experimentName,
                              countMatrix     = countMatrix,
                              species         = "mouse",
@@ -671,10 +671,6 @@ test_that("plotCellSimilarity work properly", {
                   "given colors.")
     expect_error(plotCellSimilarity(scrFinal, statePalette="str1" ), expM)
 
-    ## Test with incorrect clusteringMethod
-    expM <- "invalid clustering method"
-    expect_error(plotCellSimilarity(scrFinal, clusteringMethod="str1" ), expM)
-
     ## Test with incorrect orderClusters
     expM <- "orderClusters should be a boolean."
     expect_error(plotCellSimilarity(scrFinal, orderClusters="str1" ), expM)
@@ -900,7 +896,7 @@ test_that("plotCellHeatmap work properly", {
 test_that("plotGeneExpression work properly", {
 
     ## Correct gene name
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
+    geneName <- as.character(getTopMarkers(scrFinal)[1,1])
 
     ## Test that the queried gene is in the expression matrix
     expM <- "Gene is not found in expression matrix."
@@ -934,7 +930,7 @@ test_that("plotGeneExpression work properly", {
 
     ## Test with incorrect height
     expM <- "height should be a numeric."
-    geneName <- as.character(getClustersMarkers(scrFinal)[1,1])
+    geneName <- as.character(getTopMarkers(scrFinal)[1,1])
     expect_error(plotGeneExpression(scrFinal, geneName = geneName,
                                     height = "str1"), expM)
 

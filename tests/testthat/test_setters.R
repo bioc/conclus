@@ -248,19 +248,19 @@ test_that("clustersMarkers works properly", {
 
     ## Setting with correct df
     newDF <- data.frame(geneName="gene1", clusters=1)
-    setClustersMarkers(scr) <- newDF
-    expect_equal(newDF, getClustersMarkers(scr))
+    setTopMarkers(scr) <- newDF
+    expect_equal(newDF, getTopMarkers(scr))
 
     ## Setting with empty df
     wrongDF <- data.frame()
-    expM <- "clusterMarkers is empty. This should be a dataframe"
-    expect_error(setClustersMarkers(scr) <- wrongDF, regexp=expM)
+    expM <- "topMarkers is empty. This should be a dataframe"
+    expect_error(setTopMarkers(scr) <- wrongDF, regexp=expM)
 
     ## Setting df with wrong colnames
     wrongDF <- data.frame(3)
-    expM <- paste0("The clusterMarkers data frame should have the columns",
+    expM <- paste0("The topMarkers data frame should have the columns",
                     " 'geneName' and 'clusters'")
-    expect_error(setClustersMarkers(scr) <- wrongDF, regexp=expM)
+    expect_error(setTopMarkers(scr) <- wrongDF, regexp=expM)
 })
 
 
@@ -306,11 +306,10 @@ test_that("genesInfos works properly", {
             chromosome_name=c("3"), Symbol=c("S100a6"),
             ensembl_gene_id=c("ENSMUSG00000001025"), mgi_id=c("MGI:1339467"),
             entrezgene_id= c("20200"))
-    expM <- paste0("The genesInfos data frame should have the columns: ",
-                    "uniprot_gn_symbol;clusters;external_gene_name;go_id;",
-                    "entrezgene_description;gene_biotype;chromosome_name;",
-                    "Symbol;ensembl_gene_id;entrezgene_id;uniprot_gn_id;",
-                    "mgi_description;mgi_id")
+    expM <- paste0("The genesInfos data frame should have the columns:",
+                   " uniprot_gn_symbol;clusters;go_id;entrezgene_description;",
+                   "gene_biotype;chromosome_name;Symbol;ensembl_gene_id;",
+                   "entrezgene_id;uniprot_gn_id;mgi_description;mgi_id")
     expect_error(setGenesInfos(scr) <- wrongDF, regexp=expM)
 })
 
