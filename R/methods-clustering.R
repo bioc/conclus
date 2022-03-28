@@ -563,7 +563,7 @@ setMethod(
 #' matrix of cells.
 #'
 #' @usage
-#' clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=2,
+#' clusterCellsInternal(theObject, clusterNumber=NULL, deepSplit=4, cores=2,
 #'                 clusteringMethod="ward.D2")
 #'
 #' @param theObject An Object of class scRNASeq for which the count matrix was
