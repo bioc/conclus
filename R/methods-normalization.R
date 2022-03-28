@@ -19,7 +19,7 @@
     
     ## Remove SYMBOL genes on the count matrix
     genesToRemove <- rownames(subset(rd[, c("ENSEMBL", "SYMBOL")], 
-                                is.na(SYMBOL)))
+                                is.na(rd$SYMBOL)))
     
     norm_mat <- norm_mat[!(row.names(norm_mat) %in% genesToRemove), ] 
     rowDataFiltered <- rd[!(row.names(rd) %in% genesToRemove), ] 
