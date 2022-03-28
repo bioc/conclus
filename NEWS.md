@@ -56,8 +56,8 @@ Changes in version 1.1.002 (2021-08-31)
 
   
 
-Changes in version 1.3.1 (2021-12-02)
+Changes in version 1.3.1 (2022-03-28)
 ----------------------------------------
 + Made the following significant changes
   - Add parameter removeNoSymbol in the method normalizeCountMatrix to filter genes doesn't have SYMBOL.
-  - clusterMarkers slot become topMarkers slot, accessors names change in the same way.
+  - clusterMarkers slot become topMarkers slot, accessors names change in the same way.0
