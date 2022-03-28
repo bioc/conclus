@@ -971,12 +971,14 @@ setMethod(
         # normalization
         message("Running normalization. It can take a while depending on the",
                 " number of cells.")
-
-        ifelse(runQuickCluster, cl <- .quickClusterScran(sce), cl <- NULL)
+        
+        cl <- NULL
+        if (runQuickCluster) cl <- .quickClusterScran(sce)
 
         # Compute sizeFactors which will be used for normalization
         sceNorm <- suppressMessages(
-            scran::computeSumFactors(sce, sizes=sizes, clusters=cl, positive=F))
+            scran::computeSumFactors(sce, sizes=sizes, clusters=cl, 
+                                    positive=FALSE))
         message("summary(sizeFactors(sceObject)):")
         print(summary(SingleCellExperiment::sizeFactors(sceNorm)))
 
