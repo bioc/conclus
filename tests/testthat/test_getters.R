@@ -84,9 +84,9 @@ test_that("getMarkerGenesList works properly", {
     expect_equal(getMarkerGenesList(scr), l)
 })
 
-test_that("getClustersMarkers works properly", {
+test_that("getTopMarkers works properly", {
     df <- data.frame(geneName="gene1", clusters=NA)
-    expect_equal(getClustersMarkers(scr), df)
+    expect_equal(getTopMarkers(scr), df)
 })
 
 test_that("getGenesInfos works properly", {
