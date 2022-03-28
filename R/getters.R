@@ -240,7 +240,9 @@ setMethod(
 
 #' @usage
 #' getMarkerGenesList(theObject, cluster)
-#'
+#' 
+#' @param cluster Integer, index of the cluster to retrive the gene list.
+#' If cluster="all", get the marker list for each cluster into a list.
 #' @return
 #' getMarkerGenesList: Get the list of marker genes by clusters  (scRNA-seq).
 #'
