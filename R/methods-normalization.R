@@ -885,6 +885,8 @@
 #' go_id, name_1006, chromosome_name and gene_biotype are added to the 
 #' row data, for all the genes from the count matrix with ENSEMBL IDs or 
 #' SYMBOL ID. Default: TRUE.
+#' @param removeNoSymbol Logical. If TRUE, genes with no SYMBOL are removed
+#' after the normalization
 #' 
 #' @details
 #' This function uses the normalization method of the scater package. For more
