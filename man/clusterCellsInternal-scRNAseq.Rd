@@ -5,7 +5,7 @@
 \alias{clusterCellsInternal}
 \title{clusterCellsInternal}
 \usage{
-clusterCellsInternal(theObject, clusterNumber=0, deepSplit=4, cores=2,
+clusterCellsInternal(theObject, clusterNumber=NULL, deepSplit=4, cores=2,
                 clusteringMethod="ward.D2")
 }
 \arguments{

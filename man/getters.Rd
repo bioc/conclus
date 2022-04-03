@@ -94,6 +94,9 @@ getClustering(theObject)
 \arguments{
 \item{theObject}{A scRNA-seq, Tsne or Dbscan object. See description or
 ?scRNAseq, ?Tsne, ?Dbscan.}
+
+\item{cluster}{Integer, index of the cluster to retrive the gene list.
+If cluster="all", get the marker list for each cluster into a list.}
 }
 \value{
 getExperimentName: Get the name of the experiment (scRNA-seq).

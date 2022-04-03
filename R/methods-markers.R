@@ -627,7 +627,7 @@ setMethod(
 #' This function displays the info got by retrieveGenesInfo
 #' @param InfoMarkers Information about markers get by retrieveGenesInfo
 #' @keywords internal
-#' @import DT
+#' @importFrom DT datatable
 #' @noRd
 .displayInfoMarkers <- function(InfoMarkers){
     

@@ -32,6 +32,9 @@ cells and may take too long for datasets with more than 10000 cells.}
 go_id, name_1006, chromosome_name and gene_biotype are added to the 
 row data, for all the genes from the count matrix with ENSEMBL IDs or 
 SYMBOL ID. Default: TRUE.}
+
+\item{removeNoSymbol}{Logical. If TRUE, genes with no SYMBOL are removed
+after the normalization}
 }
 \value{
 Returns a scRNASeq object with its sceNorm slot updated. This slot
