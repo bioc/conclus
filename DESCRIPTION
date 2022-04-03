@@ -1,6 +1,6 @@
 Package: conclus
 Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONCLUSion
-Version: 1.3.3
+Version: 1.3.4
 Authors@R: c(
     person("Ilyess", "Rachedi", email = "rachedi.ilyess@gmail.com", role = "cre"),
     person("Nicolas", "Descostes", email = "nicolas.descostes@embl.it", role = "aut"),
