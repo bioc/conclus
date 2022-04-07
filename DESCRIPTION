@@ -21,7 +21,7 @@ Description:
     used to define "CONSENSUS" clusters conserved accross the previously
     defined clustering solutions. Identify marker genes for each concensus
     cluster.
-Depends: R (>= 4.2)
+Depends: R (>= 4.1)
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.1.2
