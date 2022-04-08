@@ -866,7 +866,7 @@
 #' @usage
 #' normaliseCountMatrix(theObject, sizes=c(20,40,60,80,100), rowdata=NULL,
 #'                     coldata=NULL, alreadyCellFiltered=FALSE,
-#'                     runQuickCluster=TRUE, info=TRUE)
+#'                     runQuickCluster=TRUE, info=TRUE, removeNoSymbol=FALSE)
 #'
 #'
 #' @param theObject A scRNAseq object
