@@ -56,7 +56,7 @@ Changes in version 1.1.002 (2021-08-31)
 
   
 
-Changes in version 1.3.4 (2022-03-28)
+Changes in version 1.2.4 (2022-03-28)
 ----------------------------------------
 + Made the following significant changes
   - Add parameter removeNoSymbol in the method normalizeCountMatrix to filter genes doesn't have SYMBOL.
