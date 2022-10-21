@@ -1,6 +1,6 @@
 Package: conclus
 Title: ScRNA-seq Workflow CONCLUS - From CONsensus CLUSters To A Meaningful CONCLUSion
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: c(
     person("Ilyess", "Rachedi", email = "rachedi.ilyess@gmail.com", role = "cre"),
     person("Nicolas", "Descostes", email = "nicolas.descostes@embl.it", role = "aut"),
@@ -94,3 +94,5 @@ Collate:
     'methods-tsne.R'
     'runCONCLUS.R'
     'setters.R'
+    'zzz.R'
+PackageStatus: Deprecated
